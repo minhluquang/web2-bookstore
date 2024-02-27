@@ -8,8 +8,9 @@
       rel="stylesheet"
       href="../assets/fontawesome-free-6.5.1-web/css/all.min.css"
     />
-    <link rel="stylesheet" href="../css/product.css" />
-    <link rel="stylesheet" href="../css/product.reponsive.css" />
+    <link rel="stylesheet" href="../css/fonts/fonts.css" />
+    <link rel="stylesheet" href="../css/product/product.css" />
+    <link rel="stylesheet" href="../css/product/product.reponsive.css" />
     <script defer src="../js/product.js"></script>
   </head>
   <body>
@@ -94,8 +95,121 @@
                 <li><a href="?sortby=(price:product:desc)">Z-A</a></li>
               </ul>
             </div>
+
+            <div class="top-bar__sort--reponsive">
+              <label for="">Sắp xếp: </label>
+              <div class="top-bar__sort-filter--reponsive">
+                <select name="" id="" class="sort-filter__select">
+                  <option value="manual" selected>Mặc định</option>
+                  <option value="(price:product:asc)">Giá: Tăng dần</option>
+                  <option value="(price:product:desc)">Giá: Giảm dần</option>
+                  <option value="(title:product:asc)">A-Z</option>
+                  <option value="(title:product:desc)">Z-A</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="collection-product-list">
+            <div class="product-item--wrapper">
+              <div class="product-item">
+                <div class="product-img">
+                  <div class="product-action">
+                    <div class="product-action--wrapper">
+                      <button
+                        class="product-action--btn product-action__detail"
+                      >
+                        Chi tiết
+                      </button>
+                      <form action="" method="post">
+                        <input
+                          type="submit"
+                          class="product-action--btn product-action__addToCart"
+                          value="Thêm vào giỏ"
+                        />
+                      </form>
+                    </div>
+                  </div>
+                  <a href="" class="img-resize">
+                    <img
+                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
+                    alt="" />
+                  </a>
+                </div>
+                <div class="product-detail">
+                  <a href="" class="product-title"
+                    >CUỘC SĂN CỪU HOANG
+                    <p class="product-price">136.000₫</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="product-item--wrapper">
+              <div class="product-item">
+                <div class="product-img">
+                  <div class="product-action">
+                    <div class="product-action--wrapper">
+                      <button
+                        class="product-action--btn product-action__detail"
+                      >
+                        Chi tiết
+                      </button>
+                      <form action="" method="post">
+                        <input
+                          type="submit"
+                          class="product-action--btn product-action__addToCart"
+                          value="Thêm vào giỏ"
+                        />
+                      </form>
+                    </div>
+                  </div>
+                  <a href="" class="img-resize">
+                    <img
+                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
+                    alt="" />
+                  </a>
+                </div>
+                <div class="product-detail">
+                  <a href="" class="product-title"
+                    >CUỘC SĂN CỪU HOANG
+                    <p class="product-price">136.000₫</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-item--wrapper">
+              <div class="product-item">
+                <div class="product-img">
+                  <div class="product-action">
+                    <div class="product-action--wrapper">
+                      <button
+                        class="product-action--btn product-action__detail"
+                      >
+                        Chi tiết
+                      </button>
+                      <form action="" method="post">
+                        <input
+                          type="submit"
+                          class="product-action--btn product-action__addToCart"
+                          value="Thêm vào giỏ"
+                        />
+                      </form>
+                    </div>
+                  </div>
+                  <a href="" class="img-resize">
+                    <img
+                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
+                    alt="" />
+                  </a>
+                </div>
+                <div class="product-detail">
+                  <a href="" class="product-title"
+                    >CUỘC SĂN CỪU HOANG
+                    <p class="product-price">136.000₫</p>
+                  </a>
+                </div>
+              </div>
+            </div>
             <div class="product-item--wrapper">
               <div class="product-item">
                 <div class="product-img">
@@ -169,9 +283,9 @@
             <p class="modal-author">Tác giả: <strong>ĐÀO DUY ANH</strong></p>
             <span class="modal-price">59.500đ</span>
             <div class="modal-qnt">
-              <input type="button" value="-" class="modal-qnt__descrease"/>
-              <input type="text" value="1" class="modal-qnt__value" readonly/>
-              <input type="button" value="+" class="modal-qnt__increase"/>
+              <input type="button" value="-" class="modal-qnt__descrease" />
+              <input type="text" value="1" class="modal-qnt__value" readonly />
+              <input type="button" value="+" class="modal-qnt__increase" />
             </div>
             <button class="modal-btn">Thêm vào giỏ</button>
           </div>
