@@ -84,12 +84,32 @@
         <p>Nguyen Quoc Khanh</p>
     </div>
     <ul class="account-links">
-        <li><a href="#">Thông tin của tôi</a></li>
+        <li><a href="#" onclick="showNotification()">Thông tin của tôi</a></li>
         <li><a href="#">Đổi mật khẩu</a></li>
         <li><a href="#">Lịch sử mua hàng</a></li>
         <li><a href="#">Đăng xuất</a></li>
-        
     </ul>
+</div>
+
+<div class="overlay" id="overlay" onclick="hideNotification()"></div>
+
+<div class="notification-box" id="notificationBox">
+    <span class="close-btn" onclick="hideNotification()">x</span>
+    <div class="user-info">
+        <div class="input-field">
+            <label for="newName">Họ và tên:</label>
+            <input type="text" id="newName">
+        </div>
+        <div class="input-field">
+            <label for="newPhone">Số điện thoại:</label>
+            <input type="text" id="newPhone">
+        </div>
+        <div class="input-field">
+            <label for="newAddress">Địa chỉ:</label>
+            <input type="text" id="newAddress">
+        </div>
+    </div>
+    <button class="save-btn" onclick="saveInfo()">Lưu</button>
 </div>
 
                 </div>
@@ -211,7 +231,27 @@ function clickOutsideHandler(event) {
     }
 }
 
+// Hàm để hiện phần thông tin của tôi
+function showNotification() {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("notificationBox").style.display = "block";
+    }
 
+    function hideNotification() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("notificationBox").style.display = "none";
+    }
+    function saveInfo() {
+        var newName = document.getElementById("newName").value;
+        var newPhone = document.getElementById("newPhone").value;
+        var newAddress = document.getElementById("newAddress").value;
+
+        document.getElementById("name").innerText = newName;
+        document.getElementById("phone").innerText = newPhone;
+        document.getElementById("address").innerText = newAddress;
+
+        hideNotification();
+    }
 
 </script>
 </html>
