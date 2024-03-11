@@ -132,7 +132,7 @@
 
   /* Modal */
   .modal-container {
-    height: auto;
+    height: auto !important;
     width: 700px;
   }
 
