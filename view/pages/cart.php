@@ -8,9 +8,9 @@
       rel="stylesheet"
       href="assets/fontawesome-free-6.5.1-web/css/all.min.css"
     />
-    <link rel="stylesheet" href="css/fonts/fonts.css" />
-    <link rel="stylesheet" href="css/cart/cart.css" />
-    <link rel="stylesheet" href="css/cart/cart_responsive.css" />
+    <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="css/cart/cart.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="css/cart/cart_responsive.css?v=<?php echo time(); ?>" />
   </head>
 
   <body>

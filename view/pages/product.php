@@ -8,9 +8,9 @@
       rel="stylesheet"
       href="assets/fontawesome-free-6.5.1-web/css/all.min.css"
     />
-    <link rel="stylesheet" href="css/fonts/fonts.css" />
-    <link rel="stylesheet" href="css/product/product.css" />
-    <link rel="stylesheet" href="css/product/product.reponsive.css" />
+    <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="css/product/product.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="css/product/product.reponsive.css?v=<?php echo time(); ?>" />
     <script defer src="js/product.js"></script>
   </head>
   <body>
