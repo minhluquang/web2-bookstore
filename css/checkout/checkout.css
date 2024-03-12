@@ -1,0 +1,524 @@
+html {
+  background: #f0f0f0;
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  max-width: 1270px;
+  margin: 0 auto;
+}
+
+.form-container {
+  width: 90%;
+  max-width: 1270px;
+  margin: 0 auto;
+  /* padding: 15px; */
+  margin-bottom: 20%;
+}
+
+.error-field {
+  border-color: #d96557 !important;
+  outline-color: #c44031 !important;
+}
+
+.container {
+  padding-left: 2%;
+  padding-right: 2%;
+  border-radius: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* .container h3 {
+  padding-left: 3%;
+} */
+
+.form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form-group>label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  width: 25%;
+}
+
+.form-group p {
+  display: inline-block;
+}
+
+
+#promo-container {
+  display: inline-block;
+  width: 50%;
+  border: 1px solid #858585;
+  border-radius: 3px;
+  vertical-align: middle;
+  font-size: 2.5em;
+  position: relative;
+}
+
+#promo-container input {
+  border: none;
+  width: 70%;
+  line-height: 1.5em;
+  padding: 10px;
+}
+
+#promo-container button {
+  background-color: #2f80ed;
+  color: white;
+  border-radius: 3px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+  margin-right: 1px;
+  cursor: pointer;
+  width: 29%;
+  /* height: 100%; */
+  float: right;
+  padding: 10px;
+}
+
+#promo-container input:focus {
+  outline: none;
+}
+
+#promo-container:focus-within {
+  outline: 1px solid #2f80ed
+}
+
+/* .custom-radio {
+  left: 3%;
+  position: relative;
+}
+input[type='radio'] {
+  display: none;
+}
+input[type='radio']+label {
+  position: relative;
+  line-height: 1em;
+}
+input[type='radio']+label:before {
+  content: '';
+  width: .5em;
+  height: .5em;
+  border-radius: 100%;
+  margin-right: .5em;
+  display: inline-block;
+  background: #ca3f3f;
+  vertical-align: middle;
+  box-shadow: 0 0 0 .15em white, 0 0 0 .3em black;
+}
+input[type='radio']:checked+label:before {
+  vertical-align: middle;
+} */
+/* Popup container */
+input[type='radio'] {
+  accent-color: #ca3f3f;
+}
+
+.popup {
+  /* position: relative; */
+  /* display: inline-block; */
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popupbutton{
+  background-color: #2f80ed;
+  color: white;
+  margin-top: 10px;
+  border-radius: 4px;
+  padding: 5px;
+}
+.popup .popupmenu {
+  visibility: hidden;
+  display: flex;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 2;
+  height: 650px;
+  max-height: 80%;
+  max-width: 100%;
+  width: 550px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding-left: 2%;
+  padding-right: 2%;
+  border-radius: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  flex-direction: column;
+
+  margin: 0 auto;
+}
+
+
+.popupwrapper {
+  cursor: default;
+  visibility: hidden;
+  position: relative;
+  display: flex;
+}
+
+.popupbg {
+  z-index: 1;
+  background-color: rgba(68, 68, 68, 0.8);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 0.1s;
+  animation: fadeIn 0.1s
+}
+
+.address-container {
+  height: 520px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+
+}
+
+fieldset {
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.update-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.update-container .fieldselect{
+  flex: 0 0 calc(33% - 6px);
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0 auto 0 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.address-container::-webkit-scrollbar {
+  display: none;
+}
+
+.address-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  /* background:#aaa; */
+  position: relative;
+  /* width: 85%; */
+  padding-top: 2%;
+  padding-bottom: 3%;
+  border-bottom: solid 1px #b6b6b6;
+}
+
+.address-select #sdt {
+  flex: 0 0 40%;
+
+}
+
+.address-select>span {
+  color: #858585;
+  /* width: 100%; */
+}
+
+.address-select #name {
+  flex: 0 0 40%;
+  color: black !important;
+}
+
+.address-select #diachi,
+.address-select #tinh {
+  flex: 0 0 100%;
+  margin-left: 25px;
+}
+
+.address-select .update {
+  color: #2f80ed;
+
+}
+
+.popupwrapper button {
+  width: max-content;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 0;
+
+}
+
+.popupwrapper .confirm {
+  background-color: #ca3f3f;
+  color: white;
+  border: solid 1px #ca3f3f;
+
+}
+
+.popupwrapper .cancel {
+  background-color: #ffffff;
+  color: black;
+  border: solid 1px black;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.sanpham {
+  padding-left: 3%;
+  display: flex;
+}
+
+.sanpham img {
+  position: relative;
+  max-height: 145px;
+  /* margin: auto; */
+  max-width: 10%;
+  left: 0;
+}
+
+.bookname {
+  max-height: 145px;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 50%;
+  word-wrap: break-word;
+  overflow-y: hidden;
+}
+
+.cost {
+  margin-top: 10px;
+  display: flex;
+  position: relative;
+  width: 30%;
+}
+
+.book-price {
+  width: 40%;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.soluong {
+  width: 20%;
+  text-align: right;
+}
+
+/* .old-price {
+  text-decoration: line-through;
+  color: #858585
+} */
+.booktotal {
+  text-align: right;
+  width: 40%;
+  color: #f39801;
+  text-align: right;
+}
+
+.total {
+  width: 100%;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: small;
+}
+
+.chiphi {
+  margin-top: 6px;
+  position: relative;
+  display: flex;
+}
+
+.cost-name {
+  width: 85%;
+}
+
+.money {
+  word-wrap: break-word;
+  width: 18%;
+  margin-left: 2%;
+}
+
+#tong {
+  font-weight: bold;
+  font-size: medium !important;
+}
+
+#tong-tien {
+  color: #f39801;
+}
+
+.dieukhoan {
+  width: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.form-submit {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  bottom: 0;
+  width: 80%;
+  max-width: 1270px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-submit::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  left: 50%;
+  /* margin: 0 auto; */
+  box-shadow: 0 -5px 5px -5px #333;
+  transform: translateX(-50vw);
+  bottom: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100%;
+  background-color: #fff;
+}
+
+.form-submit button {
+  flex: 0.3;
+  width: max-content;
+  background-color: #ca3f3f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  /* width: 30%; */
+  float: inline-end;
+}
+
+
+#updatebig {
+  visibility: inherit;
+  height: auto;
+}
+
+#updatesmall {
+  visibility: hidden;
+  margin-left: 25px;
+  height: 0;
+}
+#total-bottom{
+  visibility: hidden;
+
+}
+#total-fixed{
+  visibility: visible;
+  height: auto;
+}
+#dieukhoan-bottom{
+  visibility: hidden;
+}
+#dieukhoan-fixed{
+  visibility: visible;
+  width: auto;
+}
+@media screen and (max-width: 600px) {
+  .popup .popupmenu {
+    width: 90%
+  }
+
+  #updatebig {
+    visibility: hidden;
+    height: 0;
+
+  }
+
+  #updatesmall {
+    visibility: inherit;
+    height: auto;
+
+  }
+  #total-bottom{
+    visibility: visible;
+    font-size: smaller !important;
+  }
+  #total-fixed{
+    visibility: hidden;
+    height: 0;
+  
+  }
+  .money {
+    word-wrap: break-word;
+    width: 25%;
+    margin-left: 2%;
+  }
+  #dieukhoan-bottom{
+    visibility: visible;
+    margin-bottom: 70px;
+    word-wrap: break-word;
+
+
+  }
+  #dieukhoan-fixed{
+    visibility: hidden;
+    display: none;
+  }
+  #line-fixed{
+    visibility: hidden;
+    width: 0 !important;
+  }
+  .update-container .fieldselect{
+    flex: 0 0 calc(100% - 6px);
+    padding-left: 0;
+    padding-right: 0;
+    margin:0 auto !important;
+  }
+  button[type="submit"]{
+    flex:0 0 100%
+  }
+}
