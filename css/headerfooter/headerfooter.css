@@ -1,0 +1,330 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.header{
+    
+    height:100px;
+    width: 100%;
+    background-color: gray;
+    display: flex;
+}
+.headerLeft{
+  position: relative;
+
+  margin-left: 50px;
+  width: 20%;
+}
+.headerLeft img{
+    width: 75%;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.headerCenter {
+    width: 60%;
+    margin-top: 20px;
+    position: relative;
+    
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.input-wrapper input {
+    margin-top: 10px;
+    height: 40px;
+    width: calc(75% - 40px);
+    border: 1px solid #CDCFD0;
+    border-radius: 8px;
+    vertical-align: center;
+}
+
+.input-wrapper button {
+    margin-top: 10px;
+
+    margin-left: 20px;
+    height: 40px;
+    width: 10%;
+    border: none;
+    background-color: #C92127;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.input-wrapper img{
+    width: 20px;
+}
+.notification {
+    display: none;
+    align-items: flex-start;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 5px;
+    width: calc(75% - 40px);
+
+
+}
+
+.category-section {
+    width: 30%;
+    padding: 20px;
+    
+}
+
+.categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.categories li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.categories li:hover {
+    background-color: #e0e0e0;
+}
+
+.book-section {
+    width: 70%;
+    padding: 20px;
+    height: 100%;
+}
+
+.books {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center; /* Canh giữa các cuốn sách */
+}
+
+.book {
+    text-align: center;
+}
+
+.book img {
+    width: 80%;
+    height: auto;
+    margin-top: 20px;
+}
+
+.book p {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.headerRight{
+    margin-right: 50px;
+  width: 20%;
+  position: relative;
+  display: flex;
+  
+    
+}
+.cart{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-right: 50px;
+    display: flex;
+    align-items: center;
+
+ 
+}
+.headerRight img{
+    width: 30px;
+    
+
+}
+
+
+.account{
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.account-options {
+    display: none;
+    position: absolute;
+    top: 100%; /* Hiển thị khung bên dưới phần account */
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    
+}
+.account-options button{
+  width: 200px;
+  height: 50px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+.account:hover .account-options {
+    display: block; /* Hiển thị khi di chuột vào phần account */
+}
+
+
+
+.account-notification {
+    display: none;
+    position: absolute;
+    top: 100%; /* Hiển thị khung bên dưới phần account */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;  
+    width: 250px;
+    border-radius: 20px;
+}
+
+.user-info {
+        padding: 10px;
+        font-style: initial ;
+        font-weight: bold;
+        font-size: 20px;
+        border-bottom: 2px solid black;
+        margin-bottom: 15px;
+      
+}
+.user-info  input{
+     border: none;
+     height: 50px;
+     width: 100%;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen với độ trong suốt 50% */
+    z-index: 1000; /* Đảm bảo lớp này hiển thị trên cùng */
+    display: none; /* Mặc định ẩn đi */
+}
+
+.notification-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1001; /* Đảm bảo lớp này hiển thị trên cùng */
+    width: 500px;
+    display: none;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+.account-links {
+    border-top: #C92127;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-links li {
+    margin-bottom: 5px;
+}
+
+.account-links li a {
+    text-decoration: none;
+    color: blue;
+}
+
+/* Hiển thị phần thông báo khi hover hoặc focus */
+.account:hover .account-notification {
+    display: block;
+}
+.footer{
+    display: flex; 
+    margin-left: 20px;
+    
+}
+.leftFooter{
+    width: 40%;
+    height: 100%;
+    border-right: 1px solid black;
+    margin-top: 100px;
+}
+
+.logo img{
+    width: 40px;
+    height: 40px;
+}
+.downloadLogo{
+    display:flex;
+}
+.downloadLogo a{
+   margin-left: 10px;
+}
+
+
+
+
+
+
+
+.rightFooter{
+    display: flex;
+    width: 60%;
+    margin-top: 100px;
+}
+.thongtin{
+    width: 25%;
+    color: white;
+    margin-left: 50px;
+}
+.thongtin div,li{
+    margin-top: 15px;
+    color: black    ;
+    list-style: none;
+}
+.thongtin li:hover{
+    cursor: pointer;
+    color: rgb(33, 150, 213);
+}
+.thongtin img{
+    width: 100%;
+}
+.thongtin h3{
+    text-transform: uppercase;
+    font-size: 16px;
+    color: black;
+    font-weight: bold;
+}
+@media only screen and (max-width: 721px) {
+    .downloadLogo{
+        display: grid;
+    }
+    .account-notification {
+        display: none;
+        position: absolute;
+        top: 100%; /* Hiển thị khung bên dưới phần account */
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;  
+        width: 100px;
+        border-radius: 20px;
+    }
+    .books {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center; /* Canh giữa các cuốn sách */
+    }
+}
+
+

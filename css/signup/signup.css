@@ -1,0 +1,100 @@
+body {
+    background: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    margin: -20px 0 50px;
+}
+
+
+
+
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 580px;
+
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Canh giữa theo trục ngang */
+    margin-bottom: 20px; /* Khoảng cách dưới */
+}
+
+/* CSS styling for the buttons */
+.button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    text-decoration: none;
+    position: relative;
+}
+
+.button::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.button.active::after {
+    background-color: red; /* Gạch đỏ dưới chân nút */
+}
+
+/* CSS styling for the form container */
+.form-container {
+    display: none;
+    width: 50%; /* Chiều rộng form */
+    margin: 0 auto; /* Căn giữa theo trục ngang */
+    text-align: center;
+}
+
+/* CSS styling for the form rows */
+.form-row {
+    margin-bottom: 10px; /* Khoảng cách dưới giữa các hàng */
+}
+
+/* CSS styling for labels */
+label {
+    display: block; /* Hiển thị label trên một dòng mới */
+    text-align: left;
+
+    margin-bottom: 5px; /* Khoảng cách dưới giữa các label */
+}
+
+/* CSS styling for inputs */
+input {
+    width: 100%; /* Độ rộng 100% */
+    padding: 5px; /* Khoảng cách nội dung */
+}
+
+/* CSS styling for buttons */
+button {
+    width: 50%; /* Độ rộng 100% */
+    padding: 10px; /* Khoảng cách nội dung */
+    border-radius: 10px;
+}
+
+/* CSS styling for the forms */
+.form-container.active {
+    display: block;
+    margin-top: 20px;
+}

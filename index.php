@@ -20,11 +20,8 @@
       case 'checkout':
         require_once('view/pages/checkout.php');
         break;
-      case 'login':
-        require_once('view/pages/login.php');
-        break;
-      case 'register':
-        require_once('view/pages/register.php');
+      case 'signup':
+        require_once('view/pages/signup.php');
         break;
       default:
         // Xử lý trường hợp không khớp với bất kỳ trang nào
