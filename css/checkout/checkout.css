@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Mulish", "Times New Roman", Times, serif;
   max-width: 1270px;
   margin: 0 auto;
 }
@@ -35,64 +35,91 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* .container h3 {
-  padding-left: 3%;
-} */
+.container h3 {
+  padding: 8px 0;
+  font-weight: bold;
+  font-size: 16px;
+}
 
 .form-group {
+  margin-top: 10px;
   margin-bottom: 15px;
   position: relative;
 }
 
-.form-group>label {
-  display: inline-block;
+#diachi b {
+  margin-right: 20px;
+}
+
+.form-group span {
+  font-size: 16px;
+  font-weight: normal;
+  display: block;
+}
+
+.form-group > label {
+  /* display: inline-block; */
   margin-bottom: 5px;
-  font-weight: bold;
-  width: 25%;
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+.form-group > label i {
+  display: none;
 }
 
 .form-group p {
   display: inline-block;
 }
 
+.d-flex {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
 
 #promo-container {
-  display: inline-block;
-  width: 50%;
-  border: 1px solid #858585;
-  border-radius: 3px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
   vertical-align: middle;
   font-size: 2.5em;
   position: relative;
+  height: 40px;
+  width: 466px;
+  outline: none;
 }
 
 #promo-container input {
   border: none;
-  width: 70%;
-  line-height: 1.5em;
-  padding: 10px;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  padding: 4px 120px 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #858585;
 }
 
 #promo-container button {
   background-color: #2f80ed;
   color: white;
-  border-radius: 3px;
+  border-radius: 6px;
   margin-bottom: 1px;
   margin-top: 1px;
   margin-right: 1px;
   cursor: pointer;
-  width: 29%;
+  /* width: 29%; */
   /* height: 100%; */
-  float: right;
-  padding: 10px;
-}
-
-#promo-container input:focus {
-  outline: none;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  position: absolute;
+  right: 5px;
 }
 
 #promo-container:focus-within {
-  outline: 1px solid #2f80ed
+  /* outline: 1px solid #2f80ed; */
 }
 
 /* .custom-radio {
@@ -121,23 +148,24 @@ input[type='radio']:checked+label:before {
   vertical-align: middle;
 } */
 /* Popup container */
-input[type='radio'] {
+input[type="radio"] {
   accent-color: #ca3f3f;
 }
 
 .popup {
   /* position: relative; */
-  /* display: inline-block; */
+  display: inline-block;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 /* The actual popup (appears on top) */
-.popupbutton{
+.popupbutton {
   background-color: #2f80ed;
   color: white;
-  margin-top: 10px;
   border-radius: 4px;
   padding: 5px;
+  cursor: pointer;
 }
 .popup .popupmenu {
   visibility: hidden;
@@ -164,7 +192,6 @@ input[type='radio'] {
   margin: 0 auto;
 }
 
-
 .popupwrapper {
   cursor: default;
   visibility: hidden;
@@ -186,7 +213,7 @@ input[type='radio'] {
 .popup .show {
   visibility: visible;
   -webkit-animation: fadeIn 0.1s;
-  animation: fadeIn 0.1s
+  animation: fadeIn 0.1s;
 }
 
 .address-container {
@@ -196,7 +223,16 @@ input[type='radio'] {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
 
+.addNewAddress {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
 }
 
 fieldset {
@@ -214,7 +250,7 @@ fieldset {
   /* Firefox */
 }
 
-.update-container .fieldselect{
+.update-container .fieldselect {
   flex: 0 0 calc(33% - 6px);
   padding-left: 0;
   padding-right: 0;
@@ -240,10 +276,9 @@ fieldset {
 
 .address-select #sdt {
   flex: 0 0 40%;
-
 }
 
-.address-select>span {
+.address-select > span {
   color: #858585;
   /* width: 100%; */
 }
@@ -261,7 +296,6 @@ fieldset {
 
 .address-select .update {
   color: #2f80ed;
-
 }
 
 .popupwrapper button {
@@ -271,14 +305,12 @@ fieldset {
   cursor: pointer;
   margin-left: 10px;
   margin-top: 0;
-
 }
 
 .popupwrapper .confirm {
   background-color: #ca3f3f;
   color: white;
   border: solid 1px #ca3f3f;
-
 }
 
 .popupwrapper .cancel {
@@ -309,11 +341,12 @@ fieldset {
 }
 
 .sanpham {
-  padding-left: 3%;
   display: flex;
+  padding: 8px 4px;
 }
 
-.sanpham img {
+.sanpham img,
+.sanpham .sanpham__info-title {
   position: relative;
   max-height: 145px;
   /* margin: auto; */
@@ -321,7 +354,8 @@ fieldset {
   left: 0;
 }
 
-.bookname {
+.bookname,
+.sanpham__info-bookname {
   max-height: 145px;
   margin-top: 10px;
   margin-left: 10px;
@@ -330,11 +364,22 @@ fieldset {
   overflow-y: hidden;
 }
 
-.cost {
+.sanpham__info-bookname {
+  margin: 0 0 0 10px;
+  text-align: center;
+}
+
+.cost,
+.sanpham__info-cost {
   margin-top: 10px;
   display: flex;
   position: relative;
-  width: 30%;
+  width: 40%;
+  flex: 1;
+}
+
+.sanpham__info-cost {
+  margin: 0;
 }
 
 .book-price {
@@ -345,7 +390,7 @@ fieldset {
 }
 
 .soluong {
-  width: 20%;
+  width: 40%;
   text-align: right;
 }
 
@@ -364,7 +409,8 @@ fieldset {
   width: 100%;
   flex-shrink: 0;
   text-align: right;
-  font-size: small;
+  font-size: 16px;
+  padding: 20px 0;
 }
 
 .chiphi {
@@ -397,6 +443,13 @@ fieldset {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
+  padding: 4px 0;
+}
+
+.dieukhoan span a {
+  color: #428bca;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .form-submit {
@@ -414,7 +467,7 @@ fieldset {
 }
 
 .form-submit::before {
-  content: '';
+  content: "";
   position: absolute;
   right: 0;
   left: 50%;
@@ -441,7 +494,6 @@ fieldset {
   float: inline-end;
 }
 
-
 #updatebig {
   visibility: inherit;
   height: auto;
@@ -452,73 +504,67 @@ fieldset {
   margin-left: 25px;
   height: 0;
 }
-#total-bottom{
+#total-bottom {
   visibility: hidden;
-
 }
-#total-fixed{
+#total-fixed {
   visibility: visible;
   height: auto;
 }
-#dieukhoan-bottom{
+#dieukhoan-bottom {
   visibility: hidden;
 }
-#dieukhoan-fixed{
+#dieukhoan-fixed {
   visibility: visible;
   width: auto;
 }
 @media screen and (max-width: 600px) {
   .popup .popupmenu {
-    width: 90%
+    width: 90%;
   }
 
   #updatebig {
     visibility: hidden;
     height: 0;
-
   }
 
   #updatesmall {
     visibility: inherit;
     height: auto;
-
   }
-  #total-bottom{
+  #total-bottom {
     visibility: visible;
     font-size: smaller !important;
   }
-  #total-fixed{
+  #total-fixed {
     visibility: hidden;
     height: 0;
-  
   }
   .money {
     word-wrap: break-word;
     width: 25%;
     margin-left: 2%;
   }
-  #dieukhoan-bottom{
+  #dieukhoan-bottom {
     visibility: visible;
     margin-bottom: 70px;
     word-wrap: break-word;
-
-
   }
-  #dieukhoan-fixed{
+  #dieukhoan-fixed {
     visibility: hidden;
     display: none;
   }
-  #line-fixed{
+  #line-fixed {
     visibility: hidden;
     width: 0 !important;
   }
-  .update-container .fieldselect{
+  .update-container .fieldselect {
     flex: 0 0 calc(100% - 6px);
     padding-left: 0;
     padding-right: 0;
-    margin:0 auto !important;
+    margin: 0 auto !important;
   }
-  button[type="submit"]{
-    flex:0 0 100%
+  button[type="submit"] {
+    flex: 0 0 100%;
   }
 }

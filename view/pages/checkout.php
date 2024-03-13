@@ -49,8 +49,9 @@
                                         <span id="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
                                         <span class="update" id="updatesmall" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
                                     </label>
-
-
+                                    <form action="" method="post">
+                                        <input type="submit" class="addNewAddress" value="Thêm địa chỉ mới">
+                                    </form>
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;">
                                     <button type="button" class="confirm" onclick="changeAddress();popupToggle(`diachiMenu`);popupOff(`addressMenu`)">Xác Nhận</button>
@@ -113,23 +114,21 @@
 
 
             </div>
-            <div class="container">
-                <h3>PHƯƠNG THỨC VẬN CHUYỂN</h3>
-                <hr>
-            </div>
+
             <div class="container">
                 <h3>PHƯƠNG THỨC THANH TOÁN</h3>
                 <hr>
-                <input id="id4" type="radio" name="id_test" value="" checked />
-                <label for="id4"><i class="fa-solid fa-dong-sign"></i>Thanh toán bằng tiền mặt khi nhận hàng</label>
+                <div class="form-group"><input id="id4" type="radio" name="id_test" value="" checked />
+                    <label for="id4"><i class="fa-solid fa-dong-sign"></i>Thanh toán bằng tiền mặt khi nhận hàng</label>
+                </div>
             </div>
             <div class="container">
-                <h3>MÃ KHUYẾN MÃI/MÃ QUÀ TẶNG</h3>
+                <h3>MÃ KHUYẾN MÃI</h3>
                 <hr>
-                <div class="form-group">
-                    <label for="promotion">Mã KM/Quà tặng</label>
+                <div class="form-group d-flex">
+                    <label class="promotion--label" for="promotion">Mã khuyến mãi</label>
                     <div id="promo-container">
-                        <input type="promo" id="promotion" name="promotion">
+                        <input type="promo" id="promotion" name="promotion" placeholder="Nhập mã khuyến mãi">
                         <button type="button">Áp dụng</button>
                     </div>
                     <!-- <div class="popup">
@@ -151,6 +150,19 @@
             <!-- make this a different php file -->
             <div class="container">
                 <h3>KIỂM TRA LẠI ĐƠN HÀNG</h3>
+                <hr>
+                <div class="sanpham">
+                    <span class="sanpham__info-title">Hình ảnh</span>
+                    <span class="sanpham__info-bookname">Tên sản phẩm</span>
+                    <div class="sanpham__info-cost">
+                        <div class="book-price">
+                            <span class="price">Đơn giá</span>
+                            <!-- <span class="old-price">120.000 &#8363;</span> -->
+                        </div>
+                        <span class="soluong">Số lượng</span>
+                        <span class="booktotal">Tổng tiền</span>
+                    </div>
+                </div>
                 <hr>
                 <div class="sanpham">
                     <img src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000" />
@@ -187,7 +199,7 @@
                         <span class="money">192.700 &#8363;</span><br>
                     </div>
                     <div class="chiphi">
-                        <span class="cost-name">Giảm giá (Nhập mã thành công - Mã giảm giá 10K TOẢN SẢN - Đơn hàng từ 150K)</span>
+                        <span class="cost-name">Giảm giá</span>
                         <span class="money">-10.000 &#8363;</span><br>
                     </div>
                     <div class="chiphi">
@@ -201,12 +213,12 @@
                 </div>
             </div>
             <div class="container" id="dieukhoan-bottom" style="display: flex;">
-                <div class="dieukhoan" >
+                <div class="dieukhoan">
                     <i class="fa-solid fa-square-check" style="color:#ca3f3f;font-size:20px;padding:7px;flex:0 0 5%;"></i>
-    
+
                     <span style="word-wrap: break-word;flex:0 0 85%;">
                         Bằng việc tiến hành Mua hàng, Bạn đã đồng ý với
-                        <a href="">Điều khoản & Điều kiện của Placeholder</a>
+                        <a href="">Điều khoản & Điều kiện của Fahasa.com</a>
                     </span>
                 </div>
             </div>
@@ -218,7 +230,7 @@
                 <span class="money">192.700 &#8363;</span><br>
             </div>
             <div class="chiphi">
-                <span class="cost-name">Giảm giá (Nhập mã thành công - Mã giảm giá 10K TOẢN SẢN - Đơn hàng từ 150K)</span>
+                <span class="cost-name">Giảm giá</span>
                 <span class="money">-10.000 &#8363;</span><br>
             </div>
             <div class="chiphi">
@@ -235,7 +247,7 @@
             <i class="fa-solid fa-square-check" style="color:#ca3f3f;font-size:20px;padding:7px"></i>
             <span>
                 <span>Bằng việc tiến hành Mua hàng, Bạn đã đồng ý với</span> <br>
-                <a href="">Điều khoản & Điều kiện của Placeholder</a>
+                <a href="">Điều khoản & Điều kiện của Fahasa.com</a>
             </span>
         </div>
         <button type="submit">Xác nhận thanh toán</button>
