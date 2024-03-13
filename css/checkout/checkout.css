@@ -5,11 +5,11 @@ html {
 
 body {
   font-family: "Mulish", "Times New Roman", Times, serif;
-  max-width: 1270px;
-  margin: 0 auto;
 }
 
 .form-container {
+  max-width: 1270px;
+  margin: 0 auto;
   width: 90%;
   max-width: 1270px;
   margin: 0 auto;

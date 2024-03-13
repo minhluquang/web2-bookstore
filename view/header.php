@@ -97,7 +97,7 @@
 
         <div class="headerRight">
           <div class="cart">
-            <i class="fa-cart-shopping"> </i>
+          <i class="fa-solid fa-cart-shopping"></i>
             <span>Giỏ hàng</span>
           </div>
           <div class="account">

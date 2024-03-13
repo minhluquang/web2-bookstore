@@ -8,21 +8,27 @@ body {
   font-family: "Mulish", "Times New Roman", Times, serif;
 }
 
+header {
+  background-color: #fff;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
 .header {
   height: 100px;
-  width: 100%;
-  background-color: gray;
+  width: 1270px;
   display: flex;
+  margin: 0 auto;
 }
 .headerLeft {
   position: relative;
-
   margin-left: 50px;
   width: 20%;
+  margin-right: 20px;
 }
 .headerLeft img {
-  width: 75%;
-  height: 30px;
+  /* width: 75%; */
+  width: 100%;
+  object-fit: cover;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -40,12 +46,16 @@ body {
 }
 
 .input-wrapper input {
+  outline: none;
+  border: none;
   margin-top: 10px;
   height: 40px;
   width: calc(75% - 40px);
   border: 1px solid #cdcfd0;
   border-radius: 8px;
   vertical-align: center;
+  padding: 0 10px;
+  font-size: 16px;
 }
 
 .input-wrapper button {
@@ -70,6 +80,8 @@ body {
   border-radius: 8px;
   margin-top: 5px;
   width: calc(75% - 40px);
+  z-index: 10;
+  position: relative;
 }
 
 .category-section {
@@ -138,7 +150,7 @@ body {
 }
 
 .account {
-  margin-top: 25px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -238,6 +250,11 @@ body {
 .account:hover .account-notification {
   display: block;
 }
+
+footer {
+  background-color: whitesmoke;
+}
+
 .footer {
   display: flex;
   margin-left: 20px;
