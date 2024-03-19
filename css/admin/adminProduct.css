@@ -93,3 +93,85 @@ td:last-child {
 .pagination a:hover:not(.active) {
   background-color: #ddd;
 }
+
+/* filter */
+.filter-product {
+  width: 700px;
+  margin: 0 auto;
+  position: relative; 
+  padding: 20px; 
+  background-color: #f9f9f9;
+  border: 1px solid #ccc; 
+  border-radius: 10px; 
+}
+
+.filter-product p {
+  text-align: center;
+  font-size:25px ;
+  font-weight: 600;
+}
+
+.filter-product label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.filter-product input[type="text"],
+.filter-product input[type="submit"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filter-product input[type="submit"] {
+  cursor: pointer;
+}
+
+/* Container bao bọc các nút */
+.btn-container {
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  display: flex;
+}
+
+.btn {
+  display: flex;
+}
+
+.btn_filter,
+.btn_reset {
+  width: 100px; /* Độ rộng của các nút */
+  margin-left: 10px; /* Khoảng cách giữa các nút */
+}
+
+.btn_reset {
+  background-color: #dc3545;
+  color: black;
+  font-weight: 700;
+  border: none;
+  width: 80px !important;
+}
+
+.btn_filter {
+  background-color: #28a745;
+  font-weight: 700;
+  color: black;
+  border: none;
+  width: 80px !important;
+}
+
+.btn_add {
+  background-color: #555555;
+  font-weight: 700;
+  color: #fff;
+  border: none;
+  margin-right: 300px;
+  width: 120px !important;
+}
+
+
+
+/* end */
