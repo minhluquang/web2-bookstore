@@ -16,7 +16,7 @@
             <div class="container">
                 <h3>Địa Chỉ Nhận Hàng</h3>
                 <hr>
-                <div class="form-group">
+                <div class="form-group" style="flex-direction: column;">
                     <span id="diachi">
                         <b>Nguyễn Minh Trí (+84) 394080644</b> Số 907a, Âu Cơ, Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh
                     </span>
@@ -50,7 +50,7 @@
                                         <span class="update" id="updatesmall" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
                                     </label>
                                     <form action="" method="post">
-                                        <input type="submit" class="addNewAddress" value="Thêm địa chỉ mới">
+                                        <input type="button" class="addNewAddress" value="Thêm địa chỉ mới">
                                     </form>
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;">
@@ -66,18 +66,18 @@
                                 </div>
                                 <div>
                                     <div class="update-container">
-                                        <fieldset style="flex:0 0 calc(50% - 1.5em - 12px);">
+                                        <fieldset style="flex:0 0 47%;">
                                             <legend>Họ và tên</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.2em;width:100%">
+                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
                                         </fieldset>
-                                        <fieldset style="flex:0 0 calc(50% - 1.5em - 12px);margin-left:auto;">
+                                        <fieldset style="flex:0 0 47%;margin-left:auto;">
                                             <legend>Số điện thoại</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.2em;width:100%">
+                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
                                         </fieldset>
 
                                         <fieldset class="fieldselect" style="margin:0 auto 0 0;">
                                             <legend>Tỉnh/Thành phố</legend>
-                                            <select id="tinhthanh" name="tinhthanh" style="border: none;outline:none;padding:0;font-size :1.2em;width:100%;" onchange="changeQuanHuyen()">
+                                            <select id="tinhthanh" name="tinhthanh" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%;" onchange="changeQuanHuyen()">
                                                 <option>Chọn Tỉnh/Thành phố</option>
                                                 <option value="tp_hochiminh">TP. Hồ Chí Minh</option>
                                                 <option value="ha_noi">Hà Nội</option>
@@ -86,18 +86,18 @@
                                         </fieldset>
                                         <fieldset class="fieldselect" style="margin:0 auto;">
                                             <legend>Quận/huyện</legend>
-                                            <select id="quanhuyen" name="quanhuyen" style="border: none;outline:none;padding:0;font-size :1.2em;width:100%" onchange="changePhuongXa()">
+                                            <select id="quanhuyen" name="quanhuyen" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%" onchange="changePhuongXa()">
                                             </select>
                                         </fieldset>
                                         <fieldset class="fieldselect" style="margin:0 0 0 auto;">
                                             <legend>Phường/xã</legend>
-                                            <select id="phuongxa" name="phuongxa" style="border: none;outline:none;padding:0;font-size :1.2em;width:100%">
+                                            <select id="phuongxa" name="phuongxa" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
                                             </select>
 
                                         </fieldset>
-                                        <fieldset style="flex:0 0 calc(100% - 1.5em - 6px);margin-top:10px">
+                                        <fieldset style="flex:0 0 100% ;margin-top:10px">
                                             <legend>Địa chỉ cụ thể</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.2em;width:100%">
+                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
                                         </fieldset>
                                     </div>
 
@@ -126,7 +126,6 @@
                 <h3>MÃ KHUYẾN MÃI</h3>
                 <hr>
                 <div class="form-group d-flex">
-                    <label class="promotion--label" for="promotion">Mã khuyến mãi</label>
                     <div id="promo-container">
                         <input type="promo" id="promotion" name="promotion" placeholder="Nhập mã khuyến mãi">
                         <button type="button">Áp dụng</button>
@@ -325,7 +324,6 @@
                     quanHuyenSelect.add(option);
                 }
             }
-            // changePhuongXa(); // Gọi hàm này để cập nhật dữ liệu cho select thứ 3
         }
 
         function changePhuongXa() {
