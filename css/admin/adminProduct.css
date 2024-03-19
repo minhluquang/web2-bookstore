@@ -118,7 +118,7 @@ td:last-child {
 
 .filter-product input[type="text"],
 .filter-product input[type="submit"] {
-  width: calc(100% - 20px);
+  width: calc(100% - 60px);
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
