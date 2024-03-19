@@ -10,6 +10,13 @@ body {
 .form-container {
   max-width: 1270px;
   margin: 0 auto;
+}
+
+hr {
+  margin-bottom: 10px;
+}
+
+.form-container {
   width: 90%;
   max-width: 1270px;
   margin: 0 auto;
@@ -42,10 +49,10 @@ body {
 }
 
 .form-group {
-  margin-top: 10px;
+margin-top: 10px;
   margin-bottom: 15px;
   position: relative;
-}
+  }
 
 #diachi b {
   margin-right: 20px;
@@ -68,15 +75,11 @@ body {
   display: none;
 }
 
-.form-group p {
-  display: inline-block;
-}
-
 .d-flex {
   display: flex;
-  justify-content: start;
+justify-content: start;
   align-items: center;
-}
+  }
 
 #promo-container {
   display: flex;
@@ -85,7 +88,7 @@ body {
   vertical-align: middle;
   font-size: 2.5em;
   position: relative;
-  height: 40px;
+height: 40px;
   width: 466px;
   outline: none;
 }
@@ -97,7 +100,7 @@ body {
   height: 100%;
   font-size: 14px;
   padding: 4px 120px 4px 10px;
-  border-radius: 8px;
+border-radius: 8px;
   border: 1px solid #858585;
 }
 
@@ -154,19 +157,20 @@ input[type="radio"] {
 
 .popup {
   /* position: relative; */
-  display: inline-block;
+  /* display: inline-block; */
   cursor: pointer;
-  margin-top: 10px;
 }
 
 /* The actual popup (appears on top) */
 .popupbutton {
   background-color: #2f80ed;
   color: white;
+  margin-top: 10px;
   border-radius: 4px;
   padding: 5px;
-  cursor: pointer;
+cursor: pointer;
 }
+
 .popup .popupmenu {
   visibility: hidden;
   display: flex;
@@ -191,6 +195,7 @@ input[type="radio"] {
 
   margin: 0 auto;
 }
+
 
 .popupwrapper {
   cursor: default;
@@ -251,7 +256,8 @@ fieldset {
 }
 
 .update-container .fieldselect {
-  flex: 0 0 calc(33% - 6px);
+
+  flex: 0 0 33%;
   padding-left: 0;
   padding-right: 0;
   margin: 0 auto 0 0;
@@ -296,6 +302,7 @@ fieldset {
 
 .address-select .update {
   color: #2f80ed;
+
 }
 
 .popupwrapper button {
@@ -305,12 +312,14 @@ fieldset {
   cursor: pointer;
   margin-left: 10px;
   margin-top: 0;
+
 }
 
 .popupwrapper .confirm {
   background-color: #ca3f3f;
   color: white;
   border: solid 1px #ca3f3f;
+
 }
 
 .popupwrapper .cancel {
@@ -341,8 +350,8 @@ fieldset {
 }
 
 .sanpham {
-  display: flex;
-  padding: 8px 4px;
+    display: flex;
+padding: 8px 4px;
 }
 
 .sanpham img,
@@ -375,7 +384,7 @@ fieldset {
   display: flex;
   position: relative;
   width: 40%;
-  flex: 1;
+flex: 1;
 }
 
 .sanpham__info-cost {
@@ -443,7 +452,7 @@ fieldset {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
-  padding: 4px 0;
+padding: 4px 0;
 }
 
 .dieukhoan span a {
@@ -473,10 +482,10 @@ fieldset {
   left: 50%;
   /* margin: 0 auto; */
   box-shadow: 0 -5px 5px -5px #333;
-  transform: translateX(-50vw);
+  transform: translateX(-50%);
   bottom: 0;
   z-index: -1;
-  width: 100vw;
+  width: 120vw;
   height: 100%;
   background-color: #fff;
 }
@@ -494,6 +503,7 @@ fieldset {
   float: inline-end;
 }
 
+/* responsive */
 #updatebig {
   visibility: inherit;
   height: auto;
@@ -504,20 +514,26 @@ fieldset {
   margin-left: 25px;
   height: 0;
 }
+
 #total-bottom {
   visibility: hidden;
+
 }
+
 #total-fixed {
   visibility: visible;
   height: auto;
 }
+
 #dieukhoan-bottom {
   visibility: hidden;
 }
+
 #dieukhoan-fixed {
   visibility: visible;
   width: auto;
 }
+
 @media screen and (max-width: 600px) {
   .popup .popupmenu {
     width: 90%;
@@ -526,44 +542,57 @@ fieldset {
   #updatebig {
     visibility: hidden;
     height: 0;
+
   }
 
   #updatesmall {
     visibility: inherit;
     height: auto;
+
   }
+
   #total-bottom {
     visibility: visible;
     font-size: smaller !important;
   }
+
   #total-fixed {
     visibility: hidden;
     height: 0;
+
   }
+
   .money {
     word-wrap: break-word;
     width: 25%;
     margin-left: 2%;
   }
+
   #dieukhoan-bottom {
     visibility: visible;
     margin-bottom: 70px;
     word-wrap: break-word;
+
+
   }
+
   #dieukhoan-fixed {
     visibility: hidden;
     display: none;
   }
+
   #line-fixed {
     visibility: hidden;
     width: 0 !important;
   }
+
   .update-container .fieldselect {
     flex: 0 0 calc(100% - 6px);
     padding-left: 0;
     padding-right: 0;
     margin: 0 auto !important;
   }
+
   button[type="submit"] {
     flex: 0 0 100%;
   }
