@@ -124,6 +124,11 @@ body {
   padding: 30px 26px;
 }
 
+.sidebar__logo img {
+  width: 100%;
+  object-fit: cover;
+}
+
 .sidebar__items {
   list-style-type: none;
   margin-top: 40px;
@@ -168,10 +173,10 @@ body {
 }
 
 .container {
+  height: 100%;
   position: absolute;
   top: var(--top-bar-height);
   left: var(--side-bar-height);
   width: calc(100vw - var(--side-bar-height) - 17px);
-  height: 100%;
   background-color: #e6e6e6;
 }

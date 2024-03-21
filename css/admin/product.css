@@ -2,7 +2,7 @@
   font-family: "Mulish";
   width: 100%;
   margin: 0 auto;
-  padding: 6px;
+  padding: 20px;
   margin-top: 50px;
 }
 a {
@@ -16,7 +16,7 @@ a {
 }
 thead th {
   height: 50px;
-  background-color: black;
+  background-color: #333;
   color: white;
 }
 thead th:first-child {
@@ -25,6 +25,7 @@ thead th:first-child {
 thead th:last-child {
   border-top-right-radius: 4px;
 }
+
 thead th:nth-child(1),
 thead th:nth-child(4),
 thead th:nth-child(7),
@@ -65,6 +66,10 @@ td:last-child {
   box-shadow: 1px 1px 1px 1px;
 }
 
+.table-content:last-child tr:last-child {
+  border-bottom: 1px solid #ccc;
+}
+
 /*  */
 .pagination {
   margin-top: 20px;
@@ -73,6 +78,7 @@ td:last-child {
   align-items: center;
   gap: 15px;
   padding: 6px;
+  margin-bottom: 24px;
 }
 
 .pagination a {
@@ -82,6 +88,8 @@ td:last-child {
   text-decoration: none;
   transition: background-color 0.3s;
   border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 4px;
 }
 
 .pagination a.active {
@@ -97,23 +105,27 @@ td:last-child {
 /* filter */
 .filter-product {
   width: 700px;
-  margin: 0 auto;
-  position: relative; 
-  padding: 20px; 
-  background-color: #f9f9f9;
-  border: 1px solid #ccc; 
-  border-radius: 10px; 
+  margin: 20px auto 0;
+  position: relative;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .filter-product p {
   text-align: center;
-  font-size:25px ;
+  font-size: 25px;
   font-weight: 600;
 }
 
 .filter-product label {
   display: block;
   margin-bottom: 5px;
+}
+
+.filter-product input[type="text"] {
+  background-color: #ececec;
 }
 
 .filter-product input[type="text"],
@@ -172,6 +184,41 @@ td:last-child {
   width: 120px !important;
 }
 
+/* Css button actions */
+.actions {
+  border: none !important;
+  border-top: 1px solid #ccc !important;
+}
 
+.actions button {
+  margin: 4px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #d1d1d1;
+  background-color: #ddd;
+  cursor: pointer;
+}
 
-/* end */
+.actions button:hover {
+  opacity: 0.8;
+}
+
+.actions--edit {
+  color: #000 !important;
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+}
+
+.actions--delete {
+  color: #fff !important;
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.actions--view {
+  color: #fff !important;
+  background-color: #198754 !important;
+  border-color: #198754 !important;
+}

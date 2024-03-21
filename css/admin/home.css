@@ -1,103 +1,238 @@
 input[type="date"] {
-    width: 300px;
-    height: 25px;
-    border-radius: 3px;
+  border: none;
+  outline: none;
+  width: 300px;
+  height: 40px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #333;
 }
 
-.date>h3 {
-    margin-bottom: 2px;
+.date > h3 {
+  margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .date {
-    margin: 10px 10px 0 10px;
+  margin: 10px 10px 0 10px;
 }
 
 #filter {
-    height: 35px;
-    width: 80px;
-    margin: auto 0 0 0;
-    border-radius: 3px;
-    cursor: pointer;
+  height: 40px;
+  margin: 4px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #d1d1d1;
+  color: #fff;
+  background-color: #333;
+  cursor: pointer;
+}
+
+.thongkechitiet__container {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 8px;
+}
+
+.thongkechitiet__container h1 {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 20px;
 }
 
 .thongke {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: aliceblue;
-    border: solid 1px black;
-    border-radius: 3px;
-    padding: 10px;
-    width: 220px;
-    gap: 5px;
-    margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: aliceblue;
+  border: solid 1px black;
+  border-radius: 4px;
+  padding: 10px;
+  gap: 10px;
+  width: calc(100% / 4 - 20px);
+  /* width: 220px; */
+  /* margin: 10px; */
 }
 
 .thongke .chitietbtn {
-    padding: 3px 5px 3px 5px;
+  padding: 3px 5px 3px 5px;
 }
 
 .thongke .money {
-    font-weight: bold;
-    color: #f39801;
+  font-weight: bold;
+  color: #f39801;
 }
 
 .content-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px;
-    /* width: calc(100%-40px); */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 40px 20px 20px;
+  align-items: end;
+  gap: 20px;
 }
 
 table {
-    width: 95%;
-    margin-left: 2.5%;
-    table-layout: fixed;
-    border-collapse: collapse;
+  width: 95%;
+  margin-left: 2.5%;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 
 th {
-    background-color: rgb(71, 71, 71);
-    color: white;
-    padding: 15px;
-    border: 1px solid black;
-    text-align: left;
-
+  background-color: rgb(71, 71, 71);
+  color: white;
+  padding: 15px;
+  border: 1px solid black;
+  text-align: left;
 }
 
 td {
-    border: 1px solid black;
-    padding: 15px;
-    text-align: left;
+  border: 1px solid black;
+  padding: 15px;
+  text-align: left;
 }
-table .image{
-    text-align: center;
+table .image {
+  text-align: center;
 }
 table .image img {
-    width: 60%;
-    height: auto;
+  width: 60%;
+  height: auto;
 }
 
 thead th:nth-child(2),
 thead th:nth-child(1) {
-    width: 15%;
+  width: 15%;
 }
-
 
 /* Trang Chu*/
 .content {
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background-color: bisque;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  margin: 20px;
+  border-radius: 8px;
 }
 
 /* Thẻ */
 .card {
+  padding: 20px;
+  border-radius: 5px;
+  width: 250px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  /* Chú ý */
+  background: none;
+  /* Chú ý */
+  text-align: center;
+  /* Canh giữa nội dung trong card */
+}
+
+.card:nth-child(1) {
+  background-color: #e8b3c3fe;
+}
+
+.card:nth-child(2) {
+  background-color: #f0cca0;
+}
+
+.card:nth-child(3) {
+  background-color: #a6e9bf;
+}
+
+.card:nth-child(4) {
+  background-color: #df9de6;
+}
+
+/* Số liệu */
+.number {
+  font-size: 30px;
+  color: #111;
+}
+
+/* Biểu tượng */
+.icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  /* Đặt vòng tròn ở vị trí tuyệt đối */
+  top: 10px;
+  /* Vị trí từ đỉnh */
+  left: 10px;
+  /* Vị trí từ trái */
+}
+
+.icon i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Thay đổi màu biểu tượng theo số liệu */
+.card:nth-child(1) .icon {
+  background-color: #c2325dfe;
+}
+
+.card:nth-child(2) .icon {
+  background-color: #df9132;
+}
+
+.card:nth-child(3) .icon {
+  /* Màu cho card thứ 3 */
+  background-color: #32e072;
+}
+
+.card:nth-child(4) .icon {
+  background-color: #cd33de;
+}
+
+/* Bao bọc các phần tử trong card */
+.card-content {
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+/* Khoảng cách giữa các thẻ trong card-content */
+.card-content p,
+.card-content h2,
+.card-content span {
+  margin-top: 10px;
+}
+
+/* In đậm các thẻ span */
+.card-content span {
+  font-weight: bold;
+}
+
+.card-content h2 {
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 871px) {
+  .card {
     padding: 20px;
     border-radius: 5px;
-    width: 250px;
+    width: 200px;
     height: 200px;
     margin-bottom: 20px;
     display: flex;
@@ -112,118 +247,5 @@ thead th:nth-child(1) {
     /* Chú ý */
     text-align: center;
     /* Canh giữa nội dung trong card */
-}
-
-.card:nth-child(1) {
-    background-color: #e8b3c3fe;
-}
-
-.card:nth-child(2) {
-    background-color: #f0cca0;
-}
-
-.card:nth-child(3) {
-    background-color: #a6e9bf;
-}
-
-.card:nth-child(4) {
-    background-color: #df9de6;
-}
-
-
-
-/* Số liệu */
-.number {
-    font-size: 30px;
-    color: #111;
-}
-
-/* Biểu tượng */
-.icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    position: absolute;
-    /* Đặt vòng tròn ở vị trí tuyệt đối */
-    top: 10px;
-    /* Vị trí từ đỉnh */
-    left: 10px;
-    /* Vị trí từ trái */
-
-}
-
-.icon i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-
-/* Thay đổi màu biểu tượng theo số liệu */
-.card:nth-child(1) .icon {
-    background-color: #c2325dfe;
-}
-
-.card:nth-child(2) .icon {
-    background-color: #df9132;
-}
-
-.card:nth-child(3) .icon {
-    /* Màu cho card thứ 3 */
-    background-color: #32e072;
-
-}
-
-.card:nth-child(4) .icon {
-    background-color: #cd33de;
-
-}
-
-
-/* Bao bọc các phần tử trong card */
-.card-content {
-    bottom: 10px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-}
-
-/* Khoảng cách giữa các thẻ trong card-content */
-.card-content p,
-.card-content h2,
-.card-content span {
-    margin-top: 20px;
-}
-
-/* In đậm các thẻ span */
-.card-content span {
-    font-weight: bold;
-}
-
-.card-content h2 {
-    font-weight: lighter;
-}
-
-@media only screen and (max-width: 871px) {
-    .card {
-        padding: 20px;
-        border-radius: 5px;
-        width: 200px;
-        height: 200px;
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: 20px;
-        position: relative;
-        overflow: hidden;
-        /* Chú ý */
-        background: none;
-        /* Chú ý */
-        text-align: center;
-        /* Canh giữa nội dung trong card */
-    }
-
+  }
 }

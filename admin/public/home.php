@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home page</title>
-    <link rel="stylesheet" href="../css/fonts/fonts.css" />
-    <link rel="stylesheet" href="../assets//fontawesome-free-6.5.1-web/css/all.css?v=<?php echo time(); ?>" />
+    <title>Trang chủ</title>
+    <link rel="stylesheet" href="../css/fonts/fonts.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="../assets/fontawesome-free-6.5.1-web/css/all.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="../css/admin/home.css?v=<?php echo time(); ?>" />
 </head>
 
@@ -64,61 +64,58 @@
             </div>
         </div>
     </div>
-    <div class="content-container">
-        <div class="date">
-            <h3>Từ ngày:</h3>
-            <input type="date" id="startdate" name="startdate">
+    <div class="thongkechitiet__container">
+        <h1>Thống kế theo thể loại</h1>
+        <div class="content-container">
+            <div class="date">
+                <h3>Từ ngày:</h3>
+                <input type="date" id="startdate" name="startdate">
 
-        </div>
-        <div class="date">
-            <h3>Đến ngày:</h3>
-            <input type="date" id="enddate" name="enddate">
+            </div>
+            <div class="date">
+                <h3>Đến ngày:</h3>
+                <input type="date" id="enddate" name="enddate">
 
+            </div>
+            <button type="button" id="filter">Lọc</button>
         </div>
-        <button type="button" id="filter">Lọc</button>
-    </div>
-    <div class="content-container" id="thongke-container">
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
-        </div>
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
-        </div>
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
-        </div>
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
-        </div>
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
-        </div>
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
-        </div>
-        <div class="thongke">
-            <h3 class="sanpham">Mountain</h3>
-            <div class="money"> 0 VND</div>
-            <div class="soluong">Số lượng bán được: 0</div>
-            <button type="button" class="chitietbtn">Chi tiết</button>
+        <div class="content-container" id="thongke-container">
+            <div class="thongke">
+                <h3 class="sanpham">Khoa học</h3>
+                <div class="money"> 0 VND</div>
+                <div class="soluong">Số lượng bán được: 0</div>
+                <button type="button" class="chitietbtn">Chi tiết</button>
+            </div>
+            <div class="thongke">
+                <h3 class="sanpham">Tôn giáo - tâm linh</h3>
+                <div class="money"> 0 VND</div>
+                <div class="soluong">Số lượng bán được: 0</div>
+                <button type="button" class="chitietbtn">Chi tiết</button>
+            </div>
+            <div class="thongke">
+                <h3 class="sanpham">Ngôn tình</h3>
+                <div class="money"> 0 VND</div>
+                <div class="soluong">Số lượng bán được: 0</div>
+                <button type="button" class="chitietbtn">Chi tiết</button>
+            </div>
+            <div class="thongke">
+                <h3 class="sanpham">Tâm lý</h3>
+                <div class="money"> 0 VND</div>
+                <div class="soluong">Số lượng bán được: 0</div>
+                <button type="button" class="chitietbtn">Chi tiết</button>
+            </div>
+            <div class="thongke">
+                <h3 class="sanpham">Tâm lý</h3>
+                <div class="money"> 0 VND</div>
+                <div class="soluong">Số lượng bán được: 0</div>
+                <button type="button" class="chitietbtn">Chi tiết</button>
+            </div>
+            <div class="thongke">
+                <h3 class="sanpham">Tâm lý</h3>
+                <div class="money"> 0 VND</div>
+                <div class="soluong">Số lượng bán được: 0</div>
+                <button type="button" class="chitietbtn">Chi tiết</button>
+            </div>
         </div>
     </div>
     <table class="thongke-chitiet">
