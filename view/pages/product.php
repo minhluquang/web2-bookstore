@@ -110,139 +110,53 @@
             </div>
           </div>
           <div class="collection-product-list">
-            <div class="product-item--wrapper">
-              <div class="product-item">
-                <div class="product-img">
-                  <div class="product-action">
-                    <div class="product-action--wrapper">
-                      <button
-                        class="product-action--btn product-action__detail"
-                      >
-                        Chi tiết
-                      </button>
-                      <form action="" method="post">
-                        <input
-                          type="submit"
-                          class="product-action--btn product-action__addToCart"
-                          value="Thêm vào giỏ"
-                        />
-                      </form>
-                    </div>
-                  </div>
-                  <a href="" class="img-resize">
-                    <img
-                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
-                    alt="" />
-                  </a>
-                </div>
-                <div class="product-detail">
-                  <a href="" class="product-title"
-                    >CUỘC SĂN CỪU HOANG
-                    <p class="product-price">136.000₫</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="product-item--wrapper">
-              <div class="product-item">
-                <div class="product-img">
-                  <div class="product-action">
-                    <div class="product-action--wrapper">
-                      <button
-                        class="product-action--btn product-action__detail"
-                      >
-                        Chi tiết
-                      </button>
-                      <form action="" method="post">
-                        <input
-                          type="submit"
-                          class="product-action--btn product-action__addToCart"
-                          value="Thêm vào giỏ"
-                        />
-                      </form>
-                    </div>
-                  </div>
-                  <a href="" class="img-resize">
-                    <img
-                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
-                    alt="" />
-                  </a>
-                </div>
-                <div class="product-detail">
-                  <a href="" class="product-title"
-                    >CUỘC SĂN CỪU HOANG
-                    <p class="product-price">136.000₫</p>
-                  </a>
-                </div>
-              </div>
-            </div>
+            <?php
+            $conn = connectDB();
+            $query = "SELECT * 
+                      FROM products
+                      ORDER BY id ASC
+                      LIMIT 8 OFFSET 0;";
+            $result = mysqli_query($conn, $query);
+            while ($row = mysqli_fetch_array($result)) {
+              $formatted_number = number_format($row['price'], 0, ',', '.'). 'đ';
 
-            <div class="product-item--wrapper">
-              <div class="product-item">
-                <div class="product-img">
-                  <div class="product-action">
-                    <div class="product-action--wrapper">
-                      <button
-                        class="product-action--btn product-action__detail"
-                      >
-                        Chi tiết
-                      </button>
-                      <form action="" method="post">
-                        <input
-                          type="submit"
-                          class="product-action--btn product-action__addToCart"
-                          value="Thêm vào giỏ"
-                        />
-                      </form>
+              echo '
+                  <div class="product-item--wrapper">
+                  <div class="product-item">
+                    <div class="product-img">
+                      <div class="product-action">
+                        <div class="product-action--wrapper">
+                          <button
+                            class="product-action--btn product-action__detail"
+                          >
+                            Chi tiết
+                          </button>
+                          <form action="" method="post">
+                            <input
+                              type="submit"
+                              class="product-action--btn product-action__addToCart"
+                              value="Thêm vào giỏ"
+                            />
+                          </form>
+                        </div>
+                      </div>
+                      <a href="" class="img-resize">
+                        <img
+                        src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
+                        alt="" />
+                      </a>
+                    </div>
+                    <div class="product-detail">
+                      <a href="" class="product-title"
+                        >'.$row['name'].'
+                        <p class="product-price">'.$formatted_number.'</p>
+                      </a>
                     </div>
                   </div>
-                  <a href="" class="img-resize">
-                    <img
-                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
-                    alt="" />
-                  </a>
                 </div>
-                <div class="product-detail">
-                  <a href="" class="product-title"
-                    >CUỘC SĂN CỪU HOANG
-                    <p class="product-price">136.000₫</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="product-item--wrapper">
-              <div class="product-item">
-                <div class="product-img">
-                  <div class="product-action">
-                    <div class="product-action--wrapper">
-                      <button
-                        class="product-action--btn product-action__detail"
-                      >
-                        Chi tiết
-                      </button>
-                      <form action="" method="post">
-                        <input
-                          type="submit"
-                          class="product-action--btn product-action__addToCart"
-                          value="Thêm vào giỏ"
-                        />
-                      </form>
-                    </div>
-                  </div>
-                  <a href="" class="img-resize">
-                    <img
-                    src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
-                    alt="" />
-                  </a>
-                </div>
-                <div class="product-detail">
-                  <a href="" class="product-title"
-                    >CUỘC SĂN CỪU HOANG
-                    <p class="product-price">136.000₫</p>
-                  </a>
-                </div>
-              </div>
-            </div>
+              ';
+            }
+            ?>
           </div>
 
           <!-- Start: Pagination -->
