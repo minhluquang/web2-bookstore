@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="css/product/product.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="css/product/product.reponsive.css?v=<?php echo time(); ?>" />
-    <script defer src="js/product.js"></script>
+    <script defer src="js/product.js?v=<?php echo time(); ?>"></script>
   </head>
   <body>
     <div class="container">
@@ -268,7 +268,7 @@
 
     <!-- Start: Detail product -->
     <div class="modal">
-      <div class="overlay"></div>
+      <div class="modal-overlay"></div>
       <div class="modal-container">
         <i class="fa-solid fa-xmark modal-close-icon"></i>
         <div class="modal-content">

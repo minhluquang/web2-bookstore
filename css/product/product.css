@@ -329,7 +329,7 @@ body {
   color: var(--primary-color);
 }
 
-.overlay {
+.modal-overlay {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -340,7 +340,7 @@ body {
   visibility: hidden;
 }
 
-.overlay.active {
+.active .modal-overlay {
   visibility: visible;
 }
 
