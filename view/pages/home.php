@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang chủ</title>
-    <link rel="stylesheet" href="/css/fonts/fonts.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="css/pageHome/pageHome.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="css/pageHome/pageHome.reponsive.css?v=<?php echo time(); ?>">
 </head>

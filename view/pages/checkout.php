@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout Form</title>
-    <link rel="stylesheet" href="/css/fonts/fonts.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="css/checkout/checkout.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="assets/fontawesome-free-6.5.1-web/css/all.min.css">
 </head>

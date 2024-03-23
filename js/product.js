@@ -3,7 +3,7 @@ const btnCloseModal = document.querySelector(".modal-close-icon");
 const btnDecreaseQnt = document.querySelector(".modal-qnt__descrease");
 const btnIncreaseQnt = document.querySelector(".modal-qnt__increase");
 
-const overlay = document.querySelector(".overlay");
+const overlay = document.querySelector(".modal-overlay");
 const modal = document.querySelector(".modal");
 
 btnDetail.forEach((item) => {
