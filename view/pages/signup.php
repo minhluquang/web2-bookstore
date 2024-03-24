@@ -8,8 +8,8 @@
    
 </head>
 <body>
-
-   <div class="container">
+<div class="background">
+<div class="container">
         <div class="button-container">
             <!-- Button to open the login form -->
             <button onclick="showForm('loginForm', this)" class="button active">Đăng nhập</button>
@@ -70,7 +70,10 @@
         </div>
         
         </div>
-    </div>
+
+</div>
+
+    
  
  
     <script>
