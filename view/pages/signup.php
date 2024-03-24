@@ -8,7 +8,7 @@
    
 </head>
 <body>
-<div class="background">
+<div class="backGround">
 <div class="container">
         <div class="button-container">
             <!-- Button to open the login form -->

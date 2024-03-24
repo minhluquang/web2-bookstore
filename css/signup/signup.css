@@ -1,4 +1,4 @@
-.background {
+.backGround {
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -7,9 +7,6 @@
     margin: -20px 0 50px;
     display: flex;
 }
-
-
-
 
 
 .container {
@@ -22,7 +19,7 @@
     width: 768px;
     max-width: 100%;
     min-height: 580px;
-
+}
 
 .button-container {
     display: flex;
