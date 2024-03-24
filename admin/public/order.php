@@ -121,7 +121,7 @@
     </div>
 
     <!-- Modal  -->
-    <div class="order-modal ">
+    <div class="order-modal hidden">
         <button class="close-modal">&times;</button>
         <div class="modal-content">
             <div class="modal-header">
@@ -192,7 +192,7 @@
             </table>
         </div>
     </div>
-    <div class="overlay "></div>
+    <div class="overlay hidden"></div>
 
     <script>
         const btnDetails = document.querySelectorAll(".actions--view");
