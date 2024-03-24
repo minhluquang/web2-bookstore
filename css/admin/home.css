@@ -1,3 +1,12 @@
+:root {
+  --primary-color: #c92127;
+  --body-color: #f5f5f5;
+  --border-color: #d0d0d0;
+  --product-border-color: #ededed;
+
+  --side-bar-height: 240px;
+  --top-bar-height: 60px;
+}
 input[type="date"] {
   border: none;
   outline: none;
@@ -248,4 +257,92 @@ thead th:nth-child(1) {
     text-align: center;
     /* Canh giữa nội dung trong card */
   }
+}
+
+.popup {
+  /* position: relative; */
+  /* display: inline-block; */
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popupbutton {
+  background-color: #2f80ed;
+  color: white;
+  margin-top: 10px;
+  border-radius: 4px;
+  padding: 5px;
+cursor: pointer;
+}
+
+.popup .popupmenu {
+  visibility: inherit;
+  display: flex;
+  border-radius: 10px;
+  position: fixed;
+  z-index: 8;
+  height: 650px;
+  max-height: 80%;
+  max-width: calc(100% - var(--side-bar-height));
+  width: 850px;
+  top: max(var(--top-bar-height) + 10px,10%);
+  left: 50%;
+  transform: translateX(calc(var(--side-bar-height) / 2 - 50% ));
+
+  padding-left: 2%;
+  padding-right: 2%;
+  border-radius: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: white;
+  flex-direction: column;
+
+  margin: 0 auto;
+}
+
+
+.popupwrapper {
+  cursor: default;
+  visibility: hidden;
+  position: relative;
+  display: flex;
+}
+
+.popupbg {
+  z-index: 1;
+  background-color: rgba(68, 68, 68, 0.8);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 0.1s;
+  animation: fadeIn 0.1s;
+}
+.popup #title{
+  margin: 20px 0 20px 5px;
+}
+#title>span{
+  font-weight: bold;
+  font-size: x-large;
+}
+.table-container {
+  height: 520px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+#close{
+  float: right;
+  border: none;
+  font-size: xx-large;
+  background:none
 }

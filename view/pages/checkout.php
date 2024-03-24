@@ -33,21 +33,21 @@
                                 <div class="address-container">
                                     <label class="address-select">
                                         <input type="radio" name="address" onclick="changeAddressTmp();" checked />
-                                        <span id="name">Nguyễn Minh Trí</span>
-                                        <span id="sdt">(+84) 394080644</span>
-                                        <span class="update" id="updatebig" onclick="fetchUpdateAddress(this);popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
-                                        <span id="diachi">Số 907a, Âu Cơ</span>
-                                        <span id="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="update" id="updatesmall" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="name">Nguyễn Minh Trí</span>
+                                        <span class="sdt">(+84) 394080644</span>
+                                        <span class="updatebig update" onclick="fetchUpdateAddress(this);popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="diachi">Số 907a, Âu Cơ</span>
+                                        <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
+                                        <span class="updatesmall update" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
                                     </label>
                                     <label class="address-select">
                                         <input type="radio" name="address" onclick="changeAddressTmp();" />
-                                        <span id="name">Nguyễn Minh Trí</span>
-                                        <span id="sdt">(+84) 123123123</span>
-                                        <span class="update" id="updatebig" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
-                                        <span id="diachi">123 Âu Cơ</span>
-                                        <span id="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="update" id="updatesmall" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="name">Nguyễn Minh Trí</span>
+                                        <span class="sdt">(+84) 123123123</span>
+                                        <span class="updatebig update" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="diachi">123 Âu Cơ</span>
+                                        <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
+                                        <span class="updatesmall update" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
                                     </label>
                                     <form action="" method="post">
                                         <input type="button" class="addNewAddress" value="Thêm địa chỉ mới">
@@ -286,7 +286,7 @@
 
         function changeAddressTmp() {
             var checked = document.querySelector("input[name=address]:checked").parentNode;
-            addressTmp = "<b>" + checked.querySelector("#name").innerHTML + ' ' + checked.querySelector("#sdt").innerHTML + "</b> " + checked.querySelector("#diachi").innerHTML + ' ' + checked.querySelector("#tinh").innerHTML;
+            addressTmp = "<b>" + checked.querySelector(".name").innerHTML + ' ' + checked.querySelector(".sdt").innerHTML + "</b> " + checked.querySelector(".diachi").innerHTML + ' ' + checked.querySelector(".tinh").innerHTML;
         }
 
         function changeAddress() {
@@ -297,6 +297,17 @@
 
         function fetchUpdateAddress(element) {
             updateAddress = element.parentNode;
+        }
+        var btns = document.getElementsByClassName("update");
+
+        var btnPopup = function() {
+            popupToggle('chitiet');
+            popupToggle('chitiet-table');
+            changeTitle(this);
+        };
+
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener('click', btnPopup);
         }
     </script>
     <script>
