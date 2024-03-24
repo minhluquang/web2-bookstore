@@ -12,9 +12,8 @@ thead th:nth-child(4) {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   overflow: hidden; /* Hide scrollbar */
-
 }
 
 .modal-content {
@@ -24,27 +23,37 @@ thead th:nth-child(4) {
   margin-top: 5%; /* Căn giữa theo chiều dọc */
   padding: 20px;
   border: 1px solid #888;
-  width: 40%;
+  /* width: 40%; */
+  width: 500px;
   display: flex;
   flex-direction: column;
-  height: 70%;
-}
-.modal-content h2{
-  margin-bottom: 20px;
-}
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+  /* height: 70%; */
+  border-radius: 5px;
 }
 
-.close:hover,
+.modal-content h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.close i {
+  color: #333;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close i:hover {
+  opacity: 0.5;
+}
+
+/* .close:hover,
 .close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
-}
+} */
 .input-field {
   margin-bottom: 15px;
 }
@@ -72,6 +81,11 @@ thead th:nth-child(4) {
   border-color: #007bff; /* Change border color on focus */
 }
 
+.input-field input[type="checkbox"] {
+  margin-right: 8px;
+  width: 16px;
+}
+
 .input-field input[type="submit"] {
   background-color: #007bff;
   color: #fff;
@@ -84,14 +98,46 @@ thead th:nth-child(4) {
 .input-field input[type="submit"]:hover {
   background-color: #0056b3;
 }
-.saveButton {
-  background-color: green;
-  color: #fff;
-  border: none;
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-actions button {
   border-radius: 4px;
   cursor: pointer;
   padding: 10px 20px;
-  position: absolute; /* Sử dụng position absolute */
-  bottom: 20px; /* Đặt nút ở phía dưới cùng */
-  right: 20px; /* Đặt nút ở phía bên phải */
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.saveButton {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.editAccountButton,
+.editFunctionButton {
+  color: #000;
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+/* Css specials */
+.body__filter--field {
+  width: 30%;
+}
+
+.d-flex-start {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.d-none {
+  display: none;
 }
