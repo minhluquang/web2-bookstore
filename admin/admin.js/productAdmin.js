@@ -72,22 +72,32 @@ const html = `
 edit.addEventListener('click', e => {
     modal.innerHTML = html;
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const fileInput = document.getElementById('fileInput');
-      const imagePreview = document.getElementById('imagePreview');
-  
-      fileInput.addEventListener('change', function (event) {
-          const file = event.target.files[0];
-          if (file) {
-              const reader = new FileReader();
-              reader.onload = function (e) {
-                  imagePreview.src = e.target.result;
-                  imagePreview.style.display = 'block';
-              };
-              reader.readAsDataURL(file);
-          }
-      });
-  });
+
+
+function displayImage(input) {
+    const file = input.files[0]; // Lấy ra tệp được chọn từ input file
+    const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh
+
+    // Kiểm tra xem đã chọn tệp hình ảnh hay chưa
+    if (file) {
+        const reader = new FileReader(); // Tạo một đối tượng FileReader
+
+        // Thiết lập sự kiện khi FileReader đã đọc xong file
+        reader.onload = function(event) {
+            // Thiết lập thuộc tính src của thẻ img để hiển thị ảnh đã chọn
+            imagePreview.src = event.target.result;
+            imagePreview.style.display = 'block'; // Hiển thị thẻ img
+        };
+
+        // Đọc nội dung của tệp hình ảnh dưới dạng URL
+        reader.readAsDataURL(file);
+    }
+}
+const fileInput = document.getElementById('fileInput');
+fileInput.addEventListener('change', function() {
+    displayImage(this); // Gọi hàm displayImage và truyền vào input element
+});
+
   
   // Hidden choose img
   const editRadio = document.querySelectorAll('input[name="image"]');
