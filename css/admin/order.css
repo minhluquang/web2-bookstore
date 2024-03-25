@@ -105,3 +105,8 @@
   font-weight: 700 !important;
   color: blue;
 }
+
+/*  */
+.body__filter--field {
+  width: 30%;
+}

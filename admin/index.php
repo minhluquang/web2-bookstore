@@ -55,6 +55,24 @@
                                 ?>">
         <a href="?page=account"><i class="fa-solid fa-user"></i>Thành viên</a>
       </li>
+      <li class="sidebar__item <?php
+                                if (isset($_GET['page']))
+                                  if ($_GET['page'] == 'publisher') echo 'active';
+                                ?>">
+        <a href="?page=publisher"><i class="fa-solid fa-upload"></i></i>Nhà xuất bản</a>
+      </li>
+      <li class="sidebar__item <?php
+                                if (isset($_GET['page']))
+                                  if ($_GET['page'] == 'author') echo 'active';
+                                ?>">
+        <a href="?page=author"><i class="fa-solid fa-book-open-reader"></i>Tác giả</a>
+      </li>
+      <li class="sidebar__item <?php
+                                if (isset($_GET['page']))
+                                  if ($_GET['page'] == 'category') echo 'active';
+                                ?>">
+        <a href="?page=category"><i class="fa-solid fa-list"></i>Thể loại sách</a>
+      </li>
     </ul>
   </div>
   <div class="container">
@@ -75,6 +93,15 @@
           break;
         case 'account':
           require_once('public/account.php');
+          break;
+        case 'publisher':
+          require_once('public/publisher.php');
+          break;
+        case 'author': 
+          require_once('public/author.php');
+          break;
+        case 'category': 
+          require_once('public/category.php');
           break;
         default:
           // Xử lý trường hợp không khớp với bất kỳ trang nào
