@@ -133,3 +133,31 @@
     position: absolute;
     bottom: 0px;
 }
+
+    /* .see-more {
+        width: 200px;
+        height: 100px;
+        border: 1px solid black;
+    } */
+    .see-more {
+        margin-top: 20px;
+        width: 170px;
+        height: 45px;
+        border: 1px solid #C92127;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+    
+    .see-more a {
+        text-decoration: none; 
+        color: #C92127;
+        font-weight: 650;
+        font-size: 17px;
+    }
+    
+     

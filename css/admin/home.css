@@ -259,6 +259,9 @@ thead th:nth-child(1) {
   }
 }
 
+<<<<<<< HEAD
+
+=======
 .popup {
   /* position: relative; */
   /* display: inline-block; */
@@ -346,3 +349,4 @@ cursor: pointer;
   font-size: xx-large;
   background:none
 }
+>>>>>>> ab523d1fd9a2d1ff9b0dd8ef14691e1a963ad611

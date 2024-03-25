@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +12,7 @@
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/account.css?v=<?php echo time(); ?> " />
+    <script defer src="/admin.js/productAdmin.js"></script>
 </head>
 
 <body>
@@ -93,7 +96,7 @@
                     <td class="date-creat">14/11/2023</td>
                     <td class="price">100000</td>
                     <td class="actions ">
-                        <button class="actions--edit">Sửa</button>
+                        <button class="actions--edit" id="edit">Sửa</button>
                         <button class="actions--delete">Xoá</button>
                     </td>
                 </tr>
@@ -109,7 +112,7 @@
                     <td class="date-creat">14/11/2023</td>
                     <td class="price">100000</td>
                     <td class="actions ">
-                        <button class="actions--edit">Sửa</button>
+                        <button class="actions--edit" id="edit">Sửa</button>
                         <button class="actions--delete">Xoá</button>
                     </td>
                 </tr>
@@ -125,7 +128,7 @@
                     <td class="date-creat">14/11/2023</td>
                     <td class="price">100000</td>
                     <td class="actions ">
-                        <button class="actions--edit">Sửa</button>
+                        <button class="actions--edit" id="edit">Sửa</button>
                         <button class="actions--delete">Xoá</button>
                     </td>
                 </tr>
@@ -141,7 +144,7 @@
                     <td class="date-creat">14/11/2023</td>
                     <td class="price">100000</td>
                     <td class="actions ">
-                        <button class="actions--edit">Sửa</button>
+                        <button class="actions--edit" id="edit">Sửa</button>
                         <button class="actions--delete">Xoá</button>
                     </td>
                 </tr>
@@ -157,7 +160,7 @@
                     <td class="date-creat">14/11/2023</td>
                     <td class="price">100000</td>
                     <td class="actions ">
-                        <button class="actions--edit">Sửa</button>
+                        <button class="actions--edit" id="edit" >Sửa</button>
                         <button class="actions--delete">Xoá</button>
                     </td>
                 </tr>
@@ -176,6 +179,9 @@
         <a href="#">&raquo;</a>
     </div>
 
+    <div id="modal"></div>
+    
+    <script defer src="./admin.js/productAdmin.js"></script>
 </body>
 
 </html>

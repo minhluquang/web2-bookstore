@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/fontawesome-free-6.5.1-web/css/all.min.css" />
+    <title>Document</title>
+
+    <style>
+        .modal-edit-product-container {
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-edit-product {
+            margin-top: 100px;
+            background: #fff;
+            width: 500px;
+            /* height: auto; */
+            max-height: 600px;
+            border: 1px solid rgb(126, 123, 123);
+            position: relative;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 10px;
+
+        }
+
+        .modal-edit-product .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dedede;
+        }
+
+        .modal-edit-product .modal-header h3 {
+            font-size: 25px;
+            margin: 0;
+        }
+
+
+
+        .modal-body-2 {
+            display: grid;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            /* Hai cột có kích thước bằng nhau */
+            grid-gap: 10px;
+
+        }
+
+
+
+        .edit-name,
+        .edit-category,
+        .edit-price,
+        .edit-id,
+        .edit-date-create,
+        .edit-date-update {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* .edit-name,
+        .edit-category,
+        .edit-price,
+        .edit-id,
+        .edit-date-create,
+        .edit-date-update {
+            font-size: 16px;
+            font-weight: 550;
+            padding-bottom: 10px;
+        } */
+
+        .modal-body-2 label {
+            padding: 5px;
+            font-weight: 550;
+            font-size: 16px;
+        }
+
+        .modal-body-2 input {
+            width: 200px;
+            height: 20px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-body-2 select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 200px;
+            height: 31px;
+            border-radius: 5px;
+        }
+
+        .edit-category select {
+            cursor: pointer;
+        }
+
+        .modal-body .edit-image h4 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 5px;
+        }
+
+        .modal-body .edit-image {
+            gap: 10px;
+        }
+
+        .modal-body .edit-image input {
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .modal-body .edit-image label {
+            margin-left: 8px;
+            font-weight: 550;
+        }
+
+        .modal-body .edit-image,
+        .modal-body .edit-date-create,
+        .modal-body .edit-date-update input {
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 10px 20px;
+        }
+
+        .choose-img {
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+            max-height: 120px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        .btn-close {
+            background-color: #fff;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-confirm {
+            cursor: pointer;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            margin-left: 381px;
+            background-color: #44D944;
+            border: none !important;
+            width: 70px !important;
+            height: 35px !important;
+            border-radius: 5px !important;
+            color: #383434 !important;
+        }
+
+        #imagePreview {
+            box-sizing: border-box;
+            max-width: 100px;
+            height: auto;
+            max-height: 100px;
+        }
+
+        .img {
+            width: 110px;
+            height: 110px;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal-edit-product-container show" id="modal-edit-container">
+        <div class="modal-edit-product">
+            <div class="modal-header">
+                <h3>Thay Đổi thông tin sản phẩm</h3>
+                <button class="btn-close" id="btnClose" ><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="edit-image">
+                        <h4>Hình ảnh</h4>
+                        <input type="radio" id="delete" value="delete" name="image">
+                        <label for="delete">Xóa Hình</label>
+                        <input type="radio" id="edit" value="edit" name="image">
+                        <label for="edit">Sửa Hình</label>
+                        <input type="radio" id="retain" value="retain" name="image">
+                        <label for="retain">Giữ Hình</label>
+                        <div class="choose-img hidden">
+                            <label for="choose-img">Chọn hình ảnh:</label>
+                            <div class="img">
+                                <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display: none;">
+                            </div>
+
+                            <input type="file" name="choose-img" id="fileInput">
+                        </div>
+
+                    </div>
+                    <div class="modal-body-2">
+                        <div class="edit-name">
+                            <label for="">Tên sản phẩm</label>
+                            <input type="text" value="Tên sản phẩm">
+                        </div>
+                        <div class="edit-category">
+                            <label for="">Thể loại</label>
+                            <select name="" id="">
+                                <option value="science">Khoa học</option>
+                                <option value="psychology">Tâm Lý</option>
+                                <option value="novel">Tiểu thuyết</option>
+                            </select>
+                        </div>
+                        <div class="edit-price">
+                            <label for="">Giá sản phẩm</label>
+                            <input type="text" value="Giá sản phẩm">
+                        </div>
+                        <div class="edit-id">
+                            <label for="">Mã sản phẩm</label>
+                            <input type="text" value="Mã sản phẩm">
+                        </div>
+                        <div class="edit-date-create">
+                            <label for="">Ngày Tạo</label>
+                            <input type="date" value="dateCreate">
+                        </div>
+                        <div class="edit-date-update">
+                            <label for="">Ngày cập nhật</label>
+                            <input type="date" value="dateUpdate">
+                        </div>
+
+                    </div>
+                    <div>
+                    </div>
+
+                    <input type="submit" value="Xác nhận" class="btn-confirm" >
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fileInput = document.getElementById('fileInput');
+            const imagePreview = document.getElementById('imagePreview');
+
+            fileInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // Hidden choose img
+        const editRadio = document.querySelectorAll('input[name="image"]');
+       const chooseImgContainer = document.querySelector('.choose-img');
+
+editRadio.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+        if (this.value === 'edit') {
+            chooseImgContainer.classList.remove('hidden'); // Hiển thị phần chọn ảnh khi chọn "Sửa Hình"
+        } else {
+            chooseImgContainer.classList.add('hidden'); // Ẩn phần chọn ảnh khi chọn các tùy chọn khác
+        }
+    });
+});
+
+  // Button close
+  const modal_edit_container = document.querySelector("#modal-edit-container");
+  
+  const btnClose = document.querySelector("#btnClose");
+  console.log(btnClose)
+  btnClose.addEventListener('click', () => {
+    console.log(modal_edit_container)
+    modal_edit_container.classList.remove('show')
+  });
+
+    </script>
+</body>
+
+</html>

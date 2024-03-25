@@ -5,7 +5,7 @@ include_once('model/connect.php');
 
 // Header
 require_once("view/header.php");
-
+// connectDB();
 // Content
 if (isset($_GET['page']) && $_GET['page'] != '') {
   $page = $_GET['page'];
