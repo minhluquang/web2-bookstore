@@ -222,3 +222,192 @@ td:last-child {
   background-color: #198754 !important;
   border-color: #198754 !important;
 }
+
+
+/* POPUP */
+
+.modal-edit-product-container {
+            background: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-edit-product {
+            margin-top: 100px;
+            background: #fff;
+            width: 500px;
+            /* height: auto; */
+            max-height: 600px;
+            border: 1px solid rgb(126, 123, 123);
+            position: relative;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 10px;
+
+        }
+
+        .modal-edit-product .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dedede;
+        }
+
+        .modal-edit-product .modal-header h3 {
+            font-size: 25px;
+            margin: 0;
+        }
+
+
+
+        .modal-body-2 {
+            display: grid;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            /* Hai cột có kích thước bằng nhau */
+            grid-gap: 10px;
+
+        }
+
+
+
+        .edit-name,
+        .edit-category,
+        .edit-price,
+        .edit-id,
+        .edit-date-create,
+        .edit-date-update {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* .edit-name,
+        .edit-category,
+        .edit-price,
+        .edit-id,
+        .edit-date-create,
+        .edit-date-update {
+            font-size: 16px;
+            font-weight: 550;
+            padding-bottom: 10px;
+        } */
+
+        .modal-body-2 label {
+            padding: 5px;
+            font-weight: 550;
+            font-size: 16px;
+        }
+
+        .modal-body-2 input {
+            width: 200px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-body-2 select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 200px;
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        .edit-category select {
+            cursor: pointer;
+        }
+
+        .modal-body .edit-image h4 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            margin-left: 5px;
+        }
+
+        .modal-body .edit-image {
+            padding: 15px 0px;
+        }
+
+        .modal-body .edit-image input {
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .modal-body .edit-image label {
+            margin-left: 8px;
+            font-weight: 550;
+        }
+
+        .modal-body .edit-image,
+        .modal-body .edit-date-create,
+        .modal-body .edit-date-update input {
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 10px 20px;
+        }
+
+        .choose-img {
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+            max-height: 120px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        .btn-close {
+            background-color: #fff;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-confirm {
+            cursor: pointer;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            margin-left: 381px;
+            background-color: #44D944;
+            border: none !important;
+            width: 70px !important;
+            height: 35px !important;
+            border-radius: 5px !important;
+            color: #383434 !important;
+        }
+
+        #imagePreview {
+            box-sizing: border-box;
+            max-width: 100px;
+            height: auto;
+            max-height: 100px;
+        }
+
+        .img {
+            width: 110px;
+            height: 110px;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+

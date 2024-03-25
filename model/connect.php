@@ -1,20 +1,20 @@
-<?php
-  function connectDB() {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
+  <?php
+    function connectDB() {
+      $servername = "localhost";
+      $username = "root";
+      $password = "12345";
 
-    try {
-      $conn = new PDO("mysql:host=$servername;dbname=backend_web2", $username, $password);
-      // set the PDO error mode to exception
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      // echo "Connected successfully";
-    } catch (PDOException $e) {
-      echo "Connection failed: " . $e->getMessage();
+      try {
+        $conn = new PDO("mysql:host=$servername;dbname=backend_web2", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // echo "Connected successfully";
+      } catch (PDOException $e) {
+        echo "Connection failed: " . $e->getMessage();
+      }
+
+      return $conn;
     }
-
-    return $conn;
-  }
 
   function getAll($sql) {
     $conn = connectDB();

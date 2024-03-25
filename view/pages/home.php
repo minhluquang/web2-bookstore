@@ -71,7 +71,12 @@
                     <span class="old-price">66.880 đ</span>
                 </div>
             </div>
+            <div  class="see-more" >
+            <a href="#">Xem thêm </a>
+            </div>
+
         </div>
+        
         <!-- END -->
 
         <!-- THỂ LOẠI 2 -->
@@ -110,6 +115,9 @@
                     <span class="price">122.640 đ</span>
                     <span class="old-price">66.880 đ</span>
                 </div>
+            </div>
+            <div  class="see-more" >
+            <a href="#">Xem thêm </a>
             </div>
         </div>
         <!-- END -->
@@ -152,6 +160,9 @@
                     <span class="old-price">66.880 đ</span>
                 </div>
             </div>
+            <div  class="see-more" >
+            <a href="#">Xem thêm </a>
+            </div>
         </div>
         <!-- END -->
 
@@ -191,6 +202,9 @@
                     <span class="price">66.880 đ</span>
                     <span class="old-price">66.880 đ</span>
                 </div>
+            </div>
+            <div  class="see-more" >
+            <a href="#">Xem thêm </a>
             </div>
         </div>
         <!-- END -->
