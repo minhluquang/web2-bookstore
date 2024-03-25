@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> ">
     <link rel="stylesheet" href="../css/admin/order.css?v=<?php echo time(); ?> ">
+    <script defer src="../js/admin/order.js?v=<?php echo time(); ?>"></script>
 </head>
 
 <body>
@@ -91,6 +92,20 @@
                         <button class="actions--delete">Xoá</button>
                     </td>
                 </tr>
+                <tr>
+                    <td class="order_id">MASP</td>
+                    <td class="customer_id">MAKH</td>
+                    <td class="staff_id">MANV</td>
+                    <td class="date-update">14/11/2023</td>
+                    <td class="total_price">10.000.000 VNĐ</td>
+                    <td class="address">Đại học Sài Gòn, TpHCM</td>
+                    <td class="status">Chờ duyệt</td>
+                    <td class="discount_code">GIAMGIA10K</td>
+                    <td class="actions">
+                        <button class="actions--view">Chi tiết hoá đơn</button>
+                        <button class="actions--delete">Xoá</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -104,6 +119,80 @@
         <a href="#">6</a>
         <a href="#">&raquo;</a>
     </div>
+
+    <!-- Modal  -->
+    <div class="order-modal hidden">
+        <button class="close-modal">&times;</button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Chi tiết hóa đơn</h2>
+            </div>
+            <table class="orderdetail-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Stt</th>
+                        <th scope="col">Tên Sản Phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Số Lượng</th>
+                        <th scope="col">Thành Tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Tên Sách</td>
+                        <td>Giá Tiền</td>
+                        <td>5</td>
+                        <td>50000đ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Tên Sách</td>
+                        <td>Giá Tiền</td>
+                        <td>5</td>
+                        <td>50000đ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Tên Sách</td>
+                        <td>Giá Tiền</td>
+                        <td>5</td>
+                        <td>50000đ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Tên Sách</td>
+                        <td>Giá Tiền</td>
+                        <td>5</td>
+                        <td>50000đ</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td></td>
+                        <td></td>
+                        <td>Tiền Hóa Đơn</td>
+                        <td>50000đ</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td></td>
+                        <td></td>
+                        <td>Mã Giảm Giá</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td></td>
+                        <td></td>
+                        <td class="total-price">Thành Tiền</td>
+                        <td class="total-price">40000đ</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
 
 </body>
 

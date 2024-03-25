@@ -118,53 +118,92 @@
             </div>
         </div>
     </div>
-    <table class="thongke-chitiet">
-        <thead>
-            <tr>
-                <th>Mã SP</th>
-                <th>Ảnh</th>
-                <th>Tên SP</th>
-                <th>Giá gốc</th>
-                <th>Số lượng</th>
-            </tr>
-        </thead>
-        <tr>
-            <td>masp</td>
-            <td class="image">
-                <img src="../assets/image/products/image_1.jpg" alt="" />
-            </td>
-            <td>Ten sp</td>
-            <td>400000</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <td>masp</td>
-            <td class="image">
-                <img src="../assets/image/products/image_1.jpg" alt="" />
-            </td>
-            <td>Ten sp</td>
-            <td>400000</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <td>masp</td>
-            <td class="image">
-                <img src="../assets/image/products/image_1.jpg" alt="" />
-            </td>
-            <td>Ten sp</td>
-            <td>400000</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <td>masp</td>
-            <td class="image">
-                <img src="../assets/image/products/image_1.jpg" alt="" />
-            </td>
-            <td>Ten sp</td>
-            <td>400000</td>
-            <td>5</td>
-        </tr>
-    </table>
+    <div class="popup">
+        <div class="popupwrapper" id="chitiet">
+            <div class="popupbg">
+                <div class="popupmenu" id="chitiet-table">
+                    <div id="title">
+                        <span>Thể loại</span>
+                        <button type="button" id="close" onclick="popupToggle('chitiet');"><i class="fa-solid fa-x"></i></button>
+                        <!-- <hr> -->
+                    </div>
+                    <div class="table-container">
+
+                        <table class="thongke-chitiet">
+                            <thead>
+                                <tr>
+                                    <th>Mã SP</th>
+                                    <th>Ảnh</th>
+                                    <th>Tên SP</th>
+                                    <th>Giá gốc</th>
+                                    <th>Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>masp</td>
+                                <td class="image">
+                                    <img src="../assets/image/products/image_1.jpg" alt="" />
+                                </td>
+                                <td>Ten sp</td>
+                                <td>400000</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>masp</td>
+                                <td class="image">
+                                    <img src="../assets/image/products/image_1.jpg" alt="" />
+                                </td>
+                                <td>Ten sp</td>
+                                <td>400000</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>masp</td>
+                                <td class="image">
+                                    <img src="../assets/image/products/image_1.jpg" alt="" />
+                                </td>
+                                <td>Ten sp</td>
+                                <td>400000</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>masp</td>
+                                <td class="image">
+                                    <img src="../assets/image/products/image_1.jpg" alt="" />
+                                </td>
+                                <td>Ten sp</td>
+                                <td>400000</td>
+                                <td>5</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var btns = document.getElementsByClassName("chitietbtn");
+
+        var btnPopup = function() {
+            popupToggle('chitiet');
+            changeTitle(this);
+        };
+
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener('click', btnPopup);
+        }
+
+        function popupToggle(idname) {
+            var popup = document.getElementById(idname);
+            popup.classList.toggle("show");
+        }
+
+        function changeTitle(newTitle) {
+            document.getElementById("title").querySelector("span").innerHTML = newTitle.parentNode.querySelector(".sanpham").innerHTML;
+        }
+    </script>
 </body>
 
 </html>

@@ -3,3 +3,141 @@ thead th:nth-child(2),
 thead th:nth-child(4) {
   width: 15%;
 }
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  overflow: hidden; /* Hide scrollbar */
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto; /* Thay đổi margin thành auto để căn giữa theo chiều ngang */
+  margin-top: 5%; /* Căn giữa theo chiều dọc */
+  padding: 20px;
+  border: 1px solid #888;
+  /* width: 40%; */
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  /* height: 70%; */
+  border-radius: 5px;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.close i {
+  color: #333;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close i:hover {
+  opacity: 0.5;
+}
+
+/* .close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+} */
+.input-field {
+  margin-bottom: 15px;
+}
+
+.input-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-field input[type="text"],
+.input-field input[type="email"],
+.input-field select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+.input-field input[type="text"]:focus,
+.input-field input[type="email"]:focus,
+.input-field select:focus {
+  outline: none;
+  border-color: #007bff; /* Change border color on focus */
+}
+
+.input-field input[type="checkbox"] {
+  margin-right: 8px;
+  width: 16px;
+}
+
+.input-field input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.input-field input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-actions button {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.saveButton {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.editAccountButton,
+.editFunctionButton {
+  color: #000;
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+/* Css specials */
+.body__filter--field {
+  width: 30%;
+}
+
+.d-flex-start {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.d-none {
+  display: none;
+}

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
   <link rel="stylesheet" href="css/cart/cart.css?v=<?php echo time(); ?>" />
   <link rel="stylesheet" href="css/cart/cart_responsive.css?v=<?php echo time(); ?>" />
-  <script defer src="js/cart.js"></script>
+  <script defer src="js/cart.js?v=<?php echo time(); ?>"></script>
 </head>
 
 <body>
@@ -43,7 +43,7 @@
         <div>
           <div class="header-cart-item">
             <div class="checkbox-all-product">
-              <input class="checkbox-add-cart" type="checkbox" id="checkbox-all-product" />
+              <input class="checkbox-add-cart" type="checkbox" id="checkbox-all-product" disabled />
             </div>
             <div>
               <span>Chọn tất cả (
@@ -58,7 +58,7 @@
           <div class="cart-item-wrapper">
             <div class="cart-item">
               <div class="checked-product-cart">
-                <input type="checkbox" class="checkbox-add-cart" />
+                <input type="checkbox" class="checkbox-add-cart" disabled />
               </div>
               <div class="img-product-cart">
                 <a href="#!" class="product-image">
@@ -90,7 +90,7 @@
                       <a href="#!" class="btn-substract-qty">
                         <img src="assets/image/cart/ico_minus2x.png" alt="" />
                       </a>
-                      <input type="text" class="qty-cart" value="1" />
+                      <input type="text" class="qty-cart" value="1" readonly />
                       <a href="#!" class="btn-add-qty">
                         <img src="assets/image/cart/ico_plus2x.png" alt="" />
                       </a>
@@ -143,7 +143,7 @@
                       <a href="#!" class="btn-substract-qty">
                         <img src="assets/image/cart/ico_minus2x.png" alt="" />
                       </a>
-                      <input type="text" class="qty-cart" value="1" />
+                      <input type="text" class="qty-cart" value="1" readonly />
                       <a href="#!" class="btn-add-qty">
                         <img src="assets/image/cart/ico_plus2x.png" alt="" />
                       </a>
@@ -196,7 +196,7 @@
                       <a href="#!" class="btn-substract-qty">
                         <img src="assets/image/cart/ico_minus2x.png" alt="" />
                       </a>
-                      <input type="text" class="qty-cart" value="1" />
+                      <input type="text" class="qty-cart" value="1" readonly />
                       <a href="#!" class="btn-add-qty">
                         <img src="assets/image/cart/ico_plus2x.png" alt="" />
                       </a>

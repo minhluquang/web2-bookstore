@@ -333,6 +333,8 @@ input.qty-cart {
   text-align: center;
   padding-left: 0px;
   padding-right: 0px;
+  outline: none;
+  user-select: none;
 }
 .btn-substract-qty,
 .btn-add-qty {

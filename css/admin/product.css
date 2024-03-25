@@ -14,29 +14,29 @@ a {
   table-layout: fixed;
   border-collapse: collapse;
 }
-thead th {
+#content-product thead th {
   height: 50px;
   background-color: #333;
   color: white;
 }
-thead th:first-child {
+#content-product thead th:first-child {
   border-top-left-radius: 4px;
 }
-thead th:last-child {
+#content-product thead th:last-child {
   border-top-right-radius: 4px;
 }
 
-thead th:nth-child(1),
-thead th:nth-child(4),
-thead th:nth-child(7),
-thead th:nth-child(8),
-thead th:nth-child(9) {
+#content-product thead th:nth-child(1),
+#content-product thead th:nth-child(4),
+#content-product thead th:nth-child(7),
+#content-product thead th:nth-child(8),
+#content-product thead th:nth-child(9) {
   width: 9%;
 }
 
-thead th:nth-child(2),
-thead th:nth-child(5),
-thead th:nth-child(6) {
+#content-product thead th:nth-child(2),
+#content-product thead th:nth-child(5),
+#content-product thead th:nth-child(6) {
   width: 11%;
 }
 
@@ -61,7 +61,7 @@ td:last-child {
 }
 
 .table-content .image img {
-  width: 65%;
+  width: 85%;
   height: auto;
   box-shadow: 1px 1px 1px 1px;
 }

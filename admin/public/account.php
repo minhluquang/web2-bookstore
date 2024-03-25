@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/account.css?v=<?php echo time(); ?> " />
+    <script defer src="../js/admin/account.js?v=<?php echo time(); ?> "></script>
 </head>
 
 <body>
@@ -31,6 +32,7 @@
                 <select>
                     <option value="user" selected>Người dùng</option>
                     <option value="admin">Quản trị viên</option>
+                    <option value="staff">Nhân viên</option>
                 </select>
             </div>
         </div>
@@ -55,8 +57,7 @@
         </div>
     </form>
 
-
-    <!-- end -->
+    <!-- Table -->
     <div class="table__wrapper">
         <table id="content-product">
             <thead class="menu">
@@ -66,6 +67,7 @@
                     <th>Email</th>
                     <th>Loại tài khoản</th>
                     <th>Ngày đăng ký</th>
+                    <th>Trạng thái tài khoản</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -74,8 +76,9 @@
                     <td class="id">KH101</td>
                     <td class="name">Lữ Quang Minh</td>
                     <td class="email">minhlq2911@gmail.com</td>
-                    <td class="type">Người dùng</td>
+                    <td class="type" value="staff">Người dùng</td>
                     <td class="date-create">14/11/2023</td>
+                    <td class="status" value="active">Hoạt động</td>
                     <td class="actions">
                         <button class="actions--edit">Sửa</button>
                         <button class="actions--delete">Xoá</button>
@@ -84,6 +87,8 @@
             </tbody>
         </table>
     </div>
+    <!-- End Table -->
+
     <div class="pagination">
         <a href="#">&laquo;</a>
         <a href="#">1</a>
@@ -95,6 +100,24 @@
         <a href="#">&raquo;</a>
     </div>
 
+    <!-- Start: Modal Edit -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <div class="form">
+                <!-- Code will be render here -->
+                <!-- ... -->
+            </div>
+            <div class="form-actions">
+                <button class="editFunctionButton">Chỉnh sửa quyền nhân viên</button>
+                <button class="editAccountButton d-none">Chỉnh thông tin tài khoản</button>
+                <button type="submit" class="saveButton">Lưu</button>
+            </div>
+        </div>
+    </div>
+    <!-- End: Modal Edit -->
 </body>
 
 </html>
