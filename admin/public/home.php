@@ -80,7 +80,7 @@
             <button type="button" id="filter">Lọc</button>
         </div>
         <div class="content-container" id="thongke-container">
-            <?php
+            <!-- <?php
             $servername = "localhost";
             $username = "root";
             $password = "";
@@ -106,7 +106,7 @@
 
             }
             $conn->close();
-            ?>
+            ?> -->
             
         </div>
     </div>
