@@ -36,10 +36,14 @@ body {
   position: absolute;
   top: 20px;
   left: 20px;
+}
+
+.prev_page a {
   font-size: 18px;
   color: var(--primary-color);
   cursor: pointer;
   font-weight: bold;
+  text-decoration: none;
 }
 
 .prev_page i {

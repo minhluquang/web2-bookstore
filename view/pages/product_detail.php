@@ -9,12 +9,16 @@
     <title>Chi tiết sản phẩm</title>
     <link rel="stylesheet" href="css/product_detail/product_detail.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="css/product_detail/product_detail.reponsive.css?v=<?php echo time(); ?>" />
-    <script defer src="js/product.js?v=<?php echo time(); ?>"></script>
+    <script defer src="js/product_detail.js?v=<?php echo time(); ?>"></script>
   </head>
   <body>
     <!-- Start: Detail product -->
     <div class="modal">
-      <div class="prev_page"><i class="fa-solid fa-left-long"></i>Trở về</div>
+      <div class="prev_page">
+        <a href="?page=product">
+          <i class="fa-solid fa-left-long"></i>Trở về
+        </a>
+      </div>
       <div class="modal-container">
         <div class="modal-content">
           <div class="modal-content__model-left">
