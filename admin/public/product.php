@@ -104,7 +104,7 @@
                     <td class="id">' . $row[0] . '</td>';
                     // img
                     echo '<td class="image">
-                <img src="' . $row[3] . '" alt="image not found" />';
+                <img src="../' . $row[3] . '" alt="image not found" />';
                     //name
                     echo '<td class="name">' . $row[1] . '</td>';
                     //catagory
