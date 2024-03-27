@@ -6,7 +6,7 @@
         style="
           width: 1270px;
           background-color: #fff;
-          margin: 100px auto 0;
+          margin: 0px auto;
           border-radius: 20px;
         "
       >

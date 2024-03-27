@@ -262,7 +262,7 @@ body {
 }
 
 .product-action__detail {
-  width: 80%;
+  width: 100%;
   background-color: #f5f5f5;
   color: #333;
   margin-bottom: 4px;
@@ -332,21 +332,6 @@ body {
 .pagination-btn.active {
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-  visibility: hidden;
-}
-
-.active .modal-overlay {
-  visibility: visible;
 }
 
 .modal {

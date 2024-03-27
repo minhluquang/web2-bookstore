@@ -1,3 +1,10 @@
+<?php
+  if (isset($_GET['product_id'])) {
+    $productId = $_GET['product_id'];
+    echo $productId;
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,12 +109,9 @@
                     <div class="product-img">
                       <div class="product-action">
                         <div class="product-action--wrapper">
-                          <button
-                            class="product-action--btn product-action__detail"
-                          >
-                            Chi tiết
-                          </button>
                           <form action="" method="post">
+                            <input type="hidden" name="product_id" value="' . $row['id'] . '">
+                            <input type="submit" class="product-action--btn product-action__detail" value="Chi tiết"/>
                             <input
                               type="submit"
                               class="product-action--btn product-action__addToCart"
@@ -118,8 +122,8 @@
                       </div>
                       <a href="" class="img-resize">
                         <img
-                        src="'.$row['image_path'].'"
-                        alt="'.$row['name'].'" />
+                        src="' . $row['image_path'] . '"
+                        alt="' . $row['name'] . '" />
                       </a>
                     </div>
                     <div class="product-detail">
@@ -156,30 +160,7 @@
     <!-- End: Collection section -->
   </div>
 
-  <!-- Start: Detail product -->
-  <div class="modal">
-    <div class="modal-overlay"></div>
-    <div class="modal-container">
-      <i class="fa-solid fa-xmark modal-close-icon"></i>
-      <div class="modal-content">
-        <div class="modal-content__model-left">
-          <img src="https://bizweb.dktcdn.net/100/363/455/products/khonggiaophebinhtieuluan06cm01.jpg?v=1705552511630" alt="" />
-        </div>
-        <div class="modal-content__model-right">
-          <h2 class="model-title">KHỔNG GIÁO PHÊ BÌNH TIỂU LUẬN</h2>
-          <p class="modal-author">Tác giả: <strong>ĐÀO DUY ANH</strong></p>
-          <span class="modal-price">59.500đ</span>
-          <div class="modal-qnt">
-            <input type="button" value="-" class="modal-qnt__descrease" />
-            <input type="text" value="1" class="modal-qnt__value" readonly />
-            <input type="button" value="+" class="modal-qnt__increase" />
-          </div>
-          <button class="modal-btn">Thêm vào giỏ</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End: Detail product -->
+  
 </body>
 
 </html>
