@@ -1,13 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-$conn = mysqli_connect($servername, $username, $password, "backend_web2");
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+require_once('connect.php');
+$conn = connectDB();
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -22,4 +15,4 @@ if (isset($_GET['id'])) {
 }
 
 
-header('location: ../index.php?page=product');
+header('location: ../admin/index.php?page=product');
