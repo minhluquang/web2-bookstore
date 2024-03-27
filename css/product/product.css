@@ -185,6 +185,8 @@ body {
 }
 
 .product-item {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   border: 1px solid var(--product-border-color);
   border-radius: 5px;
@@ -202,6 +204,7 @@ body {
 
 .product-img {
   width: 100%;
+  height: 375px;
   padding: 5px;
   position: relative;
   overflow: hidden;
@@ -209,6 +212,7 @@ body {
 
 .product-img a img {
   width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.2s ease;
 }
@@ -282,6 +286,7 @@ body {
 }
 
 .product-detail {
+  min-height: 110px;
   padding: 10px 8px;
   text-align: center;
 }

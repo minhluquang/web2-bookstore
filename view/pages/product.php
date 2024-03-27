@@ -16,7 +16,7 @@
   <div class="container">
     <!-- Start: Banner section -->
     <div class="banner-section">
-      <img src="https://bizweb.dktcdn.net/100/363/455/themes/918830/assets/banner-col.jpg?1704690471681" alt="" />
+      <img src="assets/images/thumbnail/banner-col.webp" alt="banner-col" />
     </div>
     <!-- End: Banner section -->
 
@@ -118,8 +118,8 @@
                       </div>
                       <a href="" class="img-resize">
                         <img
-                        src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000
-                        alt="" />
+                        src="'.$row['image_path'].'"
+                        alt="'.$row['name'].'" />
                       </a>
                     </div>
                     <div class="product-detail">
