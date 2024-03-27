@@ -124,7 +124,7 @@
                 <div class="popupmenu" id="chitiet-table">
                     <div id="title">
                         <span>Thể loại</span>
-                        <button type="button" id="close" onclick="popupToggle('chitiet');"><i class="fa-solid fa-x"></i></button>
+                        <button type="button" id="close" onclick="popupToggle('chitiet');"><i class="fa-solid fa-xmark"></i></button>
                         <!-- <hr> -->
                     </div>
                     <div class="table-container">

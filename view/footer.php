@@ -1,40 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/headerfooter/headerfooter.css?v=<?php echo time(); ?>" />
-    <link
-      rel="stylesheet"
-      href="assets/fontawesome-free-6.5.1-web/css/all.min.css?v=<?php echo time(); ?>"
-    />
-    <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
-  </head>
   <body>
     <footer>
       <div
         style="
-          width: 85%;
-          background-color: whitesmoke;
-          margin-top: 100px;
-          margin-left: 100px;
+          width: 1270px;
+          background-color: #fff;
+          margin: 100px auto 0;
           border-radius: 20px;
         "
       >
         <div class="footer">
           <div class="leftFooter">
             <div>
-              <a
-                style="
-                  text-decoration: none;
-                  display: flex;
-                  margin-bottom: 10px;
-                "
-              >
+              <a class="leftFooterLogo">
                 <img
                   src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/fahasa-logo.png"
-                  style="width: 100%"
-                />&nbsp;
+                />
               </a>
             </div>
             <div>
@@ -54,10 +36,9 @@
               </a>
             </div>
 
-            <div>
+            <div class="boCongThuong">
               <img
                 src="https://cdn0.fahasa.com/media/wysiwyg/Logo-NCC/logo-bo-cong-thuong-da-thong-bao1.png"
-                style="width: 100px"
               />
             </div>
             <div

@@ -252,7 +252,7 @@ header {
 }
 
 footer {
-  background-color: whitesmoke;
+  background-color: #fff;
 }
 
 .footer {
@@ -264,6 +264,28 @@ footer {
   height: 100%;
   border-right: 1px solid black;
   margin-top: 100px;
+}
+
+.leftFooterLogo {
+  text-decoration: none;
+  display: flex;
+  margin-bottom: 10px;
+  width: 300px;
+}
+
+.leftFooterLogo img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.boCongThuong {
+  width: 100px;
+  margin: 15px 0;
+}
+
+.boCongThuong img {
+  width: 100%;
+  object-fit: cover;
 }
 
 .logo img {
@@ -288,11 +310,14 @@ footer {
   margin-left: 50px;
 }
 .thongtin div,
-li {
+li,
+.thongtin li a {
   margin-top: 15px;
-  color: black;
+  color: #333;
   list-style: none;
 }
+
+.thongtin li a:hover,
 .thongtin li:hover {
   cursor: pointer;
   color: rgb(33, 150, 213);
@@ -334,7 +359,6 @@ li {
     left: 50%;
     transform: translate(-50%, -50%);
   }
- 
 }
 @media only screen and (max-width: 500px) {
   .account-notification {

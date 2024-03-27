@@ -173,7 +173,7 @@ body {
 }
 
 .container {
-  height: 100%;
+  min-height: 100%;
   position: absolute;
   top: var(--top-bar-height);
   left: var(--side-bar-height);

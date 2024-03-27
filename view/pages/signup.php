@@ -20,28 +20,28 @@
      
         <!-- Login form -->
         <div id="loginForm" class="form-container active">  
-            <h2>Form Đăng nhập</h2>
+            <!-- <h2>Form Đăng nhập</h2> -->
             <!-- Your login form goes here -->
             <form action="login_process.php" method="POST">
                 <div class="form-row">
-                    <label for="username">Tên tài khoản:</label>
+                    <label for="username">Username</label>
                     <input type="text" placeholder="Nhập tên tài khoản" name="username" required>
                 </div>
                 <div class="form-row">
-                    <label for="psw">Mật khẩu:</label>
+                    <label for="psw">Mật khẩu</label>
                     <input type="Mật khẩu" placeholder="Nhập Mật khẩu" name="psw" required>
                 </div>
-                <button type="submit">Đăng nhập</button>
+                <input class="btnSubmit" type="submit" value="Đăng nhập"/>
             </form>
         </div>
      
         <!-- Sign-up form -->
         <div id="signupForm" class="form-container">
-            <h2>Form Đăng ký</h2>
+            <!-- <h2>Form Đăng ký</h2> -->
             <!-- Your sign-up form goes here -->
             <form action="signup_process.php" method="POST">
                 <div class="form-row">
-                    <label for="username">Tên tài khoản:</label>
+                    <label for="username">Username</label>
                     <input type="text" placeholder="Nhập tên tài khoản" name="username" required>
                 </div>
                 <div class="form-row">
@@ -49,7 +49,7 @@
                     <input type="text" placeholder="Nhập Họ và tên" name="name" required>
                 </div>
                 <div class="form-row">
-                    <label for="number">Số điện thoại:</label>
+                    <label for="number">Số điện thoại</label>
                     <input type="number" placeholder="Nhập Số điện thoại:" name="number" required>
                 </div>
                 <div class="form-row">
@@ -58,14 +58,14 @@
                 </div>
                 
                 <div class="form-row">
-                    <label for="psw">Mật khẩu:</label>
+                    <label for="psw">Mật khẩu</label>
                     <input type="password" placeholder="Nhập Mật khẩu" name="psw" required id="psw">
                 </div>
                 <div class="form-row">
-                    <label for="psw-repeat">Lặp lại Mật khẩu:</label>
+                    <label for="psw-repeat">Lặp lại Mật khẩu</label>
                     <input type="password" placeholder="Nhập lại Mật khẩu" name="psw-repeat" required id="psw-repeat">
                 </div>
-                <button type="submit">Đăng kí</button>
+                <input class="btnSubmit" type="submit" value="Đăng ký"/>
             </form>
         </div>
         

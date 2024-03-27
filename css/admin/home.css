@@ -30,8 +30,7 @@ input[type="date"] {
 
 #filter {
   height: 40px;
-  margin: 4px;
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 16px;
   border-radius: 4px;
   outline: none;
@@ -39,6 +38,10 @@ input[type="date"] {
   color: #fff;
   background-color: #333;
   cursor: pointer;
+}
+
+#filter:hover {
+  opacity: 0.8;
 }
 
 .thongkechitiet__container {
@@ -54,29 +57,52 @@ input[type="date"] {
   text-align: center;
   font-size: 34px;
   margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .thongke {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
   border: solid 1px black;
-  border-radius: 4px;
-  padding: 10px;
+  border-radius: 5px;
+  padding: 20px 10px;
   gap: 10px;
   width: calc(100% / 4 - 20px);
   /* width: 220px; */
   /* margin: 10px; */
 }
 
+.thongke .sanpham {
+  font-size: 22px;
+  font-weight: bold;
+}
+
 .thongke .chitietbtn {
-  padding: 3px 5px 3px 5px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.thongke .chitietbtn:hover {
+  opacity: 0.8;
 }
 
 .thongke .money {
   font-weight: bold;
   color: #f39801;
+  font-size: 18px;
+}
+
+.thongke {
+  font-size: 16px;
 }
 
 .content-container {
@@ -272,7 +298,7 @@ thead th:nth-child(1) {
   margin-top: 10px;
   border-radius: 4px;
   padding: 5px;
-cursor: pointer;
+  cursor: pointer;
 }
 
 .popup .popupmenu {
@@ -285,9 +311,9 @@ cursor: pointer;
   max-height: 80%;
   max-width: calc(100% - var(--side-bar-height));
   width: 850px;
-  top: max(var(--top-bar-height) + 10px,10%);
+  top: max(var(--top-bar-height) + 10px, 10%);
   left: 50%;
-  transform: translateX(calc(var(--side-bar-height) / 2 - 50% ));
+  transform: translateX(calc(var(--side-bar-height) / 2 - 50%));
 
   padding-left: 2%;
   padding-right: 2%;
@@ -299,7 +325,6 @@ cursor: pointer;
 
   margin: 0 auto;
 }
-
 
 .popupwrapper {
   cursor: default;
@@ -324,10 +349,10 @@ cursor: pointer;
   -webkit-animation: fadeIn 0.1s;
   animation: fadeIn 0.1s;
 }
-.popup #title{
+.popup #title {
   margin: 20px 0 20px 5px;
 }
-#title>span{
+#title > span {
   font-weight: bold;
   font-size: x-large;
 }
@@ -340,9 +365,18 @@ cursor: pointer;
   /* Firefox */
 }
 
-#close{
+#close {
   float: right;
   border: none;
-  font-size: xx-large;
-  background:none
+  background: none;
+}
+
+#close i {
+  cursor: pointer;
+  font-size: 28px;
+  color: #333;
+}
+
+#close i:hover {
+  opacity: 0.8;
 }
