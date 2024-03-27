@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="thongkechitiet__container">
-        <h1>Thống kế theo thể loại</h1>
+        <h1>Thống kê theo thể loại</h1>
         <div class="content-container">
             <div class="date">
                 <h3>Từ ngày:</h3>
@@ -80,42 +80,34 @@
             <button type="button" id="filter">Lọc</button>
         </div>
         <div class="content-container" id="thongke-container">
-            <div class="thongke">
-                <h3 class="sanpham">Khoa học</h3>
-                <div class="money"> 0 VND</div>
+            <!-- <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+
+            // Create connection
+            $conn = mysqli_connect($servername, $username, $password, "backend_web2");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            $sql = 'SELECT * FROM categories';
+            $result = mysqli_query($conn, $sql);
+
+            while ($row = mysqli_fetch_array($result)) {
+                echo '<div class="thongke">';
+                echo '<h3 class="sanpham">'.$row[1].'</h3>';
+                echo '                <div class="money"> 0 VND</div>
                 <div class="soluong">Số lượng bán được: 0</div>
                 <button type="button" class="chitietbtn">Chi tiết</button>
-            </div>
-            <div class="thongke">
-                <h3 class="sanpham">Tôn giáo - tâm linh</h3>
-                <div class="money"> 0 VND</div>
-                <div class="soluong">Số lượng bán được: 0</div>
-                <button type="button" class="chitietbtn">Chi tiết</button>
-            </div>
-            <div class="thongke">
-                <h3 class="sanpham">Ngôn tình</h3>
-                <div class="money"> 0 VND</div>
-                <div class="soluong">Số lượng bán được: 0</div>
-                <button type="button" class="chitietbtn">Chi tiết</button>
-            </div>
-            <div class="thongke">
-                <h3 class="sanpham">Tâm lý</h3>
-                <div class="money"> 0 VND</div>
-                <div class="soluong">Số lượng bán được: 0</div>
-                <button type="button" class="chitietbtn">Chi tiết</button>
-            </div>
-            <div class="thongke">
-                <h3 class="sanpham">Tâm lý</h3>
-                <div class="money"> 0 VND</div>
-                <div class="soluong">Số lượng bán được: 0</div>
-                <button type="button" class="chitietbtn">Chi tiết</button>
-            </div>
-            <div class="thongke">
-                <h3 class="sanpham">Tâm lý</h3>
-                <div class="money"> 0 VND</div>
-                <div class="soluong">Số lượng bán được: 0</div>
-                <button type="button" class="chitietbtn">Chi tiết</button>
-            </div>
+                </div>';
+
+            }
+            $conn->close();
+            ?> -->
+            
         </div>
     </div>
     <div class="popup">

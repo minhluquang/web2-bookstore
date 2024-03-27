@@ -163,7 +163,7 @@ thead th:nth-child(1) {
 .card {
   padding: 20px;
   border-radius: 5px;
-  width: 250px;
+  width: 230px;
   height: 200px;
   display: flex;
   flex-direction: column;
@@ -285,6 +285,9 @@ thead th:nth-child(1) {
   }
 }
 
+<<<<<<< HEAD
+
+=======
 .popup {
   /* position: relative; */
   /* display: inline-block; */
