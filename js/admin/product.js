@@ -146,7 +146,7 @@ for (var i = 0; i < del_btns.length; i++) {
                 <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <form action="public/product_del.php?id=${product_id}"class="del-body" method=""GET>
+                <form action="../model/product_del.php"class="del-body" method=""GET>
                     <div class="image">
                         <img id="imagePreview" src="${img_link}" alt="image not found">
                     </div>
