@@ -109,14 +109,16 @@
                     <div class="product-img">
                       <div class="product-action">
                         <div class="product-action--wrapper">
-                          <form action="" method="post">
+                          <form action="index.php?page=product_detail" method="post">
                             <input type="hidden" name="product_id" value="' . $row['id'] . '">
                             <input type="submit" class="product-action--btn product-action__detail" value="Chi tiết"/>
+                          </form>
+                          <form>
                             <input
-                              type="submit"
-                              class="product-action--btn product-action__addToCart"
-                              value="Thêm vào giỏ"
-                            />
+                                type="submit"
+                                class="product-action--btn product-action__addToCart"
+                                value="Thêm vào giỏ"
+                              />
                           </form>
                         </div>
                       </div>

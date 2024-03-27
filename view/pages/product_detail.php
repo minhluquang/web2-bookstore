@@ -1,3 +1,6 @@
+<?php
+  include_once('model/product_detail.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,17 +19,18 @@
         <div class="modal-content">
           <div class="modal-content__model-left">
             <img
-              src="https://bizweb.dktcdn.net/100/363/455/products/khonggiaophebinhtieuluan06cm01.jpg?v=1705552511630"
+              src=<?=$row['image_path']?>
               alt=""
             />
           </div>
           <div class="modal-content__model-right">
-            <h2 class="modal-title">KHỔNG GIÁO PHÊ BÌNH TIỂU LUẬN</h2>
+            <h2 class="modal-title"><?=$row['product_name']?></h2>
             <div class="modal-detail">
-              <p class="modal-author">Tác giả: <strong>ĐÀO DUY ANH</strong></p>
-              <p class="modal-category">Thể loại: <strong>Tâm lý</strong></p>
+              <p class="modal-author">Tác giả: <strong><?=$row['author_names']?></strong></p>
+              <p class="modal-category">Thể loại: <strong><?=$row['category_names']?></strong></p>
             </div>
-            <span class="modal-price">59.500đ</span>
+            <h4 class="modal-publisher">Nhà xuất bản: <strong><?=$row['publisher_name']?></strong></h4>
+            <span class="modal-price"><p>Giá: </p><?php echo number_format($row['price'], 0, '.', ',').'đ'?></span>
             <div class="modal-qnt">
               <div class="modal-qnt-select">
                 <input type="button" value="-" class="modal-qnt__descrease" />
@@ -38,7 +42,13 @@
                 />
                 <input type="button" value="+" class="modal-qnt__increase" />
               </div>
-              <div class="modal-qnt-number">(Còn 100 sản phẩm)</div>
+              <div class="modal-qnt-number"><?php 
+                if ($row['quantity'] > 0) {
+                  echo "(Còn ".$row['quantity']." sản phẩm)";
+                } else {
+                  echo "(Hết hàng)";
+                }
+              ?></div>
             </div>
             <button class="modal-btn">Thêm vào giỏ</button>
           </div>
