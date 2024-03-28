@@ -1,5 +1,5 @@
 <?php
-require_once('connect.php');
+include_once('connect.php');
 $conn = connectDB();
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

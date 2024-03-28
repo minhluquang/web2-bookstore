@@ -85,11 +85,7 @@
             </thead>
             <tbody class="table-content" id="content">
                 <?php
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-
-                $conn = mysqli_connect($servername, $username, $password, "backend_web2");
+                $conn = connectDB();
 
                 if (!$conn) {
                     die("Connection failed: " . mysqli_connect_error());
