@@ -30,4 +30,5 @@ if (isset($_POST['product_id'])) {
   if ($result && mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_array($result);
   }
+  mysqli_close($conn);
 }

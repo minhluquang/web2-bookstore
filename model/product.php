@@ -8,5 +8,6 @@
               WHERE c.id = $category_id";
     $result = mysqli_query($conn, $query);
     return $result;
-}
+    mysqli_close($conn);
+  }
 ?>

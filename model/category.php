@@ -5,5 +5,6 @@
               FROM categories";
     $result = mysqli_query($conn, $query);
     return $result;
+    mysqli_close($conn);
   }
 ?>
