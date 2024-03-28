@@ -33,54 +33,43 @@
         <!-- NỘI DUNG BÁN HÀNG -->
 
         <!-- THỂ LOẠI 1 -->
-        <div class="genre">
-            <div class="genre-name">Tiểu thuyết</div>
-            <div class="product-list">
-                <div class="product">
-                    <img src="assets/image/pageHome/tiểu thuyết/img2.jpg" alt="">
+        <?php
+            include_once('model/category.php');
+            include_once('model/product.php');
+            $categoryList = getCategoryList();
+            while ($row = mysqli_fetch_array($categoryList)) {
+                echo '
+                <div class="genre">
+                    <div class="genre-name">'.$row['name'].'</div>
+                    <div class="product-list">';
+                
+                $productList = getProductsById($row['id']);
+                $count = 0;
+                while (($row_product = mysqli_fetch_array($productList)) && ($count < 5)) {
+                    $count++;
 
-                    <span class="name-product">Mùa Hè Không Tên - Tặng Kèm Bookmark 2 Mặt + Poster Tranh + Chữ Ký Tác Giả Ngẫu Nhiên</span>
-                    <span class="price">101.400 đ</span>
-                    <span class="old-price">130.000 đ</span>
-                    <!-- <span class="rate"></span> -->
-
-
-                </div>
-                <div class="product">
-                    <img src="assets/image/pageHome/tiểu thuyết/img1.jpg" alt="">
-                    <span class="name-product">Nhà Giả Kim (Tái Bản 2020)</span>
-                    <span class="price">61.620 đ</span>
-                    <span class="old-price">66.880 đ</span>
-                </div>
-                <div class="product">
-                    <img src="assets/image/pageHome/tiểu thuyết//img3.jpg" alt="">
-                    <span class="name-product">Chưa Kịp Lớn Đã Trưởng Thành (Tái Bản 2023)</span>
-                    <span class="price">57.670 đ</span>
-                    <span class="old-price">66.880 đ</span>
-                </div>
-                <div class="product">
-                    <img src="assets/image/pageHome/tiểu thuyết/img4.jpg" alt="">
-                    <span class="name-product">Lén Nhặt Chuyện Đời</span>
-                    <span class="price">59.500 đ</span>
-                    <span class="old-price">66.880 đ</span>
-                </div>
-                <div class="product">
-                    <img src="assets/image/pageHome/tiểu thuyết/img5.jpg" alt="">
-                    <span class="name-product">Cây Cam Ngọt Của Tôi</span>
-                    <span class="price">84.240 đ</span>
-                    <span class="old-price">66.880 đ</span>
-                </div>
-            </div>
-            <div  class="see-more" >
-            <a href="#">Xem thêm </a>
-            </div>
-
-        </div>
+                    $price_formatted = number_format($row_product['price'], '0', ',', '.').'đ';
+                    echo '<div class="product">
+                        <img src="'.$row_product['image_path'].'" alt="">
+                        <span class="name-product">'.$row_product['product_name'].'</span>
+                        <span class="price">'. $price_formatted.'</span>
+                    </div>';
+                }
+                
+                echo '
+                    </div>
+                    <div  class="see-more" >
+                    <a href="#">Xem thêm </a>
+                    </div>
+                </div>';
+            }
+        ?>
+        
         
         <!-- END -->
 
         <!-- THỂ LOẠI 2 -->
-        <div class="genre">
+        <!-- <div class="genre">
             <div class="genre-name">Huyền Bí - Giả Tưởng - Kinh Dị</div>
             <div class="product-list">
                 <div class="product">
@@ -119,12 +108,12 @@
             <div  class="see-more" >
             <a href="#">Xem thêm </a>
             </div>
-        </div>
+        </div> -->
         <!-- END -->
 
 
         <!-- THỂ LOẠI 3 -->
-        <div class="genre">
+        <!-- <div class="genre">
             <div class="genre-name">Văn học</div>
             <div class="product-list">
                 <div class="product">
@@ -163,11 +152,11 @@
             <div  class="see-more" >
             <a href="#">Xem thêm </a>
             </div>
-        </div>
+        </div> -->
         <!-- END -->
 
         <!-- THỂ LOẠI 4 -->
-        <div class="genre">
+        <!-- <div class="genre">
             <div class="genre-name">Văn học</div>
             <div class="product-list">
                 <div class="product">
@@ -206,7 +195,7 @@
             <div  class="see-more" >
             <a href="#">Xem thêm </a>
             </div>
-        </div>
+        </div> -->
         <!-- END -->
 
     </div>
