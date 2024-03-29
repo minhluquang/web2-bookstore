@@ -2,10 +2,12 @@
   include_once('../model/product.php');
   
   if (isset($_POST['currentPage']) && isset($_POST['itemsPerPage'])) {
-    $item_per_page = intval($_POST['itemsPerPage']);
+    $items_per_page = intval($_POST['itemsPerPage']);
     $page = intval($_POST['currentPage']);
-    $result = getProductsForPagination($item_per_page, $page);
+    $result = getProductsForPagination($items_per_page, $page);
     if ($result->success) {
+      // Render products từ db
+      echo '<div class="collection-product-list">';
       while ($row = mysqli_fetch_array($result->data)) {
         $formatted_number = number_format($row['price'], 0, ',', '.') . 'đ';
 
@@ -43,7 +45,54 @@
               </div>
             </div>
           ';
+
       }
+      echo '</div>';  
+
+      // Render buttons
+      $total_records = getTotalRecords();
+      $total_pages = ceil($total_records / $items_per_page);
+      $paginationHTML = '<div class="pagination">';
+      
+      // Render prev btn
+      if ($page > 1) {
+        $prev = $page - 1;
+        $paginationHTML .= '
+          <button class="pagination-btn" data="'.$prev.'">
+            <i class="fa-solid fa-angle-left"></i>
+          </button>';
+      }
+
+      if ($page - 3 >= 1) {
+        $paginationHTML .= '<button class="pagination-btn" data="1">1</button>';
+        $paginationHTML .= '...';
+      }
+
+      // Render btns
+      for ($i = 1; $i <= $total_pages; $i++) {
+        $isActive = $page == $i ? 'active' : '';
+        if ($i < $page + 3 && $i > $page - 3) {
+          $paginationHTML .= '<button class="pagination-btn '.$isActive.'" data="' . $i . '">' . $i . '</button>';
+        }
+      }
+
+      if ($page + 3 <= $total_pages) {
+        $paginationHTML .= '...';
+        $paginationHTML .= '<button class="pagination-btn" data="' . $total_pages . '">' . $total_pages . '</button>';
+      }
+
+      // Render next btn
+      if ($page < $total_pages) {
+        $next = $page + 1;
+        $paginationHTML .= '
+          <button class="pagination-btn" data="'.$next.'">
+            <i class="fa-solid fa-angle-right"></i>
+          </button>';
+      }
+
+      $paginationHTML .= '</div>';
+      echo $paginationHTML;      
+
     } else {
       echo $result->message;    
     }

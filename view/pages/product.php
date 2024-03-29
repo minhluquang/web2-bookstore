@@ -1,9 +1,7 @@
 <?php
-  include_once('model/product.php');
-  $total_records = getTotalRecords();
+  // include_once('model/product.php');
   $items_per_page = 8;
   $current_page = 1;
-  $total_pages = ceil($total_records / $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -94,25 +92,17 @@
             </div>
           </div>
         </div>
-        <div class="collection-product-list">
-          
-        </div>
 
-        <!-- Start: Pagination -->
-        <div class="pagination">
-          <button class="pagination-btn">
-            <i class="fa-solid fa-angle-left"></i>
-          </button>
-          <?php
-            for ($i = 1; $i <= $total_pages; $i++) {
-              echo '<button class="pagination-btn" data="'.$i.'">'.$i.'</button>';
-            }
-          ?>
-          <button class="pagination-btn">
-            <i class="fa-solid fa-angle-right"></i>
-          </button>
+        <div class="result">
+          // Gonna render products here
+
+          <!-- Start: Pagination -->
+          <div class="pagination">
+            
+           
+          </div>
+          <!-- End: Pagination -->
         </div>
-        <!-- End: Pagination -->
       </div>
       <!-- End: Main collection -->
     </div>
@@ -123,7 +113,7 @@
     $(document).ready(function() {
       // Hàm để render dữ liệu sản phẩm
       function renderProductsPerPage(current_page) {
-        var items_per_page = <?php echo $items_per_page?>;
+        var items_per_page = <?php echo $items_per_page ?>;
 
         $.ajax({
           url: 'controller/product.controller.php',
@@ -133,17 +123,18 @@
             itemsPerPage: items_per_page,
             currentPage: current_page
           }
-        }).done(function (result) {
-          $('.collection-product-list').html(result);
+        }).done(function(result) {
+          $('.result').html(result);
         })
       }
 
       // Tự loadd sản phẩm ở lần đầu vào trang
       renderProductsPerPage(1);
-      $('.pagination-btn[data="1"]').addClass('active');
+      // $('.pagination-btn[data="1"]').addClass('active');
 
-      // Lắng nghe sự kiện click
-      $('.pagination-btn').click(function() {
+   
+      // Sử dụng Event Delegation cho các nút phân trang
+      $(document).on('click', '.pagination-btn', function() {
         // Remove all active, active current pagination-btn 
         $('.pagination-btn').removeClass('active');
         $(this).addClass('active');
@@ -154,4 +145,5 @@
     });
   </script>
 </body>
+
 </html>
