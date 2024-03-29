@@ -34,7 +34,7 @@
               <p class="modal-category">Thể loại: <strong><?=$row['category_names']?></strong></p>
             </div>
             <h4 class="modal-publisher">Nhà xuất bản: <strong><?=$row['publisher_name']?></strong></h4>
-            <span class="modal-price"><p>Giá: </p><?php echo number_format($row['price'], 0, '.', ',').'đ'?></span>
+            <span class="modal-price"><p>Giá: </p><?php echo number_format($row['price'], 0, ',', '.').'đ'?></span>
             <div class="modal-qnt">
               <div class="modal-qnt-select">
                 <input type="button" value="-" class="modal-qnt__descrease" />

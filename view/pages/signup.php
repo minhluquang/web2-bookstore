@@ -105,6 +105,7 @@
                 var $address = $('#registerAddress').val();
                 var $password = $('#registerPassword').val();
                 var $confirmPassword = $("#registerConfirmPassword").val();
+                
                 $.ajax({
                     url: 'controller/signup.controller.php',
                     type: 'post',

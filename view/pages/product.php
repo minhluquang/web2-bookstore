@@ -1,8 +1,9 @@
 <?php
-  if (isset($_GET['product_id'])) {
-    $productId = $_GET['product_id'];
-    echo $productId;
-  }
+  include_once('model/product.php');
+  $total_records = getTotalRecords();
+  $items_per_page = 8;
+  $current_page = 1;
+  $total_pages = ceil($total_records / $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +17,7 @@
   <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
   <link rel="stylesheet" href="css/product/product.css?v=<?php echo time(); ?>" />
   <link rel="stylesheet" href="css/product/product.reponsive.css?v=<?php echo time(); ?>" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="js/product.js?v=<?php echo time(); ?>"></script>
 </head>
 
@@ -93,52 +95,7 @@
           </div>
         </div>
         <div class="collection-product-list">
-          <?php
-          $conn = connectDB();
-          $query = "SELECT * 
-                      FROM products
-                      ORDER BY id ASC
-                      LIMIT 8 OFFSET 0;";
-          $result = mysqli_query($conn, $query);
-          while ($row = mysqli_fetch_array($result)) {
-            $formatted_number = number_format($row['price'], 0, ',', '.') . 'đ';
-
-            echo '
-                  <div class="product-item--wrapper">
-                  <div class="product-item">
-                    <div class="product-img">
-                      <div class="product-action">
-                        <div class="product-action--wrapper">
-                          <form action="index.php?page=product_detail" method="post">
-                            <input type="hidden" name="product_id" value="' . $row['id'] . '">
-                            <input type="submit" class="product-action--btn product-action__detail" value="Chi tiết"/>
-                          </form>
-                          <form>
-                            <input
-                                type="submit"
-                                class="product-action--btn product-action__addToCart"
-                                value="Thêm vào giỏ"
-                              />
-                          </form>
-                        </div>
-                      </div>
-                      <a href="" class="img-resize">
-                        <img
-                        src="' . $row['image_path'] . '"
-                        alt="' . $row['name'] . '" />
-                      </a>
-                    </div>
-                    <div class="product-detail">
-                      <a href="" class="product-title"
-                        >' . $row['name'] . '
-                        <p class="product-price">' . $formatted_number . '</p>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ';
-          }
-          ?>
+          
         </div>
 
         <!-- Start: Pagination -->
@@ -146,11 +103,11 @@
           <button class="pagination-btn">
             <i class="fa-solid fa-angle-left"></i>
           </button>
-          <button class="pagination-btn active" data="1">1</button>
-          <button class="pagination-btn" data="2">2</button>
-          <button class="pagination-btn" data="3">3</button>
-          <button class="pagination-btn" data="4">4</button>
-          <button class="pagination-btn" data="5">5</button>
+          <?php
+            for ($i = 1; $i <= $total_pages; $i++) {
+              echo '<button class="pagination-btn" data="'.$i.'">'.$i.'</button>';
+            }
+          ?>
           <button class="pagination-btn">
             <i class="fa-solid fa-angle-right"></i>
           </button>
@@ -162,7 +119,39 @@
     <!-- End: Collection section -->
   </div>
 
-  
-</body>
+  <script>
+    $(document).ready(function() {
+      // Hàm để render dữ liệu sản phẩm
+      function renderProductsPerPage(current_page) {
+        var items_per_page = <?php echo $items_per_page?>;
 
+        $.ajax({
+          url: 'controller/product.controller.php',
+          type: 'post',
+          dataType: 'html',
+          data: {
+            itemsPerPage: items_per_page,
+            currentPage: current_page
+          }
+        }).done(function (result) {
+          $('.collection-product-list').html(result);
+        })
+      }
+
+      // Tự loadd sản phẩm ở lần đầu vào trang
+      renderProductsPerPage(1);
+      $('.pagination-btn[data="1"]').addClass('active');
+
+      // Lắng nghe sự kiện click
+      $('.pagination-btn').click(function() {
+        // Remove all active, active current pagination-btn 
+        $('.pagination-btn').removeClass('active');
+        $(this).addClass('active');
+
+        var current_page = $(this).attr('data');
+        renderProductsPerPage(current_page);
+      });
+    });
+  </script>
+</body>
 </html>

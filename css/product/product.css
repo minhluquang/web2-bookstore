@@ -291,11 +291,18 @@ body {
   text-align: center;
 }
 
-.product-title {
+.product-detail a {
   text-decoration: none;
   color: #333;
   font-weight: bold;
   font-size: 16px;
+}
+
+.product-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Số lượng dòng tối đa */
+  overflow: hidden;
 }
 
 .product-price {
