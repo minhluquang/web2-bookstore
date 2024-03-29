@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> ">
     <link rel="stylesheet" href="../css/admin/order.css?v=<?php echo time(); ?> ">
-    <script defer src="../js/admin/order.js?v=<?php echo time(); ?>"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -78,39 +78,6 @@
                 </tr>
             </thead>
             <tbody class="table-content" id="content">
-                <?php
-                $conn = connectDB();
-                $sql = 'SELECT * from orders';
-                $result = mysqli_query($conn, $sql);
-
-
-                while ($row = mysqli_fetch_array($result)) {
-                    echo '<tr>';
-                    echo '<td class="order_id">' . $row[0] . '</td>';
-                    echo '<td class="customer_id">' . $row[1] . '</td>';
-                    echo '<td class="staff_id">' . $row[2] . '</td>';
-                    echo '<td class="date-update">' . $row[4] . '</td>';
-                    echo '<td class="total_price">' . $row[5] . '</td>';
-                    $sql_address = 'SELECT * from delivery_infoes WHERE id="' . $row[3] . '"';
-                    $result_address = mysqli_query($conn, $sql_address);
-                    $row_address = mysqli_fetch_array($result_address);
-
-                    echo '<td class="address">' . $row_address['address'] . '</td>';
-
-                    $sql_status = 'SELECT * from order_statuses WHERE id="' . $row[6] . '"';
-                    $result_status  = mysqli_query($conn, $sql_status);
-                    $row_status = mysqli_fetch_array($result_status);
-
-                    echo '<td class="status">' . $row_status['name'] . '</td>';
-                    echo '<td class="discount_code">' . $row[7] . '</td>';
-                    echo '<td class="actions">
-                    <button class="actions--view">Chi tiết hoá đơn</button>
-                    <button class="actions--delete">Xoá</button>
-                    </td>
-                    </tr>';
-                }
-                ?>
-
 
             </tbody>
         </table>
@@ -134,17 +101,14 @@
         </div>
         <div>
             <span style="font-weight: bold;">Bạn có thực sự muốn xóa hóa đơn có mã là :</span>
-            <span class="delete-id">ERROR</span>
+            <span id="order-delete-id">ERROR</span>
         </div>
 
-        <form action="../model/order_del.php">
-            <input type="hidden" value="" name="id" class="hidden_input"/>
+        <div class="del-btn-container">
+            <input type="button" value="Hủy" class="del-cancel">
+            <input type="button" value="Xác nhận" class="del-confirm">
+        </div>
 
-            <div class="del-btn-container">
-                <input type="button" value="Hủy" class="del-cancel">
-                <input type="button" value="Xác nhận" class="del-confirm">
-            </div>
-        </form>
 
     </div>
 
@@ -222,6 +186,7 @@
     </div>
     <div class="overlay hidden"></div>
 
+        <script defer src="../js/admin/order.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>

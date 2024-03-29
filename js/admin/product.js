@@ -1,7 +1,19 @@
-var edit_btns = document.getElementsByClassName("actions--edit");
-const modal = document.querySelector('#modal')
+document.addEventListener("DOMContentLoaded", () => {
+    $.ajax({
+        url: '../controller/admin/product.controller.php',
+        type: "post",
+        dataType: 'html',
+        data: {}
+    }).done(function (result) {
+        $('.table-content').html(result);
+        js();
+    })
+});
+var js = function () {
+    var edit_btns = document.getElementsByClassName("actions--edit");
+    const modal = document.querySelector('#modal')
 
-const edit_html = `
+    const edit_html = `
 <div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
@@ -70,75 +82,75 @@ const edit_html = `
 `
 
 
-for (var i = 0; i < edit_btns.length; i++) {
-    edit_btns[i].addEventListener('click', e => {
-        modal.innerHTML = edit_html;
-        function displayImage(input) {
-            const file = input.files[0]; // Lấy ra tệp được chọn từ input file
-            const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh
+    for (var i = 0; i < edit_btns.length; i++) {
+        edit_btns[i].addEventListener('click', e => {
+            modal.innerHTML = edit_html;
+            function displayImage(input) {
+                const file = input.files[0]; // Lấy ra tệp được chọn từ input file
+                const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh
 
-            // Kiểm tra xem đã chọn tệp hình ảnh hay chưa
-            if (file) {
-                const reader = new FileReader(); // Tạo một đối tượng FileReader
+                // Kiểm tra xem đã chọn tệp hình ảnh hay chưa
+                if (file) {
+                    const reader = new FileReader(); // Tạo một đối tượng FileReader
 
-                // Thiết lập sự kiện khi FileReader đã đọc xong file
-                reader.onload = function (event) {
-                    // Thiết lập thuộc tính src của thẻ img để hiển thị ảnh đã chọn
-                    imagePreview.src = event.target.result;
-                    imagePreview.style.display = 'block'; // Hiển thị thẻ img
-                };
+                    // Thiết lập sự kiện khi FileReader đã đọc xong file
+                    reader.onload = function (event) {
+                        // Thiết lập thuộc tính src của thẻ img để hiển thị ảnh đã chọn
+                        imagePreview.src = event.target.result;
+                        imagePreview.style.display = 'block'; // Hiển thị thẻ img
+                    };
 
-                // Đọc nội dung của tệp hình ảnh dưới dạng URL
-                reader.readAsDataURL(file);
-            }
-        }
-        const fileInput = document.getElementById('fileInput');
-        fileInput.addEventListener('change', function () {
-            displayImage(this); // Gọi hàm displayImage và truyền vào input element
-        });
-
-        // Hidden choose img
-        const editRadio = document.querySelectorAll('input[name="image"]');
-        const chooseImgContainer = document.querySelector('.choose-img');
-
-        editRadio.forEach(function (radio) {
-            radio.addEventListener('change', function () {
-                if (this.value === 'edit') {
-                    chooseImgContainer.classList.remove('hidden'); // Hiển thị phần chọn ảnh khi chọn "Sửa Hình"
-                } else {
-                    chooseImgContainer.classList.add('hidden'); // Ẩn phần chọn ảnh khi chọn các tùy chọn khác
+                    // Đọc nội dung của tệp hình ảnh dưới dạng URL
+                    reader.readAsDataURL(file);
                 }
+            }
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', function () {
+                displayImage(this); // Gọi hàm displayImage và truyền vào input element
             });
+
+            // Hidden choose img
+            const editRadio = document.querySelectorAll('input[name="image"]');
+            const chooseImgContainer = document.querySelector('.choose-img');
+
+            editRadio.forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    if (this.value === 'edit') {
+                        chooseImgContainer.classList.remove('hidden'); // Hiển thị phần chọn ảnh khi chọn "Sửa Hình"
+                    } else {
+                        chooseImgContainer.classList.add('hidden'); // Ẩn phần chọn ảnh khi chọn các tùy chọn khác
+                    }
+                });
+            });
+
+            // Button close
+            const modal_edit_container = document.querySelector("#modal-edit-container");
+
+            const btnClose = document.querySelector("#btnClose");
+            // console.log(btnClose)
+            btnClose.addEventListener('click', () => {
+                // console.log(modal_edit_container)
+                modal_edit_container.classList.remove('show')
+            });
+
         });
 
-        // Button close
-        const modal_edit_container = document.querySelector("#modal-edit-container");
+    }
+    var script = document.createElement('script');
+    script.src = 'https://code.jquery.com/jquery-3.7.1.min.js'; // Check https://jquery.com/ for the current version
+    document.getElementsByTagName('head')[0].appendChild(script);
 
-        const btnClose = document.querySelector("#btnClose");
-        console.log(btnClose)
-        btnClose.addEventListener('click', () => {
-            console.log(modal_edit_container)
-            modal_edit_container.classList.remove('show')
-        });
+    // delete
 
-    });
+    const del_btns = document.getElementsByClassName("actions--delete");
 
-}
-
-// delete
-
-const del_btns = document.getElementsByClassName("actions--delete");
-
-
-for (var i = 0; i < del_btns.length; i++) {
-    // del_btns[i].addEventListener('click',function(){
-    //     alert(this.parentNode);
-    // });
-    del_btns[i].addEventListener('click', function (){
-        let product_id=this.parentNode.parentNode.querySelector('.id').innerHTML;
-        let product_name=this.parentNode.parentNode.querySelector('.name').innerHTML;
-        let img_link=this.parentNode.parentNode.querySelector('img').src;
-        var del_html = `
+    for (var i = 0; i < del_btns.length; i++) {
+        del_btns[i].addEventListener('click', function () {
+            let selected_content = this.parentNode.parentNode;
+            let product_id = selected_content.querySelector('.id').innerHTML;
+            let product_name = selected_content.querySelector('.name').innerHTML;
+            let img_link = selected_content.querySelector('img').src;
+            var del_html = `
         <div class="modal-edit-product-container show" id="modal-edit-container">
         <div class="modal-edit-product">
             <div class="modal-header">
@@ -146,48 +158,61 @@ for (var i = 0; i < del_btns.length; i++) {
                 <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <form action="../model/product_del.php"class="del-body" method=""GET>
+                <div class="del-body">
                     <div class="image">
                         <img id="imagePreview" src="${img_link}" alt="image not found">
                     </div>
                     <div class="thongtin">
-                        <div><span style="font-weight: bold;">Mã sản phẩm :</span> <span>${product_id}</span> </div>
+                        <div><span style="font-weight: bold;">Mã sản phẩm :</span> <span id="product-delete-id">${product_id}</span> </div>
                         <div><span style="font-weight: bold;">Tên sản phẩm :</span> <span>${product_name}</span> </div>
                     </div>
-                    <input type="hidden" value="${product_id}" name="id"/>
-
-                    <div class="del-btn-container">
-                        <input type="button" value="Hủy" class="del-cancel">
-                        <input type="submit" value="Xác nhận" class="del-confirm">
-                    </div>
-
-                </form>
+                </div>
+                <div class="del-btn-container">
+                    <input type="button" value="Hủy" class="del-cancel">
+                    <input type="button" value="Xác nhận" class="del-confirm">
+                </div>
             </div>
         </div>
     </div>
 
         `;
-        
-
-        modal.innerHTML = del_html;
 
 
-        // Button close
-        const modal_edit_container = document.querySelector("#modal-edit-container");
+            modal.innerHTML = del_html;
+            $('.del-confirm').click(function (e) {
+                e.preventDefault();
+                var $id = $('#product-delete-id').html();
+                $.ajax({
+                    url: '../controller/admin/product.controller.php',
+                    type: "post",
+                    dataType: 'html',
+                    data: {
+                        delete_id: $id
+                    }
+                }).done(function (result) {
+                    selected_content.remove();
+                    modal_edit_container.classList.remove('show');
+                })
+            })
 
-        const btnClose = document.querySelector("#btnClose");
-        // console.log(btnClose)
-        btnClose.addEventListener('click', () => {
-            // console.log(modal_edit_container)
-            modal_edit_container.classList.remove('show')
+            // Button close
+            const modal_edit_container = document.querySelector("#modal-edit-container");
+
+            const btnClose = document.querySelector("#btnClose");
+            // console.log(btnClose)
+            btnClose.addEventListener('click', () => {
+                // console.log(modal_edit_container)
+                modal_edit_container.classList.remove('show')
+            });
+            // Button cancel
+            const btnCancel = document.querySelector(".del-cancel");
+            // console.log(btnClose)
+            btnCancel.addEventListener('click', () => {
+                // console.log(modal_edit_container)
+                modal_edit_container.classList.remove('show')
+            });
         });
-        // Button cancel
-        const btnCancel = document.querySelector(".del-cancel");
-        // console.log(btnClose)
-        btnCancel.addEventListener('click', () => {
-            // console.log(modal_edit_container)
-            modal_edit_container.classList.remove('show')
-        });
-    });
+
+    }
 
 }
