@@ -7,7 +7,7 @@
     <title>Checkout Form</title>
     <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="css/checkout/checkout.css?v=<?php echo time(); ?>">
-    <link rel="stylesheet" href="assets/fontawesome-free-6.5.1-web/css/all.min.css">
+    <link rel="stylesheet" href="assets/fontawesome-free-6.5.1-web/css/all.min.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -18,10 +18,15 @@
                 <hr>
                 <div class="form-group" style="flex-direction: column;">
                     <span id="diachi">
+                        <?php
+                        $conn = connectDB();
+
+                        $sql = `SELECT * FROM delivery_infoes WHERE`
+                        ?>
                         <b>Nguyễn Minh Trí (+84) 394080644</b> Số 907a, Âu Cơ, Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh
                     </span>
                     <div class="popup">
-                        <button type="button" class="popupbutton" onclick="changeAddressTmp();popupToggle(`diachiMenu`);popupToggle(`addressMenu`);getChecked()">Thay đổi</button>
+                        <button type="button" class="popupbutton">Thay đổi</button>
                         <div class="popupwrapper" id="diachiMenu">
                             <div class="popupbg"></div>
                             <div class="popupmenu" id="addressMenu">
@@ -32,30 +37,30 @@
 
                                 <div class="address-container">
                                     <label class="address-select">
-                                        <input type="radio" name="address" onclick="changeAddressTmp();" checked />
+                                        <input type="radio" name="address" checked />
                                         <span class="name">Nguyễn Minh Trí</span>
                                         <span class="sdt">(+84) 394080644</span>
-                                        <span class="updatebig update" onclick="fetchUpdateAddress(this);popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="updatebig update">Cập nhật</span>
                                         <span class="diachi">Số 907a, Âu Cơ</span>
                                         <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="updatesmall update" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="updatesmall update">Cập nhật</span>
                                     </label>
                                     <label class="address-select">
-                                        <input type="radio" name="address" onclick="changeAddressTmp();" />
+                                        <input type="radio" name="address" />
                                         <span class="name">Nguyễn Minh Trí</span>
                                         <span class="sdt">(+84) 123123123</span>
-                                        <span class="updatebig update" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="updatebig update">Cập nhật</span>
                                         <span class="diachi">123 Âu Cơ</span>
                                         <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="updatesmall update" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Cập nhật</span>
+                                        <span class="updatesmall update">Cập nhật</span>
                                     </label>
                                     <form action="" method="post">
                                         <input type="button" class="addNewAddress" value="Thêm địa chỉ mới">
                                     </form>
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;">
-                                    <button type="button" class="confirm" onclick="changeAddress();popupToggle(`diachiMenu`);popupOff(`addressMenu`)">Xác Nhận</button>
-                                    <button type="button" class="cancel" onclick="changeChecked();popupToggle(`diachiMenu`);popupOff(`addressMenu`)">Hủy</button>
+                                    <button type="button" class="confirm" id="confirm-popup">Xác Nhận</button>
+                                    <button type="button" class="cancel" id="cancel-popup">Hủy</button>
 
                                 </div>
                             </div>
@@ -77,16 +82,14 @@
 
                                         <fieldset class="fieldselect" style="margin:0 auto 0 0;">
                                             <legend>Tỉnh/Thành phố</legend>
-                                            <select id="tinhthanh" name="tinhthanh" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%;" onchange="changeQuanHuyen()">
-                                                <option>Chọn Tỉnh/Thành phố</option>
-                                                <option value="tp_hochiminh">TP. Hồ Chí Minh</option>
-                                                <option value="ha_noi">Hà Nội</option>
+                                            <select id="tinhthanh" name="tinhthanh" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%;">
+
 
                                             </select>
                                         </fieldset>
                                         <fieldset class="fieldselect" style="margin:0 auto;">
                                             <legend>Quận/huyện</legend>
-                                            <select id="quanhuyen" name="quanhuyen" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%" onchange="changePhuongXa()">
+                                            <select id="quanhuyen" name="quanhuyen" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
                                             </select>
                                         </fieldset>
                                         <fieldset class="fieldselect" style="margin:0 0 0 auto;">
@@ -103,8 +106,8 @@
 
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;padding-top:5px">
-                                    <button type="button" class="confirm" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Xác Nhận</button>
-                                    <button type="button" class="cancel" onclick="popupToggle(`changeAddressMenu`);popupToggle(`addressMenu`)">Hủy</button>
+                                    <button type="button" class="confirm change_address">Xác Nhận</button>
+                                    <button type="button" class="cancel change_address"> Hủy</button>
 
                                 </div>
                             </div>
@@ -232,16 +235,12 @@
                 <span class="cost-name">Giảm giá</span>
                 <span class="money">-10.000 &#8363;</span><br>
             </div>
-            <div class="chiphi">
-                <span class="cost-name">Phí vận chuyển (Giao hàng tiêu chuẩn)</span>
-                <span class="money">19.000 &#8363;</span><br>
-            </div>
             <div class="chiphi" id="tong">
                 <span class="cost-name">Tổng Số Tiền (gồm VAT)</span>
                 <span class="money" id="tong-tien">201.700 &#8363;</span><br>
             </div>
         </div>
-        <hr style=" width: 100%;flex-shrink: 0;" id="line-fixed">
+        <hr style=" width: 100%;flex-shrink: 0;margin-bottom:5px;" id="line-fixed">
         <div class="dieukhoan" id="dieukhoan-fixed">
             <i class="fa-solid fa-square-check" style="color:#ca3f3f;font-size:20px;padding:7px"></i>
             <span>
@@ -254,103 +253,7 @@
     </form>
     </div>
     <script src="js/checkout.js?v=<?php echo time(); ?>"></script>
-    <script>
-        function popupToggle(idname) {
-            var popup = document.getElementById(idname);
-            popup.classList.toggle("show");
-        }
 
-        function popupOn(idname) {
-            var popup = document.getElementById(idname);
-            if (!popup.classList.contains("show")) {
-                popup.classList.toggle("show");
-            }
-        }
-
-        function popupOff(idname) {
-            var popup = document.getElementById(idname);
-            if (popup.classList.contains("show")) {
-                popup.classList.toggle("show");
-            }
-        }
-        var checkedAddress;
-
-        function getChecked() {
-            checkedAddress = document.querySelector("input[name=address]:checked");
-        }
-
-        function changeChecked() {
-            checkedAddress.checked = true;
-        }
-        var addressTmp = "";
-
-        function changeAddressTmp() {
-            var checked = document.querySelector("input[name=address]:checked").parentNode;
-            addressTmp = "<b>" + checked.querySelector(".name").innerHTML + ' ' + checked.querySelector(".sdt").innerHTML + "</b> " + checked.querySelector(".diachi").innerHTML + ' ' + checked.querySelector(".tinh").innerHTML;
-        }
-
-        function changeAddress() {
-            var diachi = document.getElementById("diachi");
-            diachi.innerHTML = addressTmp;
-        }
-        var updateAddress;
-
-        function fetchUpdateAddress(element) {
-            updateAddress = element.parentNode;
-        }
-        var btns = document.getElementsByClassName("update");
-
-        var btnPopup = function() {
-            popupToggle('chitiet');
-            popupToggle('chitiet-table');
-            changeTitle(this);
-        };
-
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener('click', btnPopup);
-        }
-    </script>
-    <script>
-        var quanHuyenData = {
-            "tp_hochiminh": ["Quận 1", "Quận 2", "Quận 3"], // Dữ liệu quận/huyện cho TP. Hồ Chí Minh
-            "ha_noi": ["Quận Ba Đình", "Quận Hoàn Kiếm", "Quận Hai Bà Trưng"] // Dữ liệu quận/huyện cho Hà Nội
-            // Thêm dữ liệu cho các tỉnh/thành phố khác ở đây
-        };
-
-        var phuongXaData = {
-            "Quận 1": ["Phường Bến Nghé", "Phường Cầu Kho"], // Dữ liệu phường/xã cho Quận 1
-            "Quận 2": ["Phường Thảo Điền", "Phường An Phú"] // Dữ liệu phường/xã cho Quận 2
-            // Thêm dữ liệu cho các quận/huyện khác ở đây
-        };
-
-        function changeQuanHuyen() {
-            var tinhThanh = document.getElementById("tinhthanh").value;
-            var quanHuyenSelect = document.getElementById("quanhuyen");
-            quanHuyenSelect.innerHTML = "";
-            var quanHuyenArray = quanHuyenData[tinhThanh];
-            if (quanHuyenArray) {
-                for (var i = 0; i < quanHuyenArray.length; i++) {
-                    var option = document.createElement("option");
-                    option.text = quanHuyenArray[i];
-                    quanHuyenSelect.add(option);
-                }
-            }
-        }
-
-        function changePhuongXa() {
-            var quanHuyen = document.getElementById("quanhuyen").value;
-            var phuongXaSelect = document.getElementById("phuongxa");
-            phuongXaSelect.innerHTML = "";
-            var phuongXaArray = phuongXaData[quanHuyen];
-            if (phuongXaArray) {
-                for (var i = 0; i < phuongXaArray.length; i++) {
-                    var option = document.createElement("option");
-                    option.text = phuongXaArray[i];
-                    phuongXaSelect.add(option);
-                }
-            }
-        }
-    </script>
 </body>
 
 </html>

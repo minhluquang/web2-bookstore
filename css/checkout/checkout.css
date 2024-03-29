@@ -466,7 +466,7 @@ padding: 4px 0;
   left: 0;
   right: 0;
   margin: 0 auto;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   bottom: 0;
   width: 80%;
   max-width: 1270px;
@@ -523,6 +523,7 @@ padding: 4px 0;
 #total-fixed {
   visibility: visible;
   height: auto;
+  padding: 0 0 10px 0;
 }
 
 #dieukhoan-bottom {
