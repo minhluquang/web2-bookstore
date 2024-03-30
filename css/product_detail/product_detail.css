@@ -102,6 +102,10 @@ body {
   margin-right: 20px;
 }
 
+.modal-author strong {
+  text-transform: uppercase;
+}
+
 .modal-category,
 .modal-author {
   font-size: 18px;

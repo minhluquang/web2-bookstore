@@ -1,5 +1,5 @@
 <?php
-  // include_once('model/product.php');
+  include_once("controller/category.controller.php");
   $items_per_page = 8;
   $current_page = 1;
 ?>
@@ -32,15 +32,18 @@
       <!-- Start: Sidebar items -->
       <div class="sidebar-items">
         <div class="sidebar-item">
-          <h2 class="sidebar-item__title">Quốc gia</h2>
+          <h2 class="sidebar-item__title">Thể loại</h2>
           <ul class="sidebar-item__list">
-            <li>
-              <input type="checkbox" id="quocgia_vietnam" /><label for="quocgia_vietnam">Việt Nam</label>
-            </li>
-            <li>
-              <input type="checkbox" id="quocgia_trungquoc" /><label for="quocgia_trungquoc">Trung Quốc</label>
-            </li>
-          </ul>
+            <?php
+              $categories = getCategoryList();
+              foreach ($categories as $category) {
+                echo '
+                  <li>
+                    <input type="radio" id="'.$category['name'].'" name="theloai" /><label for="'.$category['name'].'">'.$category['name'].'</label>
+                  </li>';
+              }
+            ?>
+            
         </div>
         <div class="sidebar-item">
           <h2 class="sidebar-item__title">Giá bán</h2>
@@ -64,86 +67,12 @@
 
       <!-- Start: Main collection -->
       <div class="main-collection">
-        <div class="collection-top-bar">
-          <h1 class="top-bar__title">NGÔN TÌNH</h1>
-          <div class="top-bar__sort">
-            <label for="">Sắp xếp: </label>
-            <ul class="top-bar__sort-filter">
-              <li><a href="?sortby=manual">Mặc định</a></li>
-              <li><a href="?sortby=(price:product:asc)">Giá: Tăng dần</a></li>
-              <li>
-                <a href="?sortby=(price:product:desc)">Giá: Giảm dần</a>
-              </li>
-              <li><a href="?sortby=(title:product:asc)">A-Z</a></li>
-              <li><a href="?sortby=(price:product:desc)">Z-A</a></li>
-            </ul>
-          </div>
-
-          <div class="top-bar__sort--reponsive">
-            <label for="">Sắp xếp: </label>
-            <div class="top-bar__sort-filter--reponsive">
-              <select name="" id="" class="sort-filter__select">
-                <option value="manual" selected>Mặc định</option>
-                <option value="(price:product:asc)">Giá: Tăng dần</option>
-                <option value="(price:product:desc)">Giá: Giảm dần</option>
-                <option value="(title:product:asc)">A-Z</option>
-                <option value="(title:product:desc)">Z-A</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="result">
-          // Gonna render products here
-
-          <!-- Start: Pagination -->
-          <div class="pagination">
-            
-           
-          </div>
-          <!-- End: Pagination -->
-        </div>
+        <div class="result"></div>
       </div>
       <!-- End: Main collection -->
     </div>
     <!-- End: Collection section -->
   </div>
-
-  <script>
-    $(document).ready(function() {
-      // Hàm để render dữ liệu sản phẩm
-      function renderProductsPerPage(current_page) {
-        var items_per_page = <?php echo $items_per_page ?>;
-
-        $.ajax({
-          url: 'controller/product.controller.php',
-          type: 'post',
-          dataType: 'html',
-          data: {
-            itemsPerPage: items_per_page,
-            currentPage: current_page
-          }
-        }).done(function(result) {
-          $('.result').html(result);
-        })
-      }
-
-      // Tự loadd sản phẩm ở lần đầu vào trang
-      renderProductsPerPage(1);
-      // $('.pagination-btn[data="1"]').addClass('active');
-
-   
-      // Sử dụng Event Delegation cho các nút phân trang
-      $(document).on('click', '.pagination-btn', function() {
-        // Remove all active, active current pagination-btn 
-        $('.pagination-btn').removeClass('active');
-        $(this).addClass('active');
-
-        var current_page = $(this).attr('data');
-        renderProductsPerPage(current_page);
-      });
-    });
-  </script>
 </body>
 
 </html>

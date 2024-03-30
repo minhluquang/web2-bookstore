@@ -34,28 +34,30 @@
 
         <!-- THỂ LOẠI 1 -->
         <?php
-            include_once('model/category.php');
-            include_once('model/product.php');
-            $categoryList = getCategoryList();
-            while ($row = mysqli_fetch_array($categoryList)) {
+            include_once('controller/category.controller.php');
+            include_once('controller/product.controller.php');
+
+            $categories = getCategoryList();
+            
+            foreach ($categories as $category) {
                 echo '
                 <div class="genre">
-                    <div class="genre-name">'.$row['name'].'</div>
-                    <div class="product-list">';
-                
-                $productList = getProductsById($row['id']);
-                $count = 0;
-                while (($row_product = mysqli_fetch_array($productList)) && ($count < 5)) {
-                    $count++;
+                    <div class="genre-name">'.$category['name'].'</div>
+                <div class="product-list">';
 
-                    $price_formatted = number_format($row_product['price'], '0', ',', '.').'đ';
-                    echo '<div class="product">
-                        <img src="'.$row_product['image_path'].'" alt="">
-                        <span class="name-product">'.$row_product['product_name'].'</span>
+                $products = getProductsByIdCategory($category['id']);
+                $index = 0;
+                foreach ($products as $product) {
+                    if ($index == 5) break;
+                    $index++;
+                    $price_formatted = number_format($product['price'], '0', ',', '.').'đ';
+                    echo '
+                    <div class="product">
+                        <img src="'.$product['image_path'].'" alt="">
+                        <span class="name-product">'.$product['product_name'].'</span>
                         <span class="price">'. $price_formatted.'</span>
                     </div>';
                 }
-                
                 echo '
                     </div>
                     <div  class="see-more" >
