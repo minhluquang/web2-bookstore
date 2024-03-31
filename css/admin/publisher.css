@@ -1,0 +1,12 @@
+#content-product thead th:nth-child(1) {
+  width: 5%;
+}
+#content-product thead th:nth-child(2) {
+  width: 20%;
+}
+#content-product thead th:nth-child(3) {
+  width: 20%;
+}
+#content-product thead th:nth-child(4) {
+  width: 20%;
+}

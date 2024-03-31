@@ -98,7 +98,7 @@ td:last-child {
   margin-bottom: 24px;
 }
 
-.pagination a {
+.pagination span {
   color: black;
   float: left;
   padding: 8px 16px;
@@ -109,13 +109,13 @@ td:last-child {
   border-radius: 4px;
 }
 
-.pagination a.active {
+.pagination span.active {
   background-color: black;
   color: white;
   border: 1px solid black;
 }
 
-.pagination a:hover:not(.active) {
+.pagination span:hover:not(.active) {
   background-color: #ddd;
 }
 
