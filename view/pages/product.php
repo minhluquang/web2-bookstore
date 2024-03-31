@@ -39,7 +39,7 @@
               foreach ($categories as $category) {
                 echo '
                   <li>
-                    <input type="radio" id="'.$category['name'].'" name="theloai" /><label for="'.$category['name'].'">'.$category['name'].'</label>
+                    <input type="radio" id="'.$category['name'].'" data="'.$category['id'].'" name="theloai" /><label for="'.$category['name'].'">'.$category['name'].'</label>
                   </li>';
               }
             ?>

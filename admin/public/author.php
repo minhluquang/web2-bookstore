@@ -17,7 +17,7 @@ $_SESSION["render"] ->setTable("authors");
 </head>
 
 <body>
-    <form class="admin__content--body__filter"> 
+    <form class="admin__content--body__filter">
         <h1>Lọc thông tin tác giả</h1>
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--nameClient" id="authorNameClient">
@@ -33,10 +33,10 @@ $_SESSION["render"] ->setTable("authors");
                 <input type="text" placeholder="Nhập email tác giả" />
             </div>
 
-          
+
         </div>
 
-     
+
         <div class="body__filter--actions">
             <button class="body__filter--action__add">Thêm tác giả</button>
             <div>

@@ -1,13 +1,19 @@
 <?php
-  include_once('../model/product.model.php');
+  if (isset($_POST['modelPath'])) {
+    include_once($_POST['modelPath'].'/product.model.php');
+  } else {
+    include_once('model/product.model.php');
+  }
 
-  function getProductsByIdCategory($category_id) {
-    $result = getProductsByIdCategoryModel($category_id);
+  // include_once("../model/product.model.php");
+
+  function getProductsByIdCategory($category_id, $items_amount = null, $page = null) {
+    $result = getProductsByIdCategoryModel($category_id, $items_amount, $page);
     if ($result !== false) {
       $products = $result->fetch_all(MYSQLI_ASSOC);
       return $products;
     } else {
-      return "Hệ thống gặp sự cố";
+      return "Hệ thống gặp sự cố";  
     }
   }
 
@@ -26,7 +32,10 @@
         );
       }
     } else {
-      return "Hệ thống gặp sự cố";
+      return (object) array (
+        'success' => false,
+        'message' => "Không có sản phẩm nào"
+      );
     }
   }
 
@@ -41,19 +50,54 @@
 
   // Xử lý render sản phẩm (page=product)
   if (isset($_POST['currentPage']) && isset($_POST['itemsPerPage'])) {
-    $items_per_page = intval($_POST['itemsPerPage']);
+    $categoryId = $_POST['categoryId'];
+    $itemsPerPage = $_POST['itemsPerPage'];
     $page = intval($_POST['currentPage']);
-    $result = getProductsForPaginationModel($items_per_page, $page);
-    if ($result->num_rows > 0) {
-      $products = $result->fetch_all(MYSQLI_ASSOC);
-      $response = (object) array(
-        'products' => $products,
-        'page' => $page,
-        'amountProduct' => getAmountProductModel()
-      );
-      echo json_encode($response);
+
+    if (isset($_POST['categoryId']) && $_POST['categoryId'] != null) {
+      $amountProduct = getProductsByIdCategoryModel($categoryId, null, null)->num_rows;  
+      $result = getProductsByIdCategoryModel($categoryId, $itemsPerPage, $page);
+      
+      if ($result->num_rows > 0) {
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        $response = (object) array(
+          'products' => $products,
+          'page' => $page,
+          'amountProduct' => $amountProduct
+        );
+        echo json_encode($response);
+      }
     } else {
-      return "Hệ thống gặp sự cố";
+      $result = getProductsForPaginationModel($itemsPerPage, $page);
+      if ($result->num_rows > 0) {
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        $response = (object) array(
+          'products' => $products,
+          'page' => $page,
+          'amountProduct' => getAmountProductModel()
+        );
+        echo json_encode($response);
+      }
     }
   }
+
+  // // Xử lý lọc sản phẩm nâng cao
+  // if (isset($_POST['categoryId'])) {
+  //   $categoryId = $_POST['categoryId'];
+  //   $itemsPerPage = $_POST['itemsPerPage'];
+  //   $page = $_POST['page'];
+
+  //   $amountProduct = getProductsByIdCategoryModel($categoryId, null, null)->num_rows;  
+  //   $result = getProductsByIdCategoryModel($categoryId, $itemsPerPage, $page);
+    
+  //   if ($result->num_rows > 0) {
+  //     $products = $result->fetch_all(MYSQLI_ASSOC);
+  //     $response = (object) array(
+  //       'products' => $products,
+  //       'page' => $page,
+  //       'amountProduct' => $amountProduct
+  //     );
+  //     echo json_encode($response);
+  //   }
+  // }
 ?>

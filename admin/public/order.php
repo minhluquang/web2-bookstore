@@ -161,7 +161,7 @@ $_SESSION["render"] ->setTable("orders");
     </div>
     <div class="overlay hidden"></div>
 
-        <script defer src="../js/admin/order.js?v=<?php echo time(); ?>"></script>
+    <script defer src="../js/admin/order.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>
