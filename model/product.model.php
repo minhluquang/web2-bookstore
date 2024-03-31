@@ -2,19 +2,28 @@
   include_once('connect.php');
   $database = new connectDB();
 
-  function getProductsByIdCategoryModel($category_id) {
+  function getProductsByIdCategoryModel($category_id, $item_amount, $page) {
     global $database;
-      if ($database->conn) {
-        $sql = "SELECT p.id product_id, p.name product_name, p.price, p.image_path
-        FROM category_details cd
-        INNER JOIN products p ON p.id = cd.product_id
-        INNER JOIN categories c ON c.id = cd.category_id
-        WHERE c.id = $category_id";
-        $result = $database->query($sql);
-        return $result;
-      } else {
-        return false;
+    if ($database->conn) {
+      $sql = "SELECT p.id product_id,
+                      p.name product_name, 
+                      p.price, 
+                      p.image_path
+              FROM category_details cd
+              INNER JOIN products p ON p.id = cd.product_id
+              INNER JOIN categories c ON c.id = cd.category_id
+              WHERE c.id = $category_id";
+
+      if ($item_amount && $page) {
+        $offset = ($page - 1) * $item_amount;
+        $sql .= " LIMIT $item_amount OFFSET $offset";
       }
+
+      $result = $database->query($sql);
+      return $result;
+    } else {
+      return false;
+    }
   }
 
   function getProductsForPaginationModel($item_per_page, $page) {
