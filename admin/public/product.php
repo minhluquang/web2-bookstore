@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+//   session_start();
+$_SESSION["render"] ->setTable("products");
+?>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +13,6 @@
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/account.css?v=<?php echo time(); ?> " />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
 </head>
@@ -70,39 +72,76 @@
     </form>
 
     <!-- end -->
-    <div class="table__wrapper">
-        <table id="content-product">
-            <thead class="menu">
-                <tr>
-                    <th>Mã SP</th>
-                    <th>Ảnh</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Phân loại</th>
-                    <th>Ngày cập nhật</th>
-                    <th>Ngày tạo</th>
-                    <th>Giá</th>
-                    <th>Số lượng</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody class="table-content" id="content">
+    <div class='result'></div>
 
-            </tbody>
-        </table>
+    <div id="modal">
+        <div class="modal-edit-product-container" id="modal-edit-container">
+            <div class="modal-edit-product">
+                <div class="modal-header">
+                    <h3>Thay Đổi thông tin sản phẩm</h3>
+                    <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="edit-image">
+                            <h4>Hình ảnh</h4>
+                            <input type="radio" id="delete" value="delete" name="image">
+                            <label for="delete">Xóa Hình</label>
+                            <input type="radio" id="edit" value="edit" name="image">
+                            <label for="edit">Sửa Hình</label>
+                            <input type="radio" id="retain" value="retain" name="image">
+                            <label for="retain">Giữ Hình</label>
+                            <div class="choose-img hidden">
+                                <label for="choose-img">Chọn hình ảnh:</label>
+                                <div class="img">
+                                    <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display: none;">
+                                </div>
 
+                                <input type="file" name="choose-img" id="fileInput">
+                            </div>
+
+                        </div>
+                        <div class="modal-body-2">
+                            <div class="edit-name">
+                                <label for="">Tên sản phẩm</label>
+                                <input type="text" value="Tên sản phẩm">
+                            </div>
+                            <div class="edit-category">
+                                <label for="">Thể loại</label>
+                                <select name="" id="">
+                                    <option value="science">Khoa học</option>
+                                    <option value="psychology">Tâm Lý</option>
+                                    <option value="novel">Tiểu thuyết</option>
+                                </select>
+                            </div>
+                            <div class="edit-price">
+                                <label for="">Giá sản phẩm</label>
+                                <input type="text" value="Giá sản phẩm">
+                            </div>
+                            <div class="edit-id">
+                                <label for="">Mã sản phẩm</label>
+                                <input type="text" value="Mã sản phẩm">
+                            </div>
+                            <div class="edit-date-create">
+                                <label for="">Ngày Tạo</label>
+                                <input type="date" value="dateCreate">
+                            </div>
+                            <div class="edit-date-update">
+                                <label for="">Ngày cập nhật</label>
+                                <input type="date" value="dateUpdate">
+                            </div>
+
+                        </div>
+                        <div>
+                        </div>
+
+                        <input type="submit" value="Xác nhận" class="btn-confirm">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#">1</a>
-        <a href="#" class="active">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
-        <a href="#">&raquo;</a>
-    </div>
 
-    <div id="modal"></div>
 
     <script defer src="../js/admin/product.js?v=<?php echo time(); ?> "></script>
 </body>

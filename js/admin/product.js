@@ -1,90 +1,79 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Load the jquery
+var script = document.createElement("SCRIPT");
+script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
+script.type = 'text/javascript';
+document.getElementsByTagName("head")[0].appendChild(script);
+var search = location.search.substring(1);
+urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
+var number_of_item = urlParams['item'];
+var current_page = urlParams['pag'];
+if (current_page == null) {
+    current_page = 1;
+}
+if (number_of_item == null) {
+    number_of_item = 5;
+}
+function checkReady() {
+    return new Promise(async function (resolve) {
+        while (!window.jQuery) {
+            await new Promise(resolve => setTimeout(resolve, 20));
+        }
+        resolve();
+    })
+}
+async function loadForFirstTime() {
+    await checkReady();
+    loadItem();
+}
+function pagnationBtn() {
+    // pagnation
+    document.querySelectorAll('.pag').forEach((btn) => btn.addEventListener('click', function () {
+        current_page=btn.innerHTML;
+        loadItem();
+    }));
+    if (document.getElementsByClassName('pag-pre').length > 0)
+        document.querySelector('.pag-pre').addEventListener('click', function () {
+            current_page = Number(document.querySelector('span.active').innerHTML) - 1;
+            loadItem(number_of_item, current_page);
+        });
+    if (document.getElementsByClassName('pag-con').length > 0)
+        document.querySelector('.pag-con').addEventListener('click', function () {
+            current_page = Number(document.querySelector('span.active').innerHTML) + 1;
+
+            loadItem();
+        });
+}
+function loadItem() {
     $.ajax({
-        url: '../controller/admin/product.controller.php',
+        url: '../controller/admin/pagnation.controller.php',
         type: "post",
         dataType: 'html',
-        data: {}
+        data: {
+            number_of_item: number_of_item,
+            current_page: current_page,
+            function: "render"
+        }
     }).done(function (result) {
-        $('.table-content').html(result);
+        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&pag=' + current_page ;
+        window.history.pushState({path:newurl},'',newurl);
+        $('.result').html(result);
+        pagnationBtn();
         js();
+
     })
+};
+document.addEventListener("DOMContentLoaded", () => {
+    loadForFirstTime()
 });
+
+
+
+//js
 var js = function () {
     var edit_btns = document.getElementsByClassName("actions--edit");
-    const modal = document.querySelector('#modal')
-
-    const edit_html = `
-<div class="modal-edit-product-container show" id="modal-edit-container">
-<div class="modal-edit-product">
-    <div class="modal-header">
-        <h3>Thay Đổi thông tin sản phẩm</h3>
-        <button class="btn-close" id="btnClose" ><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="modal-body">
-        <form action="">
-            <div class="edit-image">
-                <h4>Hình ảnh</h4>
-                <input type="radio" id="delete" value="delete" name="image">
-                <label for="delete">Xóa Hình</label>
-                <input type="radio" id="edit" value="edit" name="image">
-                <label for="edit">Sửa Hình</label>
-                <input type="radio" id="retain" value="retain" name="image">
-                <label for="retain">Giữ Hình</label>
-                <div class="choose-img hidden">
-                    <label for="choose-img">Chọn hình ảnh:</label>
-                    <div class="img">
-                        <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display: none;">
-                    </div>
-
-                    <input type="file" name="choose-img" id="fileInput">
-                </div>
-
-            </div>
-            <div class="modal-body-2">
-                <div class="edit-name">
-                    <label for="">Tên sản phẩm</label>
-                    <input type="text" value="Tên sản phẩm">
-                </div>
-                <div class="edit-category">
-                    <label for="">Thể loại</label>
-                    <select name="" id="">
-                        <option value="science">Khoa học</option>
-                        <option value="psychology">Tâm Lý</option>
-                        <option value="novel">Tiểu thuyết</option>
-                    </select>
-                </div>
-                <div class="edit-price">
-                    <label for="">Giá sản phẩm</label>
-                    <input type="text" value="Giá sản phẩm">
-                </div>
-                <div class="edit-id">
-                    <label for="">Mã sản phẩm</label>
-                    <input type="text" value="Mã sản phẩm">
-                </div>
-                <div class="edit-date-create">
-                    <label for="">Ngày Tạo</label>
-                    <input type="date" value="dateCreate">
-                </div>
-                <div class="edit-date-update">
-                    <label for="">Ngày cập nhật</label>
-                    <input type="date" value="dateUpdate">
-                </div>
-
-            </div>
-            <div>
-            </div>
-
-            <input type="submit" value="Xác nhận" class="btn-confirm" >
-        </form>
-    </div>
-</div>
-</div>
-`
-
-
     for (var i = 0; i < edit_btns.length; i++) {
         edit_btns[i].addEventListener('click', e => {
-            modal.innerHTML = edit_html;
+            document.querySelector('.modal-edit-product-container').classList.add('show');
             function displayImage(input) {
                 const file = input.files[0]; // Lấy ra tệp được chọn từ input file
                 const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh
@@ -136,9 +125,6 @@ var js = function () {
         });
 
     }
-    var script = document.createElement('script');
-    script.src = 'https://code.jquery.com/jquery-3.7.1.min.js'; // Check https://jquery.com/ for the current version
-    document.getElementsByTagName('head')[0].appendChild(script);
 
     // delete
 

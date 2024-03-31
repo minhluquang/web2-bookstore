@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+//   session_start();
+$_SESSION["render"] ->setTable("orders");
+?>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,7 +13,6 @@
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> ">
     <link rel="stylesheet" href="../css/admin/order.css?v=<?php echo time(); ?> ">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -62,36 +64,9 @@
     </form>
 
     <!-- end -->
-    <div class="table__wrapper">
-        <table id="content-product">
-            <thead class="menu">
-                <tr>
-                    <th>Mã đơn</th>
-                    <th>Mã KH</th>
-                    <th>Mã NV</th>
-                    <th>Ngày tạo</th>
-                    <th>Tổng giá</th>
-                    <th>Địa chỉ giao</th>
-                    <th>Trạng thái</th>
-                    <th>Mã giảm giá</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody class="table-content" id="content">
+    <div class="result"></div>
 
-            </tbody>
-        </table>
-    </div>
-    <div class="pagination">
-        <span href="#">&laquo;</span>
-        <span href="#">1</span>
-        <span href="#" class="active">2</span>
-        <span href="#">3</span>
-        <span href="#">4</span>
-        <span href="#">5</span>
-        <span href="#">6</span>
-        <span href="#">&raquo;</span>
-    </div>
+ 
     <!-- delete button  -->
     <div class="delete-modal hidden">
         <button class="close-modal">&times;</button>

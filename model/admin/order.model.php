@@ -1,14 +1,15 @@
 <?php
-function order_delete($id)
-{
   $ds = DIRECTORY_SEPARATOR;
   $base_dir = realpath(dirname(__FILE__)  . $ds . '..') . $ds;
-    include_once("{$base_dir}connect.php");
-    $conn = connectDB();
+  include_once("{$base_dir}connect.php");
+  $database = new connectDB();
+function order_delete($id)
+{
+  global $database;
     $sql_details = 'DELETE FROM `order_details` WHERE order_id="' . $id . '"';
-    $result_details = mysqli_query($conn, $sql_details);
+    $result_details = $database->query( $sql_details);
     $sql_order = 'DELETE FROM `orders` WHERE id="' . $id . '"';
-    $result_order = mysqli_query($conn, $sql_order);
+    $result_order = $database->query( $sql_order);
     if ($result_details && $result_order ) {
         return (object) array(
           'success' => true,

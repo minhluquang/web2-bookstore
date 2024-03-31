@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+//   session_start();
+$_SESSION["render"] ->setTable("accounts");
+?>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,49 +60,7 @@
         </div>
     </form>
 
-    <!-- Table -->
-    <div class="table__wrapper">
-        <table id="content-product">
-            <thead class="menu">
-                <tr>
-                    <th>Mã người dùng</th>
-                    <th>Tên người dùng</th>
-                    <th>Email</th>
-                    <th>Loại tài khoản</th>
-                    <th>Ngày đăng ký</th>
-                    <th>Trạng thái tài khoản</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody class="table-content" id="content">
-                <tr>
-                    <td class="id">KH101</td>
-                    <td class="name">Lữ Quang Minh</td>
-                    <td class="email">minhlq2911@gmail.com</td>
-                    <td class="type" value="staff">Người dùng</td>
-                    <td class="date-create">14/11/2023</td>
-                    <td class="status" value="active">Hoạt động</td>
-                    <td class="actions">
-                        <button class="actions--edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- End Table -->
-
-    <div class="pagination">
-        <span>&laquo;</span>
-        <span>1</span>
-        <span class="active">2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span>&raquo;</span>
-    </div>
-
+    <div class="result"></div>
     <!-- Start: Modal Edit -->
     <div id="modal" class="modal">
         <div class="modal-content">
