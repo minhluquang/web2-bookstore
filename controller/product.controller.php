@@ -51,10 +51,53 @@
   // Xử lý render sản phẩm (page=product)
   if (isset($_POST['currentPage']) && isset($_POST['itemsPerPage'])) {
     $categoryId = $_POST['categoryId'];
+    $priceRange= $_POST['priceRange'];
     $itemsPerPage = $_POST['itemsPerPage'];
     $page = intval($_POST['currentPage']);
+    
+    $startRange = 0;
+    $endRange = 0;
 
-    if (isset($_POST['categoryId']) && $_POST['categoryId'] != null) {
+    // Gán giá trị lại cho startRange && endRange nếu có chọn lọc theo giá
+    if ($priceRange == 'duoi50') {
+      $startRange = 0;
+      $endRange = 49000;
+    } else if ($priceRange == 'tu50duoi100') {
+      $startRange = 50000;
+      $endRange = 100000;
+    } else if ($priceRange == 'tu100duoi200') {
+      $startRange = 100000;
+      $endRange = 200000;
+    } else if ($priceRange == 'tren200') {
+      $startRange = 200001;
+      $endRange = 1000000000;
+    }
+
+    if ($priceRange != null && $categoryId != null) {
+      $amountProduct = getProductsByCategoryAndPriceRangeModel($categoryId, $startRange, $endRange, null, null)->num_rows;
+      $result = getProductsByCategoryAndPriceRangeModel($categoryId, $startRange, $endRange, $itemsPerPage, $page);
+      if ($result->num_rows > 0) {
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        $response = (object) array(
+          'products' => $products,
+          'page' => $page,
+          'amountProduct' => $amountProduct
+        );
+        echo json_encode($response);
+      } 
+    } else if ($priceRange != null) {
+      $amountProduct = getProductsByPriceRangeModel($startRange, $endRange, null, null)->num_rows;
+      $result = getProductsByPriceRangeModel($startRange, $endRange, $itemsPerPage, $page);
+      if ($result->num_rows > 0) {
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        $response = (object) array(
+          'products' => $products,
+          'page' => $page,
+          'amountProduct' => $amountProduct
+        );
+        echo json_encode($response);
+      } 
+    } else if ($categoryId != null) {
       $amountProduct = getProductsByIdCategoryModel($categoryId, null, null)->num_rows;  
       $result = getProductsByIdCategoryModel($categoryId, $itemsPerPage, $page);
       
@@ -80,24 +123,4 @@
       }
     }
   }
-
-  // // Xử lý lọc sản phẩm nâng cao
-  // if (isset($_POST['categoryId'])) {
-  //   $categoryId = $_POST['categoryId'];
-  //   $itemsPerPage = $_POST['itemsPerPage'];
-  //   $page = $_POST['page'];
-
-  //   $amountProduct = getProductsByIdCategoryModel($categoryId, null, null)->num_rows;  
-  //   $result = getProductsByIdCategoryModel($categoryId, $itemsPerPage, $page);
-    
-  //   if ($result->num_rows > 0) {
-  //     $products = $result->fetch_all(MYSQLI_ASSOC);
-  //     $response = (object) array(
-  //       'products' => $products,
-  //       'page' => $page,
-  //       'amountProduct' => $amountProduct
-  //     );
-  //     echo json_encode($response);
-  //   }
-  // }
 ?>
