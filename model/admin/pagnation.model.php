@@ -41,6 +41,7 @@ class pagnation
             'orders' => 'id',
             'accounts'=> 'username',
             'authors'=> 'id',
+            'publishers'=> 'id',
         );
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
@@ -240,11 +241,6 @@ class pagnation
                         <tbody class="table-content" id="content">
 
                     ';
-                        
-                    // <td class="id">KH101</td>
-                    // <td class="name">Lữ Quang Minh</td>
-                    // <td class="email">minhlq2911@gmail.com</td>
-                    // <td class="genres">Trinh thám,Trinh thám,Trinh thám,Trinh thám,</td>
 
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
@@ -264,6 +260,39 @@ class pagnation
                                 $gerne =$gerne. $row_gerne['name'].', ';
                             }
                             echo rtrim($gerne, ', ').'</td>';
+                            echo '<td class="actions">
+                            <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
+                        </td>
+                        </tr>';
+                        }
+                        echo ' 
+                    </tbody>
+                    </table>
+                    </div>';
+                }
+                break;
+                case "publishers":{
+                    echo '
+                    <div class="table__wrapper">
+                    <table id="content-product">
+                        <thead class="menu">
+                            <tr>
+                            <th>Mã NXB</th>
+                            <th>Tên NXB</th>
+                            <th>Email NXB</th>
+                            <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-content" id="content">
+
+                    ';
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';
+                            echo '<td class="name">' . $row['name']. '</td>';
+                            echo '<td class="email">' .'Email'. '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
