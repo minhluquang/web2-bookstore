@@ -1,6 +1,7 @@
 const itemsPerPage = 8;
 const modelPath = "../model";
 let categoryId = null;
+let priceRange = null;
 
 // Hàm để render HTML của mỗi sản phẩm
 function renderProductHTML(data) {
@@ -17,7 +18,9 @@ function renderProductHTML(data) {
           <div class="product-img">
             <div class="product-action">
               <div class="product-action--wrapper">
-                <a href="index.php?page=product_detail&pid=${product.id}" class="product-action--btn product-action__detail">Chi tiết</a>
+                <a href="index.php?page=product_detail&pid=${
+                  product.id
+                }" class="product-action--btn product-action__detail">Chi tiết</a>
                 <form>
                   <input type="hidden" name="product_id" value="${product.id}">
                   <input
@@ -34,9 +37,13 @@ function renderProductHTML(data) {
                 alt="${product.name}" />
             </div>
           </div>
-          <a href="index.php?page=product_detail&pid=${product.id}" >
+          <a href="index.php?page=product_detail&pid=${
+            product.id || product.product_id
+          }" >
             <div class="product-detail">
-                <p class="product-title">${product.name}</p>
+                <p class="product-title">${
+                  product.name || product.product_name
+                }</p>
                 <p class="product-price">${formatPrice}</p>
             </div>
           </a>
@@ -90,25 +97,33 @@ function renderPaginationHTML(data, itemsPerPage) {
 }
 
 // Hàm để render dữ liệu sản phẩm và phân trang (AJAX)
-function renderProductsPerPage(currentPage, categoryId = null) {
+function renderProductsPerPage(
+  currentPage,
+  categoryId = null,
+  priceRange = null
+) {
   $.ajax({
     url: "controller/product.controller.php",
     type: "post",
     dataType: "html",
     data: {
       categoryId,
+      priceRange,
       itemsPerPage,
       currentPage,
       modelPath,
     },
   }).done(function (result) {
-    const data = JSON.parse(result);
+    try {
+      const data = JSON.parse(result);
 
-    const productHTML = renderProductHTML(data);
-    const paginationHTML = renderPaginationHTML(data, itemsPerPage);
-    let html = `${productHTML}${paginationHTML}`;
-
-    $(".result").html(html);
+      const productHTML = renderProductHTML(data);
+      const paginationHTML = renderPaginationHTML(data, itemsPerPage);
+      let html = `${productHTML}${paginationHTML}`;
+      $(".result").html(html);
+    } catch (error) {
+      $(".result").html("Không tìm thấy sản phẩm");
+    }
   });
 }
 
@@ -122,13 +137,20 @@ $(document).ready(function () {
     $(this).addClass("active");
 
     var current_page = $(this).attr("data");
-    renderProductsPerPage(current_page, categoryId);
+    renderProductsPerPage(current_page, categoryId, priceRange);
   });
 
-  // Lọc nâng cao
+  // Lọc nâng cao theo thể loại
   $('input[name="theloai"]').click(function () {
     categoryId = $(this).attr("data");
     // Tự load sản phẩm ở lần đầu vào trang
-    renderProductsPerPage(1, categoryId);
+    renderProductsPerPage(1, categoryId, priceRange);
+  });
+
+  // Lọc nâng cao theo giá tiền
+  $('input[name="giaban"]').click(function () {
+    priceRange = $(this).attr("data");
+    // Tự load sản phẩm ở lần đầu vào trang
+    renderProductsPerPage(1, categoryId, priceRange);
   });
 });

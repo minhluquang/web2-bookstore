@@ -31,7 +31,7 @@
     if ($database->conn) {
       $offset = ($page - 1) * $item_per_page;
       $sql = "SELECT * 
-              FROM `products` 
+              FROM products 
               ORDER BY id ASC
               LIMIT $item_per_page OFFSET $offset;";
       $result = $database->query($sql);
@@ -46,6 +46,51 @@
     if ($database->conn) {
       $products = $database->selectAll('products'); 
       return $products->num_rows;    
+    } else {
+      return false;
+    }
+  }
+
+  function getProductsByPriceRangeModel($startRange, $endRange, $itemsPerPage, $page) {
+    global $database;
+    if ($database->conn) {
+      $sql = "SELECT * 
+              FROM products 
+              WHERE price BETWEEN $startRange AND $endRange
+              ORDER BY price ASC";
+
+      if ($itemsPerPage && $page) {
+        $offset = ($page - 1) * $itemsPerPage;
+        $sql .= " LIMIT $itemsPerPage OFFSET $offset;";
+      }
+
+      $result = $database->query($sql);
+      return $result;
+    } else {
+      return false;
+    }
+  }
+
+  function getProductsByCategoryAndPriceRangeModel($categoryId, $startRange, $endRange, $itemsPerPage = null, $page = null) {
+    global $database;
+    if ($database->conn) {
+      $sql = "SELECT p.id product_id,
+                      p.name product_name, 
+                      p.price, 
+                      p.image_path
+              FROM category_details cd
+              INNER JOIN products p ON p.id = cd.product_id
+              INNER JOIN categories c ON c.id = cd.category_id
+              WHERE c.id = $categoryId AND price BETWEEN $startRange AND $endRange
+              ORDER BY price ASC";
+
+      if ($itemsPerPage && $page) {
+        $offset = ($page - 1) * $itemsPerPage;
+        $sql .= " LIMIT $itemsPerPage OFFSET $offset;";
+      }
+
+      $result = $database->query($sql);
+      return $result;
     } else {
       return false;
     }
