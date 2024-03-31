@@ -1,24 +1,24 @@
 
 <?php
-
-function product_delete($id)
-{
   $ds = DIRECTORY_SEPARATOR;
   $base_dir = realpath(dirname(__FILE__)  . $ds . '..') . $ds;
   include_once("{$base_dir}connect.php");
-  $conn = connectDB();
+  $database = new connectDB();
+function product_delete($id)
+{
+
+  global $database;
   $sql_cat = 'DELETE FROM `category_details` WHERE product_id="' . $id . '"';
-  $result_cat = mysqli_query($conn, $sql_cat);
+  $result_cat = $database->query($sql_cat);
   $sql_au = 'DELETE FROM `author_details` WHERE product_id="' . $id . '"';
-  $result_au = mysqli_query($conn, $sql_au);
+  $result_au =$database->query( $sql_au);
   $sql_receipt = 'DELETE FROM `goodsreceipt_details` WHERE product_id="' . $id . '"';
-  $result_receipt = mysqli_query($conn, $sql_receipt);
+  $result_receipt =$database->query( $sql_receipt);
   $sql_order = 'DELETE FROM `order_details` WHERE product_id="' . $id . '"';
-  $result_order = mysqli_query($conn, $sql_order);
+  $result_order =$database->query( $sql_order);
   $sql_product = 'DELETE FROM `products` WHERE id="' . $id . '"';
-  $result_product = mysqli_query($conn, $sql_product);
+  $result_product =$database->query( $sql_product);
   if ($result_cat && $result_au && $result_receipt && $result_order && $result_product) {
-    mysqli_close($conn);
     return (object) array(
       'success' => true,
       'message' => "Xóa sản phẩm với mã $id thành công"
@@ -40,11 +40,34 @@ function product_delete($id)
     if (!$result_product) {
       $error += "Lỗi khi xử lý bảng products\n";
     }
-    mysqli_close($conn);
     return (object) array(
       'success' => false,
       'message' => $error
     );
   }
+}
+
+function loadProductForPagnation($number_of_item,$current_page,$page)
+{
+  global $database;
+  $offset=($current_page-1)*$number_of_item;
+  $sql = "SELECT * FROM $page ORDER BY id ASC LIMIT $number_of_item OFFSET $offset ";
+  $result =$database->query( $sql);
+  if($result->num_rows > 0){
+    return (Object) array (
+      'success' => true,
+      'data' => $result
+    );
+  }
+  else {
+    return (Object) array (
+      'success' => false
+    );
+  } 
+}
+function getTotalRecords($page) {
+  global $database;
+  $total_records =$database->query( "SELECT * FROM $page");
+  return $total_records->num_rows;
 }
 

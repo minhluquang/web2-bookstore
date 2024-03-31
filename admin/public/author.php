@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+//   session_start();
+$_SESSION["render"] ->setTable("authors");
+?>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,45 +46,7 @@
         </div>
     </form>
 
-    <!-- Table -->
-    <div class="table__wrapper">
-        <table id="content-product">
-            <thead class="menu">
-                <tr>
-                    <th>Mã tác giả</th>
-                    <th>Tên tác giả</th>
-                    <th>Email tác giả</th>
-                    <th>Thể loại viết</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody class="table-content" id="content">
-                <tr>
-                    <td class="id">KH101</td>
-                    <td class="name">Lữ Quang Minh</td>
-                    <td class="email">minhlq2911@gmail.com</td>
-                    <td class="genres">Trinh thám,Trinh thám,Trinh thám,Trinh thám,</td>
-
-                    <td class="actions">
-                        <button class="actions--edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- End Table -->
-
-    <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#">1</a>
-        <a href="#" class="active">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
-        <a href="#">&raquo;</a>
-    </div>
+<div class="result"> </div>
 
     <!-- Start: Modal Edit -->
     <div id="modal" class="modal">
