@@ -7,30 +7,7 @@
   --side-bar-height: 240px;
   --top-bar-height: 60px;
 }
-.table__wrapper {
-  font-family: "Mulish";
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  margin-top: 50px;
-}
 
-a {
-  text-decoration: none;
-  font-style: none;
-}
-
-.table__wrapper table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-#content-product thead th {
-  height: 50px;
-  background-color: #333;
-  color: white;
-}
 
 #content-product thead th:first-child {
   border-top-left-radius: 4px;
@@ -54,6 +31,25 @@ a {
   width: 11%;
 }
 
+.table__wrapper {
+  font-family: "Mulish";
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.table__wrapper table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#content-product thead th {
+  height: 50px;
+  background-color: #333;
+  color: white;
+}
 tbody,
 td {
   text-align: center;
@@ -87,7 +83,7 @@ td:last-child {
   border-bottom: 1px solid #ccc;
 }
 
-/*  */
+/* pagnation */
 .pagination {
   margin-top: 20px;
   display: flex;
@@ -98,8 +94,9 @@ td:last-child {
   margin-bottom: 24px;
 }
 
-.pagination a {
+.pagination span {
   color: black;
+  cursor: pointer;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
@@ -109,7 +106,7 @@ td:last-child {
   border-radius: 4px;
 }
 
-.pagination a.active {
+.pagination span.active {
   background-color: black;
   color: white;
   border: 1px solid black;
