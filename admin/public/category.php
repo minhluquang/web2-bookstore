@@ -2,7 +2,10 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+//   session_start();
+$_SESSION["render"] ->setTable("categories");
+?>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,98 +62,10 @@
             </div>
         </div>
     </form>
-
-    <!-- end -->
-    <div class="table__wrapper">
-        <table id="content-product">
-            <thead class="menu">
-                <tr>
-                    <th>Mã thể loại</th>                 
-                    <th>Tên thể loại</th>
-                    <th>Số lượng sách</th>
-                    <th>Ngày cập nhật</th>
-                    <th>Ngày tạo</th>          
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody class="table-content" id="content">
-                <tr>
-                    <td class="id">MASP</td>         
-                    <td class="name">Fuel EXe 9.9 XX AXS T-TYPE</td>
-                    <td class="date-update">20</td>
-                    <td class="date-creat">14/11/2023</td>
-                    <td class="price">14/11/2023</td>
-                    <td class="actions ">
-                        <button class="actions--edit" id="edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-                <!-- asd -->
-                <tr>
-                    <td class="id">MASP</td>         
-                    <td class="name">Fuel EXe 9.9 XX AXS T-TYPE</td>
-                    <td class="date-update">20</td>
-                    <td class="date-creat">14/11/2023</td>
-                    <td class="price">14/11/2023</td>
-                    <td class="actions ">
-                        <button class="actions--edit" id="edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-                <!-- as -->
-                <tr>
-                    <td class="id">MASP</td>         
-                    <td class="name">Fuel EXe 9.9 XX AXS T-TYPE</td>
-                    <td class="date-update">20</td>
-                    <td class="date-creat">14/11/2023</td>
-                    <td class="price">14/11/2023</td>
-                    <td class="actions ">
-                        <button class="actions--edit" id="edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-                <!-- asd -->
-                <tr>
-                    <td class="id">MASP</td>         
-                    <td class="name">Fuel EXe 9.9 XX AXS T-TYPE</td>
-                    <td class="date-update">20</td>
-                    <td class="date-creat">14/11/2023</td>
-                    <td class="price">14/11/2023</td>
-                    <td class="actions ">
-                        <button class="actions--edit" id="edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-                <!-- as -->
-                <tr>
-                    <td class="id">MASP</td>         
-                    <td class="name">Fuel EXe 9.9 XX AXS T-TYPE</td>
-                    <td class="date-update">20</td>
-                    <td class="date-creat">14/11/2023</td>
-                    <td class="price">14/11/2023</td>
-                    <td class="actions ">
-                        <button class="actions--edit" id="edit">Sửa</button>
-                        <button class="actions--delete">Xoá</button>
-                    </td>
-                </tr>
-                <!-- as -->
-            </tbody>
-        </table>
-    </div>
-    <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#">1</a>
-        <a href="#" class="active">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
-        <a href="#">&raquo;</a>
-    </div>
-
+    <div class="result"></div>
     <div id="modal"></div>
     
-    <script defer src="./admin.js/productAdmin.js"></script>
+    <script defer src="../js/admin/category.js?v=<?php echo time(); ?> "></script>
 </body>
 
 </html>

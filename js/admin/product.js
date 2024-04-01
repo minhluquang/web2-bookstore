@@ -175,8 +175,8 @@ var js = function () {
                     data: {
                         delete_id: $id
                     }
-                }).done(function (result) {
-                    selected_content.remove();
+                }).done(function () {
+                    loadItem();
                     modal_edit_container.classList.remove('show');
                 })
             })

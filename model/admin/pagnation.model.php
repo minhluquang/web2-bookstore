@@ -42,6 +42,7 @@ class pagnation
             'accounts'=> 'username',
             'authors'=> 'id',
             'publishers'=> 'id',
+            'categories'=> 'id',
         );
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
@@ -293,6 +294,49 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name']. '</td>';
                             echo '<td class="email">' .'Email'. '</td>';
+                            echo '<td class="actions">
+                            <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
+                        </td>
+                        </tr>';
+                        }
+                        echo ' 
+                    </tbody>
+                    </table>
+                    </div>';
+                }
+                break;
+                case "categories":{
+                    echo '
+                    <div class="table__wrapper">
+                    <table id="content-product">
+                        <thead class="menu">
+                            <tr>
+                            <th>Mã thể loại</th>                 
+                            <th>Tên thể loại</th>
+                            <th>Số lượng sách</th>
+                            <th>Ngày cập nhật</th>
+                            <th>Ngày tạo</th>          
+                            <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-content" id="content">
+
+                    ';
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';
+                            echo '<td class="name">' . $row['name']. '</td>';
+                            $sql_amount = 
+                            "SELECT SUM(quantity) as total 
+                                FROM `products`  as p 
+                                INNER JOIN category_details as cd ON cd.category_id = ".$row['id']."
+                                WHERE p.id = cd.product_id";
+                            $result_amount = $database->query($sql_amount);
+                            echo '<td class="amount">' .mysqli_fetch_array($result_amount)['total']. '</td>';
+                            echo '<td class="date-update">14/11/2023</td>
+                            <td class="date-creat">14/11/2023</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
