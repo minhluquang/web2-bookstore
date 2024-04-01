@@ -34,15 +34,15 @@ class pagnation
     {
         return $this->table;
     }
-    public function loadProductForPagnation()
+    public function loadItemForPagnation()
     {
         $id = array(
             'products' => 'id',
             'orders' => 'id',
-            'accounts'=> 'username',
-            'authors'=> 'id',
-            'publishers'=> 'id',
-            'categories'=> 'id',
+            'accounts' => 'username',
+            'authors' => 'id',
+            'publishers' => 'id',
+            'categories' => 'id',
         );
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
@@ -69,13 +69,16 @@ class pagnation
         $database->close();
         return $total_records->num_rows;
     }
-    public function renderProduct()
+    public function render($render_data)
     {
         $database = new connectDB();
-        $load_result = $this->loadProductForPagnation();
+        if ($render_data->type == 'default') {
+            $load_result = $this->loadItemForPagnation();
+        } else {
+            $load_result = $render_data->data;
+        }
         if ($load_result->success) {
             $result = $load_result->data;
-   
             switch ($this->table) {
                 case "products": {
                         echo '<div class="table__wrapper">
@@ -94,7 +97,7 @@ class pagnation
                             </tr>
                         </thead>
                         <tbody class="table-content" id="content">';
-                        
+
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
@@ -184,8 +187,8 @@ class pagnation
                     </div>';
                     }
                     break;
-                case "accounts":{
-                    echo '
+                case "accounts": {
+                        echo '
                     <div class="table__wrapper">
                         <table id="content-product">
                             <thead class="menu">
@@ -201,19 +204,19 @@ class pagnation
                             </thead>
                             <tbody class="table-content" id="content">
                     ';
-                        
+
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td class="id">'  . $row['username'] . '</td>';
-                            echo '<td class="name">' . 'Tên người dùng'. '</td>';
-                            echo '<td class="email">' .'Email'. '</td>';
+                            echo '<td class="name">' . 'Tên người dùng' . '</td>';
+                            echo '<td class="email">' . 'Email' . '</td>';
 
                             $sql_role = 'SELECT * from roles WHERE id="' . $row['role_id'] . '"';
                             $row_role = mysqli_fetch_array($database->query($sql_role));
 
                             echo '<td class="type" value="staff">' . $row_role['name'] . '</td>';
                             echo '<td class="date-create">' . 'Ngày đăng ký' . '</td>';
-                            echo '<td class="status" value="active">' .'Trạng thái tài khoản'. '</td>';
+                            echo '<td class="status" value="active">' . 'Trạng thái tài khoản' . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -224,10 +227,10 @@ class pagnation
                     </tbody>
                     </table>
                     </div>';
-                }
-                break;
-                case "authors":{
-                    echo '
+                    }
+                    break;
+                case "authors": {
+                        echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
@@ -246,21 +249,21 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
-                            echo '<td class="name">' . $row['name']. '</td>';
-                            echo '<td class="email">' .'Email'. '</td>';
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="email">' . 'Email' . '</td>';
                             echo '<td class="genres">';
                             $sql_gerne = "SELECT c.name
                             FROM   authors a
                             INNER JOIN author_details ad ON ad.author_id = a.id
                             INNER JOIN category_details cd ON cd.product_id = ad.product_id
                             INNER JOIN categories c ON c.id = cd.category_id
-                            WHERE a.id =".$row['id'] ;
+                            WHERE a.id =" . $row['id'];
                             $result_gerne = $database->query($sql_gerne);
                             $gerne = "";
-                            while($row_gerne = mysqli_fetch_array($result_gerne)){
-                                $gerne =$gerne. $row_gerne['name'].', ';
+                            while ($row_gerne = mysqli_fetch_array($result_gerne)) {
+                                $gerne = $gerne . $row_gerne['name'] . ', ';
                             }
-                            echo rtrim($gerne, ', ').'</td>';
+                            echo rtrim($gerne, ', ') . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -271,10 +274,10 @@ class pagnation
                     </tbody>
                     </table>
                     </div>';
-                }
-                break;
-                case "publishers":{
-                    echo '
+                    }
+                    break;
+                case "publishers": {
+                        echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
@@ -292,8 +295,8 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
-                            echo '<td class="name">' . $row['name']. '</td>';
-                            echo '<td class="email">' .'Email'. '</td>';
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="email">' . 'Email' . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -304,10 +307,10 @@ class pagnation
                     </tbody>
                     </table>
                     </div>';
-                }
-                break;
-                case "categories":{
-                    echo '
+                    }
+                    break;
+                case "categories": {
+                        echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
@@ -327,14 +330,14 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
-                            echo '<td class="name">' . $row['name']. '</td>';
-                            $sql_amount = 
-                            "SELECT SUM(quantity) as total 
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            $sql_amount =
+                                "SELECT SUM(quantity) as total 
                                 FROM `products`  as p 
-                                INNER JOIN category_details as cd ON cd.category_id = ".$row['id']."
+                                INNER JOIN category_details as cd ON cd.category_id = " . $row['id'] . "
                                 WHERE p.id = cd.product_id";
                             $result_amount = $database->query($sql_amount);
-                            echo '<td class="amount">' .mysqli_fetch_array($result_amount)['total']. '</td>';
+                            echo '<td class="amount">' . mysqli_fetch_array($result_amount)['total'] . '</td>';
                             echo '<td class="date-update">14/11/2023</td>
                             <td class="date-creat">14/11/2023</td>';
                             echo '<td class="actions">
@@ -347,8 +350,8 @@ class pagnation
                     </tbody>
                     </table>
                     </div>';
-                }
-                break;
+                    }
+                    break;
             }
             echo '<div class="pagination">';
 
