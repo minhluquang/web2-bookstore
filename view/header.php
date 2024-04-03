@@ -101,7 +101,7 @@
           </div>
           <div class="account">
             <i class="fa-solid fa-user"></i>
-            <span> Tài khoản</span>
+            <span>Nguyễn Quốc Khánh</span>
             <!-- Đây là bẳng đăng kí,đăng nhập -->
             <!--                  <div class="account-options">
                         <button style="background-color: red;">Đăng nhập</button>

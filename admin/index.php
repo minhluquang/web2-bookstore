@@ -1,6 +1,7 @@
 <?php
-include_once('../model/connect.php');
 session_start();
+ob_start();
+include_once('../model/connect.php');
 include_once('../model/admin/pagnation.model.php');
 $_SESSION["render"] = new pagnation(5, 1, "products");
 ?>

@@ -1,7 +1,4 @@
 <?php
-  // Bắt đầu session
-  session_start();
-
   // Include model
   include_once('../model/signup.model.php');
 
@@ -11,13 +8,23 @@
     $pass = $_POST['passwordLogin'];
 
     // Kiểm tra thông tin đăng nhập
-    if (checkLogin($user, $pass)) {
-      echo "Đăng nhập thành công";
+    $loginResult = checkLogin($user, $pass);
+    if ($loginResult) {
       $_SESSION['username'] = $user;
+      $response = (object) array (
+        "success" => true,
+        "username" => $user,
+        "message" => "Đăng nhập thành công!"
+      );
+      echo json_encode($response);
     } else {
-      echo "Sai tên đăng nhập hoặc mật khẩu!";
+      $response = (object) array (
+        "success" => false,
+        "message" => "Tài khoản hoặc mật khẩu không chính xác!"
+      );
+      echo json_encode($response);
     }
-  } 
+  }
 
   // Kiểm tra nếu có dữ liệu gửi từ Ajax (REGISTER)
   if (

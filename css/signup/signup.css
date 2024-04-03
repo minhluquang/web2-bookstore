@@ -132,3 +132,8 @@ button {
   display: block;
   margin-top: 40px;
 }
+
+.result {
+  margin-top: 10px;
+  color: red;
+}
