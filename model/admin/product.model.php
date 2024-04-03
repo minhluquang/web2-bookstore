@@ -6,7 +6,6 @@
   $database = new connectDB();
 function product_delete($id)
 {
-
   global $database;
   $sql_cat = 'DELETE FROM `category_details` WHERE product_id="' . $id . '"';
   $result_cat = $database->query($sql_cat);
@@ -46,28 +45,16 @@ function product_delete($id)
     );
   }
 }
-
-function loadProductForPagnation($number_of_item,$current_page,$page)
+function product_getCategories()
 {
   global $database;
-  $offset=($current_page-1)*$number_of_item;
-  $sql = "SELECT * FROM $page ORDER BY id ASC LIMIT $number_of_item OFFSET $offset ";
-  $result =$database->query( $sql);
-  if($result->num_rows > 0){
-    return (Object) array (
-      'success' => true,
-      'data' => $result
-    );
+  $sql = 'SELECT * FROM `categories`';
+  $result = $database->query($sql);
+  $ans ="<option></option>";
+  while ($row = mysqli_fetch_array($result)) {
+    $ans=$ans."<option value=".$row["id"].">".$row["name"]."</option>\n";
   }
-  else {
-    return (Object) array (
-      'success' => false
-    );
-  } 
-}
-function getTotalRecords($page) {
-  global $database;
-  $total_records =$database->query( "SELECT * FROM $page");
-  return $total_records->num_rows;
+    return $ans;
+
 }
 

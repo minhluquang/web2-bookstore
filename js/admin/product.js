@@ -1,3 +1,45 @@
+var filter_form = document.querySelector(".admin__content--body__filter");
+function getFilterFromURL() {
+    filter_form.querySelector("#productName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
+    filter_form.querySelector("#productId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
+    filter_form.querySelector("#categorySelect").value = (urlParams['category'] != null) ? urlParams['category'] : "";
+    filter_form.querySelector("#cateDateSelect").value = (urlParams['date_type'] != null) ? urlParams['date_type'] : "";
+    filter_form.querySelector("#date_start").value = (urlParams['date_start'] != null) ? urlParams['date_start'] : "";
+    filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
+    filter_form.querySelector("#price_start").value = (urlParams['price_start'] != null) ? urlParams['price_start'] : "";
+    filter_form.querySelector("#price_end").value = (urlParams['price_end'] != null) ? urlParams['price_end'] : "";
+}
+function pushFilterToURL() {
+    var filter = getFilterFromForm();
+    var url_key = {
+        "product_name": "name",
+        "product_id": "id",
+        "product_category": "category",
+        "product_date_type": "date_type",
+        "product_date_start": "date_start",
+        "product_date_end": "date_end",
+        "product_price_start": "price_start",
+        "product_price_end": "price_end",
+    }
+    var url = "";
+    Object.keys(filter).forEach(key => {
+        url += (filter[key] != null && filter[key] != "") ? `&${url_key[key]}=${filter[key]}` : "";
+    });
+    return url;
+}
+function getFilterFromForm() {
+    return {
+        "product_name": filter_form.querySelector("#productName").value,
+        "product_id": filter_form.querySelector("#productId").value,
+        "product_category": filter_form.querySelector("#categorySelect").value,
+        "product_date_type": filter_form.querySelector("#cateDateSelect").value,
+        "product_date_start": filter_form.querySelector("#date_start").value,
+        "product_date_end": filter_form.querySelector("#date_end").value,
+        "product_price_start": filter_form.querySelector("#price_start").value,
+        "product_price_end": filter_form.querySelector("#price_end").value,
+    }
+
+}
 // Load the jquery
 var script = document.createElement("SCRIPT");
 script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
@@ -6,7 +48,7 @@ document.getElementsByTagName("head")[0].appendChild(script);
 var search = location.search.substring(1);
 urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
 var number_of_item = urlParams['item'];
-var current_page = urlParams['pag'];
+var current_page = urlParams['current_page'];
 if (current_page == null) {
     current_page = 1;
 }
@@ -23,12 +65,23 @@ function checkReady() {
 }
 async function loadForFirstTime() {
     await checkReady();
+    getFilterFromURL();
     loadItem();
+    $.ajax({
+        url: '../controller/admin/product.controller.php',
+        type: "post",
+        dataType: 'html',
+        data: {
+            function: "getCategories"
+        }
+    }).done(function (result) {
+        document.querySelector(".admin__content--body__filter").querySelector("#categorySelect").innerHTML = result;
+    })
 }
 function pagnationBtn() {
     // pagnation
     document.querySelectorAll('.pag').forEach((btn) => btn.addEventListener('click', function () {
-        current_page=btn.innerHTML;
+        current_page = btn.innerHTML;
         loadItem();
     }));
     if (document.getElementsByClassName('pag-pre').length > 0)
@@ -44,6 +97,7 @@ function pagnationBtn() {
         });
 }
 function loadItem() {
+    var filter = getFilterFromForm();
     $.ajax({
         url: '../controller/admin/pagnation.controller.php',
         type: "post",
@@ -51,29 +105,127 @@ function loadItem() {
         data: {
             number_of_item: number_of_item,
             current_page: current_page,
-            function: "render"
+            function: "render",
+            filter: filter,
         }
     }).done(function (result) {
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&pag=' + current_page ;
-        window.history.pushState({path:newurl},'',newurl);
+        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+        newurl += pushFilterToURL();
+        window.history.pushState({ path: newurl }, '', newurl);
         $('.result').html(result);
         pagnationBtn();
+        filterBtn();
         js();
-
     })
 };
 document.addEventListener("DOMContentLoaded", () => {
     loadForFirstTime()
+
 });
 
-
+function filterBtn() {
+    $(".body__filter--action__filter").click((e) => {
+        current_page = 1;
+        e.preventDefault();
+        loadItem();
+    })
+    $(".body__filter--action__reset").click((e) => {
+        current_page = 1;
+        $.ajax({
+            url: '../controller/admin/pagnation.controller.php',
+            type: "post",
+            dataType: 'html',
+            data: {
+                number_of_item: number_of_item,
+                current_page: current_page,
+                function: "render",
+            }
+        }).done(function (result) {
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            window.history.pushState({ path: newurl }, '', newurl);
+            $('.result').html(result);
+            console.log(result);
+            pagnationBtn();
+            js();
+        })
+    })
+}
 
 //js
 var js = function () {
+
+
+
+    const modal = document.querySelector("#modal");
+    const edit_html = ` <div class="modal-edit-product-container show" id="modal-edit-container">
+    <div class="modal-edit-product">
+        <div class="modal-header">
+            <h3>Thay Đổi thông tin sản phẩm</h3>
+            <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <form action="">
+                <div class="edit-image">
+                    <h4>Hình ảnh</h4>
+                    <input type="radio" id="delete" value="delete" name="image">
+                    <label for="delete">Xóa Hình</label>
+                    <input type="radio" id="edit" value="edit" name="image">
+                    <label for="edit">Sửa Hình</label>
+                    <input type="radio" id="retain" value="retain" name="image">
+                    <label for="retain">Giữ Hình</label>
+                    <div class="choose-img hidden">
+                        <label for="choose-img">Chọn hình ảnh:</label>
+                        <div class="img">
+                            <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display: none;">
+                        </div>
+
+                        <input type="file" name="choose-img" id="fileInput">
+                    </div>
+
+                </div>
+                <div class="modal-body-2">
+                    <div class="edit-name">
+                        <label for="">Tên sản phẩm</label>
+                        <input type="text" value="Tên sản phẩm">
+                    </div>
+                    <div class="edit-category">
+                        <label for="">Thể loại</label>
+                        <select name="" id="">
+                            <option value="science">Khoa học</option>
+                            <option value="psychology">Tâm Lý</option>
+                            <option value="novel">Tiểu thuyết</option>
+                        </select>
+                    </div>
+                    <div class="edit-price">
+                        <label for="">Giá sản phẩm</label>
+                        <input type="text" value="Giá sản phẩm">
+                    </div>
+                    <div class="edit-id">
+                        <label for="">Mã sản phẩm</label>
+                        <input type="text" value="Mã sản phẩm">
+                    </div>
+                    <div class="edit-date-create">
+                        <label for="">Ngày Tạo</label>
+                        <input type="date" value="dateCreate">
+                    </div>
+                    <div class="edit-date-update">
+                        <label for="">Ngày cập nhật</label>
+                        <input type="date" value="dateUpdate">
+                    </div>
+
+                </div>
+                <div>
+                </div>
+
+                <input type="submit" value="Xác nhận" class="btn-confirm">
+            </form>
+        </div>
+    </div>
+</div>`;
     var edit_btns = document.getElementsByClassName("actions--edit");
     for (var i = 0; i < edit_btns.length; i++) {
-        edit_btns[i].addEventListener('click', e => {
-            document.querySelector('.modal-edit-product-container').classList.add('show');
+        edit_btns[i].addEventListener('click', () => {
+            modal.innerHTML = edit_html;
             function displayImage(input) {
                 const file = input.files[0]; // Lấy ra tệp được chọn từ input file
                 const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh

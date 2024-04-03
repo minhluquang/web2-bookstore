@@ -4,6 +4,7 @@ class pagnation
     private $number_of_item;
     private $current_page;
     private $table;
+    private $filter = "";
     public function __construct($number_of_item, $current_page, $table)
     {
         $this->number_of_item = $number_of_item;
@@ -34,7 +35,15 @@ class pagnation
     {
         return $this->table;
     }
-    public function loadItemForPagnation()
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
+    }
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+    public function getData()
     {
         $id = array(
             'products' => 'id',
@@ -47,7 +56,7 @@ class pagnation
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
         $id = $id[$this->table];
-        $sql = "SELECT * FROM $this->table ORDER BY $id ASC LIMIT $this->number_of_item OFFSET $offset ";
+        $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter ORDER BY $this->table.$id ASC LIMIT $this->number_of_item OFFSET $offset ";
         $result = $database->query($sql);
         if ($result->num_rows > 0) {
             return (object) array(
@@ -65,18 +74,14 @@ class pagnation
     {
 
         $database = new connectDB();
-        $total_records = $database->query("SELECT * FROM $this->table");
+        $total_records = $database->query("SELECT DISTINCT $this->table.* FROM $this->table $this->filter");
         $database->close();
         return $total_records->num_rows;
     }
-    public function render($render_data)
+    public function render()
     {
         $database = new connectDB();
-        if ($render_data->type == 'default') {
-            $load_result = $this->loadItemForPagnation();
-        } else {
-            $load_result = $render_data->data;
-        }
+        $load_result = $this->getData();
         if ($load_result->success) {
             $result = $load_result->data;
             switch ($this->table) {
@@ -118,11 +123,20 @@ class pagnation
                             while ($category = mysqli_fetch_array($cat_result)) echo "," . $category['name'];
                             echo '</td>';
                             // date
-                            echo '<td class="date-update">14/11/2023</td>
-                        <td class="date-creat">14/11/2023</td>';
+                            // date_default_timezone_set('Asia/Ho_Chi_Minh').
+                            // $date = date('d/m/Y h:i:s a', time());
+                            echo '<td class="date-update">' . date("d/m/Y", strtotime($row['update_date'])) . '</td>
+                        <td class="date-create">' . date("d/m/Y", strtotime($row['create_date'])) . '</td>';
                             //price and amount
-                            echo '<td class="price">' . $row['price'] . '</td>
-                        <td class="amount">' . $row['quantity'] . '</td>';
+                            echo '<td class="price">';
+                            $price_number =  $row['price'];
+                            $price = "";
+                            while ($price_number > 0) {
+                                $price = substr("$price_number", -3, 3) . '.' . $price;
+                                $price_number = substr("$price_number", 0, -3);
+                            }
+
+                            echo  trim($price, '. ') . '&#8363;</td> <td class="amount">' . $row['quantity'] . '</td>';
                             // button
                             echo '<td class="actions ">
                         <button class="actions--edit" >Sửa</button>
@@ -377,4 +391,45 @@ class pagnation
         }
         $database->close();
     }
+}
+
+function getFilterSQL($data)
+{
+    $filter = "";
+    $innerjoin = "";
+    if (!empty($data)) {
+        if (!empty($data['product_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`name` LIKE '%" . $data['product_name'] . "%'";
+        }
+        if (!empty($data['product_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " id = " . $data['product_id'];
+        }
+        if (!empty($data['product_price_start'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " price >= " . $data['product_price_start'];
+        }
+        if (!empty($data['product_price_end'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " price <= " . $data['product_price_end'];
+        }
+        if (!empty($data['product_category'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " cd.product_id=products.id ";
+            $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['product_category'] . "'";
+        }
+        if (!empty($data['product_date_type'])) {
+            if (!empty($data['product_date_start'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['product_date_type'] . "` >= '" . $data['product_date_start'] . "'";
+            }
+            if (!empty($data['product_date_end'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['product_date_type'] . "` <= '" . $data['product_date_end'] . "'";
+            }
+        }
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return $innerjoin . $filter;
 }

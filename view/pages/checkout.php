@@ -18,11 +18,6 @@
                 <hr>
                 <div class="form-group" style="flex-direction: column;">
                     <span id="diachi">
-                        <?php
-                        $conn = connectDB();
-
-                        $sql = `SELECT * FROM delivery_infoes WHERE`
-                        ?>
                         <b>Nguyễn Minh Trí (+84) 394080644</b> Số 907a, Âu Cơ, Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh
                     </span>
                     <div class="popup">
