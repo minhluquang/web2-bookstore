@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/signup/signup.css?v=<?php echo time(); ?>">
     <script defer src="js/home.js?v=<?php echo time(); ?>"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="js/signup.js"></script>
 </head>
 
 <body>
@@ -76,54 +77,6 @@
 
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('.btnDangNhap').click(function(e) {
-                e.preventDefault();
-                var $username = $('#loginUsername').val();
-                var $password = $('#loginPassword').val();
-                $.ajax({
-                    url: 'controller/signup.controller.php',
-                    type: "post",
-                    dataType: 'html',
-                    data: {
-                        usernameLogin: $username,
-                        passwordLogin: $password
-                    }
-                }).done(function (result) {
-                    $('.result').html(result);
-                })
-            })
-        })
-
-        $(document).ready(function () {
-            $('.btnDangKy').click(function (e) { 
-                e.preventDefault();
-                var $username = $('#registerUsername').val();
-                var $fullname = $('#registerFullname').val();
-                var $phoneNumber = $('#registerPhoneNumber').val();
-                var $address = $('#registerAddress').val();
-                var $password = $('#registerPassword').val();
-                var $confirmPassword = $("#registerConfirmPassword").val();
-                
-                $.ajax({
-                    url: 'controller/signup.controller.php',
-                    type: 'post',
-                    dataType: 'html',
-                    data: {
-                        usernameRegister: $username,
-                        fullnameRegister: $fullname,
-                        phoneNumberRegister: $phoneNumber,
-                        addressRegister: $address,
-                        passwordRegister: $password,
-                        confirmPasswordRegister: $confirmPassword
-                    }
-                }).done(function(result) {
-                    $('.result').html(result);
-                })
-            })
-        })
-    </script>
 </body>
 
 </html>

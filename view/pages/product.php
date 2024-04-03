@@ -2,6 +2,7 @@
   include_once("controller/category.controller.php");
   $items_per_page = 8;
   $current_page = 1;
+  $categoryId = null;
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +40,7 @@
               foreach ($categories as $category) {
                 echo '
                   <li>
-                    <input type="radio" id="theloai_'.$category['id'].'" data="'.$category['id'].'" name="theloai" /><label for="theloai_'.$category['id'].'">'.$category['name'].'</label>
+                    <input type="radio" id="theloai_'.$category['id'].'" data="'.$category['id'].'" name="theloai"/><label for="theloai_'.$category['id'].'">'.$category['name'].'</label>
                   </li>';
               }
             ?>
