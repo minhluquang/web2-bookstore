@@ -1,8 +1,7 @@
 <?php
-
+session_start();
 // Import connectDB
 include_once('model/connect.php');
-
 // Header
 require_once("view/header.php");
 // connectDB();

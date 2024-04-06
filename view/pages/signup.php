@@ -71,7 +71,7 @@
                         <input type="password" placeholder="Nhập lại Mật khẩu" id="registerConfirmPassword" name="psw-repeat" required id="psw-repeat">
                     </div>
                     <input class="btnSubmit btnDangKy" type="submit" value="Đăng ký" />
-                   <div class="result"></div>
+                    <div class="result"></div>
                 </form>
             </div>
 
