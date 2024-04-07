@@ -4,7 +4,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 // Import connectDB
 include_once('model/connect.php');
-
 // Header
 require_once("view/header.php");
 // connectDB();

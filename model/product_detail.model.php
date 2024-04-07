@@ -1,12 +1,12 @@
 <?php
-  include_once('connect.php');
-  $database = new connectDB();
+include_once('connect.php');
+$database = new connectDB();
 
-  function getProductDetailByIdModel($product_id)
-  {
-    global $database;
-    if ($database->conn) {
-      $sql = "SELECT 
+function getProductDetailByIdModel($product_id)
+{
+  global $database;
+  if ($database->conn) {
+    $sql = "SELECT 
               p.name product_name, 
               p.image_path, 
               p.quantity, 
@@ -28,10 +28,10 @@
                 INNER JOIN publishers pub ON p.publisher_id = pub.id
               WHERE p.id = $product_id
               GROUP BY p.id";
-      $result = $database->query($sql);
-      $database->close();
-      return $result;
-    } else {
-      return false;
-    }
+    $result = $database->query($sql);
+    $database->close();
+    return $result;
+  } else {
+    return false;
   }
+}
