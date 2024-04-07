@@ -49,11 +49,11 @@ $_SESSION["render"] ->setTable("products");
             </div>
             <div class="body__filter--field body__filter--datefrom" id="dateFrom">
                 <label>Từ ngày</label>
-                <input type="date" id="date_start"/>
+                <input type="date" id="date_start" />
             </div>
             <div class="body__filter--field body__filter--dateto" id="dateTo">
                 <label>Đến ngày</label>
-                <input type="date" id="date_end"/>
+                <input type="date" id="date_end" />
             </div>
         </div>
         <div class="admin__content--body__filter--gr1">
@@ -65,21 +65,23 @@ $_SESSION["render"] ->setTable("products");
                 <p>&#8203;</p>
                 <input id="price_end" type="text" placeholder="Nhập giá kết thúc" />
             </div>
+
         </div>
         <div class="body__filter--actions">
-            <button class="body__filter--action__add">Thêm sản phẩm</button>
+            <button type="button" class="body__filter--action__add">Thêm sản phẩm</button>
             <div>
                 <button type="reset" class="body__filter--action__reset">Reset</button>
                 <button class="body__filter--action__filter">Lọc</button>
             </div>
         </div>
     </form>
-
+    <div id="sqlresult">
+    </div>
     <!-- end -->
     <div class='result'></div>
 
     <div id="modal">
-       
+
     </div>
 
 

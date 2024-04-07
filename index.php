@@ -1,5 +1,7 @@
 <?php
-
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 // Import connectDB
 include_once('model/connect.php');
 

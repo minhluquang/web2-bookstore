@@ -93,9 +93,9 @@ class pagnation
                                 <th>Mã SP</th>
                                 <th>Ảnh</th>
                                 <th>Tên Sản Phẩm</th>
-                                <th>Phân loại</th>
-                                <th>Ngày cập nhật</th>
-                                <th>Ngày tạo</th>
+                                <th>Thể loại</th>
+                                <th>Ngày cập nhật/Ngày tạo</th>
+                                <th>Tác giả</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
                                 <th>Hành động</th>
@@ -106,7 +106,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="'.$row['publisher_id'].'">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -114,19 +114,31 @@ class pagnation
                             //name
                             echo '<td class="name">' . $row['name'] . '</td>';
                             //catagory
-                            $cat_sql = "SELECT name  FROM `categories` WHERE id IN (SELECT category_id  FROM `category_details` WHERE product_id = '" . $row[0] . "')";
+                            $cat_sql = "SELECT *  FROM `categories` WHERE id IN (SELECT category_id  FROM `category_details` WHERE product_id = '" . $row[0] . "')";
                             $cat_result = $database->query($cat_sql);
 
-                            echo '<td class="type">';
                             $category = mysqli_fetch_array($cat_result);
-                            if ($category) echo $category['name'];
+                            echo '<td class="type" value="';
+                            if ($category) {
+                                echo $category['id'].'">';
+                                echo $category['name'];
+                            }else echo '">';
                             while ($category = mysqli_fetch_array($cat_result)) echo "," . $category['name'];
                             echo '</td>';
                             // date
-                            // date_default_timezone_set('Asia/Ho_Chi_Minh').
-                            // $date = date('d/m/Y h:i:s a', time());
-                            echo '<td class="date-update">' . date("d/m/Y", strtotime($row['update_date'])) . '</td>
-                        <td class="date-create">' . date("d/m/Y", strtotime($row['create_date'])) . '</td>';
+                            echo '<td class="date">' . date("d/m/Y", strtotime($row['update_date'])) . ' ' . date("d/m/Y", strtotime($row['create_date'])) . '</td>';
+                            //author
+                            $author_sql = "SELECT *  FROM `authors` WHERE id IN (SELECT author_id  FROM `author_details` WHERE product_id = '" . $row[0] . "')";
+                            $author_result = $database->query($author_sql);
+
+                            echo '<td class="author" value="';
+                            $author = mysqli_fetch_array($author_result);
+                            if ($author) {
+                                echo $author['id'].'">';
+                                echo $author['name'];
+                            }else echo '">';
+                            while ($author = mysqli_fetch_array($cat_result)) echo "," . $author['name'];
+                            echo '</td>';
                             //price and amount
                             echo '<td class="price">';
                             $price_number =  $row['price'];
