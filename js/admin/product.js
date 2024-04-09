@@ -90,6 +90,7 @@ function pagnationBtn() {
 }
 function loadItem() {
     var filter = getFilterFromForm();
+    console.log(filter);
     $.ajax({
         url: '../controller/admin/pagnation.controller.php',
         type: "post",
@@ -108,7 +109,7 @@ function loadItem() {
         pagnationBtn();
         filterBtn();
         js();
-    })
+    }) 
 };
 document.addEventListener("DOMContentLoaded", () => {
     loadForFirstTime()
@@ -291,7 +292,9 @@ var js = function () {
             modal.querySelector('#imagePreview').style.display = "block";
         });
     });
-    const edit_html = ` <div class="modal-edit-product-container show" id="modal-edit-container">
+    const edit_html = ` <div class="
+    
+    show" id="modal-edit-container">
     <div class="modal-edit-product">
         <div class="modal-header">
             <h3>Thay Đổi thông tin sản phẩm</h3>

@@ -1,3 +1,34 @@
+var filter_form = document.querySelector(".admin__content--body__filter");
+function getFilterFromURL() {
+    filter_form.querySelector("#authorName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
+    filter_form.querySelector("#authorId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
+    filter_form.querySelector("#authorEmail").value = (urlParams['email'] != null) ? urlParams['email'] : "";
+
+}
+function pushFilterToURL() {
+    var filter = getAUFilterFromForm();
+    var url_key = {
+        "author_name": "name",
+        "author_id": "id",
+        "author_email": "email",
+
+    }
+    var url = "";
+    Object.keys(filter).forEach(key => {
+        url += (filter[key] != null && filter[key] != "") ? `&${url_key[key]}=${filter[key]}` : "";
+    });
+    return url;
+}
+function getAUFilterFromForm() {
+    return {
+        "author_name": filter_form.querySelector("#authorName").value,
+        "author_id": filter_form.querySelector("#authorId").value,
+        "author_email": filter_form.querySelector("#authorEmail").value
+
+    }
+
+}
+
 // Load the jquery
 var script = document.createElement("SCRIPT");
 script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
@@ -23,6 +54,7 @@ function checkReady() {
 }
 async function loadForFirstTime() {
     await checkReady();
+    getFilterFromURL();
     loadItem();
 }
 function pagnationBtn() {
@@ -44,6 +76,8 @@ function pagnationBtn() {
         });
 }
 function loadItem() {
+  var filter = getAUFilterFromForm();
+
     $.ajax({
         url: '../controller/admin/pagnation.controller.php',
         type: "post",
@@ -51,13 +85,15 @@ function loadItem() {
         data: {
             number_of_item: number_of_item,
             current_page: current_page,
-            function: "render"
+            function: "renderAuthor",
+            filter: filter
         }
     }).done(function (result) {
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&pag=' + current_page ;
         window.history.pushState({path:newurl},'',newurl);
         $('.result').html(result);
         pagnationBtn();
+        filterBtn();
         js();
 
     })
@@ -66,118 +102,190 @@ document.addEventListener("DOMContentLoaded", () => {
     loadForFirstTime()
 });
 
+function filterBtn() {
+  $(".body__filter--action__filter").click((e) => {
+      current_page = 1;
+      e.preventDefault();
+      loadItem();
+  })
+  $(".body__filter--action__reset").click((e) => {
+      current_page = 1;
+      $.ajax({
+          url: '../controller/admin/pagnation.controller.php',
+          type: "post",
+          dataType: 'html',
+          data: {
+              number_of_item: number_of_item,
+              current_page: current_page,
+              function: "renderAuthor",
+          }
+      }).done(function (result) {
+          var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+          window.history.pushState({ path: newurl }, '', newurl);
+          $('.result').html(result);
+          console.log(result);
+          pagnationBtn();
+          js();
+      })
+  })
+}
+const js = function () {
 
-var js = function () {
-  const modal = document.getElementById("modal");
-  const editButtons = document.querySelectorAll(".actions--edit");
-  const modalContent = document.querySelector(".modal-content .form");
+
+  const editModal = document.getElementById("editModal");
+  const editModalContent = document.querySelector(".editModal-content .form");
   const editFunctionButton = document.querySelector(".editFunctionButton");
   const editAuthorButton = document.querySelector(".editAuthorButton");
-  const closeIcon = document.querySelector(".close i");
+  const closeEditIcon = document.querySelector(".editModal-content .close i");
+  
+  const deleteModal = document.getElementById("deleteModal");
+  const deleteModalContent = document.querySelector(".deleteModal-content .form");
+  const deleteAuthorButton = document.querySelector(".deleteAuthorButton");
+  const closeDeleteIcon = document.querySelector(".deleteModal-content .close i");
 
-  // Lưu nút button sửa đã bấm để lấy thông tin Author
-  let storeButtonClicked;
-
-  // Render modal chỉnh sửa thông tin tác giả
-  const renderModalEditInfoAuthor = () => {
-    // Thêm html vào modal-content
-    modalContent.innerHTML = "";
-    const html = `
+  const editHtml = `
     <h2>Chỉnh sửa thông tin tác giả</h2>
-    <form id="editForm">
+    <form id="form">
       <div class="input-field">
-          <label for="editAuthorId">Mã tác giả</label>
-          <input type="text" id="editAuthorId" readonly>
+        <label for="editAuthorId">Mã tác giả</label>
+        <input type="text" id="editAuthorId" readonly>
       </div>
       <div class="input-field">
-          <label for="editAuthorName">Tên tác giả</label>
-          <input type="text" id="editAuthorName">
+        <label for="editAuthorName">Tên tác giả</label>
+        <input type="text" id="editAuthorName">
       </div>
       <div class="input-field">
-          <label for="editAuthorEmail">Email</label>
-          <input type="email" id="editAuthorEmail">
+        <label for="editAuthorEmail">Email</label>
+        <input type="email" id="editAuthorEmail">
       </div>
       <div class="input-field">
-          <label for="editAuthorRole">Thể loại viết</label>
-          <input type="text" id="editAuthorGenres" readonly>
+        <label for="editAuthorRole">Thể loại viết</label>
+        <input type="text" id="editAuthorGenres" readonly>
+      </div>
+    </form>
+   `;
 
+  const deleteHtml = `
+    <h2>Xác nhận xóa thông tin tác giả</h2>
+    <form id="form">
+      <label for="editAuthorId">Mã tác giả</label>
+      <div id="author-delete-id"></div>
+      <label for="editAuthorName">Tên tác giả</label>
+      <div id="author-delete-name"></div>
+      <label for="editAuthorEmail">Email</label>
+
+      <div id="author-delete-email"></div>
+      <div class="form-actions">
+        <button type="submit" class="del-confirm">Xác nhận</button>
+        <button type="button" class="del-cancel">Hủy bỏ</button>
       </div>
-      
-      
     </form>`;
-    modalContent.insertAdjacentHTML("afterbegin", html);
+
+  const renderModalEditInfoAuthor = (authorId, authorName, authorEmail) => {
+    editModalContent.innerHTML = editHtml;
+    document.getElementById("editAuthorId").value = authorId;
+    document.getElementById("editAuthorName").value = authorName;
+    document.getElementById("editAuthorEmail").value = authorEmail;
+    editModal.style.display = "block";
   };
 
+  const showConfirmDeleteModal = (authorId, authorName, authorEmail) => {
+    deleteModalContent.innerHTML = deleteHtml;
 
-
-
-  const handleRenderDataModalEditAuthor = (button) => {
-    modal.style.display = "block";
-    // Populate modal fields with Author data from the corresponding row
-    const row = button.closest("tr");
-    const AuthorId = row.querySelector(".id").textContent;
-    const AuthorName = row.querySelector(".name").textContent;
-    const AuthorEmail = row.querySelector(".email").textContent;
-    const AuthorGenres = row.querySelector(".genres").textContent;
-
-    document.getElementById("editAuthorId").value = AuthorId;
-    document.getElementById("editAuthorName").value = AuthorName;
-    document.getElementById("editAuthorEmail").value = AuthorEmail;
-    document.getElementById("editAuthorGenres").value = AuthorGenres;
-
-    const editAuthorStatusSelect = document.querySelector("#editAuthorStatus");
-    for (var i = 0; i < editAuthorStatusSelect.options.length; i++) {
-      if (editAuthorStatusSelect.options[i].value == AuthorStatus) {
-        editAuthorStatusSelect.options[i].selected = true;
-        break;
-      }
-    }
-
+    document.querySelector("#author-delete-id").textContent = authorId;
+    document.querySelector("#author-delete-name").textContent = authorName;
+    document.querySelector("#author-delete-email").textContent = authorEmail;
+    deleteModal.style.display = "block";
 
   };
 
-  // Handle khi bấm vào nút sửa
-  const handleClickedEditButon = (button) => {
-    button.addEventListener("click", () => handleRenderDataModalEditAuthor(button));
+  const hideConfirmDeleteModal = () => {
+    deleteModal.style.display = "none";
   };
-
-  // When the Author clicks the edit button, open the modal
-  editButtons.forEach(function (button) {
-    renderModalEditInfoAuthor();
-    handleClickedEditButon(button);
-    storeButtonClicked = button;
-  });
-
-  // Thay đổi sang modal phân quyền thành chỉnh sửa thông tin
   editAuthorButton.addEventListener("click", (e) => {
     e.preventDefault();
-    renderModalEditInfoAuthor();
-    handleRenderDataModalEditAuthor(storeButtonClicked);
-
-    // Ẩn/hiện nút
+    renderModalEditInfoAuthor("sampleId", "sampleName", "sample@email.com");
     editFunctionButton.classList.remove("d-none");
     editAuthorButton.classList.add("d-none");
   });
+  
 
-  // // Close modal
-  closeIcon.addEventListener("click", function () {
-    modal.style.display = "none";
+  closeEditIcon.addEventListener("click", () => {
+    editModal.style.display = "none";
   });
-
-  // When the Author clicks anywhere outside of the modal, close it
-  window.addEventListener("click", function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+  closeDeleteIcon.addEventListener("click", () => {
+    deleteModal.style.display = "none";
+  });
+  window.addEventListener("click", (event) => {
+    if (event.target === editModal) {
+      editModal.style.display = "none";
     }
   });
 
-  // Add event listener to the form for handling form submission
-  document
-    .getElementById("editForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent the default form submission
-      // Handle form submission (you may send an AJAX request to update the Author data)
-      // Once the data is updated, close the modal
-      modal.style.display = "none";
+  const edit_btns = document.getElementsByClassName("actions--edit");
+  for (let i = 0; i < edit_btns.length; i++) {
+    edit_btns[i].addEventListener("click", () => {
+      let selected_content = edit_btns[i].parentNode.parentNode;
+      let author_id = selected_content.querySelector(".id").innerHTML;
+      let author_name = selected_content.querySelector(".name").innerHTML;
+      let author_email = selected_content.querySelector(".email").innerHTML;
+      renderModalEditInfoAuthor(author_id, author_name, author_email);
     });
-}
+  }
+
+  /*const del_btns = document.getElementsByClassName("actions--delete");
+  for (let i = 0; i < del_btns.length; i++) {
+    del_btns[i].addEventListener("click", () => {
+
+      let selected_content = del_btns[i].parentNode.parentNode;
+      let author_id = selected_content.querySelector(".id").innerHTML;
+      let author_name = selected_content.querySelector(".name").innerHTML;
+      let author_email = selected_content.querySelector(".email").innerHTML;
+      showConfirmDeleteModal(author_id, author_name, author_email);
+    });
+  
+
+  const btnConfirmDelete = document.querySelector("#deleteModal .del-confirm");
+  btnConfirmDelete.addEventListener("click", (e) => {
+    e.preventDefault();
+    var $id = $('#author-delete-id').html();
+    // Lấy mã tác giả từ modal xác nhận xóa
+    // Gửi yêu cầu AJAX để xóa tác giả
+    $.ajax({
+      url: '../controller/admin/author.controller.php',
+      type: 'post',
+      dataType: 'html',
+      data: {
+        function: 'delete',
+        id: $id 
+      }
+    }).done(function (result) {
+      // Xử lý kết quả trả về từ server
+      loadItem(); // Gọi hàm loadItem() để tải lại danh sách tác giả sau khi xóa
+      $("#result").html(result); // Hiển thị kết quả từ server (nếu cần)
+      hideConfirmDeleteModal(); // Ẩn modal sau khi xóa thành công
+      modal.classList.remove('show');
+    }).fail(function (xhr, status, error) {
+      // Xử lý lỗi nếu có
+      console.error(xhr.responseText); // Log lỗi ra console nếu cần
+      alert('Đã xảy ra lỗi khi xóa tác giả.'); // Hiển thị thông báo lỗi
+    });
+  });
+} 
+
+  const btnCancelDelete = document.querySelector("#deleteModal .del-cancel");
+  btnCancelDelete.addEventListener("click", () => {
+    hideConfirmDeleteModal();
+  });
+
+  const btnCloseDelModal = document.querySelector("#deleteModal .btn-close i");
+  btnCloseDelModal.addEventListener("click", () => {
+    hideConfirmDeleteModal();
+  });*/
+};
+
+
+
+
+
+

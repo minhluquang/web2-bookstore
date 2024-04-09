@@ -13,24 +13,26 @@ $_SESSION["render"] ->setTable("authors");
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/author.css?v=<?php echo time(); ?> " />
-    <script defer src="../js/admin/author.js?v=<?php echo time(); ?> "></script>
+    <link rel="stylesheet" href="../css/admin/account.css?v=<?php echo time(); ?> " />
+
+
 </head>
 
 <body>
     <form class="admin__content--body__filter">
         <h1>Lọc thông tin tác giả</h1>
         <div class="admin__content--body__filter--gr1">
-            <div class="body__filter--field body__filter--nameClient" id="authorNameClient">
+            <div class="body__filter--field body__filter--nameClient" >
                 <p>Tên tác giả</p>
-                <input type="text" placeholder="Nhập tên tác giả" />
+                <input type="text" id="authorName" placeholder="Nhập tên tác giả" />
             </div>
-            <div class="body__filter--field body__filter--idClient" id="authorIdClient">
+            <div class="body__filter--field body__filter--idClient" >
                 <p>Mã tác giả</p>
-                <input type="text" placeholder="Nhập mã tác giả" />
+                <input type="text" id="authorId" placeholder="Nhập mã tác giả" />
             </div>
-            <div class="body__filter--field body__filter--idClient" id="authorIdClient">
+            <div class="body__filter--field body__filter--idClient" >
                 <p>Email tác giả</p>
-                <input type="text" placeholder="Nhập email tác giả" />
+                <input type="text" id="authorEmail" placeholder="Nhập email tác giả" />
             </div>
 
 
@@ -46,11 +48,13 @@ $_SESSION["render"] ->setTable("authors");
         </div>
     </form>
 
-<div class="result"> </div>
-
+    <div id="sqlresult">
+    </div>
+    <!-- end -->
+    <div class='result'></div>
     <!-- Start: Modal Edit -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
+    <div id="editModal" class="modal">
+        <div class="editModal-content">
             <span class="close">
                 <i class="fa-solid fa-xmark"></i>
             </span>
@@ -64,7 +68,24 @@ $_SESSION["render"] ->setTable("authors");
             </div>
         </div>
     </div>
-    <!-- End: Modal Edit -->
+    <div class='deleteModal' id='deleteModal'> 
+    <div class="deleteModal-content">
+            <span class="close">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <div class="form">
+                <!-- Code will be render here -->
+                <!-- ... -->
+            </div>
+            <div class="form-actions">
+                <button class="deleteAuthorButton d-none">Xóa</button>
+              
+            </div>
+        </div> 
+    </div>
+
+    <script defer src="../js/admin/author.js?v=<?php echo time(); ?> "></script>
+
 </body>
 
 </html>

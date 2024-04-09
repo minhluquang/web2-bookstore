@@ -5,6 +5,8 @@ class pagnation
     private $current_page;
     private $table;
     private $filter = "";
+    private $athorFilter = "";
+
     public function __construct($number_of_item, $current_page, $table)
     {
         $this->number_of_item = $number_of_item;
@@ -42,6 +44,14 @@ class pagnation
     public function getFilter()
     {
         return $this->filter;
+    }
+    public function setAUFilter($filter)
+    {
+        $this->athorFilter = $filter;
+    }
+    public function getAUFilter()
+    {
+        return $this->athorFilter;
     }
     public function getData()
     {
@@ -276,7 +286,7 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="email">' . 'Email' . '</td>';
+                            echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="genres">';
                             $sql_gerne = "SELECT c.name
                             FROM   authors a
@@ -407,7 +417,7 @@ class pagnation
 
 function getFilterSQL($data)
 {
-    $filter = "";
+    $filter = "";   
     $innerjoin = "";
     if (!empty($data)) {
         if (!empty($data['product_name'])) {
@@ -444,4 +454,26 @@ function getFilterSQL($data)
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return $innerjoin . $filter;
+}
+function getAuthorFilterSQL($data)
+{
+    $filter = "";    
+    if (!empty($data)) {
+        if (!empty($data['author_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`name` LIKE '%" . $data['author_name'] . "%'";
+        }
+        if (!empty($data['author_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " id = " . $data['author_id'];
+        }
+        if (!empty($data['author_email'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`email` LIKE '%" . $data['author_email'] . "%'";
+        }
+        
+        
+        if ($filter != "") $athorFilter = "WHERE " . $filter;
+    }
+    return  $filter;
 }
