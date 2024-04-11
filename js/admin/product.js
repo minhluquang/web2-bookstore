@@ -98,7 +98,7 @@ function loadItem() {
             number_of_item: number_of_item,
             current_page: current_page,
             function: "render",
-            filter: filter,
+            filter: filter
         }
     }).done(function (result) {
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;

@@ -90,6 +90,7 @@ function loadItem() {
         }
     }).done(function (result) {
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&pag=' + current_page ;
+        newurl += pushFilterToURL();
         window.history.pushState({path:newurl},'',newurl);
         $('.result').html(result);
         pagnationBtn();

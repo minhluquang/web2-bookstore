@@ -45,14 +45,7 @@ class pagnation
     {
         return $this->filter;
     }
-    public function setAUFilter($filter)
-    {
-        $this->athorFilter = $filter;
-    }
-    public function getAUFilter()
-    {
-        return $this->athorFilter;
-    }
+  
     public function getData()
     {
         $id = array(
@@ -455,6 +448,7 @@ function getFilterSQL($data)
     }
     return $innerjoin . $filter;
 }
+
 function getAuthorFilterSQL($data)
 {
     $filter = "";    
@@ -473,7 +467,7 @@ function getAuthorFilterSQL($data)
         }
         
         
-        if ($filter != "") $athorFilter = "WHERE " . $filter;
+        if ($filter != "") $filter = "WHERE " . $filter;
     }
     return  $filter;
 }

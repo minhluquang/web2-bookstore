@@ -38,10 +38,11 @@ function renderAuthor()
         }
         $render = $_SESSION["render"];
 
-        if(isset($_POST["filter"])) $render->setAUFilter(getAuthorFilterSQL($_POST["filter"]));
-        else $render->setAUFilter("");
+        if(isset($_POST["filter"])) $render->setFilter(getAuthorFilterSQL($_POST["filter"]));
+        else $render->setFilter("");
         $render->setNumberOfItem($_POST['number_of_item']);
         $render->setCurrentPage($_POST['current_page']);
+        echo $render->getFilter();
         echo $render->render();
     }
 }
