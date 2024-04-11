@@ -90,7 +90,6 @@ function pagnationBtn() {
 }
 function loadItem() {
     var filter = getFilterFromForm();
-    console.log(filter);
     $.ajax({
         url: '../controller/admin/pagnation.controller.php',
         type: "post",
