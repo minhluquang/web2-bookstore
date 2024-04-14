@@ -52,6 +52,7 @@ body {
 .cart-content {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 40px;
 }
 
 .cart-content .cart-empty-wrapper {
