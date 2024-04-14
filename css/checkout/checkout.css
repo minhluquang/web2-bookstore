@@ -49,10 +49,10 @@ hr {
 }
 
 .form-group {
-margin-top: 10px;
+  margin-top: 10px;
   margin-bottom: 15px;
   position: relative;
-  }
+}
 
 #diachi b {
   margin-right: 20px;
@@ -77,9 +77,9 @@ margin-top: 10px;
 
 .d-flex {
   display: flex;
-justify-content: start;
+  justify-content: start;
   align-items: center;
-  }
+}
 
 #promo-container {
   display: flex;
@@ -88,7 +88,7 @@ justify-content: start;
   vertical-align: middle;
   font-size: 2.5em;
   position: relative;
-height: 40px;
+  height: 40px;
   width: 466px;
   outline: none;
 }
@@ -100,7 +100,7 @@ height: 40px;
   height: 100%;
   font-size: 14px;
   padding: 4px 120px 4px 10px;
-border-radius: 8px;
+  border-radius: 8px;
   border: 1px solid #858585;
 }
 
@@ -168,7 +168,7 @@ input[type="radio"] {
   margin-top: 10px;
   border-radius: 4px;
   padding: 5px;
-cursor: pointer;
+  cursor: pointer;
 }
 
 .popup .popupmenu {
@@ -195,7 +195,6 @@ cursor: pointer;
 
   margin: 0 auto;
 }
-
 
 .popupwrapper {
   cursor: default;
@@ -256,7 +255,6 @@ fieldset {
 }
 
 .update-container .fieldselect {
-
   flex: 0 0 33%;
   padding-left: 0;
   padding-right: 0;
@@ -302,7 +300,6 @@ fieldset {
 
 .address-select .update {
   color: #2f80ed;
-
 }
 
 .popupwrapper button {
@@ -312,14 +309,12 @@ fieldset {
   cursor: pointer;
   margin-left: 10px;
   margin-top: 0;
-
 }
 
 .popupwrapper .confirm {
   background-color: #ca3f3f;
   color: white;
   border: solid 1px #ca3f3f;
-
 }
 
 .popupwrapper .cancel {
@@ -350,8 +345,8 @@ fieldset {
 }
 
 .sanpham {
-    display: flex;
-padding: 8px 4px;
+  display: flex;
+  padding: 8px 4px;
 }
 
 .sanpham img,
@@ -384,7 +379,7 @@ padding: 8px 4px;
   display: flex;
   position: relative;
   width: 40%;
-flex: 1;
+  flex: 1;
 }
 
 .sanpham__info-cost {
@@ -410,7 +405,7 @@ flex: 1;
 .booktotal {
   text-align: right;
   width: 40%;
-  color: #f39801;
+  color: #ca3f3f;
   text-align: right;
 }
 
@@ -444,7 +439,7 @@ flex: 1;
 }
 
 #tong-tien {
-  color: #f39801;
+  color: #ca3f3f;
 }
 
 .dieukhoan {
@@ -452,7 +447,7 @@ flex: 1;
   display: flex;
   flex-wrap: wrap;
   flex: 1;
-padding: 4px 0;
+  padding: 4px 0;
 }
 
 .dieukhoan span a {
@@ -517,7 +512,6 @@ padding: 4px 0;
 
 #total-bottom {
   visibility: hidden;
-
 }
 
 #total-fixed {
@@ -543,13 +537,11 @@ padding: 4px 0;
   .updatebig {
     visibility: hidden;
     height: 0;
-
   }
 
   .updatesmall {
     visibility: inherit;
     height: auto;
-
   }
 
   #total-bottom {
@@ -560,7 +552,6 @@ padding: 4px 0;
   #total-fixed {
     visibility: hidden;
     height: 0;
-
   }
 
   .money {
@@ -573,8 +564,6 @@ padding: 4px 0;
     visibility: visible;
     margin-bottom: 70px;
     word-wrap: break-word;
-
-
   }
 
   #dieukhoan-fixed {

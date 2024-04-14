@@ -12,6 +12,7 @@ if (isset($_GET['page']) && $_GET['page'] != '') {
   $page = $_GET['page'];
 
   switch ($page) {
+    // Main page
     case 'product':
       require_once('view/pages/product.php');
       break;

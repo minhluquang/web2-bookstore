@@ -21,10 +21,11 @@ function renderProductHTML(data) {
                 <a href="index.php?page=product_detail&pid=${
                   product.id
                 }" class="product-action--btn product-action__detail">Chi tiết</a>
-                <form>
+                <form action="controller/cart.controller.php" method="post">
                   <input type="hidden" name="product_id" value="${product.id}">
                   <input
                     type="submit"
+                    name="product-action__addToCart"
                     class="product-action--btn product-action__addToCart"
                     value="Thêm vào giỏ"
                   />

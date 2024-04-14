@@ -161,31 +161,37 @@
                     </div>
                 </div>
                 <hr>
-                <div class="sanpham">
-                    <img src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000" />
-                    <span class="bookname">Book namenamenamenamenamename</span>
-                    <div class="cost">
-                        <div class="book-price">
-                            <span class="price">70.200 &#8363;</span>
-                            <!-- <span class="old-price">120.000 &#8363;</span> -->
-                        </div>
-                        <span class="soluong">1</span>
-                        <span class="booktotal">70.200 &#8363;</span>
-                    </div>
-                </div>
-                <hr>
-                <div class="sanpham">
-                    <img src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000" />
-                    <span class="bookname">Book namenamenamenamenamename</span>
-                    <div class="cost">
-                        <div class="book-price">
-                            <span class="price">70.200 &#8363;</span>
-                            <!-- <span class="old-price">120.000 &#8363;</span> -->
-                        </div>
-                        <span class="soluong">1</span>
-                        <span class="booktotal">70.200 &#8363;</span>
-                    </div>
-                </div>
+
+                <?php
+                    $totalPriceAllProducts = 0;
+                    if (isset($_SESSION['cart-selected']) && $_SESSION['cart-selected']) {
+                        include_once('controller/product_detail.controller.php');
+
+                        foreach ($_SESSION['cart-selected'] as $object) {
+                            $productDetail = getProductDetailById($object['productId'], false);
+                            $formatPrice = number_format($productDetail['price'], 0, ',', '.').'đ';
+
+                            $totalPrice = $productDetail['price'] * $object['amount'];
+                            $totalPriceAllProducts += $totalPrice;
+
+                            $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').'đ';
+                            echo '
+                            <div class="sanpham">
+                                <img src="'.$productDetail['image_path'].'" />
+                                <span class="bookname">'.$productDetail['product_name'].'</span>
+                                <div class="cost">
+                                    <div class="book-price">
+                                        <span class="price">'.$formatPrice.'</span>
+                                    </div>
+                                    <span class="soluong">'.$object['amount'].'</span>
+                                    <span class="booktotal">'.$formatTotalPrice.'</span>
+                                </div>
+                            </div>
+                            <hr>';
+                        }
+                    } 
+                ?>
+                
                 <div class="form-group">
                 </div>
             </div>
@@ -193,7 +199,10 @@
                 <div class="total">
                     <div class="chiphi">
                         <span class="cost-name">Thành tiền </span>
-                        <span class="money">192.700 &#8363;</span><br>
+                        <?php 
+                            $formatTotalPriceAllProducts = number_format($totalPriceAllProducts, 0, ',', '.').'đ';
+                        ?>
+                        <span class="money"><?php echo $formatTotalPriceAllProducts?></span><br>
                     </div>
                     <div class="chiphi">
                         <span class="cost-name">Giảm giá</span>
@@ -224,7 +233,10 @@
         <div class="total" id="total-fixed">
             <div class="chiphi">
                 <span class="cost-name">Thành tiền </span>
-                <span class="money">192.700 &#8363;</span><br>
+                <?php 
+                    $formatTotalPriceAllProducts = number_format($totalPriceAllProducts, 0, ',', '.').'đ';
+                ?>
+                <span class="money"><?php echo $formatTotalPriceAllProducts?></span><br>
             </div>
             <div class="chiphi">
                 <span class="cost-name">Giảm giá</span>

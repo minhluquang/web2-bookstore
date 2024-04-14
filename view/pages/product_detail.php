@@ -25,7 +25,7 @@
             if (isset($_GET['pid']) && (($_GET['pid']) != '')) {
               $productId = $_GET['pid'];
 
-              $productDetail = getProductDetailById($productId);
+              $productDetail = getProductDetailById($productId, true);
               $priceFormat = number_format($productDetail['price'], 0, ',', '.').' ₫';
               $quantityStatus;
               if ($productDetail['quantity'] > 0) {
@@ -51,6 +51,7 @@
                     <input
                       type="text"
                       value="1"
+                      name="amount"
                       class="modal-qnt__value"
                       readonly
                     />

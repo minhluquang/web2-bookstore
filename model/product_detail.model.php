@@ -2,7 +2,7 @@
 include_once('connect.php');
 $database = new connectDB();
 
-function getProductDetailByIdModel($product_id)
+function getProductDetailByIdModel($product_id, $closeDatabase = false)
 {
   global $database;
   if ($database->conn) {
@@ -29,7 +29,9 @@ function getProductDetailByIdModel($product_id)
               WHERE p.id = $product_id
               GROUP BY p.id";
     $result = $database->query($sql);
-    $database->close();
+    if ($closeDatabase) {
+      $database->close();
+    }
     return $result;
   } else {
     return false;
