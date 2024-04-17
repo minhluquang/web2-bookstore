@@ -3,6 +3,16 @@ const modelPath = "../model";
 let categoryId = null;
 let priceRange = null;
 
+// form action="controller/cart.controller.php" method="post">
+//                   <input type="hidden" name="product_id" value="${product.id}">
+//                   <input
+//                     type="submit"
+//                     name="product-action__addToCart"
+//                     class="product-action--btn product-action__addToCart"
+//                     value="Thêm vào giỏ"
+//                   />
+//                 </form>
+
 // Hàm để render HTML của mỗi sản phẩm
 function renderProductHTML(data) {
   let productHTML = '<div class="collection-product-list">';
@@ -21,15 +31,8 @@ function renderProductHTML(data) {
                 <a href="index.php?page=product_detail&pid=${
                   product.id
                 }" class="product-action--btn product-action__detail">Chi tiết</a>
-                <form action="controller/cart.controller.php" method="post">
-                  <input type="hidden" name="product_id" value="${product.id}">
-                  <input
-                    type="submit"
-                    name="product-action__addToCart"
-                    class="product-action--btn product-action__addToCart"
-                    value="Thêm vào giỏ"
-                  />
-                </form>
+                <input type="hidden" class="productId" value="${product.id}"/>
+                <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
               </div>
             </div>
             <div class="img-resize">
@@ -154,4 +157,32 @@ $(document).ready(function () {
     // Tự load sản phẩm ở lần đầu vào trang
     renderProductsPerPage(1, categoryId, priceRange);
   });
+
+  // Xử lý add to Cart
+  $(document).on("click", ".product-action__addToCart", function (e) {
+    e.preventDefault();
+    const productId = $(this)
+      .closest(".product-item")
+      .find(".productId")[0]
+      .getAttribute("value");
+    addToCart(productId, 1);
+  });
 });
+
+// Function xử lý addToCart
+function addToCart(productId, amount) {
+  $.ajax({
+    type: "post",
+    url: "controller/cart.controller.php",
+    dataType: "html",
+    data: {
+      "product-action__addToCart": true,
+      productId: productId,
+      amount: amount,
+    },
+  }).done(function (result) {
+    $(".cart-qnt").removeClass("hide");
+    $(".cart-qnt").text(result);
+    alert("Đã thêm sản phẩm thành công!");
+  });
+}

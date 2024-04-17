@@ -145,6 +145,10 @@ header {
   align-items: center;
 }
 
+.cart.hide {
+  display: none;
+}
+
 .cart a {
   text-decoration: none;
   color: #000;
@@ -153,6 +157,24 @@ header {
   align-items: center;
   flex-direction: column;
   cursor: pointer;
+}
+
+.cart-qnt {
+  background: #c92127;
+  text-align: center;
+  border-radius: 100%;
+  color: #fff;
+  line-height: 20px;
+  font-size: 14px;
+  height: 20px;
+  width: 20px;
+  top: -10px;
+  right: 10px;
+  position: absolute;
+}
+
+.cart-qnt.hide {
+  display: none;
 }
 
 .headerRight img {

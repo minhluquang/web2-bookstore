@@ -9,6 +9,7 @@ $(document).ready(function () {
       },
     }).done(function (result) {
       window.location.href = "index.php?page=signup";
+      alert("Bạn đã đăng xuất thành công!");
     });
   });
 });

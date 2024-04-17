@@ -8,6 +8,8 @@ btnSubstractGroup.forEach((btn) =>
       --input.value;
       input.setAttribute("value", input.value);
     }
+
+    updateTotalPricePerProduct(btn);
   })
 );
 btnAddGroup.forEach((btn) =>
@@ -15,8 +17,24 @@ btnAddGroup.forEach((btn) =>
     const input = btn.previousElementSibling;
     ++input.value;
     input.setAttribute("value", input.value);
+
+    updateTotalPricePerProduct(btn);
   })
 );
+
+// Cập nhật giá thành tiền
+function updateTotalPricePerProduct(btn) {
+  const parentEle = btn.closest(".cart-item");
+  const price = +parentEle.querySelector(".price-hidden").getAttribute("value");
+  const amount = +parentEle.querySelector(".qty-cart").getAttribute("value");
+  const totalPrice = price * amount;
+  const formatPrice = totalPrice.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  parentEle.querySelector(".cart-total-price .cart-price .price").innerHTML =
+    formatPrice;
+}
 
 // Hàm cập nhật trạng thái của tất cả các checkbox
 function updateAllCheckbox(checked) {
@@ -30,6 +48,7 @@ const ckbAllAddCart = document.querySelector("#checkbox-all-product");
 ckbAllAddCart.addEventListener("change", (e) => {
   updateAllCheckbox(ckbAllAddCart.checked);
   updateTotalPrice();
+  countCkbSelected();
 });
 
 function calculateTotalPrice() {
@@ -54,6 +73,13 @@ const ckbAddCarts = document.querySelectorAll(".checkbox-add-cart");
 ckbAddCarts.forEach((ckb) => {
   ckb.addEventListener("change", (e) => {
     updateTotalPrice();
+    const count = countCkbSelected();
+    ckbAllAddCart.checked = false;
+
+    // Tự động checked ckbAllAddCart khi chọn đủ sản phẩm
+    if (count == ckbAddCarts.length) {
+      ckbAllAddCart.checked = true;
+    }
   });
 });
 
@@ -82,3 +108,53 @@ btnSubQnts.forEach((btnSubQnt) => {
     updateTotalPrice();
   });
 });
+
+function countCkbSelected() {
+  let count = 0;
+  ckbAddCarts.forEach((ckb) => {
+    if (ckb.checked) {
+      count++;
+    }
+  });
+
+  document.querySelector(".num-items-checkbox").innerHTML = count;
+
+  return count;
+}
+
+// Xử lý khi bấm tăng/giảm số lượng thì lưu vào luôn
+$(document).on("click", ".btn-add-qty", function (e) {
+  e.preventDefault();
+  const parentEle = $(this).closest(".cart-item")[0];
+  const productId = parentEle
+    .querySelector(".checkbox-add-cart")
+    .getAttribute("value");
+  const amount = parentEle.querySelector(".qty-cart").getAttribute("value");
+
+  updateAmount(productId, amount);
+});
+
+$(document).on("click", ".btn-substract-qty", function (e) {
+  e.preventDefault();
+  const parentEle = $(this).closest(".cart-item")[0];
+  const productId = parentEle
+    .querySelector(".checkbox-add-cart")
+    .getAttribute("value");
+  const amount = parentEle.querySelector(".qty-cart").getAttribute("value");
+
+  updateAmount(productId, amount);
+});
+
+// Function xử lý updateQnt
+function updateAmount(productId, amount) {
+  $.ajax({
+    type: "post",
+    url: "controller/cart.controller.php",
+    dataType: "html",
+    data: {
+      "product-action__updateAmount": true,
+      productId: productId,
+      amount: amount,
+    },
+  });
+}

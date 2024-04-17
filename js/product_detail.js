@@ -18,3 +18,38 @@ btnIncreaseQnt.addEventListener("click", (e) => {
   modalQntValue.setAttribute("value", qnt + 1);
 });
 // ========== End: Xử lý nút tăng/giảm khi bấm ==========
+
+// Xử lý thêm vào giỏ bằng ajax
+$(document).ready(function () {
+  $(".modal-btn").click(function (e) {
+    e.preventDefault();
+
+    const currentURL = window.location.href;
+    const searchParams = new URLSearchParams(currentURL);
+    const productId = searchParams.get("pid");
+    const amount = $(this)
+      .closest(".modal-content__model-right")
+      .find(".modal-qnt .modal-qnt-select input[type=text]")[0]
+      .getAttribute("value");
+
+    addToCart(productId, amount);
+  });
+});
+
+// Function xử lý addToCart
+function addToCart(productId, amount) {
+  $.ajax({
+    type: "post",
+    url: "controller/cart.controller.php",
+    dataType: "html",
+    data: {
+      "product-action__addToCart": true,
+      productId: productId,
+      amount: amount,
+    },
+  }).done(function (result) {
+    $(".cart-qnt").removeClass("hide");
+    $(".cart-qnt").text(result);
+    alert("Đã thêm sản phẩm thành công!");
+  });
+}

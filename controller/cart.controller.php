@@ -2,7 +2,7 @@
   session_start();
 
   if (isset($_POST["product-action__addToCart"]) && $_POST['product-action__addToCart']) {
-    $productId = $_POST['product_id'];
+    $productId = $_POST['productId'];
     $amount = 1;
 
     if (isset($_POST['amount']) && $_POST['amount']) {
@@ -32,8 +32,10 @@
       ];
       $_SESSION['cart'][] = $product;
     }
-
-    header("location: ../index.php?page=cart");
+    
+    // Đếm số lượng sản phẩm trong giỏ hàng
+    $cartQnt = count($_SESSION['cart']);
+    echo $cartQnt;
   }
 
   // Xoá sản phẩm trong giỏ hàng
@@ -59,6 +61,19 @@
 
     foreach ($_POST['selectedProducts'] as $product) {
       $_SESSION['cart-selected'][] = $product;
+    }
+  }
+
+  // Xử lý cập nhật số lượng sản phẩm
+  if (isset($_POST["product-action__updateAmount"]) && $_POST['product-action__updateAmount']) {
+    $productId = $_POST['productId'];
+    $amount = $_POST['amount'];
+
+    foreach($_SESSION['cart'] as $key => $product) {
+      if ($product['id'] == $productId) {
+        $_SESSION['cart'][$key]['amount'] = $amount;
+        break;
+      }
     }
   }
 ?>

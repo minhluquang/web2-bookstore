@@ -149,6 +149,7 @@ $(document).ready(function () {
         const data = JSON.parse(result);
         if (data.success) {
           window.location.href = "index.php";
+          alert("Bạn đã đăng nhập thành công!");
         } else {
           $(".result").html(data.message);
         }
@@ -269,9 +270,10 @@ $(document).ready(function () {
       }).done(function (result) {
         const data = JSON.parse(result);
         if (data.success) {
-          toast.classList.add("active");
-          overlay.classList.add("active");
-
+          // toast.classList.add("active");
+          // overlay.classList.add("active");
+          window.location.href = "index.php?page=signup";
+          alert("Bạn đã đăng ký thành công!");
           $(".result").html("");
         } else {
           $(".result").addClass("error");

@@ -99,10 +99,28 @@
         </div>
 
         <div class="headerRight">
-          <div class="cart">
+          <?php
+            $hideCart = ""; 
+            if ((!isset($_SESSION['cart']) || !$_SESSION['cart']) && (!isset($_SESSION['username']) || !$_SESSION['username'])) {
+              $hideCart = "hide";
+            }
+          ?>
+
+          <div class="cart <?=$hideCart?>">
             <a href="index.php?page=cart">
               <i class="fa-solid fa-cart-shopping"></i>
-              <span >Giỏ hàng</span>
+              <span>Giỏ hàng</span>
+              
+              <?php
+                $cartQnt = 0;
+                $hide = "";
+                if (isset($_SESSION['cart']) && $_SESSION['cart']) {
+                  $cartQnt = count($_SESSION['cart']);
+                } else {
+                  $hide = "hide";
+                }
+              ?>
+              <span class="cart-qnt <?=$hide?>"><?=$cartQnt?></span>
             </a>
           </div>
           <div class="account">
@@ -130,8 +148,6 @@
                   <a href="index.php?page=signup&luachon=dangky" class="btnDangKyAccountOption">Đăng ký</a>
                 </div>';
               } else {
-                
-
                 echo '
                 <div class="account-options">
                   <button class="btnDangXuat">Đăng xuất</button>

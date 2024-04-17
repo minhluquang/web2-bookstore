@@ -1,3 +1,10 @@
+<?php
+  if (!isset($_SESSION['username'])) {
+    echo "<script>alert('Vui lòng đăng nhập!')</script>";
+    echo "<script>window.location.href = 'index.php?page=signup'</script>";
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,18 +23,21 @@
 <body>
   <?php
     $show = "";
+    $cartQnt = 0;
+
     if (isset($_SESSION['cart']) && ($_SESSION['cart'])) {
       $show = "has-items";
+      $cartQnt = count($_SESSION['cart']);
     } else {
       $show = "no-items";  
     }
   ?>
 
   <div class="container">
-    <div class="page-title <?php echo $show?>">
+    <div class="page-title <?=$show?>">
       <div class="page-title-content">
         <h1>Giỏ Hàng</h1>
-        <span class="cart-title-numbers">(0 sản phẩm)</span>
+        <span class="cart-title-numbers">(<?=$cartQnt?> sản phẩm)</span>
       </div>
     </div>
     
@@ -56,9 +66,9 @@
             </div>
             <div>
               <span>Chọn tất cả
-                <!-- (  -->
-                <!-- <span class="num-items-checkbox">1</span>
-                sản phẩm) -->
+                ( 
+                <span class="num-items-checkbox">0</span>
+                sản phẩm)
               </span>
             </div>
             <div>Số lượng</div>
@@ -79,13 +89,14 @@
 
                   if ($counter == $totalProducts) {
                     $closeDatabase = true;
-                  }                  
-
+                  }         
+                  
+                  
                   $productDetail = getProductDetailById($product['id'], $closeDatabase);
-                  $formatPrice = number_format($productDetail['price'], 0, ',', '.').'đ';
+                  $formatPrice = number_format($productDetail['price'], 0, ',', '.').' ₫';
                   
                   $totalPrice = $productDetail['price'] * $product['amount'];
-                  $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').'đ';
+                  $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').' ₫';
                   echo '
                   <div class="cart-item">
                     <div class="checked-product-cart">
