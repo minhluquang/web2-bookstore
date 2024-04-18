@@ -43,6 +43,7 @@ hr {
 }
 
 .container h3 {
+  margin-top: 4px;
   padding: 8px 0;
   font-weight: bold;
   font-size: 16px;
@@ -78,7 +79,9 @@ hr {
 .d-flex {
   display: flex;
   justify-content: start;
-  align-items: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #promo-container {
@@ -116,9 +119,39 @@ hr {
   /* height: 100%; */
   width: 100px;
   height: 30px;
-  font-size: 16px;
+  font-size: 14px;
+  padding: 5px 10px;
   position: absolute;
   right: 5px;
+  outline: none;
+  border: none;
+}
+
+.promo-message {
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.promo-message.error {
+  color: red;
+}
+
+.promo-message.success {
+  color: green;
+}
+
+.promoBtn.hide {
+  display: none;
+}
+
+.promoChangeBtn.hide {
+  display: none;
+}
+
+.promoChangeBtn {
+  color: #fff !important;
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
 }
 /* 
 #promo-container:focus-within {
@@ -169,6 +202,10 @@ input[type="radio"] {
   border-radius: 4px;
   padding: 5px;
   cursor: pointer;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 5px 10px;
 }
 
 .popup .popupmenu {
@@ -476,7 +513,8 @@ fieldset {
   right: 0;
   left: 50%;
   /* margin: 0 auto; */
-  box-shadow: 0 -5px 5px -5px #333;
+  /* box-shadow: 0 -5px 5px -5px #333; */
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   transform: translateX(-50%);
   bottom: 0;
   z-index: -1;
@@ -493,6 +531,7 @@ fieldset {
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
+  font-size: 14px;
   cursor: pointer;
   /* width: 30%; */
   float: inline-end;

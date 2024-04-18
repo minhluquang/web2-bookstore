@@ -91,7 +91,6 @@
                     $closeDatabase = true;
                   }         
                   
-                  
                   $productDetail = getProductDetailById($product['id'], $closeDatabase);
                   $formatPrice = number_format($productDetail['price'], 0, ',', '.').' ₫';
                   

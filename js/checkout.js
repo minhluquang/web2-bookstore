@@ -13008,3 +13008,107 @@ function changePhuongXa() {
     }
   }
 }
+
+// Kiểm tra ajax áp dụng mã btn
+$(document).ready(function () {
+  $(".promoBtn").click(function (e) {
+    e.preventDefault();
+    const parentEle = $(this).closest("#promo-container")[0];
+    const inputPromo = parentEle.querySelector("#promotion");
+
+    if (inputPromo.value.trim() == "") {
+      showPromoMessage(
+        "Nếu bạn muốn áp dụng mã khuyến mãi, vui lòng điền mã vào",
+        true
+      );
+      return;
+    }
+
+    $.ajax({
+      type: "post",
+      url: "controller/checkout.controller.php",
+      dataType: "html",
+      data: {
+        promoCodeCheck: true,
+        promoValue: inputPromo.value,
+      },
+    }).done(function (result) {
+      const data = JSON.parse(result);
+      if (data.success) {
+        $(".promo-message").html("");
+        $(".promoBtn").addClass("hide");
+        $(".promoChangeBtn").removeClass("hide");
+
+        $("#promotion").prop("readonly", true);
+
+        // Hiển thị giá giảm
+        const totalPrice = document.querySelector(".totalPriceValue").value;
+
+        let discountValue;
+        if (data.type == "PR") {
+          discountValue = (totalPrice * +data.discount_value) / 100;
+        } else if (data.type == "AR") {
+          discountValue = +data.discount_value;
+        }
+        const formatDiscountValue = discountValue.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+
+        const finalTotalPrice = totalPrice - discountValue;
+        const formatFinalTotalPrice = finalTotalPrice.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+
+        $(".giam-gia").html("- " + formatDiscountValue);
+        $(".tong-tien").html(formatFinalTotalPrice);
+        $(".finalTotalPriceValue").attr("value", finalTotalPrice);
+
+        showPromoMessage("Đã áp dụng mã khuyến mãi thành công");
+      } else {
+        showPromoMessage(data.message, true);
+      }
+    });
+  });
+});
+
+function showPromoMessage(message, error = false) {
+  const promoMessage = document.querySelector(".promo-message");
+  if (error) {
+    promoMessage.classList.add("error");
+    promoMessage.classList.remove("success");
+  } else {
+    promoMessage.classList.remove("error");
+    promoMessage.classList.add("success");
+  }
+
+  promoMessage.innerHTML = message;
+}
+
+// Thay đổi mã giảm giá
+$(document).ready(function () {
+  $(".promoChangeBtn").click(function (e) {
+    e.preventDefault();
+
+    // Reset form input mã khuyến mãi
+    $("#promotion").prop("readonly", false);
+    $("#promotion").val("");
+    showPromoMessage("");
+    $(".promoChangeBtn").addClass("hide");
+    $(".promoBtn").removeClass("hide");
+
+    // Reset tiền giảm giá
+    $(".giam-gia").html("- 0 ₫");
+
+    // Reset tổng số tiền
+    const totalPrice = document.querySelector(".totalPriceValue").value;
+    const formatFinalTotalPrice = totalPrice.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+    $(".tong-tien").html(formatFinalTotalPrice);
+    $(".finalTotalPriceValue").attr("value", totalPrice);
+  });
+});
+
