@@ -13102,7 +13102,7 @@ $(document).ready(function () {
     $(".giam-gia").html("- 0 ₫");
 
     // Reset tổng số tiền
-    const totalPrice = document.querySelector(".totalPriceValue").value;
+    const totalPrice = +document.querySelector(".totalPriceValue").value;
     const formatFinalTotalPrice = totalPrice.toLocaleString("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -13111,4 +13111,3 @@ $(document).ready(function () {
     $(".finalTotalPriceValue").attr("value", totalPrice);
   });
 });
-
