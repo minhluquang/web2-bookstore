@@ -68,34 +68,34 @@
                                     <div class="update-container">
                                         <fieldset style="flex:0 0 47%;">
                                             <legend>Họ và tên</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <input type="text">
                                         </fieldset>
                                         <fieldset style="flex:0 0 47%;margin-left:auto;">
                                             <legend>Số điện thoại</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <input type="text">
                                         </fieldset>
 
                                         <fieldset class="fieldselect" style="margin:0 auto 0 0;">
                                             <legend>Tỉnh/Thành phố</legend>
-                                            <select id="tinhthanh" name="tinhthanh" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%;">
+                                            <select id="tinhthanh" name="tinhthanh">
 
 
                                             </select>
                                         </fieldset>
                                         <fieldset class="fieldselect" style="margin:0 auto;">
                                             <legend>Quận/huyện</legend>
-                                            <select id="quanhuyen" name="quanhuyen" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <select id="quanhuyen" name="quanhuyen" >
                                             </select>
                                         </fieldset>
                                         <fieldset class="fieldselect" style="margin:0 0 0 auto;">
                                             <legend>Phường/xã</legend>
-                                            <select id="phuongxa" name="phuongxa" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <select id="phuongxa" name="phuongxa" >
                                             </select>
 
                                         </fieldset>
                                         <fieldset style="flex:0 0 100% ;margin-top:10px">
                                             <legend>Địa chỉ cụ thể</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <input type="text" >
                                         </fieldset>
                                     </div>
 
