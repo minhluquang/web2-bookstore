@@ -1,4 +1,8 @@
-D<!DOCTYPE html>
+<?
+    session_start();
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,9 +21,7 @@ D<!DOCTYPE html>
                 <h3>Địa Chỉ Nhận Hàng</h3>
                 <!-- <hr> -->
                 <div class="form-group" style="flex-direction: column;">
-                    <span id="diachi">
-                        <b>Nguyễn Minh Trí (+84) 394080644</b> Số 907a, Âu Cơ, Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh
-                    </span>
+                    <span id="diachi"></span>
                     <div class="popup">
                         <button type="button" class="popupbutton">Thay đổi</button>
                         <div class="popupwrapper" id="diachiMenu">
@@ -31,32 +33,11 @@ D<!DOCTYPE html>
                                 </div>
 
                                 <div class="address-container">
-                                    <label class="address-select">
-                                        <input type="radio" name="address" checked />
-                                        <span class="name">Nguyễn Minh Trí</span>
-                                        <span class="sdt">(+84) 394080644</span>
-                                        <span class="updatebig update">Cập nhật</span>
-                                        <span class="diachi">Số 907a, Âu Cơ</span>
-                                        <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="updatesmall update">Cập nhật</span>
-                                    </label>
-                                    <label class="address-select">
-                                        <input type="radio" name="address" />
-                                        <span class="name">Nguyễn Minh Trí</span>
-                                        <span class="sdt">(+84) 123123123</span>
-                                        <span class="updatebig update">Cập nhật</span>
-                                        <span class="diachi">123 Âu Cơ</span>
-                                        <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="updatesmall update">Cập nhật</span>
-                                    </label>
-                                    <form action="" method="post">
-                                        <input type="button" class="addNewAddress" value="Thêm địa chỉ mới">
-                                    </form>
+                                    <!-- Render code -->
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;">
                                     <button type="button" class="confirm" id="confirm-popup">Xác Nhận</button>
                                     <button type="button" class="cancel" id="cancel-popup">Hủy</button>
-
                                 </div>
                             </div>
                             <div class="popupmenu" id="changeAddressMenu">
@@ -66,36 +47,33 @@ D<!DOCTYPE html>
                                 </div>
                                 <div>
                                     <div class="update-container">
+                                        <input type="hidden" name="update-user_info_id" class="update-user_info_id" value="">
                                         <fieldset style="flex:0 0 47%;">
                                             <legend>Họ và tên</legend>
-                                            <input type="text">
+                                            <input type="text" class="update-fullname">
                                         </fieldset>
                                         <fieldset style="flex:0 0 47%;margin-left:auto;">
                                             <legend>Số điện thoại</legend>
-                                            <input type="text">
+                                            <input type="text" class="update-phoneNumber">
                                         </fieldset>
-
-                                        <fieldset class="fieldselect" style="margin:0 auto 0 0;">
+                                        <fieldset class="fieldselect fieldselect-100" style="margin:0 auto 15px 0;">
                                             <legend>Tỉnh/Thành phố</legend>
                                             <select id="tinhthanh" name="tinhthanh">
-
-
                                             </select>
                                         </fieldset>
-                                        <fieldset class="fieldselect" style="margin:0 auto;">
+                                        <fieldset class="fieldselect" style="flex:0 0 47%;">
                                             <legend>Quận/huyện</legend>
                                             <select id="quanhuyen" name="quanhuyen" >
                                             </select>
                                         </fieldset>
-                                        <fieldset class="fieldselect" style="margin:0 0 0 auto;">
+                                        <fieldset class="fieldselect" style="flex:0 0 47%;margin-left:auto;margin-right: 0">
                                             <legend>Phường/xã</legend>
                                             <select id="phuongxa" name="phuongxa" >
                                             </select>
-
                                         </fieldset>
                                         <fieldset style="flex:0 0 100% ;margin-top:10px">
-                                            <legend>Địa chỉ cụ thể</legend>
-                                            <input type="text" >
+                                            <legend>Số nhà và tên đường</legend>
+                                            <input type="text" class="update-address">
                                         </fieldset>
                                     </div>
 

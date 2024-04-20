@@ -222,11 +222,12 @@ input[type="radio"] {
   left: 50%;
   transform: translateX(-50%);
 
-  padding-left: 2%;
+  /* padding-left: 2%;
   padding-right: 2%;
-  border-radius: 10px;
   padding-top: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 5px; */
+  padding: 10px 20px 15px;
+  border-radius: 10px;
   background-color: white;
   flex-direction: column;
 
@@ -298,6 +299,14 @@ fieldset {
   margin: 0 auto 0 0;
 }
 
+.update-container .fieldselect-100 {
+  flex: 0 0 100% !important;
+}
+
+.update-container .fieldselect-50 {
+  flex: 0 0 45% !important;
+}
+
 .update-container input,
 .update-container select {
   border: none;
@@ -346,6 +355,7 @@ fieldset {
 
 .address-select .update {
   color: #2f80ed;
+  cursor: pointer;
 }
 
 .popupwrapper button {
@@ -582,7 +592,7 @@ fieldset {
     width: 90%;
   }
 
-  .updatebig {
+  /* .updatebig {
     visibility: hidden;
     height: 0;
   }
@@ -590,7 +600,7 @@ fieldset {
   .updatesmall {
     visibility: inherit;
     height: auto;
-  }
+  } */
 
   #total-bottom {
     visibility: visible;

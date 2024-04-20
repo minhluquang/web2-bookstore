@@ -1,5 +1,6 @@
 var checkedAddress;
 var addressTmp = "";
+var addressIdTmp = "";
 var updateAddress;
 function popupToggle(idname) {
   var popup = document.getElementById(idname);
@@ -41,15 +42,68 @@ function changeAddressTmp() {
     checked.querySelector(".diachi").innerHTML +
     " " +
     checked.querySelector(".tinh").innerHTML;
+  var addressId = checked
+    .querySelector(".userInfoIdSelect")
+    .getAttribute("value");
+  addressIdTmp = `<input type="hidden" class="userInfoId" value="${addressId}"/>`;
 }
 
 function changeAddress() {
   var diachi = document.getElementById("diachi");
-  diachi.innerHTML = addressTmp;
+  diachi.innerHTML = addressIdTmp + addressTmp;
 }
 
 function fetchUpdateAddress(element) {
   updateAddress = element.parentNode;
+}
+
+// Hàm tự động điền thông tin hiện tại vào form cập nhật
+const updateUserInfoId = document.querySelector(".update-user_info_id");
+const updateFullname = document.querySelector(".update-fullname");
+const updatePhoneNumber = document.querySelector(".update-phoneNumber");
+const updateAddressForm = document.querySelector(".update-address");
+const citySelect = document.querySelector("#tinhthanh");
+const districtSelect = document.querySelector("#quanhuyen");
+const wardSelect = document.querySelector("#phuongxa");
+
+function autoFillOutWhenUpdateAdress(btn) {
+  const parentEle = btn.parentNode;
+  const userInfoId = parentEle.querySelector(".userInfoIdSelect").value;
+  const fullname = parentEle.querySelector(".name").innerHTML;
+  var phoneNumber = parentEle.querySelector(".sdt").innerHTML;
+  phoneNumber = phoneNumber.replace("(+84) ", "0");
+  const address = parentEle.querySelector(".diachi").innerHTML;
+  const city = document.querySelector(".userInfoCity").value;
+  const district = document.querySelector(".userInfoDistrict").value;
+  const ward = document.querySelector(".userInfoWard").value;
+
+  updateUserInfoId.value = userInfoId;
+  updateFullname.value = fullname;
+  updatePhoneNumber.value = phoneNumber;
+  updateAddressForm.value = address;
+  // Auto select option
+  for (let option of citySelect.options) {
+    if (option.value == city) {
+      option.selected = true;
+      changeQuanHuyen();
+      break;
+    }
+  }
+
+  for (let option of districtSelect.options) {
+    if (option.value == district) {
+      option.selected = true;
+      changePhuongXa();
+      break;
+    }
+  }
+
+  for (let option of wardSelect.options) {
+    if (option.value == ward) {
+      option.selected = true;
+      break;
+    }
+  }
 }
 
 var open_update_menu = function () {
@@ -57,35 +111,26 @@ var open_update_menu = function () {
   popupToggle(`addressMenu`);
 };
 
-document
-  .querySelectorAll(".update")
-  .forEach((btn) => (btn.onclick = open_update_menu));
-document
-  .querySelectorAll("input[name=address]")
-  .forEach((btn) => (btn.onclick = changeAddressTmp));
+// document.querySelectorAll(".change_address").forEach((btn) =>
+//   btn.addEventListener("click", () => {
+//     popupToggle(`changeAddressMenu`);
+//     popupToggle(`addressMenu`);
+//   })
+// );
 
-document.querySelector(".popupbutton").addEventListener("click", () => {
-  changeAddressTmp();
-  popupToggle(`diachiMenu`);
-  popupToggle(`addressMenu`);
-  getChecked();
-});
-document.querySelectorAll(".change_address").forEach((btn) =>
-  btn.addEventListener("click", () => {
-    popupToggle(`changeAddressMenu`);
-    popupToggle(`addressMenu`);
-  })
-);
 document.getElementById("confirm-popup").addEventListener("click", () => {
-  changeAddress();
+  // changeAddress();
   popupToggle(`diachiMenu`);
   popupOff(`addressMenu`);
+  renderCurrentDeliveryAddress();
 });
+
 document.getElementById("cancel-popup").addEventListener("click", () => {
   changeChecked();
   popupToggle(`diachiMenu`);
   popupOff(`addressMenu`);
 });
+
 var tinhThanhData = [
   "Chọn Tỉnh/Thành phố",
   "Hà Nội",
@@ -13111,3 +13156,264 @@ $(document).ready(function () {
     $(".finalTotalPriceValue").attr("value", totalPrice);
   });
 });
+
+// Cập nhật địa chỉ
+let indexAddressRadioChecked = 0;
+
+$(document).ready(function () {
+  $(".confirm.change_address").click(function () {
+    if (validFormUpdateUserInfoAddress()) {
+      const updateUserInfoIdValue = updateUserInfoId.value;
+      const updateFullnameValue = updateFullname.value;
+      const updatePhoneNumberValue = updatePhoneNumber.value;
+      const updateAddressFormValue = updateAddressForm.value;
+      const citySelectValue = citySelect.value;
+      const districtSelectValue = districtSelect.value;
+      const wardSelectValue = wardSelect.value;
+
+      $.ajax({
+        type: "post",
+        url: "controller/user_info.controller.php",
+        dataType: "html",
+        data: {
+          updateUserInfo: true,
+          updateUserInfoId: updateUserInfoIdValue,
+          updateFullname: updateFullnameValue,
+          updatePhoneNumber: updatePhoneNumberValue,
+          updateAddressForm: updateAddressFormValue,
+          citySelect: citySelectValue,
+          districtSelect: districtSelectValue,
+          wardSelect: wardSelectValue,
+          modelPath: "../model",
+        },
+      }).done(function (result) {
+        const data = JSON.parse(result);
+        if (data.success) {
+          alert("Hệ thống cập nhật thành công địa chỉ!");
+          popupToggle(`changeAddressMenu`);
+          popupToggle(`addressMenu`);
+
+          // Tự động render lại dữ liệu sau khi cập nhật thành công
+          renderAllUserInfoByUserId();
+          renderCurrentDeliveryAddress();
+        } else {
+          alert("Hệ thống cập nhật thất bại địa chỉ!");
+        }
+      });
+    }
+  });
+});
+
+// Hàm render all user info
+function renderAllUserInfoByUserId() {
+  $(document).ready(function () {
+    $.ajax({
+      type: "post",
+      url: "controller/user_info.controller.php",
+      dataType: "html",
+      data: {
+        renderAllUserInfoByUserId: true,
+        modelPath: "../model",
+      },
+    }).done(function (result) {
+      const data = JSON.parse(result);
+
+      // Render all user info by user id
+      renderUserInfoHTML(data);
+
+      // Lắng nghe sự kiện bấm vào nút 'cập nhật'
+      document.querySelectorAll(".update").forEach((btn, index) =>
+        btn.addEventListener("click", (e) => {
+          open_update_menu();
+          autoFillOutWhenUpdateAdress(btn);
+
+          indexAddressRadioChecked = index;
+        })
+      );
+
+      // Huỷ cập nhật
+      document
+        .querySelector(".cancel.change_address")
+        .addEventListener("click", (e) => {
+          popupToggle(`changeAddressMenu`);
+          popupToggle(`addressMenu`);
+        });
+
+      // Xử lý chọn địa chỉ
+      document
+        .querySelectorAll("input[name=address]")
+        .forEach((btn) => (btn.onclick = changeAddressTmp));
+
+      document.querySelector(".popupbutton").addEventListener("click", () => {
+        changeAddressTmp();
+        document.getElementById("diachiMenu").classList.add("show");
+        document.getElementById("addressMenu").classList.add("show");
+        getChecked();
+      });
+    });
+  });
+}
+
+function renderUserInfoHTML(data) {
+  const addressContainer = document.querySelector(".address-container");
+  addressContainer.innerHTML = "";
+
+  data.forEach((address, index) => {
+    const tinh = `${address.ward}, ${address.district}, ${address.city}`;
+    let checked = index === indexAddressRadioChecked ? "checked" : "";
+
+    const html = `<label class="address-select">
+                    <input type="hidden" class="userInfoIdSelect" value="${
+                      address.user_info_id
+                    }"/>
+                    <input type="hidden" class="userInfoCity" value="${
+                      address.city
+                    }"/>
+                    <input type="hidden" class="userInfoDistrict" value="${
+                      address.district
+                    }"/>
+                    <input type="hidden" class="userInfoWard" value="${
+                      address.ward
+                    }"/>
+                    <input type="radio" name="address" ${checked}/>
+                    <span class="name">${address.fullname}</span>
+                    <span class="sdt">(+84) ${address.phone_number.slice(
+                      1
+                    )}</span>
+                    <span class="updatebig update">Cập nhật</span>
+                    <span class="diachi">${address.address}</span>
+                    <span class="tinh">${tinh}</span>
+                  </label>`;
+
+    // Chèn HTML vào cuối của addressContainer
+    addressContainer.insertAdjacentHTML("beforeend", html);
+  });
+
+  const btnAddNew = `<form action="" method="post">
+                      <input type="button" class="addNewAddress" value="Thêm địa chỉ mới">
+                    </form>`;
+  addressContainer.insertAdjacentHTML("beforeend", btnAddNew);
+}
+
+// Hàm render current user info
+function renderCurrentDeliveryAddress() {
+  $(document).ready(function () {
+    $.ajax({
+      type: "post",
+      url: "controller/user_info.controller.php",
+      dataType: "html",
+      data: {
+        showCurrentDeliveryAddress: true,
+        indexAddressRadioChecked,
+        modelPath: "../model",
+      },
+    }).done(function (result) {
+      console.log(result);
+      const data = JSON.parse(result);
+      renderHTMLCurrentDeliveryAddress(data);
+    });
+  });
+}
+
+function renderHTMLCurrentDeliveryAddress(data) {
+  const diachiContainer = document.querySelector("#diachi");
+  diachiContainer.innerHTML = "";
+
+  const address = `${data.address}, ${data.ward}, ${data.district}, ${data.city}`; // Thay đổi ở đây
+  const html = `
+    <input type="hidden" class="userInfoId" value="${data.user_info_id}"/>
+    <b>${data.fullname} (+84) ${data.phone_number.slice(1)}</b> ${address}
+  `;
+
+  diachiContainer.insertAdjacentHTML("beforeend", html); // Sửa lại ở đây
+}
+
+function validFormUpdateUserInfoAddress() {
+  let messageError = "Vui lòng nhập đúng theo yêu cầu: ";
+
+  isValidFullName = false;
+  isValidPhoneNumber = false;
+  isValidCity = false;
+  isValidDistrict = false;
+  isValidWard = false;
+  isValidAddress = false;
+
+  const regexFullName = /[a-zA-ZÀ-ỹ]+(\s[a-zA-ZÀ-ỹ]+){1,}$/;
+  const regexPhoneNumber = /^0[0-9]{9}$/;
+  const regexAddress = /^[0-9]+(\s[a-zA-ZÀ-ỹ]+){2,}$/;
+
+  if (updateFullname.value.trim() === "") {
+    isValidFullName = false;
+    messageError += "\n - Họ tên không được để trống";
+  } else if (!regexFullName.test(updateFullname.value)) {
+    isValidFullName = false;
+    messageError += "\n - Nhập họ và tên đúng định dạng (ví dụ: Lữ Minh)";
+  } else {
+    isValidFullName = true;
+  }
+
+  if (updatePhoneNumber.value.trim() === "") {
+    isValidPhoneNumber = false;
+    messageError += "\n - Số điện thoại không được để trống";
+  } else if (!regexPhoneNumber.test(updatePhoneNumber.value)) {
+    isValidPhoneNumber = false;
+    messageError +=
+      "\n - Nhập số điện thoại đúng định dạng (ví dụ: 0931814480)";
+  } else {
+    isValidPhoneNumber = true;
+  }
+
+  if (updateAddressForm.value.trim() === "") {
+    isValidAddress = false;
+    messageError += "\n - Địa chỉ không được để trống";
+  } else if (!regexAddress.test(updateAddressForm.value)) {
+    isValidAddress = false;
+    messageError +=
+      "\n - Nhập địa chỉ đúng định dạng (ví dụ: 273 An Dương Vương)";
+  } else {
+    isValidAddress = true;
+  }
+
+  if (citySelect.selectedIndex === -1) {
+    isValidCity = false;
+    messageError += "\n - Tỉnh/thành phố phải được chọn";
+  } else {
+    isValidCity = true;
+  }
+
+  if (districtSelect.selectedIndex === -1) {
+    isValidDistrict = false;
+    messageError += "\n - Quận/huyện phố phải được chọn";
+  } else {
+    isValidDistrict = true;
+  }
+
+  if (wardSelect.selectedIndex === -1) {
+    isValidWard = false;
+    messageError += "\n - Phường/xã phố phải được chọn";
+  } else {
+    isValidWard = true;
+  }
+
+  const isValidAll =
+    isValidFullName &&
+    isValidPhoneNumber &&
+    isValidCity &&
+    isValidDistrict &&
+    isValidWard &&
+    isValidAddress;
+
+  if (!isValidAll) {
+    alert(messageError);
+  }
+
+  return isValidAll;
+}
+
+// Khởi chạy các function
+const init = () => {
+  renderAllUserInfoByUserId();
+  renderCurrentDeliveryAddress();
+};
+
+init();
