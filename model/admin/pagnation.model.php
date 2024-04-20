@@ -366,9 +366,15 @@ class pagnation
                                 INNER JOIN category_details as cd ON cd.category_id = " . $row['id'] . "
                                 WHERE p.id = cd.product_id";
                             $result_amount = $database->query($sql_amount);
-                            echo '<td class="amount">' . mysqli_fetch_array($result_amount)['total'] . '</td>';
-                            echo '<td class="date-update">14/11/2023</td>
-                            <td class="date-creat">14/11/2023</td>';
+                            $amount = mysqli_fetch_array($result_amount)['total'];
+                            if($amount !== null) {
+                                echo '<td class="amount">' . $amount . '</td>';
+                            } else {
+                                echo '<td class="amount">'. 0 .'</td>';
+                            }
+                           
+                            echo '<td class="date-create">'.$row['create_date'].'</td>';
+                            echo '<td class="date-update">'.$row['update_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -466,6 +472,34 @@ function getAuthorFilterSQL($data)
             $filter = $filter . "`email` LIKE '%" . $data['author_email'] . "%'";
         }
         
+        
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return  $filter;
+}
+
+function getCategoryFilterSQL($data)
+{
+    $filter = "";    
+    if (!empty($data)) {
+        if (!empty($data['category_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`name` LIKE '%" . $data['category_name'] . "%'";
+        }
+        if (!empty($data['category_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " id = " . $data['category_id'];
+        }
+        if (!empty($data['category_date_type'])) {
+            if (!empty($data['category_date_start'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['category_date_type'] . "` >= '" . $data['category_date_start'] . "'";
+            }
+            if (!empty($data['category_date_end'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['category_date_type'] . "` <= '" . $data['category_date_end'] . "'";
+            }
+        }
         
         if ($filter != "") $filter = "WHERE " . $filter;
     }

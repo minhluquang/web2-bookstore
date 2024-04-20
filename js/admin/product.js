@@ -29,7 +29,8 @@ function pushFilterToURL() {
 }
 function getFilterFromForm() {
     return {
-        "product_name": filter_form.querySelector("#productName").value,
+        "product_name": filter_form.querySelector("#productName")
+        .value,
         "product_id": filter_form.querySelector("#productId").value,
         "product_category": filter_form.querySelector("#categorySelect").value,
         "product_date_type": filter_form.querySelector("#cateDateSelect").value,
@@ -38,7 +39,6 @@ function getFilterFromForm() {
         "product_price_start": filter_form.querySelector("#price_start").value,
         "product_price_end": filter_form.querySelector("#price_end").value,
     }
-
 }
 // Load the jquery
 var script = document.createElement("SCRIPT");
@@ -84,7 +84,6 @@ function pagnationBtn() {
     if (document.getElementsByClassName('pag-con').length > 0)
         document.querySelector('.pag-con').addEventListener('click', function () {
             current_page = Number(document.querySelector('span.active').innerHTML) + 1;
-
             loadItem();
         });
 }
@@ -105,6 +104,7 @@ function loadItem() {
         newurl += pushFilterToURL();
         window.history.pushState({ path: newurl }, '', newurl);
         $('.result').html(result);
+        console.log(result)
         pagnationBtn();
         filterBtn();
         js();
@@ -126,7 +126,7 @@ function filterBtn() {
         $.ajax({
             url: '../controller/admin/pagnation.controller.php',
             type: "post",
-            dataType: 'html',
+            dataType: 'html',   
             data: {
                 number_of_item: number_of_item,
                 current_page: current_page,
@@ -136,7 +136,7 @@ function filterBtn() {
             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
-            console.log(result);
+            
             pagnationBtn();
             js();
         })
@@ -395,7 +395,6 @@ var js = function () {
             }).done(function (result) {
                 modal.querySelector("#author").innerHTML = result;
             modal.querySelector('#author').value = author_value;
-
             })
             modal.querySelector('#image_path').value = this.parentNode.parentNode.querySelector("img").src.replace("http://localhost/web2-bookstore/assets/images/product/", "");
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
@@ -577,7 +576,5 @@ var js = function () {
                 modal_edit_container.classList.remove('show')
             });
         });
-
     }
-
 }

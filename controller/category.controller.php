@@ -10,4 +10,10 @@
       return "Không có thể loại nào";
     }
   }
+
+  function getCategoryById($category_id) {
+    $category = getCategoryByIdModel($category_id);
+    return $category;
+}
+
 ?>

@@ -47,11 +47,11 @@ $_SESSION["render"] ->setTable("products");
                     <option value="update_date">Ngày cập nhật</option>
                 </select>
             </div>
-            <div class="body__filter--field body__filter--datefrom" id="dateFrom">
+            <div class="body__filter--field body__filter--datefrom" >
                 <label>Từ ngày</label>
                 <input type="date" id="date_start" />
             </div>
-            <div class="body__filter--field body__filter--dateto" id="dateTo">
+            <div class="body__filter--field body__filter--dateto" >
                 <label>Đến ngày</label>
                 <input type="date" id="date_end" />
             </div>
