@@ -13016,6 +13016,7 @@ document.getElementById("tinhthanh").onchange = function () {
 document.getElementById("quanhuyen").onchange = function () {
   changePhuongXa();
 };
+
 // thiết lập select tỉnh thành
 var tinhThanhSelect = document.getElementById("tinhthanh");
 tinhThanhSelect.innerHTML = "";
@@ -13173,7 +13174,7 @@ $(document).ready(function () {
 
       $.ajax({
         type: "post",
-        url: "controller/user_info.controller.php",
+        url: "controller/delivery_info.controller.php",
         dataType: "html",
         data: {
           updateUserInfo: true,
@@ -13209,7 +13210,7 @@ function renderAllUserInfoByUserId() {
   $(document).ready(function () {
     $.ajax({
       type: "post",
-      url: "controller/user_info.controller.php",
+      url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
         renderAllUserInfoByUserId: true,
@@ -13300,7 +13301,7 @@ function renderCurrentDeliveryAddress() {
   $(document).ready(function () {
     $.ajax({
       type: "post",
-      url: "controller/user_info.controller.php",
+      url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
         showCurrentDeliveryAddress: true,
@@ -13308,7 +13309,6 @@ function renderCurrentDeliveryAddress() {
         modelPath: "../model",
       },
     }).done(function (result) {
-      console.log(result);
       const data = JSON.parse(result);
       renderHTMLCurrentDeliveryAddress(data);
     });

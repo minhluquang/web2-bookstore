@@ -29,7 +29,7 @@
     }
   }
 
-  function checkRegister($username, $fullname, $phoneNumber, $address, $password) {
+  function checkRegister($username, $fullname, $phoneNumber, $address, $password, $city, $district, $ward) {
     global $database;
     // Kiểm tra username có tồn tại hay chưa
     $sqlCheckExistUsername = "SELECT * FROM accounts WHERE username = '$username'";
@@ -44,8 +44,8 @@
     // Nếu như username chưa tồn tại, thì tạo tài khoản
     $sqlInsertAccount = "INSERT INTO accounts (username, password, role_id) 
                         VALUES ('$username', '$password', 1)";
-    $sqlInsertUserInfo = "INSERT INTO user_infoes (user_id, fullname, phone_number, address)
-                              VALUES ('$username', '$fullname', '$phoneNumber', '$phoneNumber')";
+    $sqlInsertUserInfo = "INSERT INTO delivery_infoes (user_id, fullname, phone_number, address, city, district, ward)
+                              VALUES ('$username', '$fullname', '$phoneNumber', '$address', '$city', '$district', '$ward')";
 
     $resultInsertAccount = $database->execute($sqlInsertAccount);
     $resultInsertUserInfo = $database->execute($sqlInsertUserInfo);

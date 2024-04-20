@@ -45,12 +45,12 @@
                 <!-- <h2>Form Đăng ký</h2> -->
                 <!-- Your sign-up form goes here -->
                 <form action="" method="POST">
-                    <div class="form-row">
+                    <div class="form-row form-row-48">
                         <label for="username">Username</label>
                         <input type="text" placeholder="Nhập tên tài khoản" id="registerUsername" name="username" required>
                         <p class="errMessage errMessageUsernameRegister"></p>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row form-row-48">
                         <label for="name">Họ và tên</label>
                         <input type="text" placeholder="Nhập Họ và tên" id="registerFullname" name="name" required>
                         <p class="errMessage errMessageFullnameRegister"></p>
@@ -61,17 +61,31 @@
                         <p class="errMessage errMessagePhoneNumberRegister"></p>
                     </div>
                     <div class="form-row">
-                        <label for="address">Địa chỉ</label>
-                        <input type="text" placeholder="Nhập địa chỉ" id="registerAddress" name="address" required>
+                        <label for="tinhthanhpho">Tỉnh/thành phố</label>
+                        <select id="tinhthanhpho"></select>
+                        <p class="errMessage errMessageCityRegister"></p>
+                    </div>
+                    <div class="form-row form-row-48">
+                        <label for="quanhuyen">Quận/huyện</label>
+                        <select id="quanhuyen"></select>
+                        <p class="errMessage errMessageDistrictRegister"></p>
+                    </div>
+                    <div class="form-row form-row-48">
+                        <label for="phuongxa">Phường/xã</label>
+                        <select id="phuongxa"></select>
+                        <p class="errMessage errMessageWardRegister"></p>
+                    </div>
+                    <div class="form-row ">
+                        <label for="address">Số nhà và tên đường (VD: 273 An Dương Vương)</label>
+                        <input type="text" placeholder="Nhập số nhà và tên đường" id="registerAddress" name="address" required>
                         <p class="errMessage errMessageAddressRegister"></p>
                     </div>
-
-                    <div class="form-row">
+                    <div class="form-row form-row-48">
                         <label for="psw">Mật khẩu</label>
                         <input type="password" placeholder="Nhập Mật khẩu" id="registerPassword" name="psw" required id="psw">
                         <p class="errMessage errMessagePasswordRegister"></p>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row form-row-48">
                         <label for="psw-repeat">Lặp lại Mật khẩu</label>
                         <input type="password" placeholder="Nhập lại Mật khẩu" id="registerConfirmPassword" name="psw-repeat" required id="psw-repeat">
                         <p class="errMessage errMessageConfirmPasswordRegister"></p>

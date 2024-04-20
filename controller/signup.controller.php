@@ -41,7 +41,10 @@ if (
   $address = $_POST['addressRegister'];
   $password = $_POST['passwordRegister'];
   $confirmPassword = $_POST['confirmPasswordRegister'];
+  $city = $_POST['cityRegister'];
+  $district = $_POST['districtRegister'];
+  $ward = $_POST['wardRegister'];
 
-  $registerResult = checkRegister($username, $fullname, $phoneNumber, $address, $password);
+  $registerResult = checkRegister($username, $fullname, $phoneNumber, $address, $password, $city, $district, $ward);
   echo json_encode($registerResult);
 }
