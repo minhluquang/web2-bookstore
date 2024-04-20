@@ -87,9 +87,9 @@
 .genre {
   box-sizing: border-box;
   margin-top: 100px;
-  border: solid rgb(252, 250, 236);
   padding: 30px;
   height: 380px;
+  margin-bottom: 350px;
 }
 
 .genre-name {
@@ -150,3 +150,12 @@
   padding: 10px 20px;
   border-radius: 5px;
 }
+
+
+
+
+
+
+
+/* CSS cho nút Chi tiết */
+
