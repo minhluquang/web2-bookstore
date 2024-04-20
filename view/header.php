@@ -9,15 +9,19 @@
     />
     <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="css/headerfooter/headerfooter.css?v=<?php echo time(); ?>" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="js/logout.js?v=<?php echo time(); ?>"></script>
   </head>
   <body>
     <header>
       <div class="header">
         <div class="headerLeft">
-          <img
-            src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/fahasa-logo.png"
-            alt=""
-          />
+          <a href="index.php">
+            <img
+              src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/fahasa-logo.png"
+              alt=""
+            />
+          </a>
         </div>
         <div class="headerCenter">
           <div class="search-container">
@@ -95,20 +99,63 @@
         </div>
 
         <div class="headerRight">
-          <div class="cart">
-          <i class="fa-solid fa-cart-shopping"></i>
-            <span>Giỏ hàng</span>
+          <?php
+            $hideCart = ""; 
+            if ((!isset($_SESSION['cart']) || !$_SESSION['cart']) && (!isset($_SESSION['username']) || !$_SESSION['username'])) {
+              $hideCart = "hide";
+            }
+          ?>
+
+          <div class="cart <?=$hideCart?>">
+            <a href="index.php?page=cart">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span>Giỏ hàng</span>
+              
+              <?php
+                $cartQnt = 0;
+                $hide = "";
+                if (isset($_SESSION['cart']) && $_SESSION['cart']) {
+                  $cartQnt = count($_SESSION['cart']);
+                } else {
+                  $hide = "hide";
+                }
+              ?>
+              <span class="cart-qnt <?=$hide?>"><?=$cartQnt?></span>
+            </a>
           </div>
           <div class="account">
             <i class="fa-solid fa-user"></i>
-            <span>Nguyễn Quốc Khánh</span>
+            <span>
+            <?php 
+              if (isset($_SESSION['username'])) {
+                echo $_SESSION['username'];
+              } else {
+                echo "Tài khoản";
+              }
+            ?>
+            </span>
             <!-- Đây là bẳng đăng kí,đăng nhập -->
-            <!--                  <div class="account-options">
-                        <button style="background-color: red;">Đăng nhập</button>
-                        <button style="color: red;">Đăng ký</button>
-                    </div>  
- -->
-            <div class="account-notification">
+            <?php
+              if (!isset($_SESSION['username'])) {
+                $isHide = "";
+                if (isset($_GET['page']) && $_GET['page'] == 'signup') {
+                  $isHide = "hide";
+                }
+
+                echo '
+                <div class="account-options '.$isHide.'">
+                  <a href="index.php?page=signup" class="btnDangNhapAccountOption">Đăng nhập</a>
+                  <a href="index.php?page=signup&luachon=dangky" class="btnDangKyAccountOption">Đăng ký</a>
+                </div>';
+              } else {
+                echo '
+                <div class="account-options">
+                  <button class="btnDangXuat">Đăng xuất</button>
+                </div>';
+              }
+            ?>
+
+            <!-- <div class="account-notification">
               <div class="user-info">
                 <p>Nguyen Quoc Khanh</p>
               </div>
@@ -120,7 +167,7 @@
                 <li><a href="#">Lịch sử mua hàng</a></li>
                 <li><a href="#">Đăng xuất</a></li>
               </ul>
-            </div>
+            </div> -->
 
             <div
               class="overlay"
@@ -151,52 +198,4 @@
       </div>
     </header>
   </body>
-  <script>
-    var searchInput = document.getElementById("searchInput");
-    var notification = document.querySelector(".notification"); // Use querySelector instead of getElementById
-
-    // Add focus event to search input
-    searchInput.addEventListener("focus", function () {
-      notification.style.display = "flex";
-
-      // Close notification when clicking outside after a delay
-      setTimeout(function () {
-        document.addEventListener("click", clickOutsideHandler);
-      }, 0);
-    });
-
-    // Function to handle click outside
-    function clickOutsideHandler(event) {
-      var isClickInside =
-        notification.contains(event.target) ||
-        searchInput.contains(event.target);
-      if (!isClickInside && event.target !== searchInput) {
-        // Kiểm tra xem không phải click vào trường tìm kiếm
-        notification.style.display = "none";
-        document.removeEventListener("click", clickOutsideHandler);
-      }
-    }
-
-    // Hàm để hiện phần thông tin của tôi
-    function showNotification() {
-      document.getElementById("overlay").style.display = "block";
-      document.getElementById("notificationBox").style.display = "block";
-    }
-
-    function hideNotification() {
-      document.getElementById("overlay").style.display = "none";
-      document.getElementById("notificationBox").style.display = "none";
-    }
-    function saveInfo() {
-      var newName = document.getElementById("newName").value;
-      var newPhone = document.getElementById("newPhone").value;
-      var newAddress = document.getElementById("newAddress").value;
-
-      document.getElementById("name").innerText = newName;
-      document.getElementById("phone").innerText = newPhone;
-      document.getElementById("address").innerText = newAddress;
-
-      hideNotification();
-    }
-  </script>
 </html>

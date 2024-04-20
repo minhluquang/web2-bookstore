@@ -142,9 +142,41 @@ header {
   flex-direction: column;
   position: relative;
   margin-right: 50px;
-  display: flex;
   align-items: center;
 }
+
+.cart.hide {
+  display: none;
+}
+
+.cart a {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.cart-qnt {
+  background: #c92127;
+  text-align: center;
+  border-radius: 100%;
+  color: #fff;
+  line-height: 20px;
+  font-size: 14px;
+  height: 20px;
+  width: 20px;
+  top: -10px;
+  right: 10px;
+  position: absolute;
+}
+
+.cart-qnt.hide {
+  display: none;
+}
+
 .headerRight img {
   width: 30px;
 }
@@ -160,18 +192,48 @@ header {
 .account-options {
   display: none;
   position: absolute;
-  top: 100%; /* Hiển thị khung bên dưới phần account */
-  left: 0;
+  top: 40px; /* Hiển thị khung bên dưới phần account */
+  right: 0;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
 }
-.account-options button {
-  width: 200px;
-  height: 50px;
-  border-radius: 8px;
-  margin-bottom: 5px;
+
+.account-options.hide {
+  visibility: hidden;
 }
+
+.account-options a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  line-height: 40px;
+}
+
+.account-options button,
+.account-options a {
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #c92127;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 150px;
+  height: 40px;
+}
+
+.account-options button:hover,
+.account-options a:hover {
+  opacity: 0.8;
+}
+
+.btnDangKyAccountOption {
+  margin-top: 4px;
+  background: #eee !important;
+  color: #000 !important;
+}
+
 .account:hover .account-options {
   display: block; /* Hiển thị khi di chuột vào phần account */
 }

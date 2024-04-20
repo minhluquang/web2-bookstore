@@ -7,8 +7,6 @@
     <title>Login/Sign Up</title>
     <link rel="stylesheet" href="css/signup/signup.css?v=<?php echo time(); ?>">
     <script defer src="js/home.js?v=<?php echo time(); ?>"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script defer src="js/signup.js"></script>
 </head>
 
 <body>
@@ -16,10 +14,10 @@
         <div class="container">
             <div class="button-container">
                 <!-- Button to open the login form -->
-                <button onclick="showForm('loginForm', this)" class="button active">Đăng nhập</button>
+                <button onclick="showForm('loginForm', this)" class="button btnTabDangNhap active">Đăng nhập</button>
 
                 <!-- Button to open the sign-up form -->
-                <button onclick="showForm('signupForm', this)" class="button">Đăng ký</button>
+                <button onclick="showForm('signupForm', this)" class="button btnTabDangKy">Đăng ký</button>
             </div>
 
             <!-- Login form -->
@@ -30,10 +28,12 @@
                     <div class="form-row">
                         <label for="username">Username</label>
                         <input type="text" placeholder="Nhập tên tài khoản" name="username" id="loginUsername" required>
+                        <p class="errMessage errMessageUsername"></p>
                     </div>
                     <div class="form-row">
                         <label for="psw">Mật khẩu</label>
                         <input type="password" placeholder="Nhập Mật khẩu" name="password" id="loginPassword" required>
+                        <p class="errMessage errMessagePassword"></p>
                     </div>
                     <input class="btnSubmit btnDangNhap" type="submit" value="Đăng nhập" />
                 </form>
@@ -48,35 +48,52 @@
                     <div class="form-row">
                         <label for="username">Username</label>
                         <input type="text" placeholder="Nhập tên tài khoản" id="registerUsername" name="username" required>
+                        <p class="errMessage errMessageUsernameRegister"></p>
                     </div>
                     <div class="form-row">
                         <label for="name">Họ và tên</label>
                         <input type="text" placeholder="Nhập Họ và tên" id="registerFullname" name="name" required>
+                        <p class="errMessage errMessageFullnameRegister"></p>
                     </div>
                     <div class="form-row">
-                        <label for="number">Số điện thoại</label>
+                        <label for="number">Số điện thoại (VD: 0931814480)</label>
                         <input type="text" placeholder="Nhập Số điện thoại" id="registerPhoneNumber" name="number" required>
+                        <p class="errMessage errMessagePhoneNumberRegister"></p>
                     </div>
                     <div class="form-row">
                         <label for="address">Địa chỉ</label>
                         <input type="text" placeholder="Nhập địa chỉ" id="registerAddress" name="address" required>
+                        <p class="errMessage errMessageAddressRegister"></p>
                     </div>
 
                     <div class="form-row">
                         <label for="psw">Mật khẩu</label>
                         <input type="password" placeholder="Nhập Mật khẩu" id="registerPassword" name="psw" required id="psw">
+                        <p class="errMessage errMessagePasswordRegister"></p>
                     </div>
                     <div class="form-row">
                         <label for="psw-repeat">Lặp lại Mật khẩu</label>
                         <input type="password" placeholder="Nhập lại Mật khẩu" id="registerConfirmPassword" name="psw-repeat" required id="psw-repeat">
+                        <p class="errMessage errMessageConfirmPasswordRegister"></p>
                     </div>
                     <input class="btnSubmit btnDangKy" type="submit" value="Đăng ký" />
                     <div class="result"></div>
                 </form>
             </div>
-
-        </div>
+        </div> 
     </div>
+    <div class="toast-overlay"></div>
+    <div class="toast">
+        <div class="toast-header">
+            <i class="fa-solid fa-circle-check success-icon"></i>
+            <p class="toast-header__message">Thông báo</p>
+        </div>
+        <div class="toast-content">
+            <p class="toast-message">Bạn đã đăng ký thành công!</p>
+        </div>
+        <a href="index.php?page=signup" class="toast-next">Tiếp tục</a>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="js/signup.js?v=<?php echo time(); ?>"></script>
 </body>
-
 </html>

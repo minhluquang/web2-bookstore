@@ -2,34 +2,33 @@
 include_once('connect.php');
 $database = new connectDB();
 
-function getProductDetailByIdModel($product_id)
+function getProductDetailByIdModel($product_id, $closeDatabase = false)
 {
   global $database;
   if ($database->conn) {
     $sql = "SELECT 
-              p.name product_name, 
-              p.image_path, 
-              p.quantity, 
-              p.price, 
-              pub.name publisher_name,
-              (
-                SELECT GROUP_CONCAT(' ', c.name)
-                FROM category_details cd
-                  INNER JOIN categories c ON cd.category_id = c.id
-                WHERE cd.product_id = p.id
-              ) category_names,
-              (
-                SELECT GROUP_CONCAT(' ', a.name)
-                FROM author_details ad
-                  INNER JOIN authors a ON ad.author_id = a.id
-                WHERE ad.product_id = p.id
-              ) author_names
-              FROM products p  
-                INNER JOIN publishers pub ON p.publisher_id = pub.id
-              WHERE p.id = $product_id
-              GROUP BY p.id";
+            p.name AS product_name, 
+            p.image_path, 
+            p.quantity, 
+            p.price, 
+            pub.name AS publisher_name,
+            GROUP_CONCAT(' ', c.name) AS category_names,
+            GROUP_CONCAT(' ', a.name) AS author_names
+        FROM 
+            products p  
+            INNER JOIN publishers pub ON p.publisher_id = pub.id
+            LEFT JOIN category_details cd ON cd.product_id = p.id
+            LEFT JOIN categories c ON cd.category_id = c.id
+            LEFT JOIN author_details ad ON ad.product_id = p.id
+            LEFT JOIN authors a ON ad.author_id = a.id
+        WHERE 
+            p.id = $product_id
+        GROUP BY 
+            p.id";
     $result = $database->query($sql);
-    $database->close();
+    if ($closeDatabase) {
+      $database->close();
+    }
     return $result;
   } else {
     return false;

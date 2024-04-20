@@ -1,3 +1,10 @@
+<?php
+  if (!isset($_SESSION['username'])) {
+    echo "<script>alert('Vui lòng đăng nhập!')</script>";
+    echo "<script>window.location.href = 'index.php?page=signup'</script>";
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,31 +16,43 @@
   <link rel="stylesheet" href="css/fonts/fonts.css?v=<?php echo time(); ?>" />
   <link rel="stylesheet" href="css/cart/cart.css?v=<?php echo time(); ?>" />
   <link rel="stylesheet" href="css/cart/cart_responsive.css?v=<?php echo time(); ?>" />
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script defer src="js/cart.js?v=<?php echo time(); ?>"></script>
 </head>
 
 <body>
+  <?php
+    $show = "";
+    $cartQnt = 0;
+
+    if (isset($_SESSION['cart']) && ($_SESSION['cart'])) {
+      $show = "has-items";
+      $cartQnt = count($_SESSION['cart']);
+    } else {
+      $show = "no-items";  
+    }
+  ?>
+
   <div class="container">
-    <div class="page-title">
+    <div class="page-title <?=$show?>">
       <div class="page-title-content">
         <h1>Giỏ Hàng</h1>
-        <span class="cart-title-numbers">(0 sản phẩm)</span>
+        <span class="cart-title-numbers">(<?=$cartQnt?> sản phẩm)</span>
       </div>
     </div>
+    
 
-    <div class="cart-content has-items">
+    <div class="cart-content <?php echo $show?>">
       <div class="cart-empty-wrapper">
         <div class="cart-empty">
           <div style="text-align: center">
             <div class="icon">
-              <img src="assets/image/cart/ico_emptycart.svg" alt="" />
+              <!-- <img src="assets/image/cart/ico_emptycart.svg" alt="" /> -->
             </div>
-            <p>Chưa có sản phẩm trong giỏ hàng của bạn.</p>
-            <a href="#!">
-              <button class="button-shopping" title="Mua sắm ngay">
-                Mua sắm ngay
-              </button>
-            </a>
+            <p>Chưa có sản phẩm trong giỏ hàng của bạn</p>
+            <button class="button-shopping" title="Mua sắm ngay">
+              <a href="index.php?page=product">Mua sắm ngay</a>
+            </button>
           </div>
         </div>
       </div>
@@ -43,11 +62,12 @@
         <div>
           <div class="header-cart-item">
             <div class="checkbox-all-product">
-              <input class="checkbox-add-cart" type="checkbox" id="checkbox-all-product" disabled />
+              <input type="checkbox" id="checkbox-all-product"  />
             </div>
             <div>
-              <span>Chọn tất cả (
-                <span class="num-items-checkbox">1</span>
+              <span>Chọn tất cả
+                ( 
+                <span class="num-items-checkbox">0</span>
                 sản phẩm)
               </span>
             </div>
@@ -56,165 +76,84 @@
             <div></div>
           </div>
           <div class="cart-item-wrapper">
-            <div class="cart-item">
-              <div class="checked-product-cart">
-                <input type="checkbox" class="checkbox-add-cart" disabled />
-              </div>
-              <div class="img-product-cart">
-                <a href="#!" class="product-image">
-                  <img src="assets/image/cart/sachTest.jpg" alt="" />
-                </a>
-              </div>
-              <div class="group-product-info">
-                <div class="info-product-cart">
-                  <div>
-                    <h2 class="product-name">
-                      <a href="#!">Atomic Habits - Thay Đổi Tí Hon Hiệu Quả Bất Ngờ (Tái
-                        Bản 2023)</a>
-                    </h2>
-                  </div>
-                  <div class="price-original">
-                    <div class="cart-price">
-                      <div class="cart-item-price">
-                        <div><span class="price">147.420đ</span></div>
-                        <div class="item-price-old">
-                          <span class="price">189.000đ</span>
+            <?php
+              if (isset($_SESSION['cart']) && ($_SESSION['cart'])) {
+                include_once('controller/product_detail.controller.php');
+
+                $totalProducts = count($_SESSION['cart']);
+                $counter = 0;
+
+                foreach($_SESSION['cart'] as $product) {
+                  $counter++;
+                  $closeDatabase = false;
+
+                  if ($counter == $totalProducts) {
+                    $closeDatabase = true;
+                  }         
+                  
+                  $productDetail = getProductDetailById($product['id'], $closeDatabase);
+                  $formatPrice = number_format($productDetail['price'], 0, ',', '.').' ₫';
+                  
+                  $totalPrice = $productDetail['price'] * $product['amount'];
+                  $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').' ₫';
+                  echo '
+                  <div class="cart-item">
+                    <div class="checked-product-cart">
+                      <input type="checkbox" class="checkbox-add-cart" value="'.$product['id'].'" />
+                    </div>
+                    <div class="img-product-cart">
+                      <div class="product-image">
+                        <img src="'.$productDetail['image_path'].'" alt="'.$productDetail['product_name'].'" />
+                      </div>
+                    </div>
+                    <div class="group-product-info">
+                      <div class="info-product-cart">
+                        <div>
+                          <h2 class="product-name">
+                            <div>'.$productDetail['product_name'].'</div>
+                          </h2>
+                        </div>
+                        <div class="price-original">
+                          <div class="cart-price">
+                            <div class="cart-item-price">
+                              <div>
+                                <span class="price">'.$formatPrice.'</span>
+                                <input type="hidden" class="price-hidden" value="'.$productDetail['price'].'"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="number-product-cart">
+                        <div class="product-view-quantity-box">
+                          <div class="product-view-quantity-box-block">
+                            <a href="#!" class="btn-substract-qty">
+                              -
+                            </a>
+                            <input type="text" class="qty-cart" value="'.$product['amount'].'" readonly />
+                            <a href="#!" class="btn-add-qty">
+                              +
+                            </a>
+                          </div>
+                        </div>
+                        <div class="cart-total-price">
+                          <span class="cart-price">
+                            <span class="price">'.$formatTotalPrice.'</span>
+                          </span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="number-product-cart">
-                  <div class="product-view-quantity-box">
-                    <div class="product-view-quantity-box-block">
-                      <a href="#!" class="btn-substract-qty">
-                        <img src="assets/image/cart/ico_minus2x.png" alt="" />
-                      </a>
-                      <input type="text" class="qty-cart" value="1" readonly />
-                      <a href="#!" class="btn-add-qty">
-                        <img src="assets/image/cart/ico_plus2x.png" alt="" />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="cart-total-price">
-                    <span class="cart-price">
-                      <span class="price">147.420đ</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-remove-cart">
-                <a href="" class="btn-remove-desktop-cart">
-                  <i class="fa-regular fa-trash-can"></i>
-                </a>
-              </div>
-            </div>
-            <div class="cart-item">
-              <div class="checked-product-cart">
-                <input type="checkbox" class="checkbox-add-cart" />
-              </div>
-              <div class="img-product-cart">
-                <a href="#!" class="product-image">
-                  <img src="assets/image/cart/sachTest.jpg" alt="" />
-                </a>
-              </div>
-              <div class="group-product-info">
-                <div class="info-product-cart">
-                  <div>
-                    <h2 class="product-name">
-                      <a href="#!">Atomic Habits - Thay Đổi Tí Hon Hiệu Quả Bất Ngờ (Tái
-                        Bản 2023)</a>
-                    </h2>
-                  </div>
-                  <div class="price-original">
-                    <div class="cart-price">
-                      <div class="cart-item-price">
-                        <div><span class="price">147.420đ</span></div>
-                        <div class="item-price-old">
-                          <span class="price">189.000đ</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="number-product-cart">
-                  <div class="product-view-quantity-box">
-                    <div class="product-view-quantity-box-block">
-                      <a href="#!" class="btn-substract-qty">
-                        <img src="assets/image/cart/ico_minus2x.png" alt="" />
-                      </a>
-                      <input type="text" class="qty-cart" value="1" readonly />
-                      <a href="#!" class="btn-add-qty">
-                        <img src="assets/image/cart/ico_plus2x.png" alt="" />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="cart-total-price">
-                    <span class="cart-price">
-                      <span class="price">147.420đ</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-remove-cart">
-                <a href="" class="btn-remove-desktop-cart">
-                  <i class="fa-regular fa-trash-can"></i>
-                </a>
-              </div>
-            </div>
-            <div class="cart-item">
-              <div class="checked-product-cart">
-                <input type="checkbox" class="checkbox-add-cart" />
-              </div>
-              <div class="img-product-cart">
-                <a href="#!" class="product-image">
-                  <img src="assets/image/cart/sachTest.jpg" alt="" />
-                </a>
-              </div>
-              <div class="group-product-info">
-                <div class="info-product-cart">
-                  <div>
-                    <h2 class="product-name">
-                      <a href="#!">Atomic Habits - Thay Đổi Tí Hon Hiệu Quả Bất Ngờ (Tái
-                        Bản 2023)</a>
-                    </h2>
-                  </div>
-                  <div class="price-original">
-                    <div class="cart-price">
-                      <div class="cart-item-price">
-                        <div><span class="price">147.420đ</span></div>
-                        <div class="item-price-old">
-                          <span class="price">189.000đ</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="number-product-cart">
-                  <div class="product-view-quantity-box">
-                    <div class="product-view-quantity-box-block">
-                      <a href="#!" class="btn-substract-qty">
-                        <img src="assets/image/cart/ico_minus2x.png" alt="" />
-                      </a>
-                      <input type="text" class="qty-cart" value="1" readonly />
-                      <a href="#!" class="btn-add-qty">
-                        <img src="assets/image/cart/ico_plus2x.png" alt="" />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="cart-total-price">
-                    <span class="cart-price">
-                      <span class="price">147.420đ</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="btn-remove-cart">
-                <a href="" class="btn-remove-desktop-cart">
-                  <i class="fa-regular fa-trash-can"></i>
-                </a>
-              </div>
-            </div>
+                    <form action="controller/cart.controller.php" method="post" class="btn-remove-cart">
+                      <input type="hidden" name="product_id" value="'.$product['id'].'">
+                      <input type="hidden" name="product-action__removeFromCart" value="Xoá"></input>
+                      <button class="btn-remove-desktop-cart">
+                        <i class="fa-regular fa-trash-can"></i>
+                      </button>
+                    </form>
+                  </div>';
+                }
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -229,9 +168,9 @@
           Thành Tiền
         </h2>
         <div class="cart-total">
-          <p>Tổng cộng: $49.98</p>
+          <p>Tổng cộng: 0 ₫</p>
         </div>
-        <button class="checkout-button">Thanh Toán</button>
+        <button class="checkout-button">Thanh toán</button>
       </div>
     </div>
 
@@ -242,6 +181,36 @@
       </div>
     </div>
   </div>
-</body>
+  <script>
+    $(document).ready(function () {
+      $('.checkout-button').click(function (e) { 
+        e.preventDefault();
 
+        const selectedProducts = [];
+
+        $('.checkbox-add-cart').each(function () {
+          if (this.checked) {
+            const parentEle = $(this).closest('.cart-item')[0];
+            const productId = $(this).attr('value');
+            const amount = parentEle.querySelector('.qty-cart').value;
+            selectedProducts.push({productId, amount});
+          }
+        })
+
+        $.ajax({
+          type: "post",
+          url: "controller/cart.controller.php",
+          dataType: "html",
+          data: {
+            abate: true,
+            selectedProducts
+            
+          }
+        }).done(function(result) {
+          window.location.href = "index.php?page=checkout";
+        })
+      });
+    });
+  </script>
+</body>
 </html>

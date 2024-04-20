@@ -17,7 +17,6 @@
     public function query($sql) {
         $result = $this->conn->query($sql);
         if (!$result) {
-
             die("Lỗi truy vấn: " . $this->conn->error."<br>".$sql);
         }
         return $result;

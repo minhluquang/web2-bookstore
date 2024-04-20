@@ -43,9 +43,5 @@ if (
   $confirmPassword = $_POST['confirmPasswordRegister'];
 
   $registerResult = checkRegister($username, $fullname, $phoneNumber, $address, $password);
-  if ($registerResult->success) {
-    echo $registerResult->message;
-  } else {
-    echo $registerResult->message;
-  }
+  echo json_encode($registerResult);
 }

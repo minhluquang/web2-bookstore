@@ -1,3 +1,7 @@
+<?
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,11 +19,9 @@
         <form id="checkout-form" action="" method="post">
             <div class="container">
                 <h3>Địa Chỉ Nhận Hàng</h3>
-                <hr>
+                <!-- <hr> -->
                 <div class="form-group" style="flex-direction: column;">
-                    <span id="diachi">
-                        <b>Nguyễn Minh Trí (+84) 394080644</b> Số 907a, Âu Cơ, Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh
-                    </span>
+                    <span id="diachi"></span>
                     <div class="popup">
                         <button type="button" class="popupbutton">Thay đổi</button>
                         <div class="popupwrapper" id="diachiMenu">
@@ -31,32 +33,11 @@
                                 </div>
 
                                 <div class="address-container">
-                                    <label class="address-select">
-                                        <input type="radio" name="address" checked />
-                                        <span class="name">Nguyễn Minh Trí</span>
-                                        <span class="sdt">(+84) 394080644</span>
-                                        <span class="updatebig update">Cập nhật</span>
-                                        <span class="diachi">Số 907a, Âu Cơ</span>
-                                        <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="updatesmall update">Cập nhật</span>
-                                    </label>
-                                    <label class="address-select">
-                                        <input type="radio" name="address" />
-                                        <span class="name">Nguyễn Minh Trí</span>
-                                        <span class="sdt">(+84) 123123123</span>
-                                        <span class="updatebig update">Cập nhật</span>
-                                        <span class="diachi">123 Âu Cơ</span>
-                                        <span class="tinh">Phường Tân Sơn Nhì, Quận Tân Phú, TP. Hồ Chí Minh</span>
-                                        <span class="updatesmall update">Cập nhật</span>
-                                    </label>
-                                    <form action="" method="post">
-                                        <input type="button" class="addNewAddress" value="Thêm địa chỉ mới">
-                                    </form>
+                                    <!-- Render code -->
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;">
                                     <button type="button" class="confirm" id="confirm-popup">Xác Nhận</button>
                                     <button type="button" class="cancel" id="cancel-popup">Hủy</button>
-
                                 </div>
                             </div>
                             <div class="popupmenu" id="changeAddressMenu">
@@ -66,36 +47,33 @@
                                 </div>
                                 <div>
                                     <div class="update-container">
+                                        <input type="hidden" name="update-user_info_id" class="update-user_info_id" value="">
                                         <fieldset style="flex:0 0 47%;">
                                             <legend>Họ và tên</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <input type="text" class="update-fullname">
                                         </fieldset>
                                         <fieldset style="flex:0 0 47%;margin-left:auto;">
                                             <legend>Số điện thoại</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <input type="text" class="update-phoneNumber">
                                         </fieldset>
-
-                                        <fieldset class="fieldselect" style="margin:0 auto 0 0;">
+                                        <fieldset class="fieldselect fieldselect-100" style="margin:0 auto 15px 0;">
                                             <legend>Tỉnh/Thành phố</legend>
-                                            <select id="tinhthanh" name="tinhthanh" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%;">
-
-
+                                            <select id="tinhthanh" name="tinhthanh">
                                             </select>
                                         </fieldset>
-                                        <fieldset class="fieldselect" style="margin:0 auto;">
+                                        <fieldset class="fieldselect" style="flex:0 0 47%;">
                                             <legend>Quận/huyện</legend>
-                                            <select id="quanhuyen" name="quanhuyen" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <select id="quanhuyen" name="quanhuyen" >
                                             </select>
                                         </fieldset>
-                                        <fieldset class="fieldselect" style="margin:0 0 0 auto;">
+                                        <fieldset class="fieldselect" style="flex:0 0 47%;margin-left:auto;margin-right: 0">
                                             <legend>Phường/xã</legend>
-                                            <select id="phuongxa" name="phuongxa" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <select id="phuongxa" name="phuongxa" >
                                             </select>
-
                                         </fieldset>
                                         <fieldset style="flex:0 0 100% ;margin-top:10px">
-                                            <legend>Địa chỉ cụ thể</legend>
-                                            <input type="text" style="border: none;outline:none;padding:0;font-size :1.1em;width:100%">
+                                            <legend>Số nhà và tên đường</legend>
+                                            <input type="text" class="update-address">
                                         </fieldset>
                                     </div>
 
@@ -115,18 +93,22 @@
 
             <div class="container">
                 <h3>PHƯƠNG THỨC THANH TOÁN</h3>
-                <hr>
+                <!-- <hr> -->
                 <div class="form-group"><input id="id4" type="radio" name="id_test" value="" checked />
                     <label for="id4"><i class="fa-solid fa-dong-sign"></i>Thanh toán bằng tiền mặt khi nhận hàng</label>
                 </div>
             </div>
             <div class="container">
                 <h3>MÃ KHUYẾN MÃI</h3>
-                <hr>
+                <!-- <hr> -->
                 <div class="form-group d-flex">
                     <div id="promo-container">
                         <input type="promo" id="promotion" name="promotion" placeholder="Nhập mã khuyến mãi">
-                        <button type="button">Áp dụng</button>
+                        <button type="button" class="promoBtn">Áp dụng</button>
+                        <button type="button" class="promoChangeBtn hide">Huỷ mã</button>
+                    </div>
+                    <div>
+                        <p class="promo-message"></p>
                     </div>
                     <!-- <div class="popup">
                         <u style="color:#2f80ed;" onclick="popupToggle()">Chọn mã khuyến mãi</u>
@@ -147,7 +129,7 @@
             <!-- make this a different php file -->
             <div class="container">
                 <h3>KIỂM TRA LẠI ĐƠN HÀNG</h3>
-                <hr>
+                <!-- <hr> -->
                 <div class="sanpham">
                     <span class="sanpham__info-title">Hình ảnh</span>
                     <span class="sanpham__info-bookname">Tên sản phẩm</span>
@@ -161,31 +143,37 @@
                     </div>
                 </div>
                 <hr>
-                <div class="sanpham">
-                    <img src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000" />
-                    <span class="bookname">Book namenamenamenamenamename</span>
-                    <div class="cost">
-                        <div class="book-price">
-                            <span class="price">70.200 &#8363;</span>
-                            <!-- <span class="old-price">120.000 &#8363;</span> -->
-                        </div>
-                        <span class="soluong">1</span>
-                        <span class="booktotal">70.200 &#8363;</span>
-                    </div>
-                </div>
-                <hr>
-                <div class="sanpham">
-                    <img src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000" />
-                    <span class="bookname">Book namenamenamenamenamename</span>
-                    <div class="cost">
-                        <div class="book-price">
-                            <span class="price">70.200 &#8363;</span>
-                            <!-- <span class="old-price">120.000 &#8363;</span> -->
-                        </div>
-                        <span class="soluong">1</span>
-                        <span class="booktotal">70.200 &#8363;</span>
-                    </div>
-                </div>
+
+                <?php
+                    $totalPriceAllProducts = 0;
+                    if (isset($_SESSION['cart-selected']) && $_SESSION['cart-selected']) {
+                        include_once('controller/product_detail.controller.php');
+
+                        foreach ($_SESSION['cart-selected'] as $object) {
+                            $productDetail = getProductDetailById($object['productId'], false);
+                            $formatPrice = number_format($productDetail['price'], 0, ',', '.').'đ';
+
+                            $totalPrice = $productDetail['price'] * $object['amount'];
+                            $totalPriceAllProducts += $totalPrice;
+
+                            $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').'đ';
+                            echo '
+                            <div class="sanpham">
+                                <img src="'.$productDetail['image_path'].'" />
+                                <span class="bookname">'.$productDetail['product_name'].'</span>
+                                <div class="cost">
+                                    <div class="book-price">
+                                        <span class="price">'.$formatPrice.'</span>
+                                    </div>
+                                    <span class="soluong">'.$object['amount'].'</span>
+                                    <span class="booktotal">'.$formatTotalPrice.'</span>
+                                </div>
+                            </div>
+                            <hr>';
+                        }
+                    } 
+                ?>
+                
                 <div class="form-group">
                 </div>
             </div>
@@ -193,11 +181,15 @@
                 <div class="total">
                     <div class="chiphi">
                         <span class="cost-name">Thành tiền </span>
-                        <span class="money">192.700 &#8363;</span><br>
+                        <?php 
+                            $formatTotalPriceAllProducts = number_format($totalPriceAllProducts, 0, ',', '.').'đ';
+                        ?>
+                        <span class="money"><?php echo $formatTotalPriceAllProducts?></span><br>
+                        <input type="hidden" class="totalPriceValue" value="<?=$totalPriceAllProducts?>">
                     </div>
                     <div class="chiphi">
                         <span class="cost-name">Giảm giá</span>
-                        <span class="money">-10.000 &#8363;</span><br>
+                        <span class="money giam-gia">- 0 &#8363;</span><br>
                     </div>
                     <div class="chiphi">
                         <span class="cost-name">Phí vận chuyển (Giao hàng tiêu chuẩn)</span>
@@ -205,7 +197,8 @@
                     </div>
                     <div class="chiphi" id="tong">
                         <span class="cost-name">Tổng Số Tiền (gồm VAT)</span>
-                        <span class="money" id="tong-tien">201.700 &#8363;</span><br>
+                        <span class="money tong-tien" id="tong-tien"><?php echo $formatTotalPriceAllProducts?></span><br>
+                        <input type="hidden" class="finalTotalPriceValue" value="<?=$totalPriceAllProducts?>">
                     </div>
                 </div>
             </div>
@@ -224,15 +217,20 @@
         <div class="total" id="total-fixed">
             <div class="chiphi">
                 <span class="cost-name">Thành tiền </span>
-                <span class="money">192.700 &#8363;</span><br>
+                <?php 
+                    $formatTotalPriceAllProducts = number_format($totalPriceAllProducts, 0, ',', '.').'đ';
+                ?>
+                <span class="money"><?php echo $formatTotalPriceAllProducts?></span><br>
+                <input type="hidden" class="totalPriceValue" value="<?=$totalPriceAllProducts?>">
             </div>
             <div class="chiphi">
                 <span class="cost-name">Giảm giá</span>
-                <span class="money">-10.000 &#8363;</span><br>
+                <span class="money giam-gia">- 0 &#8363;</span><br>
             </div>
             <div class="chiphi" id="tong">
                 <span class="cost-name">Tổng Số Tiền (gồm VAT)</span>
-                <span class="money" id="tong-tien">201.700 &#8363;</span><br>
+                <span class="money tong-tien" id="tong-tien"><?php echo $formatTotalPriceAllProducts?></span><br>
+                <input type="hidden" class="finalTotalPriceValue" value="<?=$totalPriceAllProducts?>">
             </div>
         </div>
         <hr style=" width: 100%;flex-shrink: 0;margin-bottom:5px;" id="line-fixed">
@@ -248,7 +246,6 @@
     </form>
     </div>
     <script src="js/checkout.js?v=<?php echo time(); ?>"></script>
-
 </body>
 
 </html>
