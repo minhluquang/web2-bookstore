@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <?php
@@ -27,11 +26,11 @@ $_SESSION["render"] ->setTable("categories");
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--nameClient filter_category" id="">
                 <p>Tên thể loại</p>
-                <input id="productName" type="text" placeholder="Nhập tên thể loại" />
+                <input id="categoryName" type="text" placeholder="Nhập tên thể loại" />
             </div>
             <div class="body__filter--field body__filter--idClient filter_category" id="">
                 <p>Mã thể loại</p>
-                <input id="productCode" type="text" placeholder="Nhập mã thể loại" />
+                <input id="categoryId" type="text" placeholder="Nhập mã thể loại" />
             </div>
         </div>
 
@@ -40,17 +39,19 @@ $_SESSION["render"] ->setTable("categories");
                 <p>Loại ngày</p>
                 <select name="cateDate" id="cateDateSelect">
                     <option value="">Chọn loại ngày</option>
-                    <option value="dateCreate">Ngày tạo</option>
-                    <option value="dateUpdate">Ngày cập nhật</option>
+                    <option value="create_date">Ngày tạo</option>
+                    <option value="update_date">Ngày cập nhật</option>
                 </select>
             </div>
-            <div class="body__filter--field body__filter--datefrom" id="dateFrom">
+            <div class="body__filter--field body__filter--datefrom" >
                 <label>Từ ngày</label>
-                <input type="date" />
+                <input type="date"
+                id="date_start" />
             </div>
-            <div class="body__filter--field body__filter--dateto" id="dateTo">
+            <div class="body__filter--field body__filter--dateto">
                 <label>Đến ngày</label>
-                <input type="date" />
+                <input type="date"
+                id="date_end" />
             </div>
         </div>
 
@@ -62,6 +63,8 @@ $_SESSION["render"] ->setTable("categories");
             </div>
         </div>
     </form>
+    <div id="sqlresult">
+    </div>
     <div class="result"></div>
     <div id="modal"></div>
     
