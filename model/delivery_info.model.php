@@ -5,7 +5,7 @@
   function getAllUserInfoByUserIdModel($userId) {
     global $database;
     if ($database->conn) {
-      $sql = "SELECT * FROM user_infoes WHERE user_id = '$userId'";
+      $sql = "SELECT * FROM delivery_infoes WHERE user_id = '$userId'";
 
       $result = $database->query($sql);
       return $result;
@@ -17,7 +17,7 @@
   function updateUserInfoByIdModel($id, $fullname, $phone_number, $address, $city, $district, $ward) {
     global $database;
     if ($database->conn) {
-      $sql = "UPDATE user_infoes
+      $sql = "UPDATE delivery_infoes
               SET 
                   fullname = '$fullname',
                   phone_number = '$phone_number',
