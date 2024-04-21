@@ -325,7 +325,7 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="email">' . 'Email' . '</td>';
+                            echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -504,4 +504,25 @@ function getCategoryFilterSQL($data)
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return  $filter;
+}
+function getPublisherFilterSQL($data)
+{
+$filter = "";
+if (!empty($data)) {
+if (!empty($data['publisher_name'])) {
+if ($filter != "") $filter = $filter . " AND ";
+$filter = $filter . "`name` LIKE '%" . $data['publisher_name'] . "%'";
+}
+if (!empty($data['publisher_id'])) {
+if ($filter != "") $filter = $filter . " AND ";
+$filter = $filter . " id = " . $data['publisher_id'];
+}
+if (!empty($data['publisher_email'])) {
+if ($filter != "") $filter = $filter . " AND ";
+$filter = $filter . "`email` LIKE '%" . $data['publisher_email'] . "%'";
+}
+
+if ($filter != "") $filter = "WHERE " . $filter;
+}
+return $filter;
 }
