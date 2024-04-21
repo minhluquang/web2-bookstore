@@ -5,7 +5,7 @@ if (isset($_POST['function'])) {
   $function = $_POST['function'];
   switch ($function) {
     case 'delete':
-      delete();
+      deleteAU();
       break;
     case 'create':
       create();
@@ -15,7 +15,7 @@ if (isset($_POST['function'])) {
       break;
   }
 }
-function delete()
+function deleteAU()
 {
   if (isset($_POST['id'])) {
     $id = $_POST['id'];
@@ -34,5 +34,6 @@ function edit()
   if (isset($_POST['field'])) {
     echo author_edit($_POST['field']);
   }
-}
+} 
+
 

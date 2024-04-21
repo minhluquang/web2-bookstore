@@ -267,7 +267,6 @@ class pagnation
                             <th>Mã tác giả</th>
                             <th>Tên tác giả</th>
                             <th>Email tác giả</th>
-                            <th>Thể loại viết</th>
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -280,19 +279,13 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
-                            echo '<td class="genres">';
                             $sql_gerne = "SELECT c.name
                             FROM   authors a
                             INNER JOIN author_details ad ON ad.author_id = a.id
                             INNER JOIN category_details cd ON cd.product_id = ad.product_id
                             INNER JOIN categories c ON c.id = cd.category_id
                             WHERE a.id =" . $row['id'];
-                            $result_gerne = $database->query($sql_gerne);
-                            $gerne = "";
-                            while ($row_gerne = mysqli_fetch_array($result_gerne)) {
-                                $gerne = $gerne . $row_gerne['name'] . ', ';
-                            }
-                            echo rtrim($gerne, ', ') . '</td>';
+                           
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
