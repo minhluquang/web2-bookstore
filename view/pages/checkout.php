@@ -241,9 +241,26 @@
                 <a href="">Điều khoản & Điều kiện của Fahasa.com</a>
             </span>
         </div>
-        <button type="submit">Xác nhận thanh toán</button>
+        <button type="submit" class="xacNhanThanhToan">Xác nhận thanh toán</button>
     </div>
     </form>
+    </div>
+    <div class="modalNotEnoughQuantity-container hide">
+        <div class="modalNotEnoughQuantity">
+        <h2>Danh sách sản phẩm bạn cần mua quá số lượng tồn kho</h2>
+        <div class="table-container">
+            <table border="1">
+                <thead>
+                    <td style="width: 70%;">Sản phẩm</td>
+                    <td>Số lượng tồn</td>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+        <a href="index.php?page=cart">Đến giỏ hàng để thay đổi số lượng</a>
+        </div>
     </div>
     <script src="js/checkout.js?v=<?php echo time(); ?>"></script>
 </body>

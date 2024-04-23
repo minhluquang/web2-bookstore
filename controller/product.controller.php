@@ -123,4 +123,8 @@
       }
     }
   }
+
+  function updateQuantityProductById($id, $quantity) {
+    updateQuantityProductByIdModel($id, $quantity);
+  }
 ?>
