@@ -105,6 +105,72 @@
     }
   }
 
+  function getProductsByFilter($keyword, $listCategoryIds, $startRange, $endRange, $itemsPerPage = null, $page = null) {
+    $database = new connectDB();
+    if ($database->conn) {
+      $sql = "SELECT p.id product_id,
+                      p.name product_name, 
+                      p.price, 
+                      p.image_path
+              FROM category_details cd
+              INNER JOIN products p ON p.id = cd.product_id
+              INNER JOIN categories c ON c.id = cd.category_id";
+
+      if ($keyword || count($listCategoryIds) > 0 || (($startRange == 0 || $startRange) && $endRange)) {
+        $sql .= " WHERE ";
+      }
+
+      // Câu lệnh query theo tên sản phẩm
+      if ($keyword) {
+        $sql .= "p.name LIKE '%$keyword%'";
+
+        if (count($listCategoryIds) > 0 || (($startRange == 0 || $startRange)&& $endRange)) {
+          $sql .= " AND ";
+        }
+      }        
+      
+      // Câu lệnh query theo thể loại
+      if (count($listCategoryIds) > 0) {
+        $sql .= "(";
+        foreach ($listCategoryIds as $key => $categoryId) {
+          $sql .= "c.id = $categoryId";
+          if ($key < count($listCategoryIds) - 1) {
+            $sql .= " OR ";
+          }
+        }
+        $sql .= ")";
+
+        if ((($startRange == 0 || $startRange) && $endRange)) {
+          $sql .= " AND ";
+        }
+      }
+
+      // Câu lệnh query theo khoảng giá
+      if (($startRange == 0 || $startRange) && $endRange) {
+        $sql .= " price BETWEEN $startRange AND $endRange";
+      }
+
+      // Câu lệnh sắp theo thứ tự price/p.id
+      if (count($listCategoryIds) > 0) {
+        $sql .= " ORDER BY price ASC";
+      } else {
+        $sql .= " ORDER BY p.id ASC";
+      }
+
+      if ($itemsPerPage && $page) {
+        $offset = ($page - 1) * $itemsPerPage;
+        $sql .= " LIMIT $itemsPerPage OFFSET $offset;";
+      }
+
+      $result = $database->query($sql);
+      $database->close();
+      return $result;
+    } else {
+      $database->close();
+      return false;
+    }
+  }
+
   function checkProductEnoughQuantity($id, $quantity) {
     $database = new connectDB();
     if ($database->conn) {
@@ -155,7 +221,8 @@
     if ($database->conn) {
       $sql = "SELECT * 
               FROM products
-              WHERE name LIKE '%$keyword%'";
+              WHERE name LIKE '%$keyword%'
+              ORDER BY id DESC";
       $result = $database->query($sql);
       $database->close();
       return $result;

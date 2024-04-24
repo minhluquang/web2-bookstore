@@ -50,9 +50,18 @@
 
   // Xử lý render sản phẩm (page=product)
   if (isset($_POST['currentPage']) && isset($_POST['itemsPerPage'])) {
-    $categoryId = $_POST['categoryId'];
+    $listCategoryIds = [];
+    if(isset($_POST['listCategoryIds'])) {
+      if(is_array($_POST['listCategoryIds']) && count($_POST['listCategoryIds']) > 0) {
+        foreach($_POST['listCategoryIds'] as $categoryId) {
+          $listCategoryIds[] = intval($categoryId);
+        }
+      }
+    }
+
     $priceRange= $_POST['priceRange'];
     $itemsPerPage = $_POST['itemsPerPage'];
+    $keyword = $_POST['keyword'];
     $page = intval($_POST['currentPage']);
     
     $startRange = 0;
@@ -71,56 +80,29 @@
     } else if ($priceRange == 'tren200') {
       $startRange = 200001;
       $endRange = 1000000000;
-    }
-
-    if ($priceRange != null && $categoryId != null) {
-      $amountProduct = getProductsByCategoryAndPriceRangeModel($categoryId, $startRange, $endRange, null, null)->num_rows;
-      $result = getProductsByCategoryAndPriceRangeModel($categoryId, $startRange, $endRange, $itemsPerPage, $page);
-      if ($result->num_rows > 0) {
-        $products = $result->fetch_all(MYSQLI_ASSOC);
-        $response = (object) array(
-          'products' => $products,
-          'page' => $page,
-          'amountProduct' => $amountProduct
-        );
-        echo json_encode($response);
-      } 
-    } else if ($priceRange != null) {
-      $amountProduct = getProductsByPriceRangeModel($startRange, $endRange, null, null)->num_rows;
-      $result = getProductsByPriceRangeModel($startRange, $endRange, $itemsPerPage, $page);
-      if ($result->num_rows > 0) {
-        $products = $result->fetch_all(MYSQLI_ASSOC);
-        $response = (object) array(
-          'products' => $products,
-          'page' => $page,
-          'amountProduct' => $amountProduct
-        );
-        echo json_encode($response);
-      } 
-    } else if ($categoryId != null) {
-      $amountProduct = getProductsByIdCategoryModel($categoryId, null, null)->num_rows;  
-      $result = getProductsByIdCategoryModel($categoryId, $itemsPerPage, $page);
-      
-      if ($result->num_rows > 0) {
-        $products = $result->fetch_all(MYSQLI_ASSOC);
-        $response = (object) array(
-          'products' => $products,
-          'page' => $page,
-          'amountProduct' => $amountProduct
-        );
-        echo json_encode($response);
-      }
     } else {
-      $result = getProductsForPaginationModel($itemsPerPage, $page);
-      if ($result->num_rows > 0) {
-        $products = $result->fetch_all(MYSQLI_ASSOC);
-        $response = (object) array(
-          'products' => $products,
-          'page' => $page,
-          'amountProduct' => getAmountProductModel()
-        );
-        echo json_encode($response);
-      }
+      $startRange = 0;
+      $endRange = 0;
+    }
+    
+    $amountProduct = getProductsByFilter($keyword, $listCategoryIds, $startRange, $endRange, null, null)->num_rows;
+    $result = getProductsByFilter($keyword, $listCategoryIds, $startRange, $endRange, $itemsPerPage, $page);
+    if ($result && $result->num_rows > 0) {
+      $products = $result->fetch_all(MYSQLI_ASSOC);
+      $response = (object) array(
+        'listCategoryIds' => count($listCategoryIds),
+        'success' => true,
+        'products' => $products,
+        'page' => $page,
+        'amountProduct' => $amountProduct
+      );
+      echo json_encode($response);
+    } else {
+      $response = (object) array(
+        'success' => false,
+        'message' => "Không tìm thấy sản phẩm"
+      );
+      echo json_encode($response);
     }
   }
 
