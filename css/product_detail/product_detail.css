@@ -177,6 +177,11 @@ body {
   background-color: var(--primary-color);
 }
 
+.modal-btn.notAllowed {
+  cursor: not-allowed;
+  background: #dedede;
+}
+
 .modal-btn:hover {
   opacity: 0.8;
 }

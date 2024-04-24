@@ -285,6 +285,12 @@ body {
   width: 80%;
 }
 
+.product-action__addToCart.notAllowed {
+  background: #dedede;
+  cursor: not-allowed;
+  color: #fff !important;
+}
+
 .product-action__addToCart:hover {
   background-color: #d0d0d0;
   color: #333;

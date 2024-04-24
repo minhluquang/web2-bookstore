@@ -12,6 +12,11 @@ function renderProductHTML(data) {
       style: "currency",
       currency: "VND",
     });
+
+    let notAllowed = "";
+    if (product.quantity <= 0) {
+      notAllowed = "notAllowed";
+    }
     productHTML += `
       <div class="product-item--wrapper">
         <div class="product-item">
@@ -22,7 +27,7 @@ function renderProductHTML(data) {
                   product.id
                 }" class="product-action--btn product-action__detail">Chi tiết</a>
                 <input type="hidden" class="productId" value="${product.id}"/>
-                <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
+                <button class="product-action--btn product-action__addToCart ${notAllowed}">Thêm vào giỏ</button>
               </div>
             </div>
             <div class="img-resize">
@@ -110,7 +115,6 @@ function renderProductsPerPage(
   }).done(function (result) {
     try {
       const data = JSON.parse(result);
-
       const productHTML = renderProductHTML(data);
       const paginationHTML = renderPaginationHTML(data, itemsPerPage);
       let html = `${productHTML}${paginationHTML}`;
@@ -151,6 +155,11 @@ $(document).ready(function () {
   // Xử lý add to Cart
   $(document).on("click", ".product-action__addToCart", function (e) {
     e.preventDefault();
+
+    if ($(this).hasClass("notAllowed")) {
+      return;
+    }
+
     const productId = $(this)
       .closest(".product-item")
       .find(".productId")[0]

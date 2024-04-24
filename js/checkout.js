@@ -13445,7 +13445,6 @@ $(document).ready(function () {
         alert(data.message);
         const modalTbody = document.querySelector(".table-container tbody");
         modalTbody.innerHTML = "";
-        s;
         data.products.forEach((product) => {
           const html = `
             <tr>
