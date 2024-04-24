@@ -149,4 +149,19 @@
       return false;
     }
   }
+
+  function searchProductsByKeywordModel($keyword) {
+    $database = new connectDB();
+    if ($database->conn) {
+      $sql = "SELECT * 
+              FROM products
+              WHERE name LIKE '%$keyword%'";
+      $result = $database->query($sql);
+      $database->close();
+      return $result;
+    } else {
+      $database->close();
+      return false;
+    }
+  }
 ?>

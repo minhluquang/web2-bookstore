@@ -124,7 +124,31 @@
     }
   }
 
-  function updateQuantityProductById($id, $quantity) {
-    updateQuantityProductByIdModel($id, $quantity);
+  if (isset($_POST['isSearch']) && $_POST['isSearch']) {
+    $keyword = $_POST['keyword'];
+
+    if ($keyword == '') {
+      $reponse = (object) array (
+        "success" => true,
+        "products" => []
+      );
+      echo json_encode($reponse);
+    } else {
+      $result = searchProductsByKeywordModel($keyword);
+      if ($result && $result->num_rows > 0) {
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        $reponse = (object) array (
+          "success" => true,
+          "products" => $products
+        );
+        echo json_encode($reponse);
+      } else {
+        $reponse = (object) array (
+          "success" => false,
+          "message" => "Không có sản phẩm"
+        );
+        echo json_encode($reponse);
+      }
+    }
   }
 ?>
