@@ -79,10 +79,9 @@ $_SESSION["render"] ->setTable("products");
     </div>
     <!-- end -->
     <div class='result'></div>
+    <div id="modal"></div>
+    <div id="multiselect"></div>
 
-    <div id="modal">
-
-    </div>
 
 
     <script defer src="../js/admin/product.js?v=<?php echo time(); ?> "></script>

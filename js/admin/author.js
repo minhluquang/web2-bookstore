@@ -84,7 +84,7 @@
           data: {
               number_of_item: number_of_item,
               current_page: current_page,
-              function: "renderAuthor",
+              function: "render",
               filter: filter
           }
       }).done(function (result) {

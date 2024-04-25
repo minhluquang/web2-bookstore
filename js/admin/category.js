@@ -86,7 +86,7 @@ function loadItem() {
         data: {
             number_of_item: number_of_item,
             current_page: current_page,
-            function: "renderCategory",
+            function: "render",
             filter: filter
         }
     }).done(function (result) {
