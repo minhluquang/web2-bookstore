@@ -15,5 +15,4 @@
     $category = getCategoryByIdModel($category_id);
     return $category;
 }
-
 ?>

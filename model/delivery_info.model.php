@@ -1,21 +1,22 @@
 <?php
   include_once('connect.php');
-  $database = new connectDB();
 
   function getAllUserInfoByUserIdModel($userId) {
-    global $database;
+    $database = new connectDB();
     if ($database->conn) {
       $sql = "SELECT * FROM delivery_infoes WHERE user_id = '$userId'";
 
       $result = $database->query($sql);
+      $database->close();
       return $result;
     } else {
+      $database->close();
       return false;
     }
   }
 
   function updateUserInfoByIdModel($id, $fullname, $phone_number, $address, $city, $district, $ward) {
-    global $database;
+    $database = new connectDB();
     if ($database->conn) {
       $sql = "UPDATE delivery_infoes
               SET 
@@ -30,6 +31,7 @@
               ";
 
       $result = $database->execute($sql);
+      $database->close();
       return (object) array (
         "success" => $result,
         "id" => $id,
@@ -41,6 +43,7 @@
         "ward" => $ward        
       );
     } else {
+      $database->close();
       return false;
     }
   }

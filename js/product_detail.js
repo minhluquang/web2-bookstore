@@ -13,15 +13,23 @@ btnDecreaseQnt.addEventListener("click", (e) => {
 
 btnIncreaseQnt.addEventListener("click", (e) => {
   const modalQntValue = document.querySelector(".modal-qnt__value");
-  const qnt = +modalQntValue.value;
-  modalQntValue.value = qnt + 1;
-  modalQntValue.setAttribute("value", qnt + 1);
+  const modalQntValueMax = document.querySelector(".modal-qnt__value-max");
+  if (modalQntValueMax.value > modalQntValue.value) {
+    const qnt = +modalQntValue.value;
+    modalQntValue.value = qnt + 1;
+    modalQntValue.setAttribute("value", qnt + 1);
+  }
 });
 // ========== End: Xử lý nút tăng/giảm khi bấm ==========
 
 // Xử lý thêm vào giỏ bằng ajax
 $(document).ready(function () {
   $(".modal-btn").click(function (e) {
+    // Ngăn chặn thêm sp vào giỏ hàng khi kho hết
+    if ($(".modal-btn.notAllowed")[0]) {
+      return;
+    }
+
     e.preventDefault();
 
     const currentURL = window.location.href;

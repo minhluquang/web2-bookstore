@@ -556,6 +556,79 @@ fieldset {
   float: inline-end;
 }
 
+.modalNotEnoughQuantity-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  visibility: visible;
+}
+
+.modalNotEnoughQuantity-container.hide {
+  visibility: hidden;
+}
+
+.modalNotEnoughQuantity {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  background: #fff;
+  height: 70vh;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
+  padding: 20px 10px;
+}
+
+.modalNotEnoughQuantity h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.modalNotEnoughQuantity .table-container {
+  height: 80%;
+  overflow: auto;
+  margin-bottom: 20px;
+  border: 1px solid #ededed;
+}
+
+.modalNotEnoughQuantity table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  padding: 5px;
+  margin-bottom: 4px;
+}
+
+.modalNotEnoughQuantity table thead {
+  background-color: #ca3f3f;
+  color: #fff;
+  font-weight: 700;
+}
+
+.modalNotEnoughQuantity table thead tr {
+  border: 1px solid #ca3f3f;
+}
+
+.modalNotEnoughQuantity tr {
+  height: 50px;
+  text-align: center;
+}
+
+.modalNotEnoughQuantity a {
+  text-decoration: none;
+  background: #ca3f3f;
+  color: #fff;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  float: right;
+}
+
 /* responsive */
 .updatebig {
   visibility: inherit;

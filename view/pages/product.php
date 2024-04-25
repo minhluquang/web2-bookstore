@@ -2,7 +2,6 @@
   include_once("controller/category.controller.php");
   $items_per_page = 8;
   $current_page = 1;
-  $categoryId = null;
 ?>
 
 <!DOCTYPE html>
@@ -33,33 +32,39 @@
       <!-- Start: Sidebar items -->
       <div class="sidebar-items">
         <div class="sidebar-item">
-          <h2 class="sidebar-item__title">Thể loại</h2>
+          <div class="sidebar-item__title">
+            <h2>Thể loại</h2>
+            <!-- <button class="reset_theloai"><i class="fa-solid fa-rotate-right"></i> Reset</button> -->
+          </div>
           <ul class="sidebar-item__list">
             <?php
               $categories = getCategoryList();
               foreach ($categories as $category) {
                 echo '
                   <li>
-                    <input type="radio" id="theloai_'.$category['id'].'" data="'.$category['id'].'" name="theloai"/><label for="theloai_'.$category['id'].'">'.$category['name'].'</label>
+                    <input type="checkbox" id="theloai_'.$category['id'].'" data="'.$category['id'].'" name="theloai"/><label for="theloai_'.$category['id'].'">'.$category['name'].'</label>
                   </li>';
               }
             ?>
             
         </div>
         <div class="sidebar-item">
-          <h2 class="sidebar-item__title">Giá bán</h2>
+          <div class="sidebar-item__title">
+            <h2>Giá bán</h2>
+            <!-- <button class="reset_giaban"><i class="fa-solid fa-rotate-right"></i> Reset</button> -->
+          </div>
           <ul class="sidebar-item__list">
             <li>
-              <input type="radio" name="giaban" id="giaban_duoi50" data="duoi50" /><label for="giaban_duoi50">Dưới 50,000đ</label>
+              <input type="checkbox" name="giaban" id="giaban_duoi50" data="duoi50" /><label for="giaban_duoi50">Dưới 50,000đ</label>
             </li>
             <li>
-              <input type="radio" name="giaban" id="giaban_tu50duoi100" data="tu50duoi100" /><label for="giaban_tu50duoi100">50,000đ - 100,000đ</label>
+              <input type="checkbox" name="giaban" id="giaban_tu50duoi100" data="tu50duoi100" /><label for="giaban_tu50duoi100">50,000đ - 100,000đ</label>
             </li>
             <li>
-              <input type="radio" name="giaban" id="giaban_tu100duoi200" data="tu100duoi200" /><label for="giaban_tu100duoi200">100,000đ - 200,000đ</label>
+              <input type="checkbox" name="giaban" id="giaban_tu100duoi200" data="tu100duoi200" /><label for="giaban_tu100duoi200">100,000đ - 200,000đ</label>
             </li>
             <li>
-              <input type="radio" name="giaban" id="giaban_tren200" data="tren200" /><label for="giaban_tren200">Trên 200,000đ</label>
+              <input type="checkbox" name="giaban" id="giaban_tren200" data="tren200" /><label for="giaban_tren200">Trên 200,000đ</label>
             </li>
           </ul>
         </div>

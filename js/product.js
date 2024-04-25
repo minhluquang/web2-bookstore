@@ -1,7 +1,8 @@
 const itemsPerPage = 8;
 const modelPath = "../model";
-let categoryId = null;
+let listCategoryIds = [];
 let priceRange = null;
+let keyword = null;
 
 // Hàm để render HTML của mỗi sản phẩm
 function renderProductHTML(data) {
@@ -12,6 +13,11 @@ function renderProductHTML(data) {
       style: "currency",
       currency: "VND",
     });
+
+    let notAllowed = "";
+    if (product.quantity <= 0) {
+      notAllowed = "notAllowed";
+    }
     productHTML += `
       <div class="product-item--wrapper">
         <div class="product-item">
@@ -22,7 +28,7 @@ function renderProductHTML(data) {
                   product.id
                 }" class="product-action--btn product-action__detail">Chi tiết</a>
                 <input type="hidden" class="productId" value="${product.id}"/>
-                <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
+                <button class="product-action--btn product-action__addToCart ${notAllowed}">Thêm vào giỏ</button>
               </div>
             </div>
             <div class="img-resize">
@@ -93,28 +99,33 @@ function renderPaginationHTML(data, itemsPerPage) {
 // Hàm để render dữ liệu sản phẩm và phân trang (AJAX)
 function renderProductsPerPage(
   currentPage,
-  categoryId = null,
-  priceRange = null
+  listCategoryIds = null,
+  priceRange = null,
+  keyword = null
 ) {
   $.ajax({
     url: "controller/product.controller.php",
     type: "post",
     dataType: "html",
     data: {
-      categoryId,
+      listCategoryIds,
       priceRange,
       itemsPerPage,
       currentPage,
+      keyword,
       modelPath,
     },
   }).done(function (result) {
+    const data = JSON.parse(result);
     try {
-      const data = JSON.parse(result);
-
-      const productHTML = renderProductHTML(data);
-      const paginationHTML = renderPaginationHTML(data, itemsPerPage);
-      let html = `${productHTML}${paginationHTML}`;
-      $(".result").html(html);
+      if (data.success) {
+        const productHTML = renderProductHTML(data);
+        const paginationHTML = renderPaginationHTML(data, itemsPerPage);
+        let html = `${productHTML}${paginationHTML}`;
+        $(".result").html(html);
+      } else {
+        $(".result").html(data.message);
+      }
     } catch (error) {
       $(".result").html("Không tìm thấy sản phẩm");
     }
@@ -131,26 +142,70 @@ $(document).ready(function () {
     $(this).addClass("active");
 
     var current_page = $(this).attr("data");
-    renderProductsPerPage(current_page, categoryId, priceRange);
+    renderProductsPerPage(current_page, listCategoryIds, priceRange, keyword);
+  });
+
+  if (localStorage.getItem("keyword")) {
+    keyword = localStorage.getItem("keyword");
+    renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
+
+    // Xoá localStorage khi bấm nút search lưu
+    localStorage.removeItem("keyword");
+  }
+
+  // Xử lý click nút search
+  $(document).ready(function () {
+    $("#searchButton").click(function () {
+      keyword = document.querySelector("#searchInput").value;
+      renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
+
+      resetFilter();
+
+      // Xoá localStorage khi bấm nút search lưu
+      localStorage.removeItem("keyword");
+    });
   });
 
   // Lọc nâng cao theo thể loại
   $('input[name="theloai"]').click(function () {
-    categoryId = $(this).attr("data");
+    // Nếu click vào mà ckb.selected = true thì add vào mảng
+    // Ngược lại thì bỏ khỏi mảng
+    const categoryIdData = $(this).attr("data");
+    if ($(this).is(":checked")) {
+      listCategoryIds.push(+categoryIdData);
+    } else {
+      listCategoryIds = listCategoryIds.filter(
+        (categoryId) => categoryId != categoryIdData
+      );
+    }
+
     // Tự load sản phẩm ở lần đầu vào trang
-    renderProductsPerPage(1, categoryId, priceRange);
+    renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
   });
 
   // Lọc nâng cao theo giá tiền
   $('input[name="giaban"]').click(function () {
     priceRange = $(this).attr("data");
-    // Tự load sản phẩm ở lần đầu vào trang
-    renderProductsPerPage(1, categoryId, priceRange);
+
+    if ($(this).attr("checked")) {
+      $(this).removeAttr("checked");
+      priceRange = null;
+    } else {
+      $(this).attr("checked", true);
+      uncheckPriceRange($(this)[0]);
+    }
+
+    renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
   });
 
   // Xử lý add to Cart
   $(document).on("click", ".product-action__addToCart", function (e) {
     e.preventDefault();
+
+    if ($(this).hasClass("notAllowed")) {
+      return;
+    }
+
     const productId = $(this)
       .closest(".product-item")
       .find(".productId")[0]
@@ -158,6 +213,31 @@ $(document).ready(function () {
     addToCart(productId, 1);
   });
 });
+
+// Xử lý reset lọc
+function resetFilter() {
+  const ckbs = document.querySelectorAll(
+    '.sidebar-item__list li input[type="checkbox"]'
+  );
+  ckbs.forEach((ckb) => {
+    if (ckb.checked) {
+      ckb.checked = false;
+    }
+  });
+}
+
+function uncheckPriceRange(currentCkb) {
+  const ckbs = document.querySelectorAll(
+    '.sidebar-item__list li input[type="checkbox"][name="giaban"]'
+  );
+
+  ckbs.forEach((ckb) => {
+    if (ckb != currentCkb) {
+      ckb.checked = false;
+      ckb.removeAttribute("checked");
+    }
+  });
+}
 
 // Function xử lý addToCart
 function addToCart(productId, amount) {
