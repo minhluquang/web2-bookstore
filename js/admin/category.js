@@ -86,19 +86,33 @@ function loadItem() {
         data: {
             number_of_item: number_of_item,
             current_page: current_page,
-            function: "render",
+            function: "getRecords",
             filter: filter
         }
     }).done(function (result) {
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
-        newurl += pushFilterToURL();
-        window.history.pushState({ path: newurl }, '', newurl);
-        $('.result').html(result);
-        
-        pagnationBtn();
-        filterBtn();
-        js();
-    }) 
+        if (current_page > parseInt(result)) current_page = parseInt(result)
+        if (current_page < 1) current_page = 1;
+        $.ajax({
+            url: '../controller/admin/pagnation.controller.php',
+            type: "post",
+            dataType: 'html',
+            data: {
+                number_of_item: number_of_item,
+                current_page: current_page,
+                function: "render",
+                filter: filter
+            }
+        }).done(function (result) {
+
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            newurl += pushFilterToURL();
+            window.history.pushState({ path: newurl }, '', newurl);
+            $('.result').html(result);
+            pagnationBtn();
+            filterBtn();
+            js();
+        })
+    })
 };
 document.addEventListener("DOMContentLoaded", () => {
     loadForFirstTime()

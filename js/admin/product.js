@@ -126,7 +126,6 @@ function loadItem() {
             newurl += pushFilterToURL();
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
-            // console.log(result)
             pagnationBtn();
             filterBtn();
             js();
@@ -186,8 +185,10 @@ var js = function () {
             reader.readAsDataURL(file);
         }
     }
-    var multiselect_category = [];
-    var multiselect_author = [];
+    var multiselect_array = {
+        category: [],
+        author :[]
+    }
     const multiselect = document.querySelector("#multiselect");
     const multiselect_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
     <div class="modal-edit-product">
@@ -284,12 +285,13 @@ var js = function () {
 
     document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
         modal.innerHTML = modal_html;
-        multiselect_category = [];
-        multiselect_author = [];
+        for (const [key, value] of Object.entries(multiselect_array)) {
+            multiselect_array[$(key)] = {}
+          }
         const modal_edit_container = modal.querySelector("#modal-edit-container");
         modal.querySelector('#choose-img-select').remove();
         modal.querySelector('.choose-img').classList.remove("hidden");
-        modal.querySelector('#modal-header').innerHTML= "Thêm sản phẩm";
+        modal.querySelector('#modal-header').innerHTML = "Thêm sản phẩm";
 
         $.ajax({
             url: '../controller/admin/product.controller.php',
@@ -331,14 +333,14 @@ var js = function () {
                 data: {
                     function: "create",
                     field: {
-                        id:  0 ,
+                        id: 0,
                         name: modal.querySelector('#name').value,
                         publisher_id: modal.querySelector('#publisher_id').value,
                         image: document.getElementById('imagePreview').src,
                         quantity: modal.querySelector('#quantity').value,
                         price: modal.querySelector('#price').value,
-                        category: multiselect_category,
-                        author: multiselect_author,
+                        category: multiselect_array["category"],
+                        author: multiselect_array["author"],
                     }
                 }
             }).done(function (result) {
@@ -370,78 +372,62 @@ var js = function () {
             displayImage(this); // Gọi hàm displayImage và truyền vào input element
         });
 
-        modal.querySelector("#category-multiselect").addEventListener("click", () => {
-            multiselect.innerHTML = multiselect_html;
+        var multiselect_filter = (select)=>{
+            let search = new RegExp(multiselect.querySelector("input").value.toString(), "ui");
+            if (!search.test(select.innerHTML.replace('<i class="fa-solid fa-xmark cancel-multiselect"></i>', ""))) {
+                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
+            }
+            else
+                if (multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.contains("hidden"))
+                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+        }
+        var multiselect_setup = (type,key,content) =>{
+            multiselect.innerHTML = multiselect_html;;
             multiselect.querySelector("#btnClose").addEventListener('click', () => {
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
             });
+            multiselect.querySelector("input").addEventListener('input', () => {
+                multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select)=>{multiselect_filter(select)})
+            });
             multiselect.querySelector(".button-cancel").addEventListener('click', () => {
-                multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach( function (select) {
+                multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
                 })
+                multiselect.querySelector("input").value = "";
             });
-            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn thể loại";
-            multiselect.querySelector("#multiselect-selected").innerHTML = category_content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
-            multiselect.querySelector("#multiselect-available").innerHTML = category_content;
+            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn "+type;
+            multiselect.querySelector("#multiselect-selected").innerHTML = content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
+            multiselect.querySelector("#multiselect-available").innerHTML = content;
             multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
-                multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
+                this.classList.add("hidden")
                 multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+                multiselect_filter(this)
             }))
             multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
                 multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
+                this.classList.add("hidden")
             }))
-            multiselect_category.forEach(function (select) {
+            
+            multiselect_array[key].forEach(function (select) {
                 multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
                 multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
             })
             multiselect.querySelector('.button-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
-                multiselect_category = []
+                multiselect_array[key] = []
                 multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
-                    if (!select.classList.contains("hidden")) multiselect_category.push(select.getAttribute("data-value"))
+                    if (!select.classList.contains("hidden")) multiselect_array[key].push(select.getAttribute("data-value"))
                 })
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                modal.querySelector("#category-amount").innerHTML = "Đã chọn "+multiselect_category.length.toString()+" thể loại";
+                modal.querySelector("#"+key+"-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " "+type;
             })
+        }
+        modal.querySelector("#category-multiselect").addEventListener("click", () => {
+            multiselect_setup("thể loại","category",category_content)
         })
         modal.querySelector("#author-multiselect").addEventListener("click", () => {
-            multiselect.innerHTML = multiselect_html;
-            multiselect.querySelector("#btnClose").addEventListener('click', () => {
-                multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-            });
-            multiselect.querySelector(".button-cancel").addEventListener('click', () => {
-                multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach( function (select) {
-                    multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                })
-            });
-            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn thể loại";
-            multiselect.querySelector("#multiselect-selected").innerHTML = author_content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
-            multiselect.querySelector("#multiselect-available").innerHTML = author_content;
-            multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
-                multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
-                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-            }))
-            multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
-                multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
-            }))
-            multiselect_author.forEach(function (select) {
-                multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
-                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
-            
-            })
-            multiselect.querySelector('.button-confirm').addEventListener('click', function (e) {
-                e.preventDefault();
-                multiselect_author = []
-                multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
-                    if (!select.classList.contains("hidden")) multiselect_author.push(select.getAttribute("data-value"))
-                })
-                multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                modal.querySelector("#author-amount").innerHTML = "Đã chọn "+multiselect_author.length.toString()+" tác giả";
-            })
+            multiselect_setup("tác giả","author",author_content)
         })
     });
     var edit_btns = document.getElementsByClassName("actions--edit");
@@ -449,8 +435,8 @@ var js = function () {
         edit_btns[i].addEventListener('click', function () {
             // modal.innerHTML = create_html;
             // const modal_edit_container = document.querySelector("#modal-edit-container");
-            multiselect_category = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi,"").split(",");
-            multiselect_author = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi,"").split(",");
+            multiselect_array["category"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
+            multiselect_array["author"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
             var publisher_value = this.parentNode.parentNode.querySelector(".id").getAttribute("publisher_id");
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             $.ajax({
@@ -490,9 +476,9 @@ var js = function () {
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
             modal.querySelector('#quantity').value = this.parentNode.parentNode.querySelector(".amount").innerHTML;
             modal.querySelector('#price').value = this.parentNode.parentNode.querySelector(".price").innerHTML.replace(/[₫.]+/g, '');
-            modal.querySelector('#modal-header').innerHTML= "Sửa sản phẩm mã "+this.parentNode.parentNode.querySelector(".id").innerHTML;
-            modal.querySelector("#category-amount").innerHTML = "Đã chọn "+multiselect_category.length.toString()+" thể loại";
-            modal.querySelector("#author-amount").innerHTML = "Đã chọn "+multiselect_author.length.toString()+" tác giả";
+            modal.querySelector('#modal-header').innerHTML = "Sửa sản phẩm mã " + this.parentNode.parentNode.querySelector(".id").innerHTML;
+            modal.querySelector("#category-amount").innerHTML = "Đã chọn " + multiselect_array["category"].length.toString() + " thể loại";
+            modal.querySelector("#author-amount").innerHTML = "Đã chọn " +  multiselect_array["author"].length.toString() + " tác giả";
 
             const fileInput = document.getElementById('fileInput');
             fileInput.addEventListener('change', function () {
@@ -521,78 +507,63 @@ var js = function () {
             modal.querySelector('.button-cancel').addEventListener('click', function (e) {
                 modal_edit_container.classList.add('hidden');
             });
-            modal.querySelector("#category-multiselect").addEventListener("click", () => {
-                multiselect.innerHTML = multiselect_html;
+
+            var multiselect_filter = (select)=>{
+                let search = new RegExp(multiselect.querySelector("input").value.toString(), "ui");
+                if (!search.test(select.innerHTML.replace('<i class="fa-solid fa-xmark cancel-multiselect"></i>', ""))) {
+                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
+                }
+                else
+                    if (multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.contains("hidden"))
+                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+            }
+            var multiselect_setup = (type,key,content) =>{
+                multiselect.innerHTML = multiselect_html;;
                 multiselect.querySelector("#btnClose").addEventListener('click', () => {
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
                 });
+                multiselect.querySelector("input").addEventListener('input', () => {
+                    multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select)=>{multiselect_filter(select)})
+                });
                 multiselect.querySelector(".button-cancel").addEventListener('click', () => {
-                    multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach( function (select) {
+                    multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
                         multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
                         multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
                     })
+                    multiselect.querySelector("input").value = "";
                 });
-                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn thể loại";
-                multiselect.querySelector("#multiselect-selected").innerHTML = category_content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
-                multiselect.querySelector("#multiselect-available").innerHTML = category_content;
+                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn "+type;
+                multiselect.querySelector("#multiselect-selected").innerHTML = content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
+                multiselect.querySelector("#multiselect-available").innerHTML = content;
                 multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
-                    multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
+                    this.classList.add("hidden")
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+                    multiselect_filter(this)
                 }))
                 multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
+                    this.classList.add("hidden")
                 }))
-                multiselect_category.forEach(function (select) {
+                
+                multiselect_array[key].forEach(function (select) {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
                 })
                 multiselect.querySelector('.button-confirm').addEventListener('click', function (e) {
                     e.preventDefault();
-                    multiselect_category = []
+                    multiselect_array[key] = []
                     multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
-                        if (!select.classList.contains("hidden")) multiselect_category.push(select.getAttribute("data-value"))
+                        if (!select.classList.contains("hidden")) multiselect_array[key].push(select.getAttribute("data-value"))
                     })
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                    modal.querySelector("#category-amount").innerHTML = "Đã chọn "+multiselect_category.length.toString()+" thể loại";
+                    modal.querySelector("#"+key+"-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " "+type;
                 })
+            }
+            modal.querySelector("#category-multiselect").addEventListener("click", () => {
+                multiselect_setup("thể loại","category",category_content)
             })
             modal.querySelector("#author-multiselect").addEventListener("click", () => {
-                multiselect.innerHTML = multiselect_html;
-                multiselect.querySelector("#btnClose").addEventListener('click', () => {
-                    multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                });
-                multiselect.querySelector(".button-cancel").addEventListener('click', () => {
-                    multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach( function (select) {
-                        multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
-                        multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                    })
-                });
-                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn thể loại";
-                multiselect.querySelector("#multiselect-selected").innerHTML = author_content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
-                multiselect.querySelector("#multiselect-available").innerHTML = author_content;
-                multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
-                    multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                }))
-                multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
-                    multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.add("hidden")
-                }))
-                multiselect_author.forEach(function (select) {
-                    multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
-                
-                })
-                multiselect.querySelector('.button-confirm').addEventListener('click', function (e) {
-                    e.preventDefault();
-                    multiselect_author = []
-                    multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
-                        if (!select.classList.contains("hidden")) multiselect_author.push(select.getAttribute("data-value"))
-                    })
-                    multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                    modal.querySelector("#author-amount").innerHTML = "Đã chọn "+multiselect_author.length.toString()+" tác giả";
-                })
+                multiselect_setup("tác giả","author",author_content)
             })
             // confirm edit
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
@@ -612,8 +583,8 @@ var js = function () {
                             image: image,
                             quantity: modal.querySelector('#quantity').value,
                             price: modal.querySelector('#price').value,
-                            category: multiselect_category,
-                            author: multiselect_author,
+                            category: multiselect_array["category"],
+                            author: multiselect_array["author"],
                         }
                     }
                 }).done(function (result) {
