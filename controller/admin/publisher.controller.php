@@ -1,39 +1,37 @@
 <?php
 include_once('../../model/connect.php');
-include_once('../../model/admin/author.model.php');
+include_once('../../model/admin/publisher.model.php');
 if (isset($_POST['function'])) {
   $function = $_POST['function'];
   switch ($function) {
     case 'delete':
-      deleteAU();
+      deletePublisher();
       break;
     case 'create':
-      create();
+      createPublisher();
       break;
     case 'edit':
-      edit();
+      editPublisher();
       break;
   }
 }
-function deleteAU()
+function deletePublisher()
 {
   if (isset($_POST['id'])) {
     $id = $_POST['id'];
-    $delete_result = author_delete($id);
+    $delete_result = publisher_delete($id);
     echo $delete_result->message;
   }
 }
-function create()
+function createPublisher()
 {
   if (isset($_POST['field'])) {
-    echo author_create($_POST['field']);
+    echo publisher_create($_POST['field']);
   }
 }
-function edit()
+function editPublisher()
 {
   if (isset($_POST['field'])) {
-    echo author_edit($_POST['field']);
+    echo publisher_edit($_POST['field']);
   }
-} 
-
-
+}

@@ -84,7 +84,7 @@
                 echo '
                     </div>
                     <div class="see-more" >
-                        <a class="see-more-btn">Xem thêm </a>
+                        <a href="index.php?page=product" class="see-more-btn">Xem thêm </a>
                     </div>
                 </div>';
             

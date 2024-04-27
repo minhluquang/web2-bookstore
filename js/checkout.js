@@ -13016,6 +13016,7 @@ document.getElementById("tinhthanh").onchange = function () {
 document.getElementById("quanhuyen").onchange = function () {
   changePhuongXa();
 };
+
 // thiết lập select tỉnh thành
 var tinhThanhSelect = document.getElementById("tinhthanh");
 tinhThanhSelect.innerHTML = "";
@@ -13071,7 +13072,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "post",
-      url: "controller/checkout.controller.php",
+      url: "controller/discount.controller.php",
       dataType: "html",
       data: {
         promoCodeCheck: true,
@@ -13173,7 +13174,7 @@ $(document).ready(function () {
 
       $.ajax({
         type: "post",
-        url: "controller/user_info.controller.php",
+        url: "controller/delivery_info.controller.php",
         dataType: "html",
         data: {
           updateUserInfo: true,
@@ -13209,7 +13210,7 @@ function renderAllUserInfoByUserId() {
   $(document).ready(function () {
     $.ajax({
       type: "post",
-      url: "controller/user_info.controller.php",
+      url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
         renderAllUserInfoByUserId: true,
@@ -13300,7 +13301,7 @@ function renderCurrentDeliveryAddress() {
   $(document).ready(function () {
     $.ajax({
       type: "post",
-      url: "controller/user_info.controller.php",
+      url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
         showCurrentDeliveryAddress: true,
@@ -13308,7 +13309,6 @@ function renderCurrentDeliveryAddress() {
         modelPath: "../model",
       },
     }).done(function (result) {
-      console.log(result);
       const data = JSON.parse(result);
       renderHTMLCurrentDeliveryAddress(data);
     });
@@ -13417,3 +13417,51 @@ const init = () => {
 };
 
 init();
+
+$(document).ready(function () {
+  $(".xacNhanThanhToan").click(function (e) {
+    e.preventDefault();
+
+    const deliveryInfoId = document.querySelector("#diachi input").value;
+
+    const isValidDiscountCode = document.querySelector(".promoBtn.hide");
+    const discountCode = document.querySelector("#promotion").value;
+
+    const totalPrice = document.querySelector(".finalTotalPriceValue").value;
+
+    $.ajax({
+      type: "post",
+      url: "controller/checkout.controller.php",
+      dataType: "html",
+      data: {
+        isCheckout: true,
+        deliveryInfoId,
+        discountCode: isValidDiscountCode ? discountCode : null,
+        totalPrice,
+      },
+    }).done(function (result) {
+      const data = JSON.parse(result);
+      if (data.successEnoughAll != undefined && !data.successEnoughAll) {
+        alert(data.message);
+        const modalTbody = document.querySelector(".table-container tbody");
+        modalTbody.innerHTML = "";
+        data.products.forEach((product) => {
+          const html = `
+            <tr>
+              <td>${product.product_name}</td>
+              <td>${product.quantity}</td>
+            </tr>`;
+          modalTbody.insertAdjacentHTML("afterbegin", html);
+        });
+        document
+          .querySelector(".modalNotEnoughQuantity-container")
+          .classList.remove("hide");
+      } else if (data?.successAddNewOrder) {
+        alert(data.message);
+        window.location.href = "index.php";
+      } else {
+        alert(data.message);
+      }
+    });
+  });
+});

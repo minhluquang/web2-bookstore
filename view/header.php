@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/headerfooter/headerfooter.css?v=<?php echo time(); ?>" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="js/logout.js?v=<?php echo time(); ?>"></script>
+    <script defer src="js/header.js?v=<?php echo time(); ?>"></script>
   </head>
   <body>
     <header>
@@ -28,7 +29,7 @@
             <div class="input-wrapper">
               <input
                 type="text"
-                placeholder="Search.."
+                placeholder="Tìm kiếm sách ở đây nè..."
                 name="search"
                 id="searchInput"
               />
@@ -37,61 +38,11 @@
               </button>
             </div>
             <div class="notification">
-              <div class="category-section">
-                <h2>Thể loại</h2>
-                <ul class="categories">
-                  <li>Văn học</li>
-                  <li>Tâm lý</li>
-                  <li>Kinh tế</li>
-                  <li>Nuôi dạy con</li>
-                  <li>Sách thiếu nhi</li>
-                  <li>Giáo khoa</li>
-                </ul>
+              <div class="notification-title hide">
+                <h2>Kết quả tìm kiếm: </h2>
               </div>
               <div class="book-section">
                 <div class="books">
-                  <div class="book">
-                    <img
-                      src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alt="
-                      alt="Book 1"
-                    />
-                    <p>Cuốn sách 1</p>
-                  </div>
-                  <div class="book">
-                    <img
-                      src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alt="
-                      alt="Book 2"
-                    />
-                    <p>Cuốn sách 2</p>
-                  </div>
-                  <div class="book">
-                    <img
-                      src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alt="
-                      alt="Book 3"
-                    />
-                    <p>Cuốn sách 3</p>
-                  </div>
-                  <div class="book">
-                    <img
-                      src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alt="
-                      alt="Book 4"
-                    />
-                    <p>Cuốn sách 4</p>
-                  </div>
-                  <div class="book">
-                    <img
-                      src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alt="
-                      alt="Book 5"
-                    />
-                    <p>Cuốn sách 5</p>
-                  </div>
-                  <div class="book">
-                    <img
-                      src="https://bizweb.dktcdn.net/100/363/455/products/bat-tre-dong-xanh-14x20-5.jpg?v=1708501310000%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alt="
-                      alt="Book 6"
-                    />
-                    <p>Cuốn sách 6</p>
-                  </div>
                 </div>
               </div>
             </div>

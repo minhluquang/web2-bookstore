@@ -7,14 +7,9 @@
             case 'render':
                 render();
                 break;
-            case 'renderAuthor':
-                renderAuthor();
+            case 'getRecords':
+                getTotalRecords();
                 break;
-
-            case 'renderCategory':
-                renderCategory();
-                break;
-
         }
         
     }
@@ -26,48 +21,47 @@
                 session_start();
             }
             $render = $_SESSION["render"];
-
-            if(isset($_POST["filter"])) $render->setFilter(getFilterSQL($_POST["filter"]));
+            if(isset($_POST["filter"])) $render->setFilter(getFilterSQL($render->getTable(),$_POST["filter"]));
             else $render->setFilter("");
             $render->setNumberOfItem($_POST['number_of_item']);
             $render->setCurrentPage($_POST['current_page']);
+            echo $render->render();
+        }
+    }
+
+    function getTotalRecords()
+    {
+        if (isset($_POST['number_of_item']) && isset($_POST['current_page'])) {
+            include_once('../../model/admin/pagnation.model.php');
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             
-            echo $render->render();
-        }
-    }
-    function renderAuthor()
-    {
-        if (isset($_POST['number_of_item']) && isset($_POST['current_page'])) {
-            include_once('../../model/admin/pagnation.model.php');
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
             $render = $_SESSION["render"];
-
-            if(isset($_POST["filter"])) $render->setFilter(getAuthorFilterSQL($_POST["filter"]));
+            if(isset($_POST["filter"])) $render->setFilter(getFilterSQL($render->getTable(),$_POST["filter"]));
             else $render->setFilter("");
             $render->setNumberOfItem($_POST['number_of_item']);
             $render->setCurrentPage($_POST['current_page']);
-            echo $render->getFilter();
-            echo $render->render();
+            echo ceil($render->getTotalRecords() / $_POST['number_of_item']);
         }
     }
 
-    function renderCategory()
+    function getTotalRecords()
     {
         if (isset($_POST['number_of_item']) && isset($_POST['current_page'])) {
             include_once('../../model/admin/pagnation.model.php');
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
+            
             $render = $_SESSION["render"];
-
-            if(isset($_POST["filter"])) $render->setFilter(getCategoryFilterSQL($_POST["filter"]));
+            if(isset($_POST["filter"])) $render->setFilter(getFilterSQL($render->getTable(),$_POST["filter"]));
             else $render->setFilter("");
             $render->setNumberOfItem($_POST['number_of_item']);
             $render->setCurrentPage($_POST['current_page']);
             echo $render->render();
             // echo $render->getFilter();
             
+            echo ceil($render->getTotalRecords() / $_POST['number_of_item']);
         }
     }

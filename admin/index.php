@@ -80,7 +80,26 @@ $_SESSION["render"] = new pagnation(5, 1, "products");
                                 ?>">
         <a href="?page=category"><i class="fa-solid fa-list"></i>Thể loại sách</a>
       </li>
+      <li class="sidebar__item <?php
+                                if (isset($_GET['page']))
+                                  if ($_GET['page'] == 'supplier') echo 'active';
+                                ?>">
+        <a href="?page=supplier"><i class="fa-solid fa-industry"></i>Nhà cung cấp</a>
+      </li>
+      <li class="sidebar__item <?php
+                                if (isset($_GET['page']))
+                                  if ($_GET['page'] == 'receipt') echo 'active';
+                                ?>">
+        <a href="?page=receipt"><i class="fa-solid fa-file-invoice"></i>Nhập hàng</a>
+      </li>
+      <li class="sidebar__item <?php
+                                if (isset($_GET['page']))
+                                  if ($_GET['page'] == 'role') echo 'active';
+                                ?>">
+        <a href="?page=role"><i class="fa-solid fa-gavel"></i>Phân quyền</a>
+      </li>
     </ul>
+    
   </div>
   <div class="container">
     <!-- Render các page tương ứng -->

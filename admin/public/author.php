@@ -40,7 +40,7 @@ $_SESSION["render"] ->setTable("authors");
 
 
         <div class="body__filter--actions">
-            <button class="body__filter--action__add">Thêm tác giả</button>
+        <button type="button" class="body__filter--action__add">Thêm tác giả</button>
             <div>
                 <button type="reset" class="body__filter--action__reset">Reset</button>
                 <button class="body__filter--action__filter">Lọc</button>
@@ -48,6 +48,22 @@ $_SESSION["render"] ->setTable("authors");
         </div>
     </form>
 
+    <div id="addAuthorModal" class="modal">
+  <div class="addModal-content">
+  
+    <span class="close">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <div class="form">
+                <!-- Code will be render here -->
+                <!-- ... -->
+            </div>
+            <div class="form-actions">
+      <button class="addAuthorButton d-none">Thêm tác giả</button>
+      <button type="button" id="addButton">Lưu</button>
+    </div>
+  </div>
+</div>
     <div id="sqlresult">
     </div>
     <!-- end -->
@@ -63,9 +79,9 @@ $_SESSION["render"] ->setTable("authors");
                 <!-- ... -->
             </div>
             <div class="form-actions">
-                <button class="editAuthorButton d-none">Chỉnh thông tin tác giả</button>
-                <button type="submit" class="saveButton">Lưu</button>
-            </div>
+      <button class="editAuthorButton d-none">Chỉnh thông tin tác giả</button>
+      <button type="button" id="saveButton">Lưu</button>
+    </div>
         </div>
     </div>
     <div class='deleteModal' id='deleteModal'> 
@@ -78,9 +94,9 @@ $_SESSION["render"] ->setTable("authors");
                 <!-- ... -->
             </div>
             <div class="form-actions">
-                <button class="deleteAuthorButton d-none">Xóa</button>
-              
-            </div>
+        <button type="submit" class="del-confirm" id="del-confirm">Xác nhận</button>
+        <button type="button" class="del-cancel">Hủy bỏ</button>
+      </div>
         </div> 
     </div>
 

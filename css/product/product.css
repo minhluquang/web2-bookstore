@@ -53,10 +53,29 @@ body {
 }
 
 .sidebar-item__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 20px;
+}
+
+.sidebar-item__title h2 {
   color: var(--primary-color);
   font-size: 24px;
   font-weight: bold;
+}
+
+.sidebar-item__title button {
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.sidebar-item__title button:hover {
+  color: var(--primary-color);
 }
 
 .sidebar-item__list {
@@ -283,6 +302,12 @@ body {
 
 .product-action__addToCart {
   width: 80%;
+}
+
+.product-action__addToCart.notAllowed {
+  background: #dedede;
+  cursor: not-allowed;
+  color: #fff !important;
 }
 
 .product-action__addToCart:hover {

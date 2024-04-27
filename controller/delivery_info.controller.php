@@ -4,9 +4,9 @@
   }
 
   if (isset($_POST['modelPath'])) {
-    include_once($_POST['modelPath'].'/user_info.model.php');
+    include_once($_POST['modelPath'].'/delivery_info.model.php');
   } else {
-    include_once('model/user_info.model.php');
+    include_once('model/delivery_info.model.php');
   }
 
   function getAllUserInfoByUserId($userId) {

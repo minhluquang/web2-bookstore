@@ -24,6 +24,7 @@
           <?php 
             if (isset($_GET['pid']) && (($_GET['pid']) != '')) {
               $productId = $_GET['pid'];
+              $isAllowed = "";
 
               $productDetail = getProductDetailById($productId, true);
               $priceFormat = number_format($productDetail['price'], 0, ',', '.').' ₫';
@@ -32,6 +33,7 @@
                 $quantityStatus = "(Còn ".$productDetail['quantity']." sản phẩm)";
               } else {
                 $quantityStatus = "(Hết hàng)";
+                $isAllowed = "notAllowed";
               }
               echo '
               <div class="modal-content__model-left">
@@ -55,13 +57,14 @@
                       class="modal-qnt__value"
                       readonly
                     />
+                    <input type="hidden" value="'.$productDetail['quantity'].'" class="modal-qnt__value-max"/>
                     <input type="button" value="+" class="modal-qnt__increase" />
                   </div>
                   <div class="modal-qnt-number">
                     '.$quantityStatus.'
                   </div>
                 </div>
-                <button class="modal-btn">Thêm vào giỏ</button>
+                <button class="modal-btn '.$isAllowed.'">Thêm vào giỏ</button>
               </div>';
             } else {
               echo "CHÚNG TÔI ĐÃ CỐ GẮNG HẾT SỨC, NHƯNG KHÔNG THỂ TÌM THẤY CHI TIẾT SẢN PHẨM, VUI LÒNG THỬ LẠI SAU!";

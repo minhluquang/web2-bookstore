@@ -5,7 +5,6 @@ class pagnation
     private $current_page;
     private $table;
     private $filter = "";
-    private $athorFilter = "";
 
     public function __construct($number_of_item, $current_page, $table)
     {
@@ -45,7 +44,7 @@ class pagnation
     {
         return $this->filter;
     }
-  
+
     public function getData()
     {
         $id = array(
@@ -109,7 +108,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id" publisher_id="'.$row['publisher_id'].'">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="' . $row['publisher_id'] . '">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -117,31 +116,40 @@ class pagnation
                             //name
                             echo '<td class="name">' . $row['name'] . '</td>';
                             //catagory
-                            $cat_sql = "SELECT *  FROM `categories` WHERE id IN (SELECT category_id  FROM `category_details` WHERE product_id = '" . $row[0] . "')";
+                            $cat_sql = "SELECT *  FROM `categories` WHERE id IN (SELECT category_id  FROM `category_details` WHERE product_id = '" . $row['id'] . "')";
                             $cat_result = $database->query($cat_sql);
 
+                            $cat_str = '<td class="type" value="[';
                             $category = mysqli_fetch_array($cat_result);
-                            echo '<td class="type" value="';
                             if ($category) {
-                                echo $category['id'].'">';
-                                echo $category['name'];
-                            }else echo '">';
-                            while ($category = mysqli_fetch_array($cat_result)) echo "," . $category['name'];
-                            echo '</td>';
+                                $cat_str = $cat_str . $category['id'] . ']">';
+                                $cat_str = $cat_str . $category['name'];
+                            } else $cat_str = $cat_str . ']">';
+                            
+                            while ($category = mysqli_fetch_array($cat_result)) {
+                                $search = '/'.preg_quote(']', '/').'/';
+                                $cat_str=preg_replace($search, ','.$category['id'].']', $cat_str, 1);
+                                $cat_str = $cat_str . ", " . $category['name'];
+                            }
+                            echo $cat_str . '</td>';
                             // date
                             echo '<td class="date">' . date("d/m/Y", strtotime($row['update_date'])) . ' ' . date("d/m/Y", strtotime($row['create_date'])) . '</td>';
                             //author
-                            $author_sql = "SELECT *  FROM `authors` WHERE id IN (SELECT author_id  FROM `author_details` WHERE product_id = '" . $row[0] . "')";
+                            $author_sql = "SELECT *  FROM `authors` WHERE id IN (SELECT author_id  FROM `author_details` WHERE product_id = '" . $row['id'] . "')";
                             $author_result = $database->query($author_sql);
-
-                            echo '<td class="author" value="';
+                            $author_str = '<td class="author" value="[';
                             $author = mysqli_fetch_array($author_result);
                             if ($author) {
-                                echo $author['id'].'">';
-                                echo $author['name'];
-                            }else echo '">';
-                            while ($author = mysqli_fetch_array($cat_result)) echo "," . $author['name'];
-                            echo '</td>';
+                                $author_str = $author_str . $author['id'] . ']">';
+                                $author_str = $author_str . $author['name'];
+                            } else $author_str = $author_str . ']">';
+                            
+                            while ($author = mysqli_fetch_array($author_result)) {
+                                $search = '/'.preg_quote(']', '/').'/';
+                                $author_str=preg_replace($search, ','.$author['id'].']', $author_str, 1);
+                                $author_str = $author_str . ", " . $author['name'];
+                            }
+                            echo $author_str . '</td>';
                             //price and amount
                             echo '<td class="price">';
                             $price_number =  $row['price'];
@@ -267,7 +275,6 @@ class pagnation
                             <th>Mã tác giả</th>
                             <th>Tên tác giả</th>
                             <th>Email tác giả</th>
-                            <th>Thể loại viết</th>
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -280,19 +287,13 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
-                            echo '<td class="genres">';
                             $sql_gerne = "SELECT c.name
                             FROM   authors a
                             INNER JOIN author_details ad ON ad.author_id = a.id
                             INNER JOIN category_details cd ON cd.product_id = ad.product_id
                             INNER JOIN categories c ON c.id = cd.category_id
                             WHERE a.id =" . $row['id'];
-                            $result_gerne = $database->query($sql_gerne);
-                            $gerne = "";
-                            while ($row_gerne = mysqli_fetch_array($result_gerne)) {
-                                $gerne = $gerne . $row_gerne['name'] . ', ';
-                            }
-                            echo rtrim($gerne, ', ') . '</td>';
+
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -325,7 +326,7 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="email">' . 'Email' . '</td>';
+                            echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -369,12 +370,12 @@ class pagnation
                                 WHERE p.id = cd.product_id";
                             $result_amount = $database->query($sql_amount);
                             $amount = mysqli_fetch_array($result_amount)['total'];
-                            if($amount !== null) {
+                            if ($amount !== null) {
                                 echo '<td class="amount">' . $amount . '</td>';
                             } else {
-                                echo '<td class="amount">'. 0 .'</td>';
+                                echo '<td class="amount">' . 0 . '</td>';
                             }
-                            echo '<td class="status">' . $row['status'] . '</td>';
+                            echo '<td class="status">'.$row['status'].'</td>';
                             echo '<td class="date-create">'.$row['create_date'].'</td>';
                             echo '<td class="date-update">'.$row['update_date'].'</td>';
                             echo '<td class="date-delete">'.$row['delete_date'].'</td>';
@@ -417,9 +418,27 @@ class pagnation
     }
 }
 
-function getFilterSQL($data)
+function getFilterSQL($table, $data)
 {
-    $filter = "";   
+
+    switch ($table) {
+        case 'products':
+            return getProductFilterSQL($data);
+            break;
+        case 'authors':
+            return getAuthorFilterSQL($data);
+            break;
+        case 'categories':
+            return getCategoryFilterSQL($data);
+            break;
+        case 'publishers':
+            return getPublisherFilterSQL($data);
+            break;
+    }
+}
+function getProductFilterSQL($data)
+{
+    $filter = "";
     $innerjoin = "";
     if (!empty($data)) {
         if (!empty($data['product_name'])) {
@@ -457,10 +476,9 @@ function getFilterSQL($data)
     }
     return $innerjoin . $filter;
 }
-
 function getAuthorFilterSQL($data)
 {
-    $filter = "";    
+    $filter = "";
     if (!empty($data)) {
         if (!empty($data['author_name'])) {
             if ($filter != "") $filter = $filter . " AND ";
@@ -474,8 +492,8 @@ function getAuthorFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`email` LIKE '%" . $data['author_email'] . "%'";
         }
-        
-        
+
+
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return  $filter;
@@ -483,7 +501,7 @@ function getAuthorFilterSQL($data)
 
 function getCategoryFilterSQL($data)
 {
-    $filter = "";    
+    $filter = "";
     if (!empty($data)) {
         if (!empty($data['category_name'])) {
             if ($filter != "") $filter = $filter . " AND ";
@@ -496,7 +514,7 @@ function getCategoryFilterSQL($data)
         if (!empty($data['category_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['category_status'] == "active") {
-                // Sử dụng toán tử bằng (=) thay vì toán tử khác (!=) để xác định trạng thái
+               
                 $filter = $filter . "status = 1 " ;
             } elseif ($data['category_status'] == "inactive") {
                 $filter = $filter . "status = 0 " ;
@@ -514,8 +532,29 @@ function getCategoryFilterSQL($data)
                 $filter = $filter . " `" . $data['category_date_type'] . "` <= '" . $data['category_date_end'] . "'";
             }
         }
-        
+
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return  $filter;
+}
+function getPublisherFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['publisher_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`name` LIKE '%" . $data['publisher_name'] . "%'";
+        }
+        if (!empty($data['publisher_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " id = " . $data['publisher_id'];
+        }
+        if (!empty($data['publisher_email'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`email` LIKE '%" . $data['publisher_email'] . "%'";
+        }
+
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return $filter;
 }

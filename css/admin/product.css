@@ -431,7 +431,7 @@ td:last-child {
   background-color: #6c757d;
   border-color: #6c757d;
 }
-.create-confirm {
+.button-confirm {
   cursor: pointer;
   margin-top: 10px;
   margin-left: calc(49% - 70px);
@@ -442,11 +442,11 @@ td:last-child {
   border-radius: 5px !important;
   color: #383434 !important;
 }
-.create-cancel {
+.button-cancel {
   cursor: pointer;
   margin-top: 10px;
   margin-right: calc(49% - 70px);
-  background-color: #6c757d;
+  background-color: #9fa4a8;
   border: none !important;
   width: 70px !important;
   height: 35px !important;
@@ -506,4 +506,73 @@ td:last-child {
   border-radius: 5px;
   padding: 10px;
   position: relative;
+}
+.open-multiselect{
+  cursor: pointer;
+  flex:17%;
+  margin-right: 10px;
+  background-color: #a090bd;
+  border: none !important;
+  border-radius: 5px !important;
+  color: #383434 !important;
+}
+.multiselect-body{
+  display: flex;
+  flex-wrap:wrap;
+}
+.cancel-multiselect{
+  margin-left: 5px;
+  background-color: inherit;
+  border: none;
+}
+.multiselect-content{
+  padding: 5px 7px 5px 7px;
+  margin: 4px;
+  white-space: nowrap;
+  border: none !important;
+  border-radius: 5px !important;
+}
+#multiselect-selected .multiselect-content{
+  background-color: #a090bd;
+}
+#multiselect-available .multiselect-content{
+  background-color: #90b7bd;
+}
+.body-header{
+  border-bottom: 1px solid #c7c7c7;
+  margin-bottom: 10px;
+}
+.body-header span{
+  font-weight: bold;
+}
+.body-header input{
+  width: 200px;
+  height: 26px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#multiselect-main {
+  position: relative;
+  overflow-y: scroll;
+  max-height: 400px;
+}
+/* width */
+#multiselect ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+#multiselect ::-webkit-scrollbar-track {
+  background: #ffffff; 
+}
+ 
+/* Handle */
+#multiselect ::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+#multiselect ::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
