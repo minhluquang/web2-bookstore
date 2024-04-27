@@ -347,8 +347,10 @@ class pagnation
                             <th>Mã thể loại</th>                 
                             <th>Tên thể loại</th>
                             <th>Số lượng sách</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
-                            <th>Ngày tạo</th>          
+                            <th>Ngày xóa</th>          
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -372,9 +374,10 @@ class pagnation
                             } else {
                                 echo '<td class="amount">'. 0 .'</td>';
                             }
-                           
+                            echo '<td class="status">' . $row['status'] . '</td>';
                             echo '<td class="date-create">'.$row['create_date'].'</td>';
                             echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -486,10 +489,21 @@ function getCategoryFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['category_name'] . "%'";
         }
-        if (!empty($data['category_id'])) {
+        if (!empty($data['category_id'])) {     
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " id = " . $data['category_id'];
         }
+        if (!empty($data['category_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['category_status'] == "active") {
+                // Sử dụng toán tử bằng (=) thay vì toán tử khác (!=) để xác định trạng thái
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['category_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
+        
         if (!empty($data['category_date_type'])) {
             if (!empty($data['category_date_start'])) {
                 if ($filter != "") $filter = $filter . " AND ";

@@ -67,5 +67,7 @@
             $render->setNumberOfItem($_POST['number_of_item']);
             $render->setCurrentPage($_POST['current_page']);
             echo $render->render();
+            // echo $render->getFilter();
+            
         }
     }

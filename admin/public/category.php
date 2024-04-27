@@ -32,6 +32,14 @@ $_SESSION["render"] ->setTable("categories");
                 <p>Mã thể loại</p>
                 <input id="categoryId" type="text" placeholder="Nhập mã thể loại" />
             </div>
+            <div class="body__filter--field body__filter--idClient filter_category" id="">
+                <p>Trạng thái</p>
+                <select name="status" id="statusSelect">
+                    <option value="active">Hoạt động</option>
+                    <option value="inactive">Không hoạt động</option>
+                    <option value="">Tất cả</option>
+                </select>
+            </div>
         </div>
 
         <div class="admin__content--body__filter--gr1">
