@@ -2,6 +2,7 @@ var checkedAddress;
 var addressTmp = "";
 var addressIdTmp = "";
 var updateAddress;
+var loadAddressForTheFirstTime = true ; 
 function popupToggle(idname) {
   document.getElementById(idname).classList.toggle("show");
 }
@@ -122,6 +123,7 @@ document.getElementById("confirm-popup").addEventListener("click", () => {
   popupToggle(`diachiMenu`);
   popupOff(`addressMenu`);
   renderCurrentDeliveryAddress();
+  // changeAddress();
 });
 
 document.getElementById("cancel-popup").addEventListener("click", () => {
@@ -13163,7 +13165,6 @@ let indexAddressRadioChecked = 0;
 $(document).ready(function () {
   $(".confirm.create_address").click(function () {
     if (validFormUpdateUserInfoAddress()) {
-      const updateUserInfoIdValue = updateUserInfoId.value;
       const updateFullnameValue = updateFullname.value;
       const updatePhoneNumberValue = updatePhoneNumber.value;
       const updateAddressFormValue = updateAddressForm.value;
@@ -13254,7 +13255,7 @@ function renderAllUserInfoByUserId() {
       url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
-        function : "renderAllUserInfoByUserId",
+        function: "renderAllUserInfoByUserId",
         modelPath: "../model",
       },
     }).done(function (result) {
@@ -13264,11 +13265,14 @@ function renderAllUserInfoByUserId() {
       renderUserInfoHTML(data);
 
       // Lắng nghe sự kiện bấm vào nút 'cập nhật'
-      document.querySelectorAll(".update").forEach((btn, index) =>
+      document.querySelectorAll(".update").forEach((btn) =>
         btn.addEventListener("click", (e) => {
           open_update_menu();
           autoFillOutWhenUpdateAdress(btn);
-
+        })
+      );
+      document.querySelectorAll(".address-select").forEach((address, index) =>
+        address.addEventListener("click", () => {
           indexAddressRadioChecked = index;
         })
       );
@@ -13277,36 +13281,34 @@ function renderAllUserInfoByUserId() {
         document.querySelector(".confirm.create_address").classList.remove("hidden")
         // reset giá trị của form 
         updateUserInfoId.value = "";
-        updateFullname.value= "";
-        updatePhoneNumber.value= "";
-        updateAddressForm.value= "";
-        citySelect.value= "Chọn Tỉnh/Thành phố";
-        districtSelect.value= "";
-        wardSelect.value= "";
+        updateFullname.value = "";
+        updatePhoneNumber.value = "";
+        updateAddressForm.value = "";
+        citySelect.value = "Chọn Tỉnh/Thành phố";
+        districtSelect.value = "";
+        wardSelect.value = "";
         open_update_menu();
-        
+
       });
+
       // Huỷ cập nhật,tạo
-      document
-        .querySelector(".cancel.change_address")
-        .addEventListener("click", (e) => {
-          popupToggle(`changeAddressMenu`);
-          popupToggle(`addressMenu`);
-          document.querySelector(".confirm.change_address").classList.remove("hidden")
-          document.querySelector(".confirm.create_address").classList.add("hidden")
+      if(loadAddressForTheFirstTime){
+        document
+          .querySelector(".cancel.change_address")
+          .addEventListener("click", (e) => {
+            popupToggle(`changeAddressMenu`);
+            popupToggle(`addressMenu`);
+            document.querySelector(".confirm.change_address").classList.remove("hidden")
+            document.querySelector(".confirm.create_address").classList.add("hidden")
+          });
+        document.querySelector(".popupbutton").addEventListener("click", () => {
+          changeAddressTmp();
+          document.getElementById("diachiMenu").classList.add("show");
+          document.getElementById("addressMenu").classList.add("show");
+          getChecked();
         });
-
-      // Xử lý chọn địa chỉ
-      document
-        .querySelectorAll("input[name=address]")
-        .forEach((btn) => (btn.onclick = changeAddressTmp));
-
-      document.querySelector(".popupbutton").addEventListener("click", () => {
-        changeAddressTmp();
-        document.getElementById("diachiMenu").classList.add("show");
-        document.getElementById("addressMenu").classList.add("show");
-        getChecked();
-      });
+        loadAddressForTheFirstTime = false;
+      }
     });
   });
 }
@@ -13320,23 +13322,19 @@ function renderUserInfoHTML(data) {
     let checked = index === indexAddressRadioChecked ? "checked" : "";
 
     const html = `<label class="address-select">
-                    <input type="hidden" class="userInfoIdSelect" value="${
-                      address.user_info_id
-                    }"/>
-                    <input type="hidden" class="userInfoCity" value="${
-                      address.city
-                    }"/>
-                    <input type="hidden" class="userInfoDistrict" value="${
-                      address.district
-                    }"/>
-                    <input type="hidden" class="userInfoWard" value="${
-                      address.ward
-                    }"/>
+                    <input type="hidden" class="userInfoIdSelect" value="${address.user_info_id
+      }"/>
+                    <input type="hidden" class="userInfoCity" value="${address.city
+      }"/>
+                    <input type="hidden" class="userInfoDistrict" value="${address.district
+      }"/>
+                    <input type="hidden" class="userInfoWard" value="${address.ward
+      }"/>
                     <input type="radio" name="address" ${checked}/>
                     <span class="name">${address.fullname}</span>
                     <span class="sdt">(+84) ${address.phone_number.slice(
-                      1
-                    )}</span>
+        1
+      )}</span>
                     <span class="updatebig update">Cập nhật</span>
                     <span class="diachi">${address.address}</span>
                     <span class="tinh">${tinh}</span>
