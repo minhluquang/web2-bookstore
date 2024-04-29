@@ -111,7 +111,8 @@ label {
 }
 
 /* CSS styling for inputs */
-input, select {
+input,
+select {
   width: 100%; /* Độ rộng 100% */
   padding: 5px 18px; /* Khoảng cách nội dung */
   height: 40px;
@@ -254,4 +255,48 @@ button {
 
 .toast button:hover {
   opacity: 0.8;
+}
+
+/* input eye password */
+.loginPasswordContainer,
+.registerPasswordContainer,
+.registerConfirmPasswordContainer {
+  position: relative;
+}
+
+.loginPasswordContainer input,
+.registerPasswordContainer input,
+.registerConfirmPasswordContainer input {
+  padding-right: 40px;
+}
+
+.loginPasswordView,
+.registerPasswordView,
+.registerConfirmPasswordView {
+  position: absolute;
+  right: 0;
+  border: none;
+  outline: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: #333;
+  cursor: pointer;
+}
+
+.loginPasswordContainer i,
+.registerPasswordContainer i,
+.registerConfirmPasswordContainer i {
+  display: block;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
+
+.loginPasswordContainer i.hide,
+.registerPasswordContainer i.hide,
+.registerConfirmPasswordContainer i.hide {
+  display: none;
 }

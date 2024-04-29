@@ -32,7 +32,13 @@
                     </div>
                     <div class="form-row">
                         <label for="psw">Mật khẩu</label>
-                        <input type="password" placeholder="Nhập Mật khẩu" name="password" id="loginPassword" required>
+                        <div class="loginPasswordContainer">
+                            <input type="password" placeholder="Nhập Mật khẩu" name="password" id="loginPassword" required>
+                            <button class="loginPasswordView">
+                                <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+                                <i class="fa-solid fa-eye view-loginPassword hide"></i>
+                            </button>
+                        </div>
                         <p class="errMessage errMessagePassword"></p>
                     </div>
                     <input class="btnSubmit btnDangNhap" type="submit" value="Đăng nhập" />
@@ -82,12 +88,24 @@
                     </div>
                     <div class="form-row form-row-48">
                         <label for="psw">Mật khẩu</label>
-                        <input type="password" placeholder="Nhập Mật khẩu" id="registerPassword" name="psw" required id="psw">
+                        <div class="registerPasswordContainer">
+                            <input type="password" placeholder="Nhập Mật khẩu" name="password" id="registerPassword" required>
+                            <button class="registerPasswordView">
+                                <i class="fa-solid fa-eye-slash noView-registerPassword"></i>
+                                <i class="fa-solid fa-eye view-registerPassword hide"></i>
+                            </button>
+                        </div>
                         <p class="errMessage errMessagePasswordRegister"></p>
                     </div>
                     <div class="form-row form-row-48">
                         <label for="psw-repeat">Lặp lại Mật khẩu</label>
-                        <input type="password" placeholder="Nhập lại Mật khẩu" id="registerConfirmPassword" name="psw-repeat" required id="psw-repeat">
+                        <div class="registerConfirmPasswordContainer">
+                            <input type="password" placeholder="Nhập lại mật khẩu" name="psw-repeat" id="registerConfirmPassword" required>
+                            <button class="registerConfirmPasswordView">
+                                <i class="fa-solid fa-eye-slash noView-registerConfirmPassword"></i>
+                                <i class="fa-solid fa-eye view-registerConfirmPassword hide"></i>
+                            </button>
+                        </div>
                         <p class="errMessage errMessageConfirmPasswordRegister"></p>
                     </div>
                     <input class="btnSubmit btnDangKy" type="submit" value="Đăng ký" />

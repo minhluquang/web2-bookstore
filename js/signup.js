@@ -13279,3 +13279,65 @@ function changePhuongXa() {
     }
   }
 }
+
+// Xử lý xem/ẩn mật khẩu input
+const loginPasswordNoViewIcon = document.querySelector(
+  ".loginPasswordView .noView-loginPassword"
+);
+const loginPasswordViewIcon = document.querySelector(
+  ".loginPasswordView .view-loginPassword"
+);
+const registerPasswordNoViewIcon = document.querySelector(
+  ".registerPasswordView .noView-registerPassword"
+);
+const registerPasswordViewIcon = document.querySelector(
+  ".registerPasswordView .view-registerPassword"
+);
+const registerConfirmPasswordNoViewIcon = document.querySelector(
+  ".registerConfirmPasswordView .noView-registerConfirmPassword"
+);
+const registerConfirmPasswordViewIcon = document.querySelector(
+  ".registerConfirmPasswordView .view-registerConfirmPassword"
+);
+
+loginPasswordNoViewIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  loginPassword.setAttribute("type", "text");
+  loginPasswordViewIcon.classList.toggle("hide");
+  loginPasswordNoViewIcon.classList.toggle("hide");
+});
+
+loginPasswordViewIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  loginPassword.setAttribute("type", "password");
+  loginPasswordViewIcon.classList.toggle("hide");
+  loginPasswordNoViewIcon.classList.toggle("hide");
+});
+
+registerPasswordNoViewIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  registerPassword.setAttribute("type", "text");
+  registerPasswordViewIcon.classList.toggle("hide");
+  registerPasswordNoViewIcon.classList.toggle("hide");
+});
+
+registerPasswordViewIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  registerPassword.setAttribute("type", "password");
+  registerPasswordViewIcon.classList.toggle("hide");
+  registerPasswordNoViewIcon.classList.toggle("hide");
+});
+
+registerConfirmPasswordNoViewIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  registerConfirmPassword.setAttribute("type", "text");
+  registerConfirmPasswordViewIcon.classList.toggle("hide");
+  registerConfirmPasswordNoViewIcon.classList.toggle("hide");
+});
+
+registerConfirmPasswordViewIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  registerConfirmPassword.setAttribute("type", "password");
+  registerConfirmPasswordViewIcon.classList.toggle("hide");
+  registerConfirmPasswordNoViewIcon.classList.toggle("hide");
+});
