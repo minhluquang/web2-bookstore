@@ -409,12 +409,12 @@ input.qty-cart {
 
 .checkout-button {
   padding: 5px 10px;
-  border-radius: 4px;
   background-color: #c92127;
   color: #fff;
-  outline: none;
-  border: none;
   font-size: 16px;
   cursor: pointer;
   font-weight: bold;
+  border: none;
+  outline: none;
+  border-radius: 4px;
 }

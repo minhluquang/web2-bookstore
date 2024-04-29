@@ -59,7 +59,7 @@
                           <div class="product-action">
                             <div class="product-action--wrapper">
                               <a href="index.php?page=product_detail&pid='.$product['id'].'" class="product-action--btn product-action__detail">Chi tiết</a>
-                              <input type="hidden" class="productId" value=' . $product['id'] . '/>
+                              <input type="hidden" class="productId" value="' . $product['id'] . '"/>
                               <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
                             </div>
                           </div>

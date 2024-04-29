@@ -263,6 +263,15 @@ header {
   color: #000 !important;
 }
 
+.btnDonHang {
+  margin-bottom: 4px;
+}
+
+.btnDangXuat {
+  background: #dedede !important;
+  color: #333 !important;
+}
+
 .account:hover .account-options {
   display: block; /* Hiển thị khi di chuột vào phần account */
 }

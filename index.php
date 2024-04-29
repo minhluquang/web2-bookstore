@@ -28,6 +28,9 @@ if (isset($_GET['page']) && $_GET['page'] != '') {
     case 'product_detail':
       require_once('view/pages/product_detail.php');
       break;
+    case 'order':
+      require_once('view/pages/order.php');
+      break;
     default:
       // Xử lý trường hợp không khớp với bất kỳ trang nào
       require_once('view/pages/notFound.php');

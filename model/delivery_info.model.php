@@ -74,4 +74,19 @@
       return false;
     }
   }
+
+  function getDetailDeliveryInfoById($deliveryInfoId) {
+    $database = new connectDB();
+    if ($database->conn) {
+      $sql = "SELECT * FROM delivery_infoes WHERE user_info_id = $deliveryInfoId";
+      $result = $database->query($sql);
+      if ($result) {
+        $database->close();
+        return $result;
+      } 
+    } else {
+      $database->close();
+      return false;
+    }
+  }
 ?>

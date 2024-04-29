@@ -2,7 +2,7 @@
   session_start();
 
   if (isset($_POST["product-action__addToCart"]) && $_POST['product-action__addToCart']) {
-    if (!isset($_POST['username'])) {
+    if (!isset($_SESSION['username'])) {
       echo false;
       return;
     }

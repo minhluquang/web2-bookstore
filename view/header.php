@@ -101,24 +101,11 @@
               } else {
                 echo '
                 <div class="account-options">
+                  <a href="index.php?page=order" class="btnDonHang">Đơn hàng</a>
                   <button class="btnDangXuat">Đăng xuất</button>
                 </div>';
               }
             ?>
-
-            <!-- <div class="account-notification">
-              <div class="user-info">
-                <p>Nguyen Quoc Khanh</p>
-              </div>
-              <ul class="account-links">
-                <li>
-                  <a href="#" onclick="showNotification()">Thông tin của tôi</a>
-                </li>
-                <li><a href="#">Đổi mật khẩu</a></li>
-                <li><a href="#">Lịch sử mua hàng</a></li>
-                <li><a href="#">Đăng xuất</a></li>
-              </ul>
-            </div> -->
 
             <div
               class="overlay"
