@@ -56,11 +56,10 @@ document.querySelector("#searchButton").addEventListener("click", (e) => {
   var queryString = window.location.search;
   var params = new URLSearchParams(queryString);
   var currentPage = params.get("page");
-  if (currentPage != "product") {
-    window.location.href = "index.php?page=product";
-  }
 
   keyword = document.querySelector("#searchInput").value;
   localStorage.setItem("keyword", keyword);
+  if (currentPage != "product") {
+    window.location.href = "index.php?page=product";
+  }
 });
-

@@ -17,27 +17,37 @@
     }
   }
 
-  function getProductsForPagination($item_per_page, $page) {
-    $result = getProductsForPaginationModel($item_per_page, $page);
+  function getNewProducts() {
+    $result = getNewProductsModel();
     if ($result !== false) {
-      if ($result->num_rows > 0) {
-        return (object) array (
-          'success' => true,
-          'data' => $result->fetch_all(MYSQLI_ASSOC)
-        );
-      } else {
-        return (object) array (
-          'success' => false,
-          'message' => "Không có sản phẩm nào"
-        );
-      }
+      $products = $result->fetch_all(MYSQLI_ASSOC);
+      return $products;
     } else {
-      return (object) array (
-        'success' => false,
-        'message' => "Không có sản phẩm nào"
-      );
+      return "Hệ thống gặp sự cố";  
     }
   }
+
+  // function getProductsForPagination($item_per_page, $page) {
+  //   $result = getProductsForPaginationModel($item_per_page, $page);
+  //   if ($result !== false) {
+  //     if ($result->num_rows > 0) {
+  //       return (object) array (
+  //         'success' => true,
+  //         'data' => $result->fetch_all(MYSQLI_ASSOC)
+  //       );
+  //     } else {
+  //       return (object) array (
+  //         'success' => false,
+  //         'message' => "Không có sản phẩm nào"
+  //       );
+  //     }
+  //   } else {
+  //     return (object) array (
+  //       'success' => false,
+  //       'message' => "Không có sản phẩm nào"
+  //     );
+  //   }
+  // }
 
   function getAmountProduct() {
     $result = getAmountProductModel();

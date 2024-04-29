@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="css/pageHome/pageHome.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="css/product/product.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="css/pageHome/pageHome.reponsive.css?v=<?php echo time(); ?>">
+    <script defer src="js/product.js?v=<?php echo time(); ?>"></script>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" style="margin: 40px auto 0;">
         <div class="silder-01">
             <div class="left-sider">
                 <a href="#"><img src="assets/images/thumbnail/TanViet_Silver_0424_Ver1_Slide_840x320_1.jpg" alt=""></a>
@@ -42,44 +43,40 @@
             $category = $categories[1];
                 echo '
                 <div class="genre">
-                    <div class="genre-name">SÁCH BÁN CHẠY</div>
+                    <div class="genre-name">SÁCH MỚI RA MẮT</div>
                 <div class="product-list">';
 
-                $products = getProductsByIdCategory($category['id']);
+                $products = getNewProducts();
                 $index = 0;
                 foreach ($products as $product) {
-                    if ($index == 5) break;
+                    if ($index == 4) break;
                     $index++;
                     $price_formatted = number_format($product['price'], '0', ',', '.').'đ';
                     echo '
                     <div class="product-item--wrapper">
-        <div class="product-item">
-          <div class="product-img">
-            <div class="product-action">
-              <div class="product-action--wrapper">
-                <a href="index.php?page=product_detail&pid=${
-                  product.id
-                }" class="product-action--btn product-action__detail">Chi tiết</a>
-                <input type="hidden" class="productId" value=' . $product['product_id'] . '/>
-                <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
-              </div>
-            </div>
-            <div class="img-resize">
-              <img
-                src="' . $product['image_path'] . '"
-                alt="${product.name}" />
-            </div>
-          </div>
-          <a href="index.php?page=product_detail&pid=${
-            product.id || product.product_id
-          }" >
-            <div class="product-detail">
-                <p class="product-title">' . $product['product_name'] . '</p>
-                <p class="product-price">' .  $price_formatted . '</p>
-            </div>
-          </a>
-        </div>
-      </div>';
+                      <div class="product-item">
+                        <div class="product-img">
+                          <div class="product-action">
+                            <div class="product-action--wrapper">
+                              <a href="index.php?page=product_detail&pid='.$product['id'].'" class="product-action--btn product-action__detail">Chi tiết</a>
+                              <input type="hidden" class="productId" value=' . $product['id'] . '/>
+                              <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
+                            </div>
+                          </div>
+                          <div class="img-resize">
+                            <img
+                              src="' . $product['image_path'] . '"
+                              alt="'.$product['name'].'" />
+                          </div>
+                        </div>
+                        <a href="index.php?page=product_detail&pid='.$product['id'].'" >
+                          <div class="product-detail">
+                              <p class="product-title">' . $product['name'] . '</p>
+                              <p class="product-price">' .  $price_formatted . '</p>
+                          </div>
+                        </a>
+                      </div>
+                    </div>';
                 }
                 echo '
                     </div>
@@ -87,10 +84,7 @@
                         <a href="index.php?page=product" class="see-more-btn">Xem thêm </a>
                     </div>
                 </div>';
-            
         ?>
-
-`
         <!-- END -->
     </div>
 </body>

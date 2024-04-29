@@ -13,7 +13,7 @@
         return $orderId;
       } else {
         $database->close();
-        return false;
+        return $sql;
       }
     } else {
       $database->close();
