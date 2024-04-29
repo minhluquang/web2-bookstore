@@ -9,8 +9,8 @@ $_SESSION["render"] ->setTable("categories");
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý thể loại</title>
-    <link rel="stylesheet" href="../css/fonts/fonts.css<?php echo time(); ?>" />
-    <link rel="stylesheet" href="../assets/fontawesome-free-6.5.1-web/css/all.min.css<?php echo time(); ?>" />
+    <link rel="stylesheet" href="../css/fonts/fonts.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="../assets/fontawesome-free-6.5.1-web/css/all.min.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/category.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />

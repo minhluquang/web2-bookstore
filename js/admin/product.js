@@ -249,10 +249,6 @@ var js = function () {
                             <input id="price" type="text" add-index="3" placeholder="Giá sản phẩm">
                         </div>
                         <div class="flex">
-                            <label for="quantity">Số lượng</label>
-                            <input id="quantity" type="text" add-index="4" placeholder="Số lượng">
-                        </div>
-                        <div class="flex">
                             <label for="publisher_id">Nhà xuất bản</label>
                             <select id="publisher_id">
                             </select>
@@ -284,10 +280,9 @@ var js = function () {
     const modal = document.querySelector("#modal");
 
     document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
-        modal.innerHTML = modal_html;
-        for (const [key, value] of Object.entries(multiselect_array)) {
-            multiselect_array[$(key)] = {}
-          }
+        modal.innerHTML = modal_html;   
+        multiselect_array["category"] = []
+        multiselect_array["author"] = []
         const modal_edit_container = modal.querySelector("#modal-edit-container");
         modal.querySelector('#choose-img-select').remove();
         modal.querySelector('.choose-img').classList.remove("hidden");
@@ -337,7 +332,6 @@ var js = function () {
                         name: modal.querySelector('#name').value,
                         publisher_id: modal.querySelector('#publisher_id').value,
                         image: document.getElementById('imagePreview').src,
-                        quantity: modal.querySelector('#quantity').value,
                         price: modal.querySelector('#price').value,
                         category: multiselect_array["category"],
                         author: multiselect_array["author"],
@@ -435,8 +429,7 @@ var js = function () {
         edit_btns[i].addEventListener('click', function () {
             // modal.innerHTML = create_html;
             // const modal_edit_container = document.querySelector("#modal-edit-container");
-            multiselect_array["category"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
-            multiselect_array["author"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
+
             var publisher_value = this.parentNode.parentNode.querySelector(".id").getAttribute("publisher_id");
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             $.ajax({
@@ -472,9 +465,12 @@ var js = function () {
                 modal.querySelector('#publisher_id').value = publisher_value;
 
             })
+            if(this.parentNode.parentNode.querySelector(".type").getAttribute("value")== "[]") multiselect_array["category"] = [];
+            else multiselect_array["category"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
+            if(this.parentNode.parentNode.querySelector(".author").getAttribute("value")== "[]") multiselect_array["author"] = [];
+            else multiselect_array["author"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
             modal.innerHTML = modal_html;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
-            modal.querySelector('#quantity').value = this.parentNode.parentNode.querySelector(".amount").innerHTML;
             modal.querySelector('#price').value = this.parentNode.parentNode.querySelector(".price").innerHTML.replace(/[₫.]+/g, '');
             modal.querySelector('#modal-header').innerHTML = "Sửa sản phẩm mã " + this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector("#category-amount").innerHTML = "Đã chọn " + multiselect_array["category"].length.toString() + " thể loại";
@@ -581,7 +577,6 @@ var js = function () {
                             name: modal.querySelector('#name').value,
                             publisher_id: modal.querySelector('#publisher_id').value,
                             image: image,
-                            quantity: modal.querySelector('#quantity').value,
                             price: modal.querySelector('#price').value,
                             category: multiselect_array["category"],
                             author: multiselect_array["author"],
