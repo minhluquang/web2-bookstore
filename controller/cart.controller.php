@@ -2,6 +2,11 @@
   session_start();
 
   if (isset($_POST["product-action__addToCart"]) && $_POST['product-action__addToCart']) {
+    if (!isset($_POST['username'])) {
+      echo false;
+      return;
+    }
+
     $productId = $_POST['productId'];
     $amount = 1;
 
@@ -55,9 +60,10 @@
   if (isset($_POST['abate']) && $_POST['abate']) {
     if (!isset($_SESSION['cart-selected'])) {
       $_SESSION['cart-selected'] = [];
-    } else {
-      unset($_SESSION['cart-selected']);
-    }
+    } 
+    // else {
+    //   unset($_SESSION['cart-selected']);
+    // }
 
     foreach ($_POST['selectedProducts'] as $product) {
       $_SESSION['cart-selected'][] = $product;

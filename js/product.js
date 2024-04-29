@@ -25,16 +25,18 @@ function renderProductHTML(data) {
             <div class="product-action">
               <div class="product-action--wrapper">
                 <a href="index.php?page=product_detail&pid=${
-                  product.id
+                  product.id || product.product_id
                 }" class="product-action--btn product-action__detail">Chi tiết</a>
-                <input type="hidden" class="productId" value="${product.id}"/>
+                <input type="hidden" class="productId" value="${
+                  product.id || product.product_id
+                }"/>
                 <button class="product-action--btn product-action__addToCart ${notAllowed}">Thêm vào giỏ</button>
               </div>
             </div>
             <div class="img-resize">
               <img
                 src="${product.image_path}"
-                alt="${product.name}" />
+                alt="${product.product_name || product.name}" />
             </div>
           </div>
           <a href="index.php?page=product_detail&pid=${
@@ -154,16 +156,14 @@ $(document).ready(function () {
   }
 
   // Xử lý click nút search
-  $(document).ready(function () {
-    $("#searchButton").click(function () {
-      keyword = document.querySelector("#searchInput").value;
-      renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
+  $("#searchButton").click(function () {
+    keyword = document.querySelector("#searchInput").value;
+    renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
 
-      resetFilter();
+    resetFilter();
 
-      // Xoá localStorage khi bấm nút search lưu
-      localStorage.removeItem("keyword");
-    });
+    // // Xoá localStorage khi bấm nút search lưu
+    // localStorage.removeItem("keyword");
   });
 
   // Lọc nâng cao theo thể loại
@@ -251,6 +251,11 @@ function addToCart(productId, amount) {
       amount: amount,
     },
   }).done(function (result) {
+    if (!result) {
+      window.location.href = "index.php?page=signup";
+      alert("Vui lòng đăng nhập để có thể thêm sản phẩm!");
+      return;
+    }
     $(".cart-qnt").removeClass("hide");
     $(".cart-qnt").text(result);
     alert("Đã thêm sản phẩm thành công!");

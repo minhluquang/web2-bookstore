@@ -27,22 +27,22 @@
     }
   }
 
-  function getProductsForPaginationModel($item_per_page, $page) {
-    $database = new connectDB();
-    if ($database->conn) {
-      $offset = ($page - 1) * $item_per_page;
-      $sql = "SELECT * 
-              FROM products 
-              ORDER BY id ASC
-              LIMIT $item_per_page OFFSET $offset;";
-      $result = $database->query($sql);
-      $database->close();
-      return $result;     
-    } else {
-      $database->close();
-      return false;
-    }
-  }
+  // function getProductsForPaginationModel($item_per_page, $page) {
+  //   $database = new connectDB();
+  //   if ($database->conn) {
+  //     $offset = ($page - 1) * $item_per_page;
+  //     $sql = "SELECT * 
+  //             FROM products 
+  //             ORDER BY id ASC
+  //             LIMIT $item_per_page OFFSET $offset;";
+  //     $result = $database->query($sql);
+  //     $database->close();
+  //     return $result;     
+  //   } else {
+  //     $database->close();
+  //     return false;
+  //   }
+  // }
 
   function getAmountProductModel() {
     $database = new connectDB();
@@ -56,59 +56,10 @@
     }
   }
 
-  function getProductsByPriceRangeModel($startRange, $endRange, $itemsPerPage, $page) {
-    $database = new connectDB();
-    if ($database->conn) {
-      $sql = "SELECT * 
-              FROM products 
-              WHERE price BETWEEN $startRange AND $endRange
-              ORDER BY price ASC";
-
-      if ($itemsPerPage && $page) {
-        $offset = ($page - 1) * $itemsPerPage;
-        $sql .= " LIMIT $itemsPerPage OFFSET $offset;";
-      }
-
-      $result = $database->query($sql);
-      $database->close();
-      return $result;
-    } else {
-      $database->close();
-      return false;
-    }
-  }
-
-  function getProductsByCategoryAndPriceRangeModel($categoryId, $startRange, $endRange, $itemsPerPage = null, $page = null) {
-    $database = new connectDB();
-    if ($database->conn) {
-      $sql = "SELECT p.id product_id,
-                      p.name product_name, 
-                      p.price, 
-                      p.image_path
-              FROM category_details cd
-              INNER JOIN products p ON p.id = cd.product_id
-              INNER JOIN categories c ON c.id = cd.category_id
-              WHERE c.id = $categoryId AND price BETWEEN $startRange AND $endRange
-              ORDER BY price ASC";
-
-      if ($itemsPerPage && $page) {
-        $offset = ($page - 1) * $itemsPerPage;
-        $sql .= " LIMIT $itemsPerPage OFFSET $offset;";
-      }
-
-      $result = $database->query($sql);
-      $database->close();
-      return $result;
-    } else {
-      $database->close();
-      return false;
-    }
-  }
-
   function getProductsByFilter($keyword, $listCategoryIds, $startRange, $endRange, $itemsPerPage = null, $page = null) {
     $database = new connectDB();
     if ($database->conn) {
-      $sql = "SELECT p.id product_id,
+      $sql = "SELECT DISTINCT p.id id,
                       p.name product_name, 
                       p.price, 
                       p.image_path
@@ -222,6 +173,21 @@
       $sql = "SELECT * 
               FROM products
               WHERE name LIKE '%$keyword%'
+              ORDER BY id DESC";
+      $result = $database->query($sql);
+      $database->close();
+      return $result;
+    } else {
+      $database->close();
+      return false;
+    }
+  }
+
+  function getNewProductsModel() {
+    $database = new connectDB();
+    if ($database->conn) {
+      $sql = "SELECT * 
+              FROM products
               ORDER BY id DESC";
       $result = $database->query($sql);
       $database->close();

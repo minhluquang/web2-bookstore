@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Sign Up</title>
     <link rel="stylesheet" href="css/signup/signup.css?v=<?php echo time(); ?>">
-    <script defer src="js/home.js?v=<?php echo time(); ?>"></script>
+    <!-- <script defer src="js/home.js?v=<?php echo time(); ?>"></script> -->
 </head>
 
 <body>

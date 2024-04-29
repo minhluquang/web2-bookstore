@@ -434,7 +434,7 @@ body {
 
 .modal-content__model-left,
 .modal-content__model-right {
-  width: 50%;
+  width: 50% !important;
   height: 100%;
 }
 

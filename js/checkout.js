@@ -13440,6 +13440,7 @@ $(document).ready(function () {
         totalPrice,
       },
     }).done(function (result) {
+      console.log(result);
       const data = JSON.parse(result);
       if (data.successEnoughAll != undefined && !data.successEnoughAll) {
         alert(data.message);

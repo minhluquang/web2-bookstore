@@ -66,6 +66,7 @@ body {
 
 .modal-content__model-left {
   width: 350px;
+  min-width: 30%;
 }
 
 .modal-content__model-left img {
@@ -77,6 +78,7 @@ body {
 
 .modal-content__model-right {
   padding-left: 15px;
+  width: 70%;
 }
 
 .modal-publisher {
