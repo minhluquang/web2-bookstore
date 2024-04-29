@@ -5,6 +5,8 @@ function getFilterFromURL() {
     filter_form.querySelector("#cateDateSelect").value = (urlParams['date_type'] != null) ? urlParams['date_type'] : "";
     filter_form.querySelector("#date_start").value = (urlParams['date_start'] != null) ? urlParams['date_start'] : "";
     filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
+    // filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "";
+
 }
 function pushFilterToURL() {
     var filter = getFilterFromForm();
@@ -14,6 +16,9 @@ function pushFilterToURL() {
         "category_date_type": "date_type",
         "category_date_start": "date_start",
         "category_date_end": "date_end",
+        "category_status":"status"
+        
+        
     }
     var url = "";
     Object.keys(filter).forEach(key => {
@@ -28,6 +33,8 @@ function getFilterFromForm() {
         "category_date_type": filter_form.querySelector("#cateDateSelect").value,
         "category_date_start": filter_form.querySelector("#date_start").value,
         "category_date_end": filter_form.querySelector("#date_end").value,
+        "category_status": filter_form.querySelector("#statusSelect").value,
+        
     }
 }
 // Load the jquery
@@ -127,6 +134,7 @@ function filterBtn() {
     })
     $(".body__filter--action__reset").click((e) => {
         current_page = 1;
+        status_value = "active";
         $.ajax({
             url: '../controller/admin/pagnation.controller.php',
             type: "post",
@@ -135,6 +143,9 @@ function filterBtn() {
                 number_of_item: number_of_item,
                 current_page: current_page,
                 function: "renderCategory",
+                filter: {
+                    category_status: status_value
+                }
             }
         }).done(function (result) {
             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
@@ -161,6 +172,7 @@ function filterBtn() {
                 <div class="flex">
                     <label for="name">Tên thể loại</label>
                     <input id="nameCategory" type="text" add-index="2" placeholder="Tên thể loại">
+                    
                 </div>
                 
             </div>
@@ -221,6 +233,7 @@ const edit_html = `<div class="modal-edit-product-container show" id="modal-edit
                 <div class="flex">
                     <label for="name">Tên thể loại</label>
                     <input id="name" type="text" add-index="2" placeholder="Tên thể loại">
+                    
                 </div>
                 
             </div>
@@ -246,6 +259,7 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             });
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
+            modal.querySelector('#status').value = this.parentNode.parentNode.querySelector(".status").innerHTML;
 
             modal.querySelector('.create-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
@@ -257,7 +271,8 @@ var edit_btns = document.getElementsByClassName("actions--edit");
                         function: "edit",
                         field: { 
                             id: id,                  
-                            name: modal.querySelector('#name').value,                 
+                            name: modal.querySelector('#name').value,
+                                            
                         }
                     }
                 }).done(function (result) {

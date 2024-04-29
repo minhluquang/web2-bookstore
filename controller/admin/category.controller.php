@@ -20,7 +20,7 @@ function deleteCategory()
   if (isset($_POST['id'])) {
     $id = $_POST['id'];
     $delete_result = category_delete($id);
-    echo $delete_result->message;
+    echo $delete_result;
   }
 }
 function createCategory()

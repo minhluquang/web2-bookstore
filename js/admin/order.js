@@ -83,27 +83,80 @@ var js = function () {
     overlay.classList.add("hidden");
   };
 
-  btnDetails.forEach((btn) => btn.addEventListener("click", openModal));
-  overlay.addEventListener("click", closeModal);
-  btnCloseModal[1].addEventListener("click", closeModal);
-
-
-  // delete
-  document.querySelector('.del-confirm').addEventListener('click', function (e) {
-    e.preventDefault();
-    var $id = $('#order-delete-id').html();
-    selected_content_id = '#order_id' + $id;
-    selected_content = document.querySelector(selected_content_id).parentNode;
+  btnDetails.forEach((btn) => btn.addEventListener("click", ()=>{
+    openModal();
     $.ajax({
       url: '../controller/admin/order.controller.php',
       type: "post",
       dataType: 'html',
       data: {
-        delete_id: $id
+          id: btn.parentNode.parentNode.querySelector(".order_id").innerHTML,
+          function: "order_details"
+      }
+  }).done(function (result) {
+    modal.querySelector("tbody").innerHTML=result;
+    modal.querySelector("tbody").querySelector("#discount_code").innerHTML=btn.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+    if(modal.querySelector("tbody").querySelector("#discount_code").innerHTML=="") modal.querySelector("tbody").querySelector("#discount_code").parentNode.remove()
+    modal.querySelector("tbody").querySelector("#price-number").innerHTML=btn.parentNode.parentNode.querySelector(".total_price").innerHTML;
+  })
+    
+  }));
+  overlay.addEventListener("click", closeModal);
+  btnCloseModal[1].addEventListener("click", closeModal);
+
+
+  // // delete
+  // document.querySelector('.del-confirm').addEventListener('click', function (e) {
+  //   e.preventDefault();
+  //   var $id = $('#order-delete-id').html();
+  //   selected_content_id = '#order_id' + $id;
+  //   selected_content = document.querySelector(selected_content_id).parentNode;
+  //   $.ajax({
+  //     url: '../controller/admin/order.controller.php',
+  //     type: "post",
+  //     dataType: 'html',
+  //     data: {
+  //       delete_id: $id,
+  //       function: "delete",
+  //     }
+  //   }).done(function (result) {
+  //     selected_content.remove();
+  //     closeDeleteModal();
+  //   })
+  // })
+
+  // comfirm order
+  document.querySelector('.confirm-order').addEventListener('click', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: '../controller/admin/order.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        id: document.querySelector('.order-modal').querySelector('#id').value,
+        status:2,
+        function: "order_status",
       }
     }).done(function (result) {
-      selected_content.remove();
-      closeDeleteModal();
+      closeModal();
+      loadItem();
+    })
+  })
+  // cancel order
+  document.querySelector('.cancel-order').addEventListener('click', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: '../controller/admin/order.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        id: document.querySelector('.order-modal').querySelector('#id').value,
+        status:3,
+        function: "order_status",
+      }
+    }).done(function (result) {
+      closeModal();
+      loadItem();
     })
   })
 

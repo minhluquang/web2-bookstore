@@ -119,7 +119,7 @@ function product_create($field)
     fclose($ifp);
     $sql = "INSERT INTO products (id, name, publisher_id, image_path, create_date, update_date, price, quantity) 
           VALUES ('" . $field['id'] . "', '" . $field['name'] . "', '" . $field['publisher_id'] . "', '" . $image_path .
-      "', '" . $date  . "', '" . $date  . "', '" . $field['price'] . "', '" . $field['quantity'] . "') ";
+      "', '" . $date  . "', '" . $date  . "', '" . $field['price'] . "', '0') ";
     $result = $database->execute($sql);
     if ($result) {
       $result = "<span class='success'>Tạo sản phẩm thành công</span>";

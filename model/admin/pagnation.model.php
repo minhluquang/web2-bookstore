@@ -125,10 +125,10 @@ class pagnation
                                 $cat_str = $cat_str . $category['id'] . ']">';
                                 $cat_str = $cat_str . $category['name'];
                             } else $cat_str = $cat_str . ']">';
-                            
+
                             while ($category = mysqli_fetch_array($cat_result)) {
-                                $search = '/'.preg_quote(']', '/').'/';
-                                $cat_str=preg_replace($search, ','.$category['id'].']', $cat_str, 1);
+                                $search = '/' . preg_quote(']', '/') . '/';
+                                $cat_str = preg_replace($search, ',' . $category['id'] . ']', $cat_str, 1);
                                 $cat_str = $cat_str . ", " . $category['name'];
                             }
                             echo $cat_str . '</td>';
@@ -143,10 +143,10 @@ class pagnation
                                 $author_str = $author_str . $author['id'] . ']">';
                                 $author_str = $author_str . $author['name'];
                             } else $author_str = $author_str . ']">';
-                            
+
                             while ($author = mysqli_fetch_array($author_result)) {
-                                $search = '/'.preg_quote(']', '/').'/';
-                                $author_str=preg_replace($search, ','.$author['id'].']', $author_str, 1);
+                                $search = '/' . preg_quote(']', '/') . '/';
+                                $author_str = preg_replace($search, ',' . $author['id'] . ']', $author_str, 1);
                                 $author_str = $author_str . ", " . $author['name'];
                             }
                             echo $author_str . '</td>';
@@ -195,12 +195,18 @@ class pagnation
                     ';
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
-                            echo '<td class="order_id" id="order_id' . $row[0] . '">' . $row[0] . '</td>';
+                            echo '<td class="order_id">' . $row[0] . '</td>';
                             echo '<td class="customer_id">' . $row[1] . '</td>';
                             echo '<td class="staff_id">' . $row[2] . '</td>';
                             echo '<td class="date-update">' . $row[4] . '</td>';
-                            echo '<td class="total_price">' . $row[5] . '</td>';
-                            $sql_address = 'SELECT * from delivery_infoes WHERE id="' . $row[3] . '"';
+                            $price_number = $row['5'];
+                            $price = "";
+                            while ($price_number > 0) {
+                                $price = substr("$price_number", -3, 3) . '.' . $price;
+                                $price_number = substr("$price_number", 0, -3);
+                            }
+                            echo '<td class="total_price">' . trim($price, '.') . '&#8363;</td>';
+                            $sql_address = 'SELECT * from delivery_infoes WHERE user_info_id="' . $row[3] . '"';
                             $result_address = $database->query($sql_address);
                             $row_address = mysqli_fetch_array($result_address);
 
@@ -211,10 +217,10 @@ class pagnation
                             $row_status = mysqli_fetch_array($result_status);
 
                             echo '<td class="status">' . $row_status['name'] . '</td>';
-                            echo '<td class="discount_code">' . $row[7] . '</td>';
+                            echo '<td class="discount_code">' . $row['discount_code'] . '</td>';
                             echo '<td class="actions">
-                        <button class="actions--view">Chi tiết hoá đơn</button>
-                        <button class="actions--delete">Xoá</button>
+                        <button class="actions--view">Chi tiết</button>
+                        <!-- <button class="actions--delete">Xoá</button> -->
                         </td>
                         </tr>';
                         }
@@ -348,8 +354,10 @@ class pagnation
                             <th>Mã thể loại</th>                 
                             <th>Tên thể loại</th>
                             <th>Số lượng sách</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
                             <th>Ngày cập nhật</th>
-                            <th>Ngày tạo</th>          
+                            <th>Ngày xóa</th>          
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -373,9 +381,10 @@ class pagnation
                             } else {
                                 echo '<td class="amount">' . 0 . '</td>';
                             }
-
-                            echo '<td class="date-create">' . $row['create_date'] . '</td>';
-                            echo '<td class="date-update">' . $row['update_date'] . '</td>';
+                            echo '<td class="status">'.$row['status'].'</td>';
+                            echo '<td class="date-create">'.$row['create_date'].'</td>';
+                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -410,6 +419,27 @@ class pagnation
             if ($this->current_page < $page_number) echo "<span class='pag-con'>&raquo;</span>";
 
             echo '</div>';
+        } else {
+            switch ($this->table) {
+                case "products":
+                    echo "<div id='zero-item'><h2>Không có sản phẩm nào</h2></div>";
+                    break;
+                case "orders":
+                    echo "<div id='zero-item'><h2>Không có đơn hàng nào</h2></div>";
+                    break;
+                case "accounts":
+                    echo "<div id='zero-item'><h2>Không có tài khoản nào</h2></div>";
+                    break;
+                case "authors":
+                    echo "<div id='zero-item'><h2>Không có tác giả nào</h2></div>";
+                    break;
+                case "publishers":
+                    echo "<div id='zero-item'><h2>Không có NBX nào</h2></div>";
+                    break;
+                case "categories":
+                    echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
+                    break;
+            }
         }
         $database->close();
     }
@@ -504,10 +534,21 @@ function getCategoryFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['category_name'] . "%'";
         }
-        if (!empty($data['category_id'])) {
+        if (!empty($data['category_id'])) {     
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " id = " . $data['category_id'];
         }
+        if (!empty($data['category_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['category_status'] == "active") {
+               
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['category_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
+        
         if (!empty($data['category_date_type'])) {
             if (!empty($data['category_date_start'])) {
                 if ($filter != "") $filter = $filter . " AND ";

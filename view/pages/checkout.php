@@ -79,6 +79,7 @@
 
                                 </div>
                                 <div style="display: flex;flex-direction:row-reverse;padding-top:5px">
+                                    <button type="button" class="confirm create_address hidden">Xác Nhận</button>
                                     <button type="button" class="confirm change_address">Xác Nhận</button>
                                     <button type="button" class="cancel change_address"> Hủy</button>
 

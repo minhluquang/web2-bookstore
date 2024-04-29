@@ -140,6 +140,16 @@
   background-color: #6c757d;
   border-color: #6c757d;
 }
+.cancel-order {
+  color: #fff !important;
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+.confirm-order {
+  color: #fff;
+  background-color: #6dad7c;
+  border-color: #6dad7c;
+}
 
 .del-btn-container {
   padding-top: 20px;
@@ -172,4 +182,23 @@
   border-radius: 5px;
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.3);
   z-index: 10;
+}
+/* width */
+.order-modal ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.order-modal ::-webkit-scrollbar-track {
+  background: #ffffff; 
+}
+ 
+/* Handle */
+.order-modal ::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.order-modal ::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

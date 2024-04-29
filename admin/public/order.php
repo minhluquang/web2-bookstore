@@ -2,8 +2,9 @@
 <html lang="en">
 <?php
 //   session_start();
-$_SESSION["render"] ->setTable("orders");
+$_SESSION["render"]->setTable("orders");
 ?>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -66,7 +67,7 @@ $_SESSION["render"] ->setTable("orders");
     <!-- end -->
     <div class="result"></div>
 
- 
+
     <!-- delete button  -->
     <div class="delete-modal hidden">
         <button class="close-modal">&times;</button>
@@ -105,58 +106,13 @@ $_SESSION["render"] ->setTable("orders");
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Tên Sách</td>
-                        <td>Giá Tiền</td>
-                        <td>5</td>
-                        <td>50000đ</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Tên Sách</td>
-                        <td>Giá Tiền</td>
-                        <td>5</td>
-                        <td>50000đ</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Tên Sách</td>
-                        <td>Giá Tiền</td>
-                        <td>5</td>
-                        <td>50000đ</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>Tên Sách</td>
-                        <td>Giá Tiền</td>
-                        <td>5</td>
-                        <td>50000đ</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td></td>
-                        <td></td>
-                        <td>Tiền Hóa Đơn</td>
-                        <td>50000đ</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td></td>
-                        <td></td>
-                        <td>Mã Giảm Giá</td>
-                        <td>20%</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td></td>
-                        <td></td>
-                        <td class="total-price">Thành Tiền</td>
-                        <td class="total-price">40000đ</td>
-                    </tr>
-
                 </tbody>
             </table>
+
+            <div class="del-btn-container">
+                <input type="button" value="Hủy đơn hàng" class="cancel-order">
+                <input type="button" value="Duyệt đơn hàng" class="confirm-order">
+            </div>
         </div>
     </div>
     <div class="overlay hidden"></div>

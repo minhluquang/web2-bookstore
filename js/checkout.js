@@ -3,8 +3,7 @@ var addressTmp = "";
 var addressIdTmp = "";
 var updateAddress;
 function popupToggle(idname) {
-  var popup = document.getElementById(idname);
-  popup.classList.toggle("show");
+  document.getElementById(idname).classList.toggle("show");
 }
 
 function popupOn(idname) {
@@ -13162,6 +13161,48 @@ $(document).ready(function () {
 let indexAddressRadioChecked = 0;
 
 $(document).ready(function () {
+  $(".confirm.create_address").click(function () {
+    if (validFormUpdateUserInfoAddress()) {
+      const updateUserInfoIdValue = updateUserInfoId.value;
+      const updateFullnameValue = updateFullname.value;
+      const updatePhoneNumberValue = updatePhoneNumber.value;
+      const updateAddressFormValue = updateAddressForm.value;
+      const citySelectValue = citySelect.value;
+      const districtSelectValue = districtSelect.value;
+      const wardSelectValue = wardSelect.value;
+
+      $.ajax({
+        type: "post",
+        url: "controller/delivery_info.controller.php",
+        dataType: "html",
+        data: {
+          function: "createNewUserInfo",
+          updateFullname: updateFullnameValue,
+          updatePhoneNumber: updatePhoneNumberValue,
+          updateAddressForm: updateAddressFormValue,
+          citySelect: citySelectValue,
+          districtSelect: districtSelectValue,
+          wardSelect: wardSelectValue,
+          modelPath: "../model",
+        },
+      }).done(function (result) {
+        const data = JSON.parse(result);
+        if (data.success) {
+          alert("Hệ thống tạo thành công địa chỉ!");
+          popupToggle(`changeAddressMenu`);
+          popupToggle(`addressMenu`);
+
+          // Tự động render lại dữ liệu sau khi cập nhật thành công
+          renderAllUserInfoByUserId();
+          renderCurrentDeliveryAddress();
+          document.querySelector(".confirm.change_address").classList.remove("hidden")
+          document.querySelector(".confirm.create_address").classList.add("hidden")
+        } else {
+          alert("Hệ thống thất bại trong việc tạo địa chỉ!");
+        }
+      });
+    }
+  });
   $(".confirm.change_address").click(function () {
     if (validFormUpdateUserInfoAddress()) {
       const updateUserInfoIdValue = updateUserInfoId.value;
@@ -13177,7 +13218,7 @@ $(document).ready(function () {
         url: "controller/delivery_info.controller.php",
         dataType: "html",
         data: {
-          updateUserInfo: true,
+          function: "updateUserInfo",
           updateUserInfoId: updateUserInfoIdValue,
           updateFullname: updateFullnameValue,
           updatePhoneNumber: updatePhoneNumberValue,
@@ -13213,7 +13254,7 @@ function renderAllUserInfoByUserId() {
       url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
-        renderAllUserInfoByUserId: true,
+        function : "renderAllUserInfoByUserId",
         modelPath: "../model",
       },
     }).done(function (result) {
@@ -13231,13 +13272,28 @@ function renderAllUserInfoByUserId() {
           indexAddressRadioChecked = index;
         })
       );
-
-      // Huỷ cập nhật
+      document.querySelector(".addNewAddress").addEventListener("click", () => {
+        document.querySelector(".confirm.change_address").classList.add("hidden")
+        document.querySelector(".confirm.create_address").classList.remove("hidden")
+        // reset giá trị của form 
+        updateUserInfoId.value = "";
+        updateFullname.value= "";
+        updatePhoneNumber.value= "";
+        updateAddressForm.value= "";
+        citySelect.value= "Chọn Tỉnh/Thành phố";
+        districtSelect.value= "";
+        wardSelect.value= "";
+        open_update_menu();
+        
+      });
+      // Huỷ cập nhật,tạo
       document
         .querySelector(".cancel.change_address")
         .addEventListener("click", (e) => {
           popupToggle(`changeAddressMenu`);
           popupToggle(`addressMenu`);
+          document.querySelector(".confirm.change_address").classList.remove("hidden")
+          document.querySelector(".confirm.create_address").classList.add("hidden")
         });
 
       // Xử lý chọn địa chỉ
@@ -13304,7 +13360,7 @@ function renderCurrentDeliveryAddress() {
       url: "controller/delivery_info.controller.php",
       dataType: "html",
       data: {
-        showCurrentDeliveryAddress: true,
+        function: "showCurrentDeliveryAddress",
         indexAddressRadioChecked,
         modelPath: "../model",
       },

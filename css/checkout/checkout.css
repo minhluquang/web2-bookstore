@@ -6,7 +6,9 @@ html {
 body {
   font-family: "Mulish", "Times New Roman", Times, serif;
 }
-
+.hidden{
+  display: none;
+}
 .form-container {
   max-width: 1270px;
   margin: 0 auto;
