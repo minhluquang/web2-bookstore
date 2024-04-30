@@ -54,6 +54,7 @@ class pagnation
             'authors' => 'id',
             'publishers' => 'id',
             'categories' => 'id',
+            'suppliers' =>'id',
         );
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
@@ -87,6 +88,7 @@ class pagnation
         if ($load_result->success) {
             $result = $load_result->data;
             switch ($this->table) {
+
                 case "products": {
                         echo '<div class="table__wrapper">
                     <table id="content-product">
@@ -172,6 +174,49 @@ class pagnation
                         </table>
                     
                         </div>';
+                    }
+                    break;
+                    case "suppliers": {
+                        echo '
+                    <div class="table__wrapper">
+                    <table id="content-product">
+                        <thead class="menu">
+                            <tr>
+                            <th>Mã nhà cung cấp</th>
+                            <th>Tên nhà cung cấp</th>
+                            <th>Email </th>
+                            <th>Số điện thoại </th>
+                            <th>Trạng thái </th>
+                            <th>Ngày tạo</th>
+                            <th>Ngày cập nhật</th>
+                            <th>Ngày xóa</th>
+                            <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-content" id="content">
+
+                    ';
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="email">' . $row['email'] . '</td>';
+                            echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
+                            echo '<td class="status">' . $row['status'] . '</td>';
+                            echo '<td class="date-create">'.$row['create_date'].'</td>';
+                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            echo '<td class="actions">
+                            <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
+                        </td>
+                        </tr>';
+                        }
+                        echo ' 
+                    </tbody>
+                    </table>
+                    </div>';
                     }
                     break;
                 case "orders": {
@@ -397,6 +442,7 @@ class pagnation
                     </div>';
                     }
                     break;
+                   
             }
             echo '<div class="pagination">';
 
@@ -436,6 +482,9 @@ class pagnation
                 case "publishers":
                     echo "<div id='zero-item'><h2>Không có NBX nào</h2></div>";
                     break;
+                case "suppliers":
+                    echo "<div id='zero-item'><h2>Không có nhà cung cấp nào</h2></div>";
+                     break;    
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
@@ -460,6 +509,9 @@ function getFilterSQL($table, $data)
             break;
         case 'publishers':
             return getPublisherFilterSQL($data);
+            break;
+        case 'suppliers':
+            return getSupplierFilterSQL($data);
             break;
     }
 }
@@ -564,6 +616,46 @@ function getCategoryFilterSQL($data)
     }
     return  $filter;
 }
+
+function getSupplierFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['supplier_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`name` LIKE '%" . $data['supplier_name'] . "%'";
+        }
+        if (!empty($data['supplier_id'])) {     
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " id = " . $data['supplier_id'];
+        }
+        if (!empty($data['supplier_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['supplier_status'] == "active") {
+               
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['supplier_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
+        
+        if (!empty($data['supplier_date_type'])) {
+            if (!empty($data['supplier_date_start'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['supplier_date_type'] . "` >= '" . $data['supplier_date_start'] . "'";
+            }
+            if (!empty($data['supplier_date_end'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['supplier_date_type'] . "` <= '" . $data['supplier_date_end'] . "'";
+            }
+        }
+
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return  $filter;
+}
+
 function getPublisherFilterSQL($data)
 {
     $filter = "";

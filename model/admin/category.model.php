@@ -28,27 +28,6 @@ function category_delete($id)
   
 
 
-
-  
-//   if ($result && $result_cat_) {
-//     return (object) array(
-//       'success' => true,
-//       'message' => "<span class='success'>Xóa thể loại với mã $id thành công</span>"
-//     );
-//   } else {
-//     $error = "<span class='failed'>Xóa thể loại với mã $id KHÔNG thành công</span>\n";
-//     if (!$result_cat) {
-//       $error += "Lỗi khi xử lý bảng categories\n";
-//     }
-    
-//     if (!$result_cat_Detail) {
-//       $error += "Lỗi khi xử lý bảng category_details\n";
-//     }
-//     return (object) array(
-//       'success' => false,
-//       'message' => $error
-//     );
-//   }
 }
 
 function category_create($field)
@@ -62,8 +41,8 @@ function category_create($field)
   $result = $database->query($sql);
   $row = $result->fetch_assoc();
   if ($row == null) {
-    $sql = "INSERT INTO categories ( name,status, create_date, update_date ) 
-          VALUES ('" . $field['name'] . "','" . 1 . "', '" . $date  . "', '" . $date  . "') ";
+    $sql = "INSERT INTO categories ( name,status, create_date, update_date,delete_date ) 
+          VALUES ('" . $field['name'] . "','" . 1 . "', '" . $date  . "', '" . $date  . "',NULL) ";
     $result = $database->execute($sql);
     if ($result) {
       $result = "<span class='success'>Tạo thể loại thành công</span>";
@@ -81,9 +60,7 @@ function category_edit($field)
   $result = $database->query($sql);
   $row = $result->fetch_assoc();
   if ($row != null) {
-    // $sql = "UPDATE categories
-    //       SET name= '" . $field['name'] . "',update_date= '" . $date  .  ",status= '" . $field['status']  .  "' WHERE id=".$field['id'];
-
+    
     $sql = "UPDATE categories SET name = ' ". $field['name'] ." ', update_date = '". $date ."' WHERE id = '". $field['id'] ."'";
 
     $result = $database->execute($sql);

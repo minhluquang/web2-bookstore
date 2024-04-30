@@ -129,6 +129,9 @@ $_SESSION["render"] = new pagnation(5, 1, "products");
         case 'category': 
           require_once('public/category.php');
           break;
+        case 'supplier': 
+          require_once('public/supplier.php');
+          break;
         default:
           // Xử lý trường hợp không khớp với bất kỳ trang nào
           require_once('notFound.php');

@@ -1,22 +1,16 @@
 var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
-    filter_form.querySelector("#categoryName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
-    filter_form.querySelector("#categoryId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
-    filter_form.querySelector("#cateDateSelect").value = (urlParams['date_type'] != null) ? urlParams['date_type'] : "";
-    filter_form.querySelector("#date_start").value = (urlParams['date_start'] != null) ? urlParams['date_start'] : "";
-    filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
-    // filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "";
+    filter_form.querySelector("#supplierName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
+    filter_form.querySelector("#supplierId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
+   
 
 }
 function pushFilterToURL() {
     var filter = getFilterFromForm();
     var url_key = {
-        "category_name": "name",
-        "category_id": "id",
-        "category_date_type": "date_type",
-        "category_date_start": "date_start",
-        "category_date_end": "date_end",
-        "category_status":"status"
+        "supplier_name": "name",
+        "supplier_id": "id",
+        "supplier_status":"status"
         
         
     }
@@ -28,12 +22,9 @@ function pushFilterToURL() {
 }
 function getFilterFromForm() {
     return {
-        "category_name": filter_form.querySelector("#categoryName").value,
-        "category_id": filter_form.querySelector("#categoryId").value,     
-        "category_date_type": filter_form.querySelector("#cateDateSelect").value,
-        "category_date_start": filter_form.querySelector("#date_start").value,
-        "category_date_end": filter_form.querySelector("#date_end").value,
-        "category_status": filter_form.querySelector("#statusSelect").value,
+        "supplier_name": filter_form.querySelector("#supplierName").value,
+        "supplier_id": filter_form.querySelector("#supplierId").value,     
+        "supplier_status": filter_form.querySelector("#statusSelect").value,
         
     }
 }
@@ -144,7 +135,7 @@ function filterBtn() {
                 current_page: current_page,
                 function: "render",
                 filter: {
-                    category_status: status_value
+                    supplier_status: status_value
                 }
             }
         }).done(function (result) {
@@ -162,7 +153,7 @@ function filterBtn() {
     const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
-        <h3>Thêm thể loại</h3>
+        <h3>Thêm nhà cung cấp</h3>
         <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
@@ -170,10 +161,21 @@ function filterBtn() {
 
             <div class="modal-body-2">
                 <div class="flex">
-                    <label for="name">Tên thể loại</label>
-                    <input id="nameCategory" type="text" add-index="2" placeholder="Tên thể loại">
-                    
+                    <label for="name">Tên nhà cung cấp</label>
+                    <input id="namesupplier" type="text" add-index="2" placeholder="Tên nhà cung cấp">                   
                 </div>
+
+                <div class="flex">
+                    <label for="email">Email nhà cung cấp</label>
+                    <input id="emailsupplier" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
+                </div>
+
+                <div class="flex">
+                    <label for="sdt">Số điện thoại nhà cung cấp</label>
+                    <input id="sdtsupplier" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
+                </div>
+
+
                 
             </div>
             <div>
@@ -192,13 +194,15 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
     modal.querySelector('.button-confirm').addEventListener('click', function (e) {
         e.preventDefault();
         $.ajax({
-            url: '../controller/admin/category.controller.php',
+            url: '../controller/admin/supplier.controller.php',
             type: "post",
             dataType: 'html',
             data: {
                 function: "create",
                 field: {                   
-                    name: modal.querySelector('#nameCategory').value,                 
+                    name: modal.querySelector('#namesupplier').value,
+                    email: modal.querySelector('#emailsupplier').value,
+                    sdt: modal.querySelector('#sdtsupplier').value,                 
                 }
             }
         }).done(function (result) {
@@ -223,7 +227,7 @@ document.querySelector(".button-cancel").addEventListener("click", () => {
 const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
-        <h3>Sửa thể loại</h3>
+        <h3>Sửa nhà cung cấp</h3>
         <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
@@ -231,10 +235,20 @@ const edit_html = `<div class="modal-edit-product-container show" id="modal-edit
 
             <div class="modal-body-2">
                 <div class="flex">
-                    <label for="name">Tên thể loại</label>
-                    <input id="name" type="text" add-index="2" placeholder="Tên thể loại">
+                    <label for="name">Tên nhà cung cấp</label>
+                    <input id="name" type="text" add-index="2" placeholder="Tên nhà cung cấp">
                     
                 </div>
+
+                <div class="flex">
+                <label for="email">Email nhà cung cấp</label>
+                <input id="email" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
+            </div>
+
+            <div class="flex">
+                <label for="sdt">Số điện thoại nhà cung cấp</label>
+                <input id="sdt" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
+            </div>
                 
             </div>
             <div>
@@ -254,16 +268,19 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             modal.querySelector("#btnClose").addEventListener("click", ()=> {
                 modal_edit_container.classList.remove('show');
             });
-            modal.querySelector('.button-confirm').addEventListener('click', ()=> {
+            modal.querySelector('.button-cancel').addEventListener('click', ()=> {
                 modal_edit_container.classList.remove('show');
             });
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
-            // modal.querySelector('#status').value = this.parentNode.parentNode.querySelector(".status").innerHTML;          
+            modal.querySelector('#email').value = this.parentNode.parentNode.querySelector(".email").innerHTML;
+            modal.querySelector('#sdt').value = this.parentNode.parentNode.querySelector(".number_phone").innerHTML;
+            
+
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: '../controller/admin/category.controller.php',
+                    url: '../controller/admin/supplier.controller.php',
                     type: "post",
                     dataType: 'html',
                     data: {
@@ -271,6 +288,8 @@ var edit_btns = document.getElementsByClassName("actions--edit");
                         field: { 
                             id: id,                  
                             name: modal.querySelector('#name').value,
+                            email: modal.querySelector('#email').value,
+                            sdt: modal.querySelector('#sdt').value,
                                             
                         }
                     }
@@ -294,22 +313,22 @@ var edit_btns = document.getElementsByClassName("actions--edit");
     for (var i = 0; i < del_btns.length; i++) {
         del_btns[i].addEventListener('click', function () {
             let selected_content = this.parentNode.parentNode;
-            let category_id = selected_content.querySelector('.id').innerHTML;
-            let category_name = selected_content.querySelector('.name').innerHTML;
+            let supplier_id = selected_content.querySelector('.id').innerHTML;
+            let supplier_name = selected_content.querySelector('.name').innerHTML;
 
             var del_html = `
         <div class="modal-edit-product-container show" id="modal-edit-container">
         <div class="modal-edit-product">
             <div class="modal-header">
-                <h3>Xác nhận xóa sản phẩm</h3>
+                <h3>Xác nhận xóa nhà cung cấp</h3>
                 <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <div class="del-body">
                     
                     <div class="thongtin">
-                        <div><span style="font-weight: bold;">Mã thể loại :</span> <span id="category-delete-id">${category_id}</span> </div>
-                        <div><span style="font-weight: bold;">Tên thể loại :</span> <span>${category_name}</span> </div>
+                        <div><span style="font-weight: bold;">Mã nhà cung cấp :</span> <span id="supplier-delete-id">${supplier_id}</span> </div>
+                        <div><span style="font-weight: bold;">Tên nhà cung cấp :</span> <span>${supplier_name}</span> </div>
                     </div>
                 </div>
                 <div class="del-btn-container">
@@ -325,9 +344,9 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             modal.innerHTML = del_html;
             $('.del-confirm').click(function (e) {
                 e.preventDefault();
-                var $id = $('#category-delete-id').html();
+                var $id = $('#supplier-delete-id').html();
                 $.ajax({
-                    url: '../controller/admin/category.controller.php',
+                    url: '../controller/admin/supplier.controller.php',
                     type: "post",
                     dataType: 'html',
                     data: {
@@ -361,4 +380,4 @@ var edit_btns = document.getElementsByClassName("actions--edit");
     }
 
 
- }
+ }  
