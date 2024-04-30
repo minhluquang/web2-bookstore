@@ -112,6 +112,7 @@ function product_create($field)
     $file_type = str_replace(";base64", "", $file_type);
     $image_path = "assets/images/product/image_" . $field['id'] . ".$file_type";
     // open the output file for writing
+    if (file_exists("../../" . $image_path)) unlink("../../$image_path");
     $ifp = fopen("../../$image_path", 'wb');
     // we could add validation here with ensuring count( $data ) > 1
     fwrite($ifp, base64_decode($data[1]));
