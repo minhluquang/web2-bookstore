@@ -56,8 +56,9 @@ function addToCart(productId, amount) {
       amount: amount,
     },
   }).done(function (result) {
-    $(".cart-qnt").removeClass("hide");
-    $(".cart-qnt").text(result);
-    alert("Đã thêm sản phẩm thành công!");
+      var data = JSON.parse(result)
+      $(".cart-qnt").removeClass("hide");
+      $(".cart-qnt").text(data.quantity);
+      alert(data.message);
   });
 }

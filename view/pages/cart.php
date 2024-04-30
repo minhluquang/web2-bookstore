@@ -116,7 +116,7 @@
                       <div class="info-product-cart">
                         <div>
                           <h2 class="product-name">
-                            <div>'.$productDetail['product_name'].'</div>
+                            <a href="index.php?page=product_detail&pid='.$product['id'].'">'.$productDetail['product_name'].'</a>
                           </h2>
                         </div>
                         <div class="price-original">
@@ -129,6 +129,9 @@
                             </div>
                           </div>
                         </div>
+                        <div>
+                        <div>(Còn '.$productDetail['quantity'].' sản phẩm)</div>
+                      </div>
                       </div>
                       <div class="number-product-cart">
                         <div class="product-view-quantity-box">
@@ -137,7 +140,7 @@
                               -
                             </a>
                             <input type="text" class="qty-cart" value="'.$product['amount'].'" readonly />
-                            <a href="#!" class="btn-add-qty">
+                            <a href="#!" class="btn-add-qty" data-max-quantity="'.$productDetail['quantity'].'">
                               +
                             </a>
                           </div>
