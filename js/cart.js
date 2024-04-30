@@ -39,6 +39,7 @@ function updateTotalPricePerProduct(btn) {
 // Hàm cập nhật trạng thái của tất cả các checkbox
 function updateAllCheckbox(checked) {
   ckbAddCarts.forEach((ckb) => {
+    if(ckb.parentElement.parentElement.querySelector(".not-selectable").classList.contains('hidden'))
     ckb.checked = checked;
   });
 }
