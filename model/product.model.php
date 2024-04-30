@@ -62,7 +62,8 @@
       $sql = "SELECT DISTINCT p.id id,
                       p.name product_name, 
                       p.price, 
-                      p.image_path
+                      p.image_path,
+                      p.quantity
               FROM category_details cd
               INNER JOIN products p ON p.id = cd.product_id
               INNER JOIN categories c ON c.id = cd.category_id";

@@ -40,9 +40,9 @@
       $deliveryInfoId = $_POST['deliveryInfoId'];
       $customerId = $_SESSION['username'];
       $totalPrice = $_POST['totalPrice'];
-      $discountCode = $_POST['discountCode'];
+      $discountCode = "'".$_POST['discountCode']."'";
       
-      if ($discountCode == '') {
+      if ($discountCode == "''") {
         $discountCode = 'null';
       }
 
@@ -74,7 +74,8 @@
       } else {
         $response = [
           'successAddNewOrder' => false, 
-          'message' => "Hệ thống bị lỗi khi thêm đơn hàng, vui lòng thử lại sau!"
+          'message' => "Hệ thống bị lỗi khi thêm đơn hàng, vui lòng thử lại sau!"."INSERT INTO orders (customer_id, staff_id, delivery_info_id, date_create, total_price, status_id, discount_code)
+          VALUES ('$customerId', null, $deliveryInfoId, NOW(), $totalPrice, 1, '$discountCode);"
         ];
         echo json_encode($response);
       }

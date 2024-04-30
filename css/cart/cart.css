@@ -401,6 +401,7 @@ input.qty-cart {
   outline: none;
   font-size: 16px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .btn-remove-cart .btn-remove-desktop-cart:hover {
@@ -417,4 +418,25 @@ input.qty-cart {
   border: none;
   outline: none;
   border-radius: 4px;
+}
+.not-selectable-container{
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  border-radius: inherit;
+}
+.not-selectable{
+  background :rgba(121, 121, 121, 0.7);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-weight: bolder;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hidden{
+  display: none;
 }

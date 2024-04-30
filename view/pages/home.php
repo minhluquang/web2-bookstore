@@ -52,6 +52,8 @@
                     if ($index == 4) break;
                     $index++;
                     $price_formatted = number_format($product['price'], '0', ',', '.').'đ';
+                    $notAllowed = "";
+                    if($product["quantity"] <=0) $notAllowed = "notAllowed";
                     echo '
                     <div class="product-item--wrapper">
                       <div class="product-item">
@@ -60,7 +62,7 @@
                             <div class="product-action--wrapper">
                               <a href="index.php?page=product_detail&pid='.$product['id'].'" class="product-action--btn product-action__detail">Chi tiết</a>
                               <input type="hidden" class="productId" value="' . $product['id'] . '"/>
-                              <button class="product-action--btn product-action__addToCart">Thêm vào giỏ</button>
+                              <button class="product-action--btn product-action__addToCart '.$notAllowed.'">Thêm vào giỏ</button>
                             </div>
                           </div>
                           <div class="img-resize">

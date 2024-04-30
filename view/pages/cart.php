@@ -96,7 +96,13 @@
                   
                   $totalPrice = $productDetail['price'] * $product['amount'];
                   $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').' ₫';
+
+                  $hidden = "hidden";
+                  if($productDetail['quantity'] <= 0){
+                    $hidden = "";
+                  }
                   echo '
+                  <div class="not-selectable-container">
                   <div class="cart-item">
                     <div class="checked-product-cart">
                       <input type="checkbox" class="checkbox-add-cart" value="'.$product['id'].'" />
@@ -150,6 +156,8 @@
                         <i class="fa-regular fa-trash-can"></i>
                       </button>
                     </form>
+                  <div class="not-selectable '.$hidden.'">Hết hàng</div>
+                  </div>
                   </div>';
                 }
               }
