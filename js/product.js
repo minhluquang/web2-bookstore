@@ -256,8 +256,9 @@ function addToCart(productId, amount) {
       alert("Vui lòng đăng nhập để có thể thêm sản phẩm!");
       return;
     }
+    var data = JSON.parse(result)
     $(".cart-qnt").removeClass("hide");
-    $(".cart-qnt").text(result);
-    alert("Đã thêm sản phẩm thành công!");
+    $(".cart-qnt").text(data.quantity);
+    alert(data.message);
   });
 }

@@ -1,27 +1,3 @@
-const btnSubstractGroup = document.querySelectorAll(".btn-substract-qty");
-const btnAddGroup = document.querySelectorAll(".btn-add-qty");
-
-btnSubstractGroup.forEach((btn) =>
-  btn.addEventListener("click", function (e) {
-    const input = btn.nextElementSibling;
-    if (input.value > 1) {
-      --input.value;
-      input.setAttribute("value", input.value);
-    }
-
-    updateTotalPricePerProduct(btn);
-  })
-);
-btnAddGroup.forEach((btn) =>
-  btn.addEventListener("click", function (e) {
-    const input = btn.previousElementSibling;
-    ++input.value;
-    input.setAttribute("value", input.value);
-
-    updateTotalPricePerProduct(btn);
-  })
-);
-
 // Cập nhật giá thành tiền
 function updateTotalPricePerProduct(btn) {
   const parentEle = btn.closest(".cart-item");
@@ -100,12 +76,26 @@ function updateTotalPrice() {
 
 btnAddQnts.forEach((btnAddQnt) => {
   btnAddQnt.addEventListener("click", (e) => {
+    const input = btnAddQnt.previousElementSibling;
+    if (input.value < Number(btnAddQnt.getAttribute('data-max-quantity'))) {
+      ++input.value;
+      input.setAttribute("value", input.value);
+    }
+
+    updateTotalPricePerProduct(btnAddQnt);
     updateTotalPrice();
   });
 });
 
 btnSubQnts.forEach((btnSubQnt) => {
   btnSubQnt.addEventListener("click", (e) => {
+    const input = btnSubQnt.nextElementSibling;
+    if (input.value > 1) {
+      --input.value;
+      input.setAttribute("value", input.value);
+    }
+
+    updateTotalPricePerProduct(btnSubQnt);
     updateTotalPrice();
   });
 });
