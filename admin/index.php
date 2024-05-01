@@ -4,6 +4,9 @@ ob_start();
 include_once('../model/connect.php');
 include_once('../model/admin/pagnation.model.php');
 $_SESSION["render"] = new pagnation(5, 1, "products");
+if (!isset($_SESSION['usernameAdmin']) ) {
+  header("location: loginAdmin.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,27 +17,29 @@ $_SESSION["render"] = new pagnation(5, 1, "products");
   <link rel="stylesheet" href="../css/fonts/fonts.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../assets/fontawesome-free-6.5.1-web/css/all.min.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/admin/index.css?v=<?php echo time(); ?>">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="../js/admin/index.js?v=<?php echo time(); ?>"></script>
 </head>
 
 <body>
   <div class="topbar">
-    <h1>AdmminHub</h1>
+    <h1>AdminHub</h1>
     <div class="topbar__admin-info">
       <div class="topbar__admin-info__detail">
         <i class="fa-solid fa-user-shield"></i>
-        <h2>Lữ Quang Minh</h2>
+        <h2><?php
+          echo $_SESSION['usernameAdmin']
+        ?></h2>
       </div>
       <i class="fa-solid fa-caret-down"></i>
       <div class="topbar__admin-info--logout">
-        <form action="">
-          <input type="submit" value="Đăng xuất" />
-        </form>
+        <button class="btnLogoutAdmin">Đăng xuất</button>
       </div>
     </div>
   </div>
   <div class="sidebar">
     <div class="sidebar__logo">
-      <img src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/fahasa-logo.png" alt="Logo">
+      <img src="../assets/images/fahasa-logo.png" alt="Logo">
     </div>
     <ul class="sidebar__items">
       <li class="sidebar__item <?php
@@ -143,6 +148,7 @@ $_SESSION["render"] = new pagnation(5, 1, "products");
     }
     ?>
   </div>
+
 </body>
 
 </html>
