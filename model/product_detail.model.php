@@ -1,10 +1,9 @@
 <?php
 include_once('connect.php');
-$database = new connectDB();
 
 function getProductDetailByIdModel($product_id, $closeDatabase = false)
 {
-  global $database;
+  $database = new connectDB();
   if ($database->conn) {
     $sql = "SELECT 
             p.name AS product_name, 

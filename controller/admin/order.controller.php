@@ -36,4 +36,12 @@ function order_status()
   }
 }
 
-
+function getOrderStatusByOrderId($id) {
+  $orderStatus =  getOrderStatusByOrderIdModel($id);
+  if ($orderStatus) {
+    $orderStatus = $orderStatus->fetch_assoc();
+    return $orderStatus['status_id'];
+  } else {
+    return false;
+  }
+}

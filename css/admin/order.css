@@ -27,7 +27,6 @@
   border: 1px solid #333;
   width: 60%;
   height: calc(90% - var(--top-bar-height));
-  ;
   /* height: 8%; */
   background-color: white;
   padding: 30px;
@@ -111,7 +110,7 @@
   background-color: #cfe2ff !important;
 }
 
-.orderdetail-table> :not(caption)>*>* {
+.orderdetail-table > :not(caption) > * > * {
   padding: 12px;
   background-color: transparent;
   border-bottom-width: 1px;
@@ -160,6 +159,10 @@
   width: 100%;
 }
 
+.del-btn-container.hide {
+  display: none;
+}
+
 .del-btn-container input {
   border: none;
   outline: none;
@@ -190,15 +193,45 @@
 
 /* Track */
 .order-modal ::-webkit-scrollbar-track {
-  background: #ffffff; 
+  background: #ffffff;
 }
- 
+
 /* Handle */
 .order-modal ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 .order-modal ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
+}
+
+/* Css table header */
+#content-product thead th:nth-child(1) {
+  width: 3%;
+}
+
+#content-product thead th:nth-child(4),
+#content-product thead th:nth-child(5),
+#content-product thead th:nth-child(8) {
+  width: 7%;
+}
+
+#content-product thead th:nth-child(6) {
+  width: 10%;
+}
+
+#content-product thead th:nth-child(7) {
+  width: 6%;
+}
+
+#content-product thead th:nth-child(9) {
+  width: 5%;
+}
+
+.customer_id,
+.staff_id {
+  white-space: nowrap; /* Ngăn văn bản bị xuống dòng */
+  overflow: hidden; /* Ẩn nội dung vượt ra khỏi phần tử */
+  text-overflow: ellipsis;
 }
