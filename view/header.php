@@ -27,12 +27,15 @@
         <div class="headerCenter">
           <div class="search-container">
             <div class="input-wrapper">
-              <input
-                type="text"
-                placeholder="Tìm kiếm sách ở đây nè..."
-                name="search"
-                id="searchInput"
-              />
+              <div class="searchInputContainer">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm sách ở đây nè..."
+                  name="search"
+                  id="searchInput"
+                />
+                <i class="fa-solid fa-circle-xmark hide"></i>
+              </div>
               <button type="submit" id="searchButton">
                 <i class="fa fa-search"></i>
               </button>

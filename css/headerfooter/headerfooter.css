@@ -45,23 +45,45 @@ header {
   display: flex;
 }
 
+.input-wrapper .searchInputContainer {
+  width: calc(80% - 40px);
+  position: relative;
+}
+
+.searchInputContainer i {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-10%);
+  color: #777;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.searchInputContainer i.hide {
+  display: none;
+}
+
+.searchInputContainer i:hover {
+  color: #333;
+}
+
 .input-wrapper input {
   outline: none;
   border: none;
   margin-top: 10px;
   height: 40px;
-  width: calc(80% - 40px);
+  width: 100%;
   /* width: calc(100% - 40px); */
   border: 1px solid #cdcfd0;
   border-radius: 8px;
   vertical-align: center;
-  padding: 0 10px;
+  padding: 0 30px 0 10px;
   font-size: 16px;
 }
 
 .input-wrapper button {
   margin-top: 10px;
-
   margin-left: 20px;
   height: 40px;
   width: 10%;
@@ -70,7 +92,13 @@ header {
   color: #fff;
   border-radius: 8px;
   cursor: pointer;
+  outline: none;
 }
+
+.input-wrapper button:hover {
+  opacity: 0.8;
+}
+
 .input-wrapper img {
   width: 20px;
 }
