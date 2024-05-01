@@ -33,7 +33,6 @@
               }
 
               $totalPriceOfOrder = 0;
-              echo $order['total_price'];
               $timestamp = strtotime($order['date_create']);
               $day = date('d', $timestamp);
               $month = date('m', $timestamp);

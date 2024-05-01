@@ -22,27 +22,30 @@ $(document).ready(function () {
 
   $(".btnHuyDon").click(function (e) {
     e.preventDefault();
-    const parentOrderEle = $(this).closest(".order")[0];
-    const orderId = parentOrderEle.querySelector(".orderId").value;
+    const result = confirm("Bạn có muốn xoá đơn hàng này không?");
+    if (result) {
+      const parentOrderEle = $(this).closest(".order")[0];
+      const orderId = parentOrderEle.querySelector(".orderId").value;
 
-    $.ajax({
-      type: "post",
-      url: "controller/order.controller.php",
-      dataType: "html",
-      data: {
-        huyDonHang: true,
-        orderId,
-        modelPath: "../model",
-      },
-    }).done(function (result) {
-      const data = JSON.parse(result);
-      if (data.success) {
-        alert(data.message);
-        location.reload();
-      } else {
-        alert(data.message);
-      }
-    });
+      $.ajax({
+        type: "post",
+        url: "controller/order.controller.php",
+        dataType: "html",
+        data: {
+          huyDonHang: true,
+          orderId,
+          modelPath: "../model",
+        },
+      }).done(function (result) {
+        const data = JSON.parse(result);
+        if (data.success) {
+          alert(data.message);
+          location.reload();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   });
 });
 
@@ -64,7 +67,7 @@ function renderHTMLDetailOrder(data) {
   const discountCode = data.order.discount_code;
   let messageTotalPrice = "";
   if (discountCode) {
-    messageTotalPrice = "(Đã tính mã khuyễn mãi)";
+    messageTotalPrice = "(Đã tính mã khuyến mãi)";
   }
 
   let html = `
