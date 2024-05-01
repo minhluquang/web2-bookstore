@@ -137,6 +137,9 @@ if (!isset($_SESSION['usernameAdmin']) ) {
         case 'supplier': 
           require_once('public/supplier.php');
           break;
+        case 'role':
+          require_once('public/role.php');
+          break;
         default:
           // Xử lý trường hợp không khớp với bất kỳ trang nào
           require_once('notFound.php');
