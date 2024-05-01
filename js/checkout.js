@@ -2,7 +2,7 @@ var checkedAddress;
 var addressTmp = "";
 var addressIdTmp = "";
 var updateAddress;
-var loadAddressForTheFirstTime = true ; 
+var loadAddressForTheFirstTime = true;
 function popupToggle(idname) {
   document.getElementById(idname).classList.toggle("show");
 }
@@ -13196,8 +13196,12 @@ $(document).ready(function () {
           // Tự động render lại dữ liệu sau khi cập nhật thành công
           renderAllUserInfoByUserId();
           renderCurrentDeliveryAddress();
-          document.querySelector(".confirm.change_address").classList.remove("hidden")
-          document.querySelector(".confirm.create_address").classList.add("hidden")
+          document
+            .querySelector(".confirm.change_address")
+            .classList.remove("hidden");
+          document
+            .querySelector(".confirm.create_address")
+            .classList.add("hidden");
         } else {
           alert("Hệ thống thất bại trong việc tạo địa chỉ!");
         }
@@ -13277,9 +13281,13 @@ function renderAllUserInfoByUserId() {
         })
       );
       document.querySelector(".addNewAddress").addEventListener("click", () => {
-        document.querySelector(".confirm.change_address").classList.add("hidden")
-        document.querySelector(".confirm.create_address").classList.remove("hidden")
-        // reset giá trị của form 
+        document
+          .querySelector(".confirm.change_address")
+          .classList.add("hidden");
+        document
+          .querySelector(".confirm.create_address")
+          .classList.remove("hidden");
+        // reset giá trị của form
         updateUserInfoId.value = "";
         updateFullname.value = "";
         updatePhoneNumber.value = "";
@@ -13288,18 +13296,21 @@ function renderAllUserInfoByUserId() {
         districtSelect.value = "";
         wardSelect.value = "";
         open_update_menu();
-
       });
 
       // Huỷ cập nhật,tạo
-      if(loadAddressForTheFirstTime){
+      if (loadAddressForTheFirstTime) {
         document
           .querySelector(".cancel.change_address")
           .addEventListener("click", (e) => {
             popupToggle(`changeAddressMenu`);
             popupToggle(`addressMenu`);
-            document.querySelector(".confirm.change_address").classList.remove("hidden")
-            document.querySelector(".confirm.create_address").classList.add("hidden")
+            document
+              .querySelector(".confirm.change_address")
+              .classList.remove("hidden");
+            document
+              .querySelector(".confirm.create_address")
+              .classList.add("hidden");
           });
         document.querySelector(".popupbutton").addEventListener("click", () => {
           changeAddressTmp();
@@ -13322,19 +13333,23 @@ function renderUserInfoHTML(data) {
     let checked = index === indexAddressRadioChecked ? "checked" : "";
 
     const html = `<label class="address-select">
-                    <input type="hidden" class="userInfoIdSelect" value="${address.user_info_id
-      }"/>
-                    <input type="hidden" class="userInfoCity" value="${address.city
-      }"/>
-                    <input type="hidden" class="userInfoDistrict" value="${address.district
-      }"/>
-                    <input type="hidden" class="userInfoWard" value="${address.ward
-      }"/>
+                    <input type="hidden" class="userInfoIdSelect" value="${
+                      address.user_info_id
+                    }"/>
+                    <input type="hidden" class="userInfoCity" value="${
+                      address.city
+                    }"/>
+                    <input type="hidden" class="userInfoDistrict" value="${
+                      address.district
+                    }"/>
+                    <input type="hidden" class="userInfoWard" value="${
+                      address.ward
+                    }"/>
                     <input type="radio" name="address" ${checked}/>
                     <span class="name">${address.fullname}</span>
                     <span class="sdt">(+84) ${address.phone_number.slice(
-        1
-      )}</span>
+                      1
+                    )}</span>
                     <span class="updatebig update">Cập nhật</span>
                     <span class="diachi">${address.address}</span>
                     <span class="tinh">${tinh}</span>
@@ -13494,7 +13509,6 @@ $(document).ready(function () {
         totalPrice,
       },
     }).done(function (result) {
-      console.log(result);
       const data = JSON.parse(result);
       if (data.successEnoughAll != undefined && !data.successEnoughAll) {
         alert(data.message);
@@ -13513,7 +13527,7 @@ $(document).ready(function () {
           .classList.remove("hide");
       } else if (data?.successAddNewOrder) {
         alert(data.message);
-        window.location.href = "index.php";
+        window.location.href = "index.php?page=order";
       } else {
         alert(data.message);
       }

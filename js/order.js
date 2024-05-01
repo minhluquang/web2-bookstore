@@ -61,6 +61,11 @@ function renderHTMLDetailOrder(data) {
   const forrmatTotalPrice = parseFloat(data.order.total_price).toLocaleString(
     "vi-VN"
   );
+  const discountCode = data.order.discount_code;
+  let messageTotalPrice = "";
+  if (discountCode) {
+    messageTotalPrice = "(Đã tính mã khuyễn mãi)";
+  }
 
   let html = `
     <i class="fa-solid fa-xmark closeModalIcon"></i>
@@ -77,7 +82,7 @@ function renderHTMLDetailOrder(data) {
       <h3>Thông tin đơn hàng</h3>
       <span><strong>Ngày tạo: </strong>${day} tháng ${month}, ${year}</span>
       <span><strong>Trạng thái đơn hàng: </strong>${data.order.order_status}</span>
-      <span><strong>Tổng giá trị: </strong>${forrmatTotalPrice} đ</span>
+      <span><strong>Tổng giá trị: </strong>${forrmatTotalPrice} đ ${messageTotalPrice}</span>
     </div>
     <div class="table-wrapper">
       <table>

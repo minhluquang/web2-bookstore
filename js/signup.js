@@ -184,7 +184,7 @@ const validationFormDangKy = () => {
 
   const regexFullName = /[a-zA-ZÀ-ỹ]+(\s[a-zA-ZÀ-ỹ]+){1,}$/;
   const regexPhoneNumber = /^0[0-9]{9}$/;
-  const regexAddress = /^[0-9]+(\s[a-zA-ZÀ-ỹ]+){2,}$/;
+  const regexAddress = /^[0-9\/]+(\s[a-zA-ZÀ-ỹ]+){2,}$/;
   const regexUsername = /^[a-zA-Z][a-zA-Z0-9]{7,}$/;
 
   if (registerUsername.value.trim() == "") {

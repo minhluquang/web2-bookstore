@@ -571,3 +571,9 @@ td {
 .modal tbody td {
   border: 1px solid #ccc;
 }
+
+.beforePrice {
+  text-decoration: line-through;
+  color: #333 !important;
+  font-weight: normal !important;
+}
