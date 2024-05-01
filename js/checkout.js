@@ -13178,9 +13178,9 @@ $(document).ready(function () {
         dataType: "html",
         data: {
           function: "createNewUserInfo",
-          updateFullname: updateFullnameValue,
-          updatePhoneNumber: updatePhoneNumberValue,
-          updateAddressForm: updateAddressFormValue,
+          fullname: updateFullnameValue,
+          phoneNumber: updatePhoneNumberValue,
+          addressForm: updateAddressFormValue,
           citySelect: citySelectValue,
           districtSelect: districtSelectValue,
           wardSelect: wardSelectValue,

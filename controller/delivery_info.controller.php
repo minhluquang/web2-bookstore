@@ -38,14 +38,14 @@ function getAllUserInfoByUserId($userId)
 function createNewUserInfo()
 {
   if (isset($_SESSION['username'])) {
-    $Username = $_SESSION['username'];
-    $Fullname = $_POST['Fullname'];
-    $PhoneNumber = $_POST['PhoneNumber'];
-    $AddressForm = $_POST['AddressForm'];
+    $username = $_SESSION['username'];
+    $fullname = $_POST['fullname'];
+    $phoneNumber = $_POST['phoneNumber'];
+    $addressForm = $_POST['addressForm'];
     $citySelect = $_POST['citySelect'];
     $districtSelect = $_POST['districtSelect'];
     $wardSelect = $_POST['wardSelect'];
-    $result = createUserInfoByIdModel($Username, $Fullname, $PhoneNumber, $AddressForm, $citySelect, $districtSelect, $wardSelect);
+    $result = createUserInfoByIdModel($username, $fullname, $phoneNumber, $addressForm, $citySelect, $districtSelect, $wardSelect);
 
     echo json_encode($result);
   } else {
