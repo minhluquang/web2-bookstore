@@ -106,3 +106,21 @@ searchInputIcon.addEventListener("click", (e) => {
 if (localStorage.getItem("keyword")) {
   searchInputIcon.classList.remove("hide");
 }
+
+// small device
+const menuBar = document.querySelector(".headerRight--smallDevice i");
+const headerRightOptions = document.querySelector(".headerRight--options");
+const headerRightMenuBar = document.querySelector(".headerRightMenuBar");
+const headerRightCloseBar = document.querySelector(".headerRightCloseBar");
+
+menuBar.addEventListener("click", (e) => {
+  headerRightOptions.classList.toggle("hide");
+  headerRightMenuBar.classList.toggle("hide");
+  headerRightCloseBar.classList.toggle("hide");
+});
+
+headerRightCloseBar.addEventListener("click", (e) => {
+  headerRightOptions.classList.toggle("hide");
+  headerRightMenuBar.classList.toggle("hide");
+  headerRightCloseBar.classList.toggle("hide");
+});

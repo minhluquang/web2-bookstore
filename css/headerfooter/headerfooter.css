@@ -19,13 +19,20 @@ header {
   display: flex;
   margin: 0 auto;
 }
-.headerLeft {
+.headerLeft,
+.headerTop {
   position: relative;
   margin-left: 50px;
   width: 20%;
   margin-right: 20px;
 }
-.headerLeft img {
+
+.headerTop {
+  display: none;
+}
+
+.headerLeft img,
+.headerTop img {
   /* width: 75%; */
   width: 100%;
   object-fit: cover;
@@ -36,25 +43,27 @@ header {
 }
 .headerCenter {
   width: 60%;
-  margin-top: 20px;
+  margin: auto;
   position: relative;
 }
 
 .input-wrapper {
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .input-wrapper .searchInputContainer {
-  width: calc(80% - 40px);
+  width: calc(100%);
   position: relative;
 }
 
 .searchInputContainer i {
   position: absolute;
-  right: 0;
+  right: 90px;
   top: 50%;
-  transform: translateY(-10%);
+  transform: translateY(-50%);
   color: #777;
   cursor: pointer;
   margin-right: 8px;
@@ -71,19 +80,19 @@ header {
 .input-wrapper input {
   outline: none;
   border: none;
-  margin-top: 10px;
   height: 40px;
   width: 100%;
   /* width: calc(100% - 40px); */
   border: 1px solid #cdcfd0;
   border-radius: 8px;
   vertical-align: center;
-  padding: 0 30px 0 10px;
+  padding: 0 130px 0 10px;
   font-size: 16px;
 }
 
 .input-wrapper button {
-  margin-top: 10px;
+  position: absolute;
+  right: 0;
   margin-left: 20px;
   height: 40px;
   width: 10%;
@@ -109,9 +118,10 @@ header {
   background-color: #f9f9f9;
   border-radius: 8px;
   margin-top: 5px;
-  width: calc(80% - 40px);
   z-index: 10;
-  position: relative;
+  right: 0;
+  left: 0;
+  position: absolute;
   max-height: 50vh;
   overflow: auto;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -191,15 +201,17 @@ header {
   margin-right: 50px;
   width: 20%;
   position: relative;
+  justify-content: space-around;
   display: flex;
+  margin-left: 40px;
+  gap: 40px;
 }
 .cart {
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-right: 50px;
   align-items: center;
+  margin: auto 0;
 }
 
 .cart.hide {
@@ -239,12 +251,12 @@ header {
 }
 
 .account {
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
   position: relative;
   display: flex;
   align-items: center;
+  margin: auto 0;
 }
 .account-options {
   display: none;
@@ -509,4 +521,57 @@ li,
     padding: 20px;
     margin-right: 10px;
   }
+}
+
+.headerRight--smallDevice {
+  margin: auto 0;
+  display: none;
+  background: #dedede;
+  border-radius: 8px;
+  display: none;
+}
+
+.headerRight--smallDevice i {
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.headerRight--smallDevice i.hide {
+  display: none;
+}
+
+.headerRight--options.hide {
+  display: none;
+}
+
+.headerRight--options .cart {
+  align-items: start;
+}
+
+.headerRight--options .cart a,
+.headerRight--options .account {
+  flex-direction: row;
+  justify-content: start;
+  gap: 18px;
+  font-size: 18px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.headerRight--options .cart a:hover,
+.headerRight--options .account:hover {
+  background-color: #eeee;
+}
+
+.headerRight--options .account .account-options {
+  width: 100%;
+  border: none;
+}
+
+.headerRight--options .account .account-options a,
+.headerRight--options .account .account-options button {
+  width: 100%;
 }
