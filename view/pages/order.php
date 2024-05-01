@@ -101,7 +101,9 @@
               }
   
               $formatTotalPriceOfOrder = number_format($totalPriceOfOrder, 0, ',', '.');
-              echo '
+              $formatTotalPriceAfterDiscount = number_format($order['total_price'], 0, ',', '.');
+              if ($order['discount_code'] == null) {
+                echo '
                   <div class="order-bottom">
                     <div class="order-bottom-totalprice">
                       <p>Tổng tiền:</p>
@@ -113,6 +115,22 @@
                     </div>
                   </div>
                 </div>';
+              } else {
+                echo '
+                  <div class="order-bottom">
+                    <div class="order-bottom-totalprice">
+                      <p>Tổng tiền:</p>
+                      <strong class="beforePrice">'.$formatTotalPriceOfOrder.' đ</strong>
+                      <strong>'.$formatTotalPriceAfterDiscount.' đ</strong>
+                    </div>
+                    <div class="order-bottom-actions">
+                      <button class="btnXemChiTiet">Xem chi tiết</button>
+                      <button class="btnHuyDon '.$isHideCancelOrder.'">Huỷ đơn</button>
+                    </div>
+                  </div>
+                </div>';
+              }
+              
             }
             echo '</div>';
           } else {

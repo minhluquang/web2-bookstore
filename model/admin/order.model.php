@@ -76,11 +76,27 @@ function order_render($id)
   <td class='total-price' id='price-number'></td>
   </tr>
   <input type='hidden' id='id' value='$id'>";
-
   $database->close();
 }
+
 function order_change_status($id,$status){
   $database = new connectDB();
   $sql = "UPDATE orders SET status_id='$status' WHERE id='$id'";
   $database->execute($sql);
+}
+
+function getOrderStatusByOrderIdModel($id) {
+  $database = new connectDB();
+  if ($database->conn) {
+    $sql = "SELECT status_id
+            FROM orders
+            WHERE id = $id";
+    $result = $database->query($sql);
+    $database->close();
+    return $result;
+  } else {
+    $database->close();
+    return false;
+  }
+  $database->close();
 }

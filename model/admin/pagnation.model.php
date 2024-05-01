@@ -55,6 +55,7 @@ class pagnation
             'publishers' => 'id',
             'categories' => 'id',
             'suppliers' =>'id',
+            'functions' => 'id',
         );
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
@@ -442,7 +443,44 @@ class pagnation
                     </div>';
                     }
                     break;
-                   
+                case "functions" : {
+                    echo '
+                    <div class="table__wrapper">
+                    <table id="content-product">
+                        <thead class="menu">
+                            <tr>
+                            <th>Mã quyền</th>                 
+                            <th>Tên quyền</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày xóa</th>  
+                            <th>Ngày cập nhật</th>        
+                            <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-content" id="content">
+
+                    ';
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="status">'.$row['status'].'</td>';
+                            // echo '<td class="date-create">'.$row['create_date'].'</td>';
+                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            echo '<td class="actions">
+                            <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
+                        </td>
+                        </tr>';
+                        }
+                        echo ' 
+                    </tbody>
+                    </table>
+                    </div>';
+                }
+                break;
             }
             echo '<div class="pagination">';
 
@@ -488,6 +526,9 @@ class pagnation
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
+                case "functions":
+                    echo "<div id='zero-item'><h2>Không có quyền nào</h2></div>";
+                    break;
             }
         }
         $database->close();
@@ -512,6 +553,9 @@ function getFilterSQL($table, $data)
             break;
         case 'suppliers':
             return getSupplierFilterSQL($data);
+            break;
+        case 'functions': 
+            return getRoleFilterSQL($data);
             break;
     }
 }
@@ -667,4 +711,31 @@ function getPublisherFilterSQL($data)
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return $filter;
+}
+function getRoleFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['role_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`name` LIKE '%" . $data['role_name'] . "%'";
+        }
+        if (!empty($data['role_id'])) {     
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " id = " . $data['role_id'];
+        }
+        if (!empty($data['role_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['role_status'] == "active") {
+               
+                $filter = $filter . "status = 1 " ;
+            } else if ($data['role_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
+
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return  $filter;
 }

@@ -136,7 +136,9 @@ function renderProductsPerPage(
 
 $(document).ready(function () {
   // Tự load sản phẩm ở lần đầu vào trang
-  renderProductsPerPage(1);
+  if (!localStorage.getItem("keyword")) {
+    renderProductsPerPage(1);
+  }
 
   // Sử dụng Event Delegation cho các nút phân trang
   $(document).on("click", ".pagination-btn", function () {
@@ -150,21 +152,23 @@ $(document).ready(function () {
   if (localStorage.getItem("keyword")) {
     keyword = localStorage.getItem("keyword");
     renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
-
-    // Xoá localStorage khi bấm nút search lưu
-    localStorage.removeItem("keyword");
   }
 
   // Xử lý click nút search
-  $("#searchButton").click(function () {
-    keyword = document.querySelector("#searchInput").value;
+  if (localStorage.getItem("keyword")) {
+    keyword = localStorage.getItem("keyword");
     renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
-
     resetFilter();
-
+    document.querySelector("#searchInput").value = keyword;
     // // Xoá localStorage khi bấm nút search lưu
     // localStorage.removeItem("keyword");
-  });
+  } else {
+    keyword = document.querySelector("#searchInput").value;
+    $("#searchButton").click(function () {
+      renderProductsPerPage(1, listCategoryIds, priceRange, keyword);
+      resetFilter();
+    });
+  }
 
   // Lọc nâng cao theo thể loại
   $('input[name="theloai"]').click(function () {
@@ -256,7 +260,7 @@ function addToCart(productId, amount) {
       alert("Vui lòng đăng nhập để có thể thêm sản phẩm!");
       return;
     }
-    var data = JSON.parse(result)
+    var data = JSON.parse(result);
     $(".cart-qnt").removeClass("hide");
     $(".cart-qnt").text(data.quantity);
     alert(data.message);

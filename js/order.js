@@ -22,27 +22,30 @@ $(document).ready(function () {
 
   $(".btnHuyDon").click(function (e) {
     e.preventDefault();
-    const parentOrderEle = $(this).closest(".order")[0];
-    const orderId = parentOrderEle.querySelector(".orderId").value;
+    const result = confirm("Bạn có muốn xoá đơn hàng này không?");
+    if (result) {
+      const parentOrderEle = $(this).closest(".order")[0];
+      const orderId = parentOrderEle.querySelector(".orderId").value;
 
-    $.ajax({
-      type: "post",
-      url: "controller/order.controller.php",
-      dataType: "html",
-      data: {
-        huyDonHang: true,
-        orderId,
-        modelPath: "../model",
-      },
-    }).done(function (result) {
-      const data = JSON.parse(result);
-      if (data.success) {
-        alert(data.message);
-        location.reload();
-      } else {
-        alert(data.message);
-      }
-    });
+      $.ajax({
+        type: "post",
+        url: "controller/order.controller.php",
+        dataType: "html",
+        data: {
+          huyDonHang: true,
+          orderId,
+          modelPath: "../model",
+        },
+      }).done(function (result) {
+        const data = JSON.parse(result);
+        if (data.success) {
+          alert(data.message);
+          location.reload();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   });
 });
 
@@ -61,6 +64,11 @@ function renderHTMLDetailOrder(data) {
   const forrmatTotalPrice = parseFloat(data.order.total_price).toLocaleString(
     "vi-VN"
   );
+  const discountCode = data.order.discount_code;
+  let messageTotalPrice = "";
+  if (discountCode) {
+    messageTotalPrice = "(Đã tính mã khuyến mãi)";
+  }
 
   let html = `
     <i class="fa-solid fa-xmark closeModalIcon"></i>
@@ -77,7 +85,7 @@ function renderHTMLDetailOrder(data) {
       <h3>Thông tin đơn hàng</h3>
       <span><strong>Ngày tạo: </strong>${day} tháng ${month}, ${year}</span>
       <span><strong>Trạng thái đơn hàng: </strong>${data.order.order_status}</span>
-      <span><strong>Tổng giá trị: </strong>${forrmatTotalPrice} đ</span>
+      <span><strong>Tổng giá trị: </strong>${forrmatTotalPrice} đ ${messageTotalPrice}</span>
     </div>
     <div class="table-wrapper">
       <table>

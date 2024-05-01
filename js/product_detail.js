@@ -4,7 +4,7 @@ const btnIncreaseQnt = document.querySelector(".modal-qnt__increase");
 
 btnDecreaseQnt.addEventListener("click", (e) => {
   const modalQntValue = document.querySelector(".modal-qnt__value");
-  if (modalQntValue.value > 1) {
+  if (+modalQntValue.value > 1) {
     const qnt = +modalQntValue.value;
     modalQntValue.value = qnt - 1;
     modalQntValue.setAttribute("value", qnt - 1);
@@ -14,7 +14,7 @@ btnDecreaseQnt.addEventListener("click", (e) => {
 btnIncreaseQnt.addEventListener("click", (e) => {
   const modalQntValue = document.querySelector(".modal-qnt__value");
   const modalQntValueMax = document.querySelector(".modal-qnt__value-max");
-  if (modalQntValueMax.value > modalQntValue.value) {
+  if (+modalQntValueMax.value > +modalQntValue.value) {
     const qnt = +modalQntValue.value;
     modalQntValue.value = qnt + 1;
     modalQntValue.setAttribute("value", qnt + 1);
@@ -56,9 +56,9 @@ function addToCart(productId, amount) {
       amount: amount,
     },
   }).done(function (result) {
-      var data = JSON.parse(result)
-      $(".cart-qnt").removeClass("hide");
-      $(".cart-qnt").text(data.quantity);
-      alert(data.message);
+    var data = JSON.parse(result);
+    $(".cart-qnt").removeClass("hide");
+    $(".cart-qnt").text(data.quantity);
+    alert(data.message);
   });
 }
