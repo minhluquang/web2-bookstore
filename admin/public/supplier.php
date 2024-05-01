@@ -30,7 +30,9 @@ $_SESSION["render"] ->setTable("suppliers");
             <div class="body__filter--field body__filter--idClient" >
                 <p>Mã Nhà cung cấp</p>
                 <input type="text" id="supplierId" placeholder="Nhập mã tác giả" />
+                
             </div>
+            
             <div class="body__filter--field body__filter--idClient filter_category" id="">
                 <p>Trạng thái</p>
                 <select name="status" id="statusSelect">
@@ -41,6 +43,7 @@ $_SESSION["render"] ->setTable("suppliers");
             </div>
            
         </div>
+        <p id="message"></p>
 
 
         <div class="body__filter--actions">

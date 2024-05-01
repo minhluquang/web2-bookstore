@@ -601,16 +601,7 @@ function getCategoryFilterSQL($data)
             
         }
         
-        if (!empty($data['category_date_type'])) {
-            if (!empty($data['category_date_start'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['category_date_type'] . "` >= '" . $data['category_date_start'] . "'";
-            }
-            if (!empty($data['category_date_end'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['category_date_type'] . "` <= '" . $data['category_date_end'] . "'";
-            }
-        }
+       
 
         if ($filter != "") $filter = "WHERE " . $filter;
     }
