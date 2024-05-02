@@ -10,9 +10,9 @@ function getProductDetailByIdModel($product_id, $closeDatabase = false)
             p.image_path, 
             p.quantity, 
             p.price, 
-            pub.name AS publisher_name,
-            GROUP_CONCAT(' ', c.name) AS category_names,
-            GROUP_CONCAT(' ', a.name) AS author_names
+            CASE WHEN pub.status = 1 THEN pub.name ELSE NULL END AS publisher_name,
+            GROUP_CONCAT(CASE WHEN c.status = 1 THEN CONCAT(' ', c.name) ELSE NULL END) AS category_names,
+            GROUP_CONCAT(CASE WHEN a.status = 1 THEN CONCAT(' ', a.name) ELSE NULL END) AS author_names
         FROM 
             products p  
             INNER JOIN publishers pub ON p.publisher_id = pub.id

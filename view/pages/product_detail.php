@@ -35,6 +35,22 @@
                 $quantityStatus = "(Hết hàng)";
                 $isAllowed = "notAllowed";
               }
+
+              $authorNames = $productDetail['author_names'];
+              if ($authorNames == null) {
+                $authorNames = 'Đang cập nhật...';
+              }
+
+              $categoryNames = $productDetail['category_names'];
+              if ($categoryNames == null) {
+                $categoryNames = 'Đang cập nhật...';
+              }
+
+              $publisherName = $productDetail['publisher_name'];
+              if ($publisherName == null) {
+                $publisherName = 'Đang cập nhật...';
+              }
+              
               echo '
               <div class="modal-content__model-left">
                 <img src="'.$productDetail['image_path'].'" alt="'.$productDetail['product_name'].'" />
@@ -42,10 +58,10 @@
               <div class="modal-content__model-right">
                 <h2 class="modal-title">'.$productDetail['product_name'].'</h2>
                 <div class="modal-detail">
-                  <p class="modal-author">Tác giả: <strong>'.$productDetail['author_names'].'</strong></p>
-                  <p class="modal-category">Thể loại: <strong>'.$productDetail['category_names'].'</strong></p>
+                  <p class="modal-author">Tác giả: <strong>'.$authorNames.'</strong></p>
+                  <p class="modal-category">Thể loại: <strong>'.$categoryNames.'</strong></p>
                 </div>
-                <h4 class="modal-publisher">Nhà xuất bản: <strong>'.$productDetail['publisher_name'].'</strong></h4>
+                <h4 class="modal-publisher">Nhà xuất bản: <strong>'.$publisherName.'</strong></h4>
                 <span class="modal-price"><p>Giá: </p>'.$priceFormat.'</span>
                 <div class="modal-qnt">
                   <div class="modal-qnt-select">

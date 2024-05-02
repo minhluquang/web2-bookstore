@@ -94,6 +94,10 @@ body {
   padding: 0 32px 16px;
 }
 
+.form-container.active {
+  display: block;
+}
+
 /* CSS styling for the form rows */
 .form-row {
   margin-bottom: 16px; /* Khoảng cách dưới giữa các hàng */
@@ -149,4 +153,47 @@ button {
 
 .btnSubmit:hover {
   opacity: 0.8;
+}
+/* input eye password */
+.loginPasswordContainer,
+.registerPasswordContainer,
+.registerConfirmPasswordContainer {
+  position: relative;
+}
+
+.loginPasswordContainer input,
+.registerPasswordContainer input,
+.registerConfirmPasswordContainer input {
+  padding-right: 40px;
+}
+
+.loginPasswordView,
+.registerPasswordView,
+.registerConfirmPasswordView {
+  position: absolute;
+  right: 0;
+  border: none;
+  outline: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: #333;
+  cursor: pointer;
+}
+
+.loginPasswordContainer i,
+.registerPasswordContainer i,
+.registerConfirmPasswordContainer i {
+  display: block;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
+
+.loginPasswordContainer i.hide,
+.registerPasswordContainer i.hide,
+.registerConfirmPasswordContainer i.hide {
+  display: none;
 }
