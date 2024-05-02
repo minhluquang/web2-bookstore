@@ -34,7 +34,7 @@ $_SESSION["render"] ->setTable("categories");
             <div class="body__filter--field body__filter--idClient filter_category" id="">
                 <p>Trạng thái</p>
                 <select name="status" id="statusSelect">
-                    <option value="active">Hoạt động</option>
+                    <option value="active" selected>Hoạt động</option>
                     <option value="inactive">Không hoạt động</option>
                     <option value="">Tất cả</option>
                 </select>

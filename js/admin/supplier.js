@@ -2,7 +2,9 @@ var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
     filter_form.querySelector("#supplierName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
     filter_form.querySelector("#supplierId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
-   
+    filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
+
+
 
 }
 function pushFilterToURL() {
