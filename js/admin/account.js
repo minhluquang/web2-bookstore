@@ -169,6 +169,7 @@ var js = function () {
     </form>
   `;
     modalContent.insertAdjacentHTML("afterbegin", html);
+    anHienMatKhauModalDoiMatKhau();
   };
 
   const handleRenderDataModalEditUser = (button) => {
@@ -258,3 +259,73 @@ var js = function () {
 };
 
 // Bấm nút ẩn/hiện password
+function anHienMatKhauModalDoiMatKhau() {
+  const currentPasswordNoView = document.querySelector(
+    ".changeCurrentPasswordView .noView-loginPassword"
+  );
+  const currentPasswordView = document.querySelector(
+    ".changeCurrentPasswordView .view-loginPassword"
+  );
+
+  const newPasswordNoView = document.querySelector(
+    ".changeNewPasswordView .noView-loginPassword"
+  );
+  const newPasswordView = document.querySelector(
+    ".changeNewPasswordView .view-loginPassword"
+  );
+
+  const confirmNewPasswordNoView = document.querySelector(
+    ".changeConfirmNewPasswordView .noView-loginPassword"
+  );
+  const confirmNewPasswordView = document.querySelector(
+    ".changeConfirmNewPasswordView .view-loginPassword"
+  );
+
+  const inputCurrentPassword = document.querySelector("#changeCurrentPassword");
+  const inputNewPassword = document.querySelector("#changeNewPassword");
+  const inputConfirmNewPassword = document.querySelector(
+    "#changeConfirmNewPassword"
+  );
+
+  currentPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputCurrentPassword.setAttribute("type", "text");
+    currentPasswordView.classList.toggle("hide");
+    currentPasswordNoView.classList.toggle("hide");
+  });
+
+  currentPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputCurrentPassword.setAttribute("type", "password");
+    currentPasswordView.classList.toggle("hide");
+    currentPasswordNoView.classList.toggle("hide");
+  });
+
+  newPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputNewPassword.setAttribute("type", "text");
+    newPasswordView.classList.toggle("hide");
+    newPasswordNoView.classList.toggle("hide");
+  });
+
+  newPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputNewPassword.setAttribute("type", "password");
+    newPasswordView.classList.toggle("hide");
+    newPasswordNoView.classList.toggle("hide");
+  });
+
+  confirmNewPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputConfirmNewPassword.setAttribute("type", "text");
+    confirmNewPasswordView.classList.toggle("hide");
+    confirmNewPasswordNoView.classList.toggle("hide");
+  });
+
+  confirmNewPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputConfirmNewPassword.setAttribute("type", "password");
+    confirmNewPasswordView.classList.toggle("hide");
+    confirmNewPasswordNoView.classList.toggle("hide");
+  });
+}
