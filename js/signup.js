@@ -164,7 +164,8 @@ $(document).ready(function () {
           window.location.href = "index.php";
           alert("Bạn đã đăng nhập thành công!");
         } else {
-          $(".result").html(data.message);
+          alert(data.message);
+          // $(".result").html(data.message);
         }
       });
     }

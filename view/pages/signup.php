@@ -109,7 +109,7 @@
                         <p class="errMessage errMessageConfirmPasswordRegister"></p>
                     </div>
                     <input class="btnSubmit btnDangKy" type="submit" value="Đăng ký" />
-                    <div class="result"></div>
+                    <!-- <div class="result"></div> -->
                 </form>
             </div>
         </div> 
