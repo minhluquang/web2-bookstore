@@ -40,7 +40,7 @@ function supplier_create($field)
   $result = null;
   $result = $database->query($sql);
   $row = $result->fetch_assoc();
-  if ($row == null) {
+  if ($row == null || $row['status']  == 0) {
     $sql = "INSERT INTO suppliers ( name,email,number_phone,status, create_date, update_date,delete_date ) 
           VALUES ('" . $field['name'] . "','" . $field['email'] . "','" . $field['sdt'] . "','" . 1 . "', '" . $date  . "', '" . $date  . "',NULL) ";
     $result = $database->execute($sql);

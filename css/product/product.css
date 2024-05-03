@@ -65,16 +65,19 @@ body {
   font-weight: bold;
 }
 
-.sidebar-item__title button {
+.sidebar-item__title a {
   border: none;
   outline: none;
   background: transparent;
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  color: #333;
 }
 
-.sidebar-item__title button:hover {
+.sidebar-item__title a:hover {
   color: var(--primary-color);
 }
 

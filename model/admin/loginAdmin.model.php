@@ -22,4 +22,19 @@ include_once("{$base_dir}connect.php");
       return false;
     }
   }
+
+  function getRoleIdByUsernameModel($username) {
+    $database = new connectDB();
+    if ($database->conn) {
+      $sql = "SELECT *
+              FROM accounts
+              WHERE username = '$username'";
+      $result = $database->query($sql);
+      $database->close();
+      return $result;
+    } else {
+      $database->close();
+      return false;
+    }
+  }
 ?>

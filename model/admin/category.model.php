@@ -40,7 +40,7 @@ function category_create($field)
   $result = null;
   $result = $database->query($sql);
   $row = $result->fetch_assoc();
-  if ($row == null) {
+  if ($row == null || $row['status'] == 0) {
     $sql = "INSERT INTO categories ( name,status, create_date, update_date,delete_date ) 
           VALUES ('" . $field['name'] . "','" . 1 . "', '" . $date  . "', '" . $date  . "',NULL) ";
     $result = $database->execute($sql);
@@ -48,7 +48,7 @@ function category_create($field)
       $result = "<span class='success'>Tạo thể loại thành công</span>";
     } else $result = "<span class='failed'>Tạo thể loại không thành công</span>";
     return ($result);
-  } else return "<span class='failed'>Thể loại" . $row['name'] . " đã tồn tại</span>";
+  } else return "<span class='failed'>Thể loại " . $row['name'] . " đã tồn tại</span>";
 }
 function category_edit($field)
 {

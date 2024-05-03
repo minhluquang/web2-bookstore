@@ -114,7 +114,7 @@
             </div>
         </div> 
     </div>
-    <div class="toast-overlay"></div>
+    <!-- <div class="toast-overlay"></div>
     <div class="toast">
         <div class="toast-header">
             <i class="fa-solid fa-circle-check success-icon"></i>
@@ -124,7 +124,7 @@
             <p class="toast-message">Bạn đã đăng ký thành công!</p>
         </div>
         <a href="index.php?page=signup" class="toast-next">Tiếp tục</a>
-    </div>
+    </div> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script defer src="js/signup.js?v=<?php echo time(); ?>"></script>
 </body>

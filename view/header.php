@@ -216,7 +216,7 @@
               onclick="hideNotification()"
             ></div>
 
-            <div class="notification-box" id="notificationBox">
+            <!-- <div class="notification-box" id="notificationBox">
               <span class="close-btn" onclick="hideNotification()">x</span>
               <div class="user-info">
                 <div class="input-field">
@@ -233,7 +233,7 @@
                 </div>
               </div>
               <button class="save-btn" onclick="saveInfo()">Lưu</button>
-            </div>
+            </div> -->
           </div>
       </div>
     </header>

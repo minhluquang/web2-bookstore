@@ -2,7 +2,9 @@ var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
     filter_form.querySelector("#supplierName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
     filter_form.querySelector("#supplierId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
-   
+    filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
+
+
 
 }
 function pushFilterToURL() {
@@ -119,11 +121,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function filterBtn() {
     $(".body__filter--action__filter").click((e) => {
-        current_page = 1;
         e.preventDefault();
+        var supplierId = filter_form.querySelector("#supplierId").value.trim();
+        var message = filter_form.querySelector("#message");
+        var check = true;
+        var regex = /^\d+$/;
+        if (supplierId !== '' && !supplierId.match(regex)) {
+            message.innerHTML = "*Mã nhà cung cấp phải là kí tự số";
+            filter_form.querySelector("#supplierId").focus();
+            check = false;
+        } 
+
+        if (check === true) {
+        current_page = 1;
         loadItem();
+        }
+        
+        
+       
     })
     $(".body__filter--action__reset").click((e) => {
+        check = true;
+        message.innerHTML = "";
         current_page = 1;
         status_value = "active";
         $.ajax({

@@ -4,7 +4,11 @@ include_once("../model/product_detail.model.php");
 
 if (isset($_POST["product-action__addToCart"]) && $_POST['product-action__addToCart']) {
   if (!isset($_SESSION['username'])) {
-    echo false;
+    $result = array(
+      'success' => false,
+      'message' => "Vui lòng đăng nhập trước khi chọn thêm sản phẩm!",
+    );
+    echo json_encode($result);
     return;
   }
 

@@ -1,5 +1,8 @@
 <?php
-  session_start();
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
+
   include_once('../../model/admin/loginAdmin.model.php');
 
   if (isset($_POST['isLogin']) && isset($_POST['isLogin'])) {

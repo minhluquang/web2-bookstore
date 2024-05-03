@@ -2,10 +2,7 @@ var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
     filter_form.querySelector("#categoryName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
     filter_form.querySelector("#categoryId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
-    filter_form.querySelector("#cateDateSelect").value = (urlParams['date_type'] != null) ? urlParams['date_type'] : "";
-    filter_form.querySelector("#date_start").value = (urlParams['date_start'] != null) ? urlParams['date_start'] : "";
-    filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
-    // filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "";
+    filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
 
 }
 function pushFilterToURL() {
@@ -13,9 +10,6 @@ function pushFilterToURL() {
     var url_key = {
         "category_name": "name",
         "category_id": "id",
-        "category_date_type": "date_type",
-        "category_date_start": "date_start",
-        "category_date_end": "date_end",
         "category_status":"status"
         
         
@@ -30,9 +24,6 @@ function getFilterFromForm() {
     return {
         "category_name": filter_form.querySelector("#categoryName").value,
         "category_id": filter_form.querySelector("#categoryId").value,     
-        "category_date_type": filter_form.querySelector("#cateDateSelect").value,
-        "category_date_start": filter_form.querySelector("#date_start").value,
-        "category_date_end": filter_form.querySelector("#date_end").value,
         "category_status": filter_form.querySelector("#statusSelect").value,
         
     }
@@ -64,75 +55,88 @@ async function loadForFirstTime() {
     await checkReady();
     getFilterFromURL();
     loadItem();
-    // the ajax below are for create product
-
-}
-function pagnationBtn() {
+  }
+  function pagnationBtn() {
     // pagnation
     document.querySelectorAll('.pag').forEach((btn) => btn.addEventListener('click', function () {
-        current_page = btn.innerHTML;
-        loadItem();
+      current_page = btn.innerHTML;
+      loadItem();
     }));
     if (document.getElementsByClassName('pag-pre').length > 0)
-        document.querySelector('.pag-pre').addEventListener('click', function () {
-            current_page = Number(document.querySelector('span.active').innerHTML) - 1;
-            loadItem(number_of_item, current_page);
-        });
+      document.querySelector('.pag-pre').addEventListener('click', function () {
+        current_page = Number(document.querySelector('span.active').innerHTML) - 1;
+        loadItem(number_of_item, current_page);
+      });
     if (document.getElementsByClassName('pag-con').length > 0)
-        document.querySelector('.pag-con').addEventListener('click', function () {
-            current_page = Number(document.querySelector('span.active').innerHTML) + 1;
-            loadItem();
-        });
-}
-function loadItem() {
+      document.querySelector('.pag-con').addEventListener('click', function () {
+        current_page = Number(document.querySelector('span.active').innerHTML) + 1;
+  
+        loadItem();
+      });
+  }
+  function loadItem() {
     var filter = getFilterFromForm();
     $.ajax({
+      url: '../controller/admin/pagnation.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        number_of_item: number_of_item,
+        current_page: current_page,
+        function: "getRecords",
+        filter: filter
+      }
+    }).done(function (result) {
+      if (current_page > parseInt(result)) current_page = parseInt(result)
+      if (current_page < 1) current_page = 1;
+      $.ajax({
         url: '../controller/admin/pagnation.controller.php',
         type: "post",
         dataType: 'html',
         data: {
-            number_of_item: number_of_item,
-            current_page: current_page,
-            function: "getRecords",
-            filter: filter
+          number_of_item: number_of_item,
+          current_page: current_page,
+          function: "render",
+          filter: filter
         }
-    }).done(function (result) {
-        if (current_page > parseInt(result)) current_page = parseInt(result)
-        if (current_page < 1) current_page = 1;
-        $.ajax({
-            url: '../controller/admin/pagnation.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                number_of_item: number_of_item,
-                current_page: current_page,
-                function: "render",
-                filter: filter
-            }
-        }).done(function (result) {
-
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
-            newurl += pushFilterToURL();
-            window.history.pushState({ path: newurl }, '', newurl);
-            $('.result').html(result);
-            pagnationBtn();
-            filterBtn();
-            js();
-        })
+      }).done(function (result) {
+  
+        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+        newurl += pushFilterToURL();
+        window.history.pushState({ path: newurl }, '', newurl);
+        $('.result').html(result);
+        pagnationBtn();
+        filterBtn();
+        js();
+      })
     })
-};
-document.addEventListener("DOMContentLoaded", () => {
+  };
+  document.addEventListener("DOMContentLoaded", () => {
     loadForFirstTime()
-
-});
+  });
 
 function filterBtn() {
     $(".body__filter--action__filter").click((e) => {
-        current_page = 1;
         e.preventDefault();
-        loadItem();
+        var categoryId = filter_form.querySelector("#categoryId").value.trim();
+        var message = filter_form.querySelector("#message");
+        var check = true;
+        var regex = /^\d+$/;
+       if (!categoryId.match(regex) && categoryId!=='') {
+            message.innerHTML = "*Mã thể loại phải là kí tự số";
+            filter_form.querySelector("#categoryId").focus();
+            check = false;  
+        } 
+        if(check == true) {
+            message.innerHTML = "";
+            current_page = 1;
+            loadItem();
+        }
+        
     })
     $(".body__filter--action__reset").click((e) => {
+        message.innerHTML = "";
+        check = true;
         current_page = 1;
         status_value = "active";
         $.ajax({
@@ -146,17 +150,47 @@ function filterBtn() {
                 filter: {
                     category_status: status_value
                 }
-            }
+            }           
         }).done(function (result) {
             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
             console.log(result);
+            loadItem();
             pagnationBtn();
             js();
         })
     })
 }
+
+// function filterBtn() {
+//   $(".body__filter--action__filter").click((e) => {
+//     current_page = 1;
+//     e.preventDefault();
+//     loadItem();
+//   })
+//   $(".body__filter--action__reset").click((e) => {
+//     current_page = 1;
+//     $.ajax({
+//       url: '../controller/admin/pagnation.controller.php',
+//       type: "post",
+//       dataType: 'html',
+//       data: {
+//         number_of_item: number_of_item,
+//         current_page: current_page,
+//         function: "renderCategory",
+//       }
+//     }).done(function (result) {
+//       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+//       window.history.pushState({ path: newurl }, '', newurl);
+//       $('.result').html(result);
+//       console.log(result);
+//       pagnationBtn();
+//       js();
+//     })
+//   })
+// }
+
 
  var js = function() {
     const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">

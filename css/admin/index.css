@@ -143,6 +143,17 @@ body {
   background-color: #eee;
 }
 
+.sidebar__item.nonActive {
+  cursor: not-allowed;
+  color: #dedede;
+}
+
+.sidebar__item.nonActive a,
+.sidebar__item.nonActive a i {
+  cursor: not-allowed;
+  color: #dedede;
+}
+
 .sidebar__item a {
   text-decoration: none;
   color: #333;

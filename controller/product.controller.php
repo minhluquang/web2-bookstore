@@ -97,8 +97,10 @@
     
     $amountProduct = getProductsByFilter($keyword, $listCategoryIds, $startRange, $endRange, null, null)->num_rows;
     $result = getProductsByFilter($keyword, $listCategoryIds, $startRange, $endRange, $itemsPerPage, $page);
+
     if ($result && $result->num_rows > 0) {
       $products = $result->fetch_all(MYSQLI_ASSOC);
+
       $response = (object) array(
         'listCategoryIds' => count($listCategoryIds),
         'success' => true,
@@ -141,6 +143,16 @@
         );
         echo json_encode($reponse);
       }
+    }
+  }
+
+  function getProductsByUnknownCategory() {
+    $result = getProductsByUnknownCategoryModel();
+    if ($result !== false) {
+      $result = $result->fetch_all(MYSQLI_ASSOC);
+      return $result;
+    } else {
+      return "Hệ thống gặp sự cố";
     }
   }
 ?>

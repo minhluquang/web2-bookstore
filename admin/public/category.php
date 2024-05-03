@@ -22,7 +22,6 @@ $_SESSION["render"] ->setTable("categories");
 
     <form class="admin__content--body__filter" id="product-filter-form">
         <h1>Lọc thể loại</h1>
-        <p>* Lưu ý: Định dạng dữ liệu ngày được hiển thị là dạng dd/mm/yyyy</p>
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--nameClient filter_category" id="">
                 <p>Tên thể loại</p>
@@ -35,33 +34,15 @@ $_SESSION["render"] ->setTable("categories");
             <div class="body__filter--field body__filter--idClient filter_category" id="">
                 <p>Trạng thái</p>
                 <select name="status" id="statusSelect">
-                    <option value="active">Hoạt động</option>
+                    <option value="active" selected>Hoạt động</option>
                     <option value="inactive">Không hoạt động</option>
                     <option value="">Tất cả</option>
                 </select>
             </div>
         </div>
+        <p id="message"></p>
 
-        <div class="admin__content--body__filter--gr1">
-            <div class="body__filter--field body__filter--status" id="">
-                <p>Loại ngày</p>
-                <select name="cateDate" id="cateDateSelect">
-                    <option value="">Chọn loại ngày</option>
-                    <option value="create_date">Ngày tạo</option>
-                    <option value="update_date">Ngày cập nhật</option>
-                </select>
-            </div>
-            <div class="body__filter--field body__filter--datefrom" >
-                <label>Từ ngày</label>
-                <input type="date"
-                id="date_start" />
-            </div>
-            <div class="body__filter--field body__filter--dateto">
-                <label>Đến ngày</label>
-                <input type="date"
-                id="date_end" />
-            </div>
-        </div>
+      
 
         <div class="body__filter--actions">
             <button class="body__filter--action__add">Thêm thể loại</button>
