@@ -129,7 +129,7 @@ thead th:nth-child(4) {
 
 /* Css specials */
 .body__filter--field {
-  width: 30%;
+  width: 50%;
 }
 
 .d-flex-start {
@@ -140,4 +140,23 @@ thead th:nth-child(4) {
 
 .d-none {
   display: none;
+}
+
+#content-product thead th:nth-child(1),
+#content-product thead th:nth-child(2) {
+  width: 10%;
+}
+
+#content-product thead th:nth-child(3) {
+  width: 15%;
+}
+
+#content-product thead th:nth-child(4) {
+  width: 6%;
+}
+
+#content-product thead th:nth-child(5),
+#content-product thead th:nth-child(8),
+#content-product thead th:nth-child(9) {
+  width: 8%;
 }

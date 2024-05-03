@@ -284,7 +284,6 @@ class pagnation
                             <tr>
                                 <th>Mã người dùng</th>
                                 <th>Tên người dùng</th>
-                                <th>Email</th>
                                 <th>Loại tài khoản</th>
                                 <th>Ngày đăng ký</th>
                                 <th>Trạng thái tài khoản</th>
@@ -298,7 +297,6 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['username'] . '</td>';
                             echo '<td class="name">' . 'Tên người dùng' . '</td>';
-                            echo '<td class="email">' . 'Email' . '</td>';
 
                             $sql_role = 'SELECT * from roles WHERE id="' . $row['role_id'] . '"';
                             $row_role = mysqli_fetch_array($database->query($sql_role));
@@ -308,7 +306,6 @@ class pagnation
                             echo '<td class="status" value="active">' . 'Trạng thái tài khoản' . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }
@@ -451,7 +448,6 @@ class pagnation
                             <tr>
                             <th>Mã quyền</th>                 
                             <th>Tên quyền</th>
-                            <th>Trạng thái</th>    
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -463,10 +459,8 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="status">'.$row['status'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }

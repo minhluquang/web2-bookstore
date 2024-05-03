@@ -1,69 +1,87 @@
 // Load the jquery
 var script = document.createElement("SCRIPT");
-script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
-script.type = 'text/javascript';
+script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
+script.type = "text/javascript";
 document.getElementsByTagName("head")[0].appendChild(script);
 var search = location.search.substring(1);
-urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
-var number_of_item = urlParams['item'];
-var current_page = urlParams['pag'];
+urlParams = JSON.parse(
+  '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+  function (key, value) {
+    return key === "" ? value : decodeURIComponent(value);
+  }
+);
+var number_of_item = urlParams["item"];
+var current_page = urlParams["pag"];
 if (current_page == null) {
-    current_page = 1;
+  current_page = 1;
 }
 if (number_of_item == null) {
-    number_of_item = 5;
+  number_of_item = 5;
 }
 function checkReady() {
-    return new Promise(async function (resolve) {
-        while (!window.jQuery) {
-            await new Promise(resolve => setTimeout(resolve, 20));
-        }
-        resolve();
-    })
+  return new Promise(async function (resolve) {
+    while (!window.jQuery) {
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
+    resolve();
+  });
 }
 async function loadForFirstTime() {
-    await checkReady();
-    loadItem();
+  await checkReady();
+  loadItem();
 }
 function pagnationBtn() {
-    // pagnation
-    document.querySelectorAll('.pag').forEach((btn) => btn.addEventListener('click', function () {
-        current_page=btn.innerHTML;
-        loadItem();
-    }));
-    if (document.getElementsByClassName('pag-pre').length > 0)
-        document.querySelector('.pag-pre').addEventListener('click', function () {
-            current_page = Number(document.querySelector('span.active').innerHTML) - 1;
-            loadItem(number_of_item, current_page);
-        });
-    if (document.getElementsByClassName('pag-con').length > 0)
-        document.querySelector('.pag-con').addEventListener('click', function () {
-            current_page = Number(document.querySelector('span.active').innerHTML) + 1;
+  // pagnation
+  document.querySelectorAll(".pag").forEach((btn) =>
+    btn.addEventListener("click", function () {
+      current_page = btn.innerHTML;
+      loadItem();
+    })
+  );
+  if (document.getElementsByClassName("pag-pre").length > 0)
+    document.querySelector(".pag-pre").addEventListener("click", function () {
+      current_page =
+        Number(document.querySelector("span.active").innerHTML) - 1;
+      loadItem(number_of_item, current_page);
+    });
+  if (document.getElementsByClassName("pag-con").length > 0)
+    document.querySelector(".pag-con").addEventListener("click", function () {
+      current_page =
+        Number(document.querySelector("span.active").innerHTML) + 1;
 
-            loadItem();
-        });
+      loadItem();
+    });
 }
 function loadItem() {
-    $.ajax({
-        url: '../controller/admin/pagnation.controller.php',
-        type: "post",
-        dataType: 'html',
-        data: {
-            number_of_item: number_of_item,
-            current_page: current_page,
-            function: "render"
-        }
-    }).done(function (result) {
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&pag=' + current_page ;
-        window.history.pushState({path:newurl},'',newurl);
-        $('.result').html(result);
-        pagnationBtn();
-        js();
-
-    })
-};
+  $.ajax({
+    url: "../controller/admin/pagnation.controller.php",
+    type: "post",
+    dataType: "html",
+    data: {
+      number_of_item: number_of_item,
+      current_page: current_page,
+      function: "render",
+    },
+  }).done(function (result) {
+    var newurl =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      window.location.pathname +
+      "?page=" +
+      urlParams["page"] +
+      "&item=" +
+      number_of_item +
+      "&pag=" +
+      current_page;
+    window.history.pushState({ path: newurl }, "", newurl);
+    $(".result").html(result);
+    pagnationBtn();
+    js();
+  });
+}
 document.addEventListener("DOMContentLoaded", () => {
-    loadForFirstTime()
+  loadForFirstTime();
 });
 
 var js = function () {
@@ -93,12 +111,9 @@ var js = function () {
           <input type="text" id="editUserName">
       </div>
       <div class="input-field">
-          <label for="editUserEmail">Email</label>
-          <input type="email" id="editUserEmail">
-      </div>
-      <div class="input-field">
           <label for="editUserRole">Loại tài khoản</label>
           <select id="editUserRole">
+              <option value="all">Tất cả</option>
               <option value="customer">Người dùng</option>
               <option value="admin">Quản trị viên</option>
               <option value="staff">Nhân viên</option>
@@ -173,7 +188,6 @@ var js = function () {
     const row = button.closest("tr");
     const userId = row.querySelector(".id").textContent;
     const userName = row.querySelector(".name").textContent;
-    const userEmail = row.querySelector(".email").textContent;
     const userRole = row.querySelector(".type").getAttribute("value");
     const userStatus = row.querySelector(".status").getAttribute("value");
     document.getElementById("editUserId").value = userId;
@@ -208,7 +222,9 @@ var js = function () {
 
   // Handle khi bấm vào nút sửa
   const handleClickedEditButon = (button) => {
-    button.addEventListener("click", () => handleRenderDataModalEditUser(button));
+    button.addEventListener("click", () =>
+      handleRenderDataModalEditUser(button)
+    );
   };
 
   // When the user clicks the edit button, open the modal
@@ -242,12 +258,12 @@ var js = function () {
   });
 
   // Add event listener to the form for handling form submission
-  var editForm = document.getElementById("editForm")
-  if (!editForm == null) editForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the default form submission
-    // Handle form submission (you may send an AJAX request to update the user data)
-    // Once the data is updated, close the modal
-    modal.style.display = "none";
-  });
-
-}
+  var editForm = document.getElementById("editForm");
+  if (!editForm == null)
+    editForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+      // Handle form submission (you may send an AJAX request to update the user data)
+      // Once the data is updated, close the modal
+      modal.style.display = "none";
+    });
+};

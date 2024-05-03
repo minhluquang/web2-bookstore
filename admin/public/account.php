@@ -30,12 +30,26 @@ $_SESSION["render"] ->setTable("accounts");
                 <input type="text" placeholder="Nhập mã khách hàng" />
             </div>
 
+            
+        </div>
+
+        <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--roleClient" id="userRoleClient">
                 <p>Loại tài khoản</p>
                 <select>
-                    <option value="user" selected>Người dùng</option>
+                    <option value="all" selected>Tất cả</option>
+                    <option value="customer" >Người dùng</option>
                     <option value="admin">Quản trị viên</option>
                     <option value="staff">Nhân viên</option>
+                </select>
+            </div>
+
+            <div class="body__filter--field body__filter--statusClient" id="userStatus">
+                <p>Loại tài khoản</p>
+                <select>
+                    <option value="all" selected>Tất cả</option>
+                    <option value="active">Hoạt động</option>
+                    <option value="nonActive">Ngưng hoạt động</option>
                 </select>
             </div>
         </div>
