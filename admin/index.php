@@ -81,6 +81,9 @@ if (!isset($_SESSION['usernameAdmin'])) {
         case 'role':
           require_once('public/role.php');
           break;
+          // case 'account':
+          // require_once('public/account.php');
+          // break;
         default:
           // Xử lý trường hợp không khớp với bất kỳ trang nào
           require_once('notFound.php');
