@@ -13,6 +13,12 @@ if (isset($_POST['function'])) {
     case 'edit':
       editRole();
       break;
+    case 'staff_role_update':
+      editFunctionDetail();
+    break;
+    case 'init': 
+      init();
+    break;
   }
 }
 function deleteRole()
@@ -34,4 +40,13 @@ function editRole()
   if (isset($_POST['field'])) {
     echo role_edit($_POST['field']);
   }
+}
+
+function editFunctionDetail() {
+  if (isset($_POST['field'])) {
+    echo editFunction_Details($_POST['field']);
+  }
+}
+function init() {
+  echo init_model();
 }

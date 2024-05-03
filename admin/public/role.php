@@ -44,7 +44,7 @@ $_SESSION["render"] ->setTable("functions");
 
 
         <div class="body__filter--actions">
-        <button type="button" class="body__filter--action__add">Thêm quyền</button>
+        <button type="button" class="body__filter--action__add">Sửa quyền nhân viên</button>
             <div>
                 <button type="reset" class="body__filter--action__reset">Reset</button>
                 <button class="body__filter--action__filter">Lọc</button>

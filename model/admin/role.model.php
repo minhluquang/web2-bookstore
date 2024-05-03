@@ -71,3 +71,34 @@ function role_edit($field)
     return ($result);
   } else return "<span class='failed'>Quyền " . $row['id'] . " không tồn tại</span>";
 }
+
+function editFunction_Details($field) {
+  global $database;
+
+  foreach ($field['checkboxValues'] as $function_id => $checked) {
+      $sql = "UPDATE function_details SET action = " . $checked . " WHERE role_id = 2 and function_id = " . $function_id;
+      $result = $database->execute($sql);
+      if (!$result) {
+          return "<span class='failed'>Sửa Quyền không thành công</span>";
+      }
+  }
+
+  return "<span class='success'>Sửa quyền nhân viên thành công</span>";
+}
+
+function init_model() {
+  global $database;
+  $sql = "SELECT * FROM `function_details` WHERE role_id = 2 ORDER BY function_id ASC";
+  $result = $database->query($sql);
+    if ($result->num_rows > 0) {
+        $function_details = array();
+        while ($row = $result->fetch_assoc()) {
+            $function_details[] = $row;
+        }
+  
+        $json_result = json_encode($function_details);
+        echo $json_result;
+    } else {
+        echo json_encode(array("error" => "No rows found"));
+    }
+}

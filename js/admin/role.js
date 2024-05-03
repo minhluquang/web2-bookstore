@@ -133,17 +133,18 @@ function filterBtn() {
                 current_page: current_page,
                 function: "render",
                 filter: {
-                    supplier_status: status_value
+                    role_status: status_value
                 }
             }
         }).done(function (result) {
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams[  'page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams[  'page'] + '&item=' + number_of_item + '&current_page=' + current_page ;
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
             pagnationBtn();
             js();
         })
     })
+
 }
 
  var js = function() {
@@ -172,45 +173,167 @@ function filterBtn() {
 </div>
 </div>`;
 
+const html = `<div class="modal-edit-product-container show" id="modal-edit-container">
+<div class="modal-edit-product">
+    <div class="modal-header">
+        <h3>Sửa quyền</h3>
+        <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+    <form id="Form " style="margin-top: 10px;">
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlsp" id="1">
+            <label for="qlsp">Quản lý sản phẩm</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qldh" id="2">
+            <label for="qldh">Quản lý đơn hàng</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qltk" id="3">
+            <label for="qltk">Quản lý tài khoản</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qldm" id="4">
+            <label for="qldm">Quản lý danh mục</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qltkbc" id="5">
+            <label for="qltkbc">Quản lý thống kê và báo cáo</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlttgh" id="6">
+            <label for="qlttgh">Quản lý thông tin giao hàng</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlnxb" id="7">
+            <label for="qlnxb">Quản lý nhà xuất bản</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qltg" id="8">
+            <label for="qltg">Quản lý tác giả</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlncc" id="9">
+            <label for="qlncc">Quản lý nhà cung cấp</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlpq" id="10">
+            <label for="qlpq">Quản lý phân quyền</label>
+        </div>
+            <input type="reset" value="Hủy" class="button-cancel">
+            <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
+        </form>
+    </div>
+</div>
+</div>`;
+
 document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
     e.preventDefault();
-    modal.innerHTML = create_html;
-    const modal_create_container = document.querySelector("#modal-edit-container");
-    modal.querySelector('.button-confirm').addEventListener('click', function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: '../controller/admin/role.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                function: "create",
-                field: {                   
-                    name: modal.querySelector('#namerole').value,              
-                }
-            }
-        }).done(function (result) {
-            loadItem();
-            $("#sqlresult").html(result);
+    $.ajax({
+        url: '../controller/admin/role.controller.php',
+        type: "post",
+        dataType: 'json',
+        data: {
+            function : "init",
+        }
+    }).done(function(arr){
+       modal.innerHTML = `
+       <div class="modal-edit-product-container show" id="modal-edit-container">
+<div class="modal-edit-product">
+    <div class="modal-header">
+        <h3>Sửa quyền</h3>
+        <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+    <form id="Form " style="margin-top: 10px;">
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlsp" id="1" ${arr[0].action==1 ? "checked" : ""}>
+            <label for="qlsp">Quản lý sản phẩm</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qldh" id="2" ${arr[1].action==1 ? "checked" : ""}>
+            <label for="qldh">Quản lý đơn hàng</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qltk" id="3" ${arr[2].action==1 ? "checked" : ""}>
+            <label for="qltk">Quản lý tài khoản</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qldm" id="4" ${arr[3].action==1 ? "checked" : ""}>
+            <label for="qldm">Quản lý danh mục</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qltkbc" id="5" ${arr[4].action==1 ? "checked" : ""}>
+            <label for="qltkbc">Quản lý thống kê và báo cáo</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlttgh" id="6" ${arr[5].action==1 ? "checked" : ""}>
+            <label for="qlttgh">Quản lý thông tin giao hàng</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlnxb" id="7" ${arr[6].action==1 ? "checked" : ""}>
+            <label for="qlnxb">Quản lý nhà xuất bản</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qltg" id="8" ${arr[7].action==1 ? "checked" : ""}>
+            <label for="qltg">Quản lý tác giả</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlncc" id="9" ${arr[8].action==1 ? "checked" : ""}>
+            <label for="qlncc">Quản lý nhà cung cấp</label>
+        </div>
+        <div class="input-field d-flex-start">
+            <input type="checkbox" name="qlpq" id="10" ${arr[9].action==1 ? "checked" : ""}>
+            <label for="qlpq">Quản lý phân quyền</label>
+        </div>
+            <input type="reset" value="Hủy" class="button-cancel">
+            <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
+        </form>
+    </div>
+</div>
+</div>`;
+       const modal_create_container = document.querySelector("#modal-edit-container");
+       modal.querySelector('.button-confirm').addEventListener('click', function (e) {
+           e.preventDefault();
            
-        })
-        modal_create_container.classList.add('hidden');
-    });
-    
-
-    document.querySelector("#btnClose").addEventListener("click", () => {
-    modal_create_container.classList.add('hidden');
-});
-document.querySelector(".button-cancel").addEventListener("click", () => {
-    modal_create_container.classList.add('hidden');
-});
-
+           const chkRole = document.querySelectorAll('.input-field input[type=checkbox]');
+           let checkboxValues = {}
+           chkRole.forEach(function(checkbox) {
+               checkboxValues[checkbox.id] = checkbox.checked == true ? 1 : 0;
+           });
+           console.log(checkboxValues);
+           $.ajax({
+               url: '../controller/admin/role.controller.php',
+               type: "post",
+               dataType: 'html',
+               data: {
+                   function: "staff_role_update",
+                   field: {                   
+                       checkboxValues,              
+                   }
+               }
+           }).done(function (result) {
+               loadItem();
+               $("#sqlresult").html(result);
+              
+           })
+           modal_create_container.classList.add('hidden');
+       });
+       document.querySelector("#btnClose").addEventListener("click", () => {
+       modal_create_container.classList.add('hidden');
+       });
+       document.querySelector(".button-cancel").addEventListener("click", () => {
+       modal_create_container.classList.add('hidden');
+       });
+    }) 
 });
 
 
 const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
-        <h3>Sửa quyền</h3>
+        <h3>Sửa quyền nhân viên</h3>
         <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
