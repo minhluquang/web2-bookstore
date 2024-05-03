@@ -126,57 +126,46 @@ var js = function () {
               <option value="inactive">Ngưng hoạt động</option>
           </select>
       </div>
-      
     </form>`;
     modalContent.insertAdjacentHTML("afterbegin", html);
   };
 
-  // Render modal chỉnh sửa quyền nhân viên
+  // Render modal Đổi mật khẩu
   const renderModalEditFunctionStaff = () => {
     modalContent.innerHTML = "";
     const html = `
-    <h2>Chỉnh sửa quyền nhân viên</h2>
-    <form id="Form">
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlsp" id="qlsp">
-            <label for="qlsp">Quản lý sản phẩm</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qldh" id="qldh">
-            <label for="qldh">Quản lý đơn hàng</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltk" id="qltk">
-            <label for="qltk">Quản lý tài khoản</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qldm" id="qldm">
-            <label for="qldm">Quản lý danh mục</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltkbc" id="qltkbc">
-            <label for="qltkbc">Quản lý thống kê và báo cáo</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlttgh" id="qlttgh">
-            <label for="qlttgh">Quản lý thông tin giao hàng</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlnxb" id="qlnxb">
-            <label for="qlnxb">Quản lý nhà xuất bản</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltg" id="qltg">
-            <label for="qltg">Quản lý tác giả</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlncc" id="qlncc">
-            <label for="qlncc">Quản lý nhà cung cấp</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlpq" id="qlpq">
-            <label for="qlpq">Quản lý phân quyền</label>
-        </div>
+    <h2>Đổi mật khẩu</h2>
+    <form id="changePasswordForm">
+      <div class="input-field">
+          <label for="changeCurrentPassword">Mật khẩu hiện tại</label>
+          <div class="changeCurrentPasswordContainer">
+            <input type="password" id="changeCurrentPassword" >
+            <button class="changeCurrentPasswordView">
+              <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+              <i class="fa-solid fa-eye view-loginPassword hide"></i>
+            </button>
+          </div>
+      </div>
+      <div class="input-field">
+          <label for="changeNewPassword">Mật khẩu mới</label>
+          <div class="changeNewPasswordContainer">
+            <input type="password" id="changeNewPassword">
+            <button class="changeNewPasswordView">
+              <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+              <i class="fa-solid fa-eye view-loginPassword hide"></i>
+            </button>
+          </div>
+      </div>
+      <div class="input-field">
+          <label for="changeConfirmNewPassword">Nhập lại mật khẩu mới</label>
+          <div class="changeConfirmNewPasswordContainer">
+            <input type="password" id="changeConfirmNewPassword">
+            <button class="changeConfirmNewPasswordView">
+                <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+                <i class="fa-solid fa-eye view-loginPassword hide"></i>
+            </button>
+          </div>
+      </div>
     </form>
   `;
     modalContent.insertAdjacentHTML("afterbegin", html);
@@ -192,7 +181,7 @@ var js = function () {
     const userStatus = row.querySelector(".status").getAttribute("value");
     document.getElementById("editUserId").value = userId;
     document.getElementById("editUserName").value = userName;
-    document.getElementById("editUserEmail").value = userEmail;
+    // document.getElementById("editUserEmail").value = userEmail;
     var editUserRoleSelect = document.getElementById("editUserRole");
     for (var i = 0; i < editUserRoleSelect.options.length; i++) {
       if (editUserRoleSelect.options[i].value === userRole) {
@@ -267,3 +256,5 @@ var js = function () {
       modal.style.display = "none";
     });
 };
+
+// Bấm nút ẩn/hiện password

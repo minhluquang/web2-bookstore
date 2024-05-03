@@ -8,7 +8,6 @@
   --top-bar-height: 60px;
 }
 
-
 #content-product thead th:first-child {
   border-top-left-radius: 4px;
 }
@@ -17,7 +16,7 @@
   border-top-right-radius: 4px;
 }
 
-#content-product thead th:nth-child(1){
+#content-product thead th:nth-child(1) {
   width: 5%;
 }
 #content-product thead th:nth-child(4),
@@ -303,7 +302,7 @@ td:last-child {
   display: flex;
   flex-direction: column;
 }
-.flex input{
+.flex input {
   width: 200px;
   height: 30px;
   padding: 5px;
@@ -354,7 +353,7 @@ td:last-child {
 }
 
 .modal-body .edit-image {
-  padding:  0 0 5px 0;
+  padding: 0 0 5px 0;
 }
 
 .modal-body .edit-image input {
@@ -485,67 +484,65 @@ td:last-child {
   flex: 0 0 65%;
 }
 
-#sqlresult{
+#sqlresult {
   margin-left: 15px;
   width: 300px;
   display: flex;
   position: fixed;
   justify-content: center;
   top: var(--top-bar-height);
-
-
 }
-#sqlresult .success{
+#sqlresult .success {
   background-color: #5cc474;
   border-radius: 5px;
   padding: 10px;
   position: relative;
 }
-#sqlresult .failed{
+#sqlresult .failed {
   background-color: #e6564c;
   border-radius: 5px;
   padding: 10px;
   position: relative;
 }
-.open-multiselect{
+.open-multiselect {
   cursor: pointer;
-  flex:17%;
+  flex: 17%;
   margin-right: 10px;
   background-color: #a090bd;
   border: none !important;
   border-radius: 5px !important;
   color: #383434 !important;
 }
-.multiselect-body{
+.multiselect-body {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 }
-.cancel-multiselect{
+.cancel-multiselect {
   margin-left: 5px;
   background-color: inherit;
   border: none;
 }
-.multiselect-content{
+.multiselect-content {
   padding: 5px 7px 5px 7px;
   margin: 4px;
   white-space: nowrap;
   border: none !important;
   border-radius: 5px !important;
 }
-#multiselect-selected .multiselect-content{
+#multiselect-selected .multiselect-content {
   background-color: #a090bd;
 }
-#multiselect-available .multiselect-content{
+#multiselect-available .multiselect-content {
   background-color: #90b7bd;
 }
-.body-header{
+.body-header {
   border-bottom: 1px solid #c7c7c7;
   margin-bottom: 10px;
 }
-.body-header span{
+.body-header span {
   font-weight: bold;
 }
-.body-header input{
+.body-header input {
   width: 200px;
   height: 26px;
   padding: 5px;
@@ -564,15 +561,19 @@ td:last-child {
 
 /* Track */
 #multiselect ::-webkit-scrollbar-track {
-  background: #ffffff; 
+  background: #ffffff;
 }
- 
+
 /* Handle */
 #multiselect ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 #multiselect ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
+}
+
+.body__filter--field {
+  width: calc(100% / 3);
 }

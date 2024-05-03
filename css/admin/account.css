@@ -66,6 +66,7 @@ thead th:nth-child(4) {
 
 .input-field input[type="text"],
 .input-field input[type="email"],
+.input-field input[type="password"],
 .input-field select {
   width: 100%;
   padding: 8px;
@@ -76,9 +77,14 @@ thead th:nth-child(4) {
 
 .input-field input[type="text"]:focus,
 .input-field input[type="email"]:focus,
+.input-field input[type="password"]:focus,
 .input-field select:focus {
   outline: none;
   border-color: #007bff; /* Change border color on focus */
+}
+
+.input-field input[type="password"] {
+  padding: 8px 42px 8px 8px;
 }
 
 .input-field input[type="checkbox"] {
@@ -129,7 +135,7 @@ thead th:nth-child(4) {
 
 /* Css specials */
 .body__filter--field {
-  width: 50%;
+  width: 25%;
 }
 
 .d-flex-start {
@@ -159,4 +165,44 @@ thead th:nth-child(4) {
 #content-product thead th:nth-child(8),
 #content-product thead th:nth-child(9) {
   width: 8%;
+}
+
+/* Css eye password */
+
+.changeCurrentPasswordContainer,
+.changeNewPasswordContainer,
+.changeConfirmNewPasswordContainer {
+  width: 100%;
+  position: relative;
+}
+
+.changeCurrentPasswordContainer .changeCurrentPasswordView,
+.changeNewPasswordContainer .changeNewPasswordView,
+.changeConfirmNewPasswordContainer .changeConfirmNewPasswordView {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.changeCurrentPasswordContainer .changeCurrentPasswordView i,
+.changeNewPasswordContainer .changeNewPasswordView i,
+.changeConfirmNewPasswordContainer .changeConfirmNewPasswordView i {
+  cursor: pointer;
+  padding: 0 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.changeCurrentPasswordContainer .changeCurrentPasswordView i.hide,
+.changeNewPasswordContainer .changeNewPasswordView i.hide,
+.changeConfirmNewPasswordContainer .changeConfirmNewPasswordView i.hide {
+  display: none;
 }

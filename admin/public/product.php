@@ -10,11 +10,9 @@ $_SESSION["render"] ->setTable("products");
     <title>Quản lý sản phẩm</title>
     <link rel="stylesheet" href="../css/fonts/fonts.css?v=<?php echo time(); ?>" />
     <link rel="stylesheet" href="../assets/fontawesome-free-6.5.1-web/css/all.min.css?v=<?php echo time(); ?>" />
-    <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />
     <link rel="stylesheet" href="../css/admin/account.css?v=<?php echo time(); ?> " />
-
-
+    <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
 </head>
 
 <body>

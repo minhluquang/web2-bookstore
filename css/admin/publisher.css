@@ -19,14 +19,14 @@
 }
 .create-cancel {
   cursor: pointer;
-    margin-top: 10px;
-    margin-right: calc(49% - 70px);
-    background-color: #9fa4a8;
-    border: none !important;
-    width: 70px !important;
-    height: 35px !important;
-    border-radius: 5px !important;
-    color: #383434 !important;
+  margin-top: 10px;
+  margin-right: calc(49% - 70px);
+  background-color: #9fa4a8;
+  border: none !important;
+  width: 70px !important;
+  height: 35px !important;
+  border-radius: 5px !important;
+  color: #383434 !important;
 }
 .create-confirm {
   cursor: pointer;
@@ -38,4 +38,8 @@
   height: 35px !important;
   border-radius: 5px !important;
   color: #383434 !important;
+}
+
+.body__filter--field {
+  width: calc(100% / 3);
 }
