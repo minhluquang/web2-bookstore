@@ -13126,7 +13126,7 @@ $(document).ready(function () {
 
         showPromoMessage("Đã áp dụng mã khuyến mãi thành công");
       } else {
-        if (!isValidDateApply(data)) {
+        if (data.success && !isValidDateApply(data)) {
           showPromoMessage(
             "Mã khuyến mãi chưa đến hạn sử dụng hoặc đã hết hạn",
             true
@@ -13134,6 +13134,8 @@ $(document).ready(function () {
         } else {
           showPromoMessage(data.message, true);
         }
+
+        // showPromoMessage(data.message, true);
       }
     });
   });
