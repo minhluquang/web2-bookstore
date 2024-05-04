@@ -42,8 +42,8 @@
     }
 
     // Nếu như username chưa tồn tại, thì tạo tài khoản
-    $sqlInsertAccount = "INSERT INTO accounts (username, password, role_id) 
-                        VALUES ('$username', '$password', 1)";
+    $sqlInsertAccount = "INSERT INTO accounts (username, password, role_id, status) 
+                        VALUES ('$username', '$password', 3, 1)";
     $sqlInsertUserInfo = "INSERT INTO delivery_infoes (user_id, fullname, phone_number, address, city, district, ward)
                               VALUES ('$username', '$fullname', '$phoneNumber', '$address', '$city', '$district', '$ward')";
 
