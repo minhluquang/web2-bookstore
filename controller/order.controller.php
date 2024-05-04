@@ -52,42 +52,22 @@
     $orderDetails = $orderDetails->fetch_all(MYSQLI_ASSOC);
 
     foreach ($orderDetails as $orderDetail) {
-      // Nếu xoá lỗi thì thông báo lỗi
-      if (!deleteOrderDetailByOrderIdAndProductId($orderDetail['order_id'], $orderDetail['product_id'])) {
+      // Thay đổi đơn hàng thành status_id = 3 (đã huỷ)
+      if (deleteOrderByOrderId($orderId)) {
         $reponse = (object) array (
-          "success" => false,
-          "message" => "Có lỗi trong quá trình xoá chi tiết đơn hàng"
+          "success" => true,
+          "message" => "Hệ thống đã xoá thành công đơn hàng"
         );
-         echo json_encode($reponse);
+        echo json_encode($reponse);
         return;
       } else {
-        // Nếu xoá thành công thì cập nhật lại số lượng sp
-        if (!updateQuantityProductByIdModel($orderDetail['product_id'], $orderDetail['quantity'])) {
-          $reponse = (object) array (
-            "success" => false,
-            "message" => "Có lỗi trong quá trình cập nhật lại số lượng sản phẩm"
-          );
-           echo json_encode($reponse);
-          return;
-        }
+        $reponse = (object) array (
+          "success" => false,
+          "message" => "Có lỗi trong quá trình xoá đơn hàng"
+        );
+        echo json_encode($reponse);
+        return;
       }
-    }
-
-    // Nếu xoá hết mà không xảy ra lỗi gì thì xoá đơn hàng
-    if (deleteOrderByOrderId($orderId)) {
-      $reponse = (object) array (
-        "success" => true,
-        "message" => "Hệ thống đã xoá thành công đơn hàng"
-      );
-      echo json_encode($reponse);
-      return;
-    } else {
-      $reponse = (object) array (
-        "success" => false,
-        "message" => "Có lỗi trong quá trình xoá đơn hàng"
-      );
-      echo json_encode($reponse);
-      return;
     }
   }
 ?>

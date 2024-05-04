@@ -29,9 +29,11 @@ if (!isset($_SESSION['usernameAdmin'])) {
     <div class="topbar__admin-info">
       <div class="topbar__admin-info__detail">
         <i class="fa-solid fa-user-shield"></i>
-        <h2><?php
+        <h2>
+          <?php
             echo $_SESSION['usernameAdmin']
-            ?></h2>
+          ?>
+        </h2>
       </div>
       <i class="fa-solid fa-caret-down"></i>
       <div class="topbar__admin-info--logout">

@@ -62,8 +62,9 @@
   function deleteOrderByOrderId($orderId) {
     $database = new connectDB();
     if ($database->conn) {
-      $sql = "DELETE FROM orders
-              WHERE id = $orderId";
+      $sql = "UPDATE orders
+              SET status_id = 3
+              WHERE id = 1";
       $result = $database->execute($sql);
       if ($result) {
         $database->close();
