@@ -56,6 +56,7 @@ class pagnation
             'categories' => 'id',
             'suppliers' =>'id',
             'functions' => 'id',
+            'discounts' =>'discount_code',
         );
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
@@ -187,10 +188,7 @@ class pagnation
                             <th>Tên nhà cung cấp</th>
                             <th>Email </th>
                             <th>Số điện thoại </th>
-                            <th>Trạng thái </th>
-                            <th>Ngày tạo</th>
-                            <th>Ngày cập nhật</th>
-                            <th>Ngày xóa</th>
+                            <th>Trạng thái </th>                           
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -204,10 +202,7 @@ class pagnation
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
-                            echo '<td class="status">' . $row['status'] . '</td>';
-                            echo '<td class="date-create">'.$row['create_date'].'</td>';
-                            echo '<td class="date-update">'.$row['update_date'].'</td>';
-                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            echo '<td class="status">' . $row['status'] . '</td>';                          
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -440,6 +435,45 @@ class pagnation
                     </div>';
                     }
                     break;
+                    case "discounts": {
+                        echo '
+                    <div class="table__wrapper">
+                    <table id="content-product">
+                        <thead class="menu">
+                            <tr>
+                            <th>Tên mã giảm giá</th>                 
+                            <th>Loại mã giảm giá</th>
+                            <th>Giá trị mã giảm giá</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Trạng thái</th>                                    
+                            <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-content" id="content">
+
+                    ';
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';                                    
+                            echo '<td class="type">'.$row['type'].'</td>';
+                            echo '<td class="discount_value">' . $row['discount_value'] . '</td>';
+                            echo '<td class="start_date">'.$row['start_date'].'</td>';
+                            echo '<td class="end_date">'.$row['end_date'].'</td>';
+                            echo '<td class="status">'.$row['status'].'</td>';
+                            echo '<td class="actions">
+                            <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
+                        </td>
+                        </tr>';
+                        }
+                        echo ' 
+                    </tbody>
+                    </table>
+                    </div>';
+                    }
+                    break;
                 case "functions" : {
                     echo '
                     <div class="table__wrapper">
@@ -537,6 +571,9 @@ function getFilterSQL($table, $data)
         case 'categories':
             return getCategoryFilterSQL($data);
             break;
+        case 'discounts':
+            return getDiscountFilterSQL($data);
+            break;
         case 'publishers':
             return getPublisherFilterSQL($data);
             break;
@@ -629,6 +666,32 @@ function getCategoryFilterSQL($data)
                
                 $filter = $filter . "status = 1 " ;
             } elseif ($data['category_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
+        
+       
+
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return  $filter;
+}
+
+function getDiscountFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['discount_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`discount_code` LIKE '%" . $data['discount_name'] . "%'";
+        }       
+        if (!empty($data['discount_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['discount_status'] == "active") {
+               
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['discount_status'] == "inactive") {
                 $filter = $filter . "status = 0 " ;
             }
             

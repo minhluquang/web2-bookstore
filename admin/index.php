@@ -86,6 +86,9 @@ if (!isset($_SESSION['usernameAdmin'])) {
         case 'selfDestruct':
           require_once('public/selfDestruct.php');
           break;
+          case 'discount':
+            require_once('public/discount.php');
+            break;
           // case 'account':
           // require_once('public/account.php');
           // break;

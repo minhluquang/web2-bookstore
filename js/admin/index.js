@@ -101,6 +101,7 @@ function renderSiderBars(data) {
       href: "?page=receipt",
       fncid: 9,
     },
+    
     {
       page: "role",
       name: "Phân quyền",
@@ -108,6 +109,14 @@ function renderSiderBars(data) {
       href: "?page=role",
       fncid: 10,
     },
+    {
+      page: "discount",
+      name: "Khuyễn mãi",
+      icon: "fa-file-invoice",
+      href: "?page=discount",
+      fncid: 11,
+    },
+    
   ];
 
   let html = ""; // Khởi tạo biến html ở đây

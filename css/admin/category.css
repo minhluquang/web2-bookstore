@@ -425,6 +425,12 @@
               height: auto;
               max-height: 100px;
           }
+
+          #message {
+            color: red;
+          }
+
+         
   
       
   

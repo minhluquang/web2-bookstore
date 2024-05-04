@@ -132,7 +132,7 @@ body {
 }
 
 .sidebar__item {
-  height: 50px;
+  height: 45px;
   display: flex;
   justify-content: start;
   align-items: center;

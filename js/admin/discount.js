@@ -1,16 +1,14 @@
 var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
-    filter_form.querySelector("#categoryName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
-    filter_form.querySelector("#categoryId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
+    filter_form.querySelector("#discountName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
     filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
 
 }
 function pushFilterToURL() {
     var filter = getFilterFromForm();
     var url_key = {
-        "category_name": "name",
-        "category_id": "id",
-        "category_status":"status"
+        "discount_name": "name",
+        "discount_status":"status"
         
         
     }
@@ -22,9 +20,8 @@ function pushFilterToURL() {
 }
 function getFilterFromForm() {
     return {
-        "category_name": filter_form.querySelector("#categoryName").value,
-        "category_id": filter_form.querySelector("#categoryId").value,     
-        "category_status": filter_form.querySelector("#statusSelect").value,
+        "discount_name": filter_form.querySelector("#discountName").value,
+        "discount_status": filter_form.querySelector("#statusSelect").value,
         
     }
 }
@@ -117,26 +114,11 @@ async function loadForFirstTime() {
 
 function filterBtn() {
     $(".body__filter--action__filter").click((e) => {
+        current_page = 1;
         e.preventDefault();
-        var categoryId = filter_form.querySelector("#categoryId").value.trim();
-        var message = filter_form.querySelector("#message");
-        var check = true;
-        var regex = /^\d+$/;
-       if (!categoryId.match(regex) && categoryId!=='') {
-            message.innerHTML = "*Mã thể loại phải là kí tự số";
-            filter_form.querySelector("#categoryId").focus();
-            check = false;  
-        } 
-        if(check == true) {
-            message.innerHTML = "";
-            current_page = 1;
-            loadItem();
-        }
-        
+        loadItem();   
     })
     $(".body__filter--action__reset").click((e) => {
-        message.innerHTML = "";
-        check = true;
         current_page = 1;
         status_value = "active";
         $.ajax({
@@ -146,7 +128,7 @@ function filterBtn() {
             data: {
                 number_of_item: number_of_item,
                 current_page: current_page,
-                function: "render",
+                function: "getTotalRecords",
                 filter: {
                     category_status: status_value
                 }
@@ -165,11 +147,12 @@ function filterBtn() {
 
 
 
+
  var js = function() {
     const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
-        <h3>Thêm thể loại</h3>
+        <h3>Thêm mã giảm giá</h3>
         <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
@@ -177,11 +160,31 @@ function filterBtn() {
 
             <div class="modal-body-2">
                 <div class="flex">
-                    <label for="nameCategory">Tên thể loại</label>
-                    <input id="nameCategory" type="text" add-index="2" placeholder="Tên thể loại">                   
+                    <label for="nameDiscount">Tên mã giảm giá</label>
+                    <input id="nameDiscount" type="text" add-index="2" placeholder="Tên mã giảm giá">         
                 </div>
-                <p id ="message"></p>
-                
+                <div class="flex">
+                    <label for="type_discount">Loại mã giảm giá giá</label>
+                    <select  id="type_discount">
+                    <option value="">Chọn loại mã giảm giá</option>
+                    <option value="AR" >Giảm theo giá tiền </option>
+                    <option value="PR">Giảm theo phần trăm</option>                 
+                </select>
+                             
+                </div>
+                <div class="flex">
+                    <label for="value_discount">Giá trị mã giảm giá</label>
+                    <input id="value_discount" type="text" add-index="2" placeholder="Giá trị mã giảm giá">         
+                </div>
+                <div class="flex">
+                    <label for="start_date">Ngày bắt đầu</label>
+                    <input id="start_date" type="date" add-index="2" p>         
+                </div>
+                <div class="flex">
+                    <label for="end_date">Ngày kết thúc</label>
+                    <input id="end_date"" type="date" add-index="2" p>         
+                </div>
+                <p id="message"></p>
             </div>
             <div>
             </div>
@@ -199,22 +202,48 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
     modal.querySelector('.button-confirm').addEventListener('click', function (e) {
         e.preventDefault();
         const message = modal_create_container.querySelector("#message");
-        const name = modal_create_container.querySelector("#nameCategory").value;
+        const start_date_str = modal_create_container.querySelector("#start_date").value;
+        const end_date_str = modal_create_container.querySelector("#end_date").value;
+        const discount_code = modal.querySelector('#nameDiscount').value;
+        const type = modal.querySelector('#type_discount').value;
+        const discount_value = modal.querySelector('#value_discount').value;                   
+            
+        const start_date = new Date(start_date_str);
+        const end_date = new Date(end_date_str);
         var check = true;
-        if(name == "") {
-            message.innerHTML = "*Vui lòng điền đủ thông tin";
+
+        if(start_date > end_date) {
+            message.innerHTML = "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
             check = false;
         }
-        if(check == true)  {
+        if (discount_code =="" || type == "" || discount_value =="" || !start_date_str || !end_date_str ) {
+            message.innerHTML = "*Vui lòng nhập đủ thông tin";
+            check = false;
+        }
+        if(type == "PR") {
+            if(discount_value > 100) {
+                message.innerHTML = "*Giá trị không được lớn hơn 100";
+                check = false;
+            }else if (discount_value <= 0) {
+                message.innerHTML = "*Giá trị phải lớn hơn 0";
+                check = false;
+            }
+        }
+        if (check == true) {
             message.innerHTML = "";
             $.ajax({
-                url: '../controller/admin/category.controller.php',
+                url: '../controller/admin/discount.controller.php',
                 type: "post",
                 dataType: 'html',
                 data: {
                     function: "create",
                     field: {                   
-                        name: modal.querySelector('#nameCategory').value,                 
+                        discount_code: discount_code,
+                        type: type,
+                        discount_value: discount_value,
+                        start_date: start_date_str,
+                        end_date: end_date_str,
+    
                     }
                 }
             }).done(function (result) {
@@ -224,6 +253,7 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
             })
             modal_create_container.classList.add('hidden');
         }
+        
         
     });
     
@@ -241,7 +271,7 @@ document.querySelector(".button-cancel").addEventListener("click", () => {
 const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
-        <h3>Sửa thể loại</h3>
+        <h3>Sửa mã giảm giá</h3>
         <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
@@ -249,10 +279,31 @@ const edit_html = `<div class="modal-edit-product-container show" id="modal-edit
 
             <div class="modal-body-2">
                 <div class="flex">
-                    <label for="name">Tên thể loại</label>
-                    <input id="name" type="text" add-index="2" placeholder="Tên thể loại">                   
+                    <label for="name">Tên mã giảm giá</label>
+                    <input id="name" type="text" add-index="2" placeholder="Tên mã giảm giá" disabled>   
                 </div>
-                <p id ="message"></p>
+                <div class="flex">
+                    <label for="type_discount">Loại mã giảm giá giá</label>
+                    <select id="type_discount">
+                    <option value="">Chọn loại mã giảm giá</option>
+                    <option value="AR" >Giảm theo giá tiền </option>
+                    <option value="PR">Giảm theo phần trăm</option>                 
+                </select>
+                             
+                </div>
+                <div class="flex">
+                    <label for="value_discount">Giá trị mã giảm giá</label>
+                    <input id="value_discount" type="text" add-index="2" placeholder="Giá trị mã giảm giá">         
+                </div>
+                <div class="flex">
+                    <label for="start_date">Ngày bắt đầu</label>
+                    <input id="start_date" type="date" add-index="2" p>         
+                </div>
+                <div class="flex">
+                    <label for="end_date">Ngày kết thúc</label>
+                    <input id="end_date"" type="date" add-index="2" p>         
+                </div>
+                <p id="message"></p>
                 
             </div>
             <div>
@@ -271,31 +322,73 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             const modal_edit_container = document.querySelector("#modal-edit-container");
             modal.querySelector("#btnClose").addEventListener("click", ()=> {
                 modal_edit_container.classList.remove('show');
-            });           
-            var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
-            modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
-            // modal.querySelector('#status').value = this.parentNode.parentNode.querySelector(".status").innerHTML;          
+            });
+           
+            modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+            const type_discount_value = this.parentNode.parentNode.querySelector(".type").innerText;
+            const type_discount= modal.querySelector('#type_discount');
+            for (let i = 0; i < type_discount.options.length; i++) {
+            if (type_discount.options[i].value === type_discount_value) {
+                type_discount.options[i].selected = true;
+                break;
+            }
+        }
+            modal.querySelector('#value_discount').value = this.parentNode.parentNode.querySelector(".discount_value").innerHTML;
+            modal.querySelector('#start_date').value = this.parentNode.parentNode.querySelector(".start_date").innerHTML;
+            modal.querySelector('#end_date').value = this.parentNode.parentNode.querySelector(".end_date").innerHTML;
+
+            var discount_code = this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+           
+            
+                           
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
                 const message = modal_edit_container.querySelector("#message");
-                const name = modal_edit_container.querySelector("#name").value;
-                var check = true;
-
-                if(name == "") {
-                    message.innerHTML = "*Vui lòng điền đầy đủ thông tin";
+                console.log(message);
+                const start_date_str = modal_edit_container.querySelector("#start_date").value;
+                console.log(start_date_str);
+                const end_date_str = modal_edit_container.querySelector("#end_date").value;
+                console.log(end_date_str);
+                const type = modal_edit_container.querySelector('#type_discount ').value;
+                console.log(type);
+                const discount_value = modal_edit_container.querySelector('#value_discount').value;                        
+                console.log(discount_value)              
+                const start_date = new Date(start_date_str);
+                const end_date = new Date(end_date_str); 
+                
+                var check = true; 
+                if(start_date > end_date) {
+                    message.innerHTML = "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
                     check = false;
                 }
-                if(check == true) {
-                    message.innerHTML = "";
+                if (type == "" || discount_value =="" || !start_date_str || !end_date_str ) {
+                    message.innerHTML = "*Vui lòng nhập đủ thông tin";
+                    check = false;
+                }
+                if(type == "PR") {
+                    if(discount_value > 100) {
+                        message.innerHTML = "*Giá trị không được lớn hơn 100";
+                        check = false;
+                    }else if (discount_value <= 0) {
+                        message.innerHTML = "*Giá trị phải lớn hơn 0";
+                        check = false;
+                    }
+                }
+                console.log(check);
+                if(check === true) {
+                    message.innerHTML = ""
                     $.ajax({
-                        url: '../controller/admin/category.controller.php',
+                        url: '../controller/admin/discount.controller.php',
                         type: "post",
                         dataType: 'html',
                         data: {
                             function: "edit",
                             field: { 
-                                id: id,                  
-                                name: modal.querySelector('#name').value,
+                                discount_code: discount_code,             
+                                type:type,
+                                value_discount: discount_value,
+                                start_date: start_date_str,
+                                end_date: end_date_str,
                                                 
                             }
                         }
@@ -321,22 +414,21 @@ var edit_btns = document.getElementsByClassName("actions--edit");
     for (var i = 0; i < del_btns.length; i++) {
         del_btns[i].addEventListener('click', function () {
             let selected_content = this.parentNode.parentNode;
-            let category_id = selected_content.querySelector('.id').innerHTML;
-            let category_name = selected_content.querySelector('.name').innerHTML;
+            let discount_code = selected_content.querySelector('.discount_code').innerHTML;
 
             var del_html = `
         <div class="modal-edit-product-container show" id="modal-edit-container">
         <div class="modal-edit-product">
             <div class="modal-header">
-                <h3>Xác nhận xóa sản phẩm</h3>
+                <h3>Xác nhận xóa mã giảm giá</h3>
                 <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <div class="del-body">
                     
                     <div class="thongtin">
-                        <div><span style="font-weight: bold;">Mã thể loại :</span> <span id="category-delete-id">${category_id}</span> </div>
-                        <div><span style="font-weight: bold;">Tên thể loại :</span> <span>${category_name}</span> </div>
+                       
+                        <div><span style="font-weight: bold;">Tên mã giảm giá :</span> <span id="discount_code_delete">${discount_code}</span> </div>
                     </div>
                 </div>
                 <div class="del-btn-container">
@@ -352,14 +444,14 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             modal.innerHTML = del_html;
             $('.del-confirm').click(function (e) {
                 e.preventDefault();
-                var $id = $('#category-delete-id').html();
+                var $discount_code = $('#discount_code_delete').html();
                 $.ajax({
-                    url: '../controller/admin/category.controller.php',
+                    url: '../controller/admin/discount.controller.php',
                     type: "post",
                     dataType: 'html',
                     data: {
                         function: "delete",
-                        id: $id
+                        discount_code: $discount_code
                     }
                 }).done(function (result) {
                     loadItem();

@@ -133,11 +133,10 @@ function filterBtn() {
         } 
 
         if (check === true) {
+            message.innerHTML = "";
         current_page = 1;
         loadItem();
-        }
-        
-        
+        }   
        
     })
     $(".body__filter--action__reset").click((e) => {
@@ -194,7 +193,7 @@ function filterBtn() {
                     <input id="sdtsupplier" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
                 </div>
 
-
+                
                 
             </div>
             <div>
@@ -212,24 +211,47 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
     const modal_create_container = document.querySelector("#modal-edit-container");
     modal.querySelector('.button-confirm').addEventListener('click', function (e) {
         e.preventDefault();
-        $.ajax({
-            url: '../controller/admin/supplier.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                function: "create",
-                field: {                   
-                    name: modal.querySelector('#namesupplier').value,
-                    email: modal.querySelector('#emailsupplier').value,
-                    sdt: modal.querySelector('#sdtsupplier').value,                 
+        const message = modal_create_container.querySelector("#message");
+        const name = modal_create_container.querySelector("#namesupplier").value.trim();
+        const email = modal_create_container.querySelector("#emailsupplier").value.trim();
+        const sdt = modal_create_container.querySelector("#sdtsupplier").value.trim();
+        const regexPhoneNumber = /^0\d{9}$/;
+        const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/;
+        var check = true;
+        if(name == "" || email == "" || sdt == "") {
+            message.innerHTML = "*Vui lòng điền đủ thông tin";
+            check = false;
+        }
+        if(!sdt.match(regexPhoneNumber) && sdt != "") {
+            message.innerHTML = "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (033125639)";
+            check = false;
+        }
+        if(!email.match(regexEmail) && email != "") {
+            message.innerHTML = "* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)";
+            check = false;
+        }
+        if(check == true) {
+            message.innerHTML ="";
+            $.ajax({
+                url: '../controller/admin/supplier.controller.php',
+                type: "post",
+                dataType: 'html',
+                data: {
+                    function: "create",
+                    field: {                   
+                        name: modal.querySelector('#namesupplier').value.trim(),
+                        email: modal.querySelector('#emailsupplier').value.trim(),
+                        sdt: modal.querySelector('#sdtsupplier').value.trim(),                 
+                    }
                 }
-            }
-        }).done(function (result) {
-            loadItem();
-            $("#sqlresult").html(result);
-           
-        })
-        modal_create_container.classList.add('hidden');
+            }).done(function (result) {
+                loadItem();
+                $("#sqlresult").html(result);
+               
+            })
+            modal_create_container.classList.add('hidden');
+        }
+       
     });
     
 
@@ -268,6 +290,8 @@ const edit_html = `<div class="modal-edit-product-container show" id="modal-edit
                 <label for="sdt">Số điện thoại nhà cung cấp</label>
                 <input id="sdt" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
             </div>
+
+            <p id ="message"></p>
                 
             </div>
             <div>
@@ -287,9 +311,6 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             modal.querySelector("#btnClose").addEventListener("click", ()=> {
                 modal_edit_container.classList.remove('show');
             });
-            modal.querySelector('.button-cancel').addEventListener('click', ()=> {
-                modal_edit_container.classList.remove('show');
-            });
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
             modal.querySelector('#email').value = this.parentNode.parentNode.querySelector(".email").innerHTML;
@@ -298,26 +319,49 @@ var edit_btns = document.getElementsByClassName("actions--edit");
 
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
-                $.ajax({
-                    url: '../controller/admin/supplier.controller.php',
-                    type: "post",
-                    dataType: 'html',
-                    data: {
-                        function: "edit",
-                        field: { 
-                            id: id,                  
-                            name: modal.querySelector('#name').value,
-                            email: modal.querySelector('#email').value,
-                            sdt: modal.querySelector('#sdt').value,
-                                            
+                const message = modal_edit_container.querySelector("#message");
+                const name = modal_edit_container.querySelector("#name").value.trim();
+                const email = modal_edit_container.querySelector("#email").value.trim();
+                const sdt = modal_edit_container.querySelector("#sdt").value.trim();
+                const regexPhoneNumber = /^0\d{9}$/;
+                const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/;
+                var check = true;
+                if(name == "" || email == "" || sdt == "") {
+                    message.innerHTML = "*Vui lòng điền đủ thông tin";
+                    check = false;
+                }
+                if(!sdt.match(regexPhoneNumber) && sdt != "") {
+                    message.innerHTML = "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (033125639)";
+                    check = false;
+                }
+                if(!email.match(regexEmail) && email != "") {
+                    message.innerHTML = "* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)";
+                    check = false;
+                }
+                if(check == true) {
+                    message.innerHTML = "";
+                    $.ajax({
+                        url: '../controller/admin/supplier.controller.php',
+                        type: "post",
+                        dataType: 'html',
+                        data: {
+                            function: "edit",
+                            field: { 
+                                id: id,                  
+                                name: modal.querySelector('#name').value.trim(),
+                                email: modal.querySelector('#email').value.trim(),
+                                sdt: modal.querySelector('#sdt').value.trim(),
+                                                
+                            }
                         }
-                    }
-                }).done(function (result) {
-                    loadItem();
-                    $("#sqlresult").html(result);
-                   
-                })
-                modal_edit_container.classList.remove('show');
+                    }).done(function (result) {
+                        loadItem();
+                        $("#sqlresult").html(result);
+                       
+                    })
+                    modal_edit_container.classList.remove('show');
+                }
+               
             });
             
         });
