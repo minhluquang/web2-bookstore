@@ -126,7 +126,7 @@ function renderSiderBars(data) {
     active = page == siderbarItem.page ? "active" : "";
     if (page == null && siderbarItem.page == "home") {
       active = "active";
-      return;
+      // return;
     }
 
     if (href == "#" && siderbarItem.fncid != 1) {
