@@ -16,7 +16,7 @@
       $db_password = $row['password'];
 
       // So sánh mật khẩu nhập vào với mật khẩu trong cơ sở dữ liệu
-      if ($password == $db_password) {
+      if (password_verify($password, $db_password)) {
         $database->close();
         return true;
       } else {
@@ -42,8 +42,10 @@
     }
 
     // Nếu như username chưa tồn tại, thì tạo tài khoản
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
     $sqlInsertAccount = "INSERT INTO accounts (username, password, role_id, status) 
-                        VALUES ('$username', '$password', 3, 1)";
+                        VALUES ('$username', '$hashedPassword', 3, 1)";
     $sqlInsertUserInfo = "INSERT INTO delivery_infoes (user_id, fullname, phone_number, address, city, district, ward)
                               VALUES ('$username', '$fullname', '$phoneNumber', '$address', '$city', '$district', '$ward')";
 
