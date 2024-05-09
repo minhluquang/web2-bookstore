@@ -190,9 +190,6 @@ class pagnation
                             <th>Email </th>
                             <th>Số điện thoại </th>
                             <th>Trạng thái </th>
-                            <th>Ngày tạo</th>
-                            <th>Ngày cập nhật</th>
-                            <th>Ngày xóa</th>
                             <th>Hành động</th>
                             </tr>
                         </thead>
