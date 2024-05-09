@@ -257,6 +257,7 @@ header {
   display: flex;
   align-items: center;
   margin: auto 0;
+  position: relative;
 }
 .account-options {
   display: none;
@@ -266,6 +267,7 @@ header {
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
+  z-index: 11;
 }
 
 .account-options.hide {
@@ -314,6 +316,16 @@ header {
 
 .account:hover .account-options {
   display: block; /* Hiển thị khi di chuột vào phần account */
+}
+
+.account::before {
+  position: absolute;
+  content: "";
+  display: block;
+  height: 40px;
+  width: 60px;
+  background-color: transparent;
+  bottom: -15px;
 }
 
 .account-notification {

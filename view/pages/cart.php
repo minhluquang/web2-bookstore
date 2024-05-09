@@ -1,4 +1,5 @@
 <?php
+  $autoReload = false;
   if (!isset($_SESSION['username'])) {
     echo "<script>alert('Vui lòng đăng nhập!')</script>";
     echo "<script>window.location.href = 'index.php?page=signup'</script>";
@@ -92,8 +93,22 @@
                   }         
                   
                   $productDetail = getProductDetailById($product['id'], $closeDatabase);
-                  $formatPrice = number_format($productDetail['price'], 0, ',', '.').' ₫';
                   
+                  // Nếu sản phẩm có status = 0 thì không render và xoá khỏi cart
+                  if ($productDetail['status'] == 0) {
+                  
+                    foreach ($_SESSION['cart'] as $key => $cartProduct) {
+                      if ($product['id'] == $cartProduct['id']) {
+                        unset($_SESSION['cart'][$key]);
+                      }
+                    }
+
+                    $autoReload = true;
+                    continue;
+                  }
+                  
+                  $formatPrice = number_format($productDetail['price'], 0, ',', '.').' ₫';
+
                   $totalPrice = $productDetail['price'] * $product['amount'];
                   $formatTotalPrice =  number_format($totalPrice, 0, ',', '.').' ₫';
 
@@ -163,6 +178,11 @@
                   </div>
                   </div>';
                 }
+
+                if ($autoReload) {
+                  echo '<script>window.location.reload();</script>';
+                  $autoReload = false;
+                }
               }
             ?>
           </div>
@@ -207,6 +227,11 @@
             selectedProducts.push({productId, amount});
           }
         })
+
+        if (selectedProducts.length == 0) {
+          alert("Vui lòng chọn sản phẩm cần thanh toán!");
+          return;
+        }
 
         $.ajax({
           type: "post",

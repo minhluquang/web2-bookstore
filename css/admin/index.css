@@ -116,6 +116,7 @@ body {
   background-color: #fff;
   z-index: 10;
   padding: 30px 22px;
+  overflow-y: auto;
 }
 
 .sidebar__logo img {
@@ -125,10 +126,27 @@ body {
 
 .sidebar__items {
   list-style-type: none;
-  margin-top: 40px;
+  margin: 40px 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 0px;
+  border-radius: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Màu nền của track (phần bên dưới của thanh cuộn) */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #888; /* Màu của thanh cuộn */
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Màu của thanh cuộn khi di chuột vào */
 }
 
 .sidebar__item {
@@ -160,7 +178,7 @@ body {
   height: 50px;
   width: 100%;
   line-height: 50px;
-  padding: 0 20px;
+  padding: 0 10px;
   font-weight: bold;
   font-size: 18px;
   display: flex;
