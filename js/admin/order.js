@@ -103,6 +103,7 @@ var js = function () {
   btnDetails.forEach((btn) =>
     btn.addEventListener("click", () => {
       openModal();
+
       $.ajax({
         url: "../controller/admin/order.controller.php",
         type: "post",
@@ -125,12 +126,32 @@ var js = function () {
             .parentNode.remove();
         modal.querySelector("tbody").querySelector("#price-number").innerHTML =
           btn.parentNode.parentNode.querySelector(".total_price").innerHTML;
+        btn_contain = ""
+        switch (modal.querySelector("tbody").querySelector("#status").value) {
+          case '1':
+            btn_contain = `<input type="button" value="Hủy đơn hàng" data-status-id="3" class="cancel-order">
+              <input type="button" value="Duyệt đơn hàng" data-status-id="2" class="confirm-order">`
+            break;
+          case '2':
+            btn_contain = `<input type="button" value="Hủy đơn hàng" data-status-id="3" class="cancel-order">
+              <input type="button" value="Giao đơn hàng" data-status-id="4" class="confirm-order">`
+            break;
+          case '4':
+            btn_contain = `<input type="button" value="Xác nhận đã giao" data-status-id="5" class="confirm-order">`
+            break;
+        }
+        modal.querySelector(".del-btn-container").innerHTML = btn_contain
+        modal.querySelector(".del-btn-container").querySelectorAll("input").forEach((ch_btn) => ch_btn.addEventListener("click", () => {
+          change_status(ch_btn.getAttribute("data-status-id"));
+        }
+        ));
       });
+
     })
   );
 
   overlay.addEventListener("click", closeModal);
-  btnCloseModal[1].addEventListener("click", closeModal);
+  btnCloseModal[0].addEventListener("click", closeModal);
 
   // // delete
   // document.querySelector('.del-confirm').addEventListener('click', function (e) {
@@ -152,65 +173,23 @@ var js = function () {
   //   })
   // })
 
-  // comfirm order
-  document
-    .querySelector(".confirm-order")
-    .addEventListener("click", function (e) {
-      e.preventDefault();
-      $.ajax({
-        url: "../controller/admin/order.controller.php",
-        type: "post",
-        dataType: "html",
-        data: {
-          id: document.querySelector(".order-modal").querySelector("#id").value,
-          status: 2,
-          function: "order_status",
-        },
-      }).done(function (result) {
-        closeModal();
-        loadItem();
-      });
+  // change order status  
+
+  function change_status(status) {
+    $.ajax({
+      url: "../controller/admin/order.controller.php",
+      type: "post",
+      dataType: "html",
+      data: {
+        id: document.querySelector(".order-modal").querySelector("#id").value,
+        status: status,
+        function: "order_status",
+      },
+    }).done(function (result) {
+      closeModal();
+      loadItem();
     });
-  // cancel order
-  document
-    .querySelector(".cancel-order")
-    .addEventListener("click", function (e) {
-      e.preventDefault();
-      $.ajax({
-        url: "../controller/admin/order.controller.php",
-        type: "post",
-        dataType: "html",
-        data: {
-          id: document.querySelector(".order-modal").querySelector("#id").value,
-          status: 3,
-          function: "order_status",
-        },
-      }).done(function (result) {
-        closeModal();
-        loadItem();
-      });
-    });
+  }
 
-  const del_modal = document.querySelector(".delete-modal");
 
-  const btnDelete = document.querySelectorAll(".actions--delete");
-  const btnDeleteCancel = document.querySelector(".del-cancel");
-
-  const openDeleteModal = function () {
-    del_modal.classList.remove("hidden");
-    overlay.classList.remove("hidden");
-    $("#order-delete-id").html(
-      this.parentNode.parentNode.querySelector(".order_id").innerHTML
-    );
-  };
-
-  const closeDeleteModal = function () {
-    del_modal.classList.add("hidden");
-    overlay.classList.add("hidden");
-  };
-
-  btnDelete.forEach((btn) => btn.addEventListener("click", openDeleteModal));
-  overlay.addEventListener("click", closeDeleteModal);
-  btnCloseModal[0].addEventListener("click", closeDeleteModal);
-  btnDeleteCancel.addEventListener("click", closeDeleteModal);
 };

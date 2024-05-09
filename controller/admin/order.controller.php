@@ -31,8 +31,12 @@ function order_details()
 }
 function order_status()
 {
-  if (isset($_POST['id']) && isset($_POST['status'])) {
-    echo order_change_status($_POST['id'],$_POST['status']);
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
+  if (isset($_POST['id']) && isset($_POST['status'] )&& isset($_SESSION['usernameAdmin'])) {
+    echo $_SESSION['usernameAdmin'];
+    echo order_change_status($_POST['id'],$_POST['status'],$_SESSION['usernameAdmin']);
   }
 }
 

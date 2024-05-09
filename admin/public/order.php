@@ -68,26 +68,6 @@ $_SESSION["render"]->setTable("orders");
     <div class="result"></div>
 
 
-    <!-- delete button  -->
-    <div class="delete-modal hidden">
-        <button class="close-modal">&times;</button>
-
-        <div class="modal-header">
-            <h2>Xác nhận xóa hóa đơn</h2>
-        </div>
-        <div>
-            <span style="font-weight: bold;">Bạn có thực sự muốn xóa hóa đơn có mã là :</span>
-            <span id="order-delete-id">ERROR</span>
-        </div>
-
-        <div class="del-btn-container">
-            <input type="button" value="Hủy" class="del-cancel">
-            <input type="button" value="Xác nhận" class="del-confirm">
-        </div>
-
-
-    </div>
-
     <!-- Modal  -->
     <div class="order-modal hidden">
         <button class="close-modal">&times;</button>
@@ -110,8 +90,8 @@ $_SESSION["render"]->setTable("orders");
             </table>
 
             <div class="del-btn-container">
-                <input type="button" value="Hủy đơn hàng" class="cancel-order">
-                <input type="button" value="Duyệt đơn hàng" class="confirm-order">
+                <!-- <input type="button" value="Hủy đơn hàng" class="cancel-order">
+                <input type="button" value="Duyệt đơn hàng" class="confirm-order"> -->
             </div>
         </div>
     </div>

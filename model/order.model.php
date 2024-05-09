@@ -64,7 +64,7 @@
     if ($database->conn) {
       $sql = "UPDATE orders
               SET status_id = 3
-              WHERE id = 1";
+              WHERE id = $orderId";
       $result = $database->execute($sql);
       if ($result) {
         $database->close();
