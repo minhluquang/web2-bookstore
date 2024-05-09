@@ -158,6 +158,7 @@ function addProduct() {
   // Get values from form fields
   const supplier = document.getElementById('supplier').value;
   const productId = document.getElementById('productId').value;
+  const productName = document.getElementById('productId').selectedOptions[0].text;
   const quantity = document.getElementById('quantity').value;
   
   // AJAX request to get inputPrice
@@ -186,6 +187,7 @@ function addProduct() {
     const newRow = tableBody.insertRow();
     newRow.innerHTML = `
       <td>${productId}</td>
+      <td>${productName}</td>
       <td>${quantity}</td>
       <td>${inputPrice}</td>
     `;
@@ -193,13 +195,11 @@ function addProduct() {
     document.getElementById('productId').value = '';
     document.getElementById('quantity').value = '';
     
-  }).fail(function() {
-    alert('Đã xảy ra lỗi khi lấy giá.');
-  });
+  })
 }
 
 function deleteRow() {
-  const table = document.getElementById('Table'); // Lấy thẻ table
+  const table = document.getElementById('addTable'); // Lấy thẻ table
   const rowCount = table.rows.length; 
   if (rowCount > 1) {
     table.deleteRow(rowCount - 1); // Xóa dòng cuối cùng (trừ dòng header)
@@ -257,8 +257,8 @@ const js = function () {
         <input type="number" id="inputPrice" readonly>
       </div>
       <div class="form-actions">
-        <button type="button" onclick="addProduct()" class="button">Thêm sản phẩm</button>
-        <button type="button"  class="button" onclick="deleteRow()">Xóa</button>
+        <button type="button" onclick="addProduct()" class="btn">Thêm sản phẩm</button>
+        <button type="button"  onclick="deleteRow()">Xóa</button>
 
       </div>    
     </form>
@@ -266,9 +266,10 @@ const js = function () {
       <table id="addTable">
         <thead>
           <tr>
-            <th>Sản Phẩm</th>
-            <th>Số Lượng</th>
-            <th>Giá Nhập</th>
+            <th style="width: 10%">Mã SP</th>
+            <th style=" width: 55%">Tên SP</th>
+            <th style=" width: 15%">Số Lượng</th>
+            <th style=" width: 20%">Giá Nhập</th>
           </tr>
         </thead>
         <tbody id="productTableBody">
@@ -324,8 +325,8 @@ openModalBtn.addEventListener('click', function () {
     let detailData = [];
     products.forEach((product) => {
         const productId = product.cells[0].textContent; 
-        const quantity = product.cells[1].textContent; // Lấy số lượng từ cột 2
-        const inputPrice = product.cells[2].textContent; // Lấy giá nhập từ cột 3
+        const quantity = product.cells[2].textContent; // Lấy số lượng từ cột 2
+        const inputPrice = product.cells[3].textContent; // Lấy giá nhập từ cột 3
         totalPrice += parseFloat(quantity) * parseFloat(inputPrice); // Tính tổng tiền
         detailData.push({ productId, quantity, inputPrice });
     });

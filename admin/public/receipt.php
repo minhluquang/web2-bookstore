@@ -80,7 +80,7 @@ $_SESSION["render"] ->setTable("goodsreceipts");
                 <!-- ... -->
             </div>
             <div class="form-actions">
-      <button type="button" id="addButton" class="button">Lưu</button>
+      <button type="button" id="addButton" class="btn">Lưu</button>
     </div>
   </div>
 </div>
@@ -101,15 +101,15 @@ $_SESSION["render"] ->setTable("goodsreceipts");
           <input type="text" id="supplierName">
         </div>
         <div class="input-field">
-          <label for="staff_id">Email</label>
+          <label for="staff_id">Tên người nhập</label>
           <input type="email" id="staff_id">
         </div>
         <div class="input-field">
-          <label for="total_price">Thể loại viết</label>
+          <label for="total_price">Tổng giá</label>
           <input type="text" id="total_price" readonly="">
         </div>
         <div class="input-field">
-          <label for="date_create">Thể loại viết</label>
+          <label for="date_create">Ngày lập</label>
           <input type="text" id="date_create" readonly="">
         </div>
         <div class="book-table">
