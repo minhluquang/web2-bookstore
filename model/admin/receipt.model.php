@@ -146,7 +146,7 @@ function receipt_detail($field){
     
         $htmlResult = '<option value="">Chọn sản phẩm</option>';
         foreach ($stmt as $row) {
-          $htmlResult .= '<option value="' . $row['id'] . '">' . $row['id'] . '-' . $row['name'] . '</option>';
+          $htmlResult .= '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
         }
     
         echo $htmlResult;

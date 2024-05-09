@@ -80,7 +80,7 @@ $_SESSION["render"] ->setTable("authors");
             </div>
             <div class="form-actions">
       <button class="editAuthorButton d-none">Chỉnh thông tin tác giả</button>
-      <button type="button" id="saveButton">Lưu</button>
+      <button type="button" id="saveButton" class="btn">Lưu</button>
     </div>
         </div>
     </div>
