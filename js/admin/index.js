@@ -22,11 +22,26 @@ $(document).ready(function () {
     url: "../controller/admin/index.controller.php",
     dataType: "html",
     data: {
+      isAutoUpdateData: true,
+    },
+  }).done(function (result) {
+    const data = JSON.parse(result);
+    if (data) {
+      updateData4Boxes(data);
+    }
+  });
+
+  $.ajax({
+    type: "post",
+    url: "../controller/admin/index.controller.php",
+    dataType: "html",
+    data: {
       isRender: true,
     },
   }).done(function (result) {
     const data = JSON.parse(result);
     renderSiderBars(data);
+    notAllowedEntry(data);
   });
 });
 
@@ -42,81 +57,80 @@ function renderSiderBars(data) {
       page: "home",
       name: "Trang chủ",
       icon: "fa-house",
-      href: "?page=home",
+      page: "home",
       fncid: 1,
     },
     {
       page: "product",
       name: "Sản phẩm",
       icon: "fa-book",
-      href: "?page=product",
+      page: "product",
       fncid: 2,
     },
     {
       page: "order",
       name: "Đơn hàng",
       icon: "fa-cart-shopping",
-      href: "?page=order",
+      page: "order",
       fncid: 3,
     },
     {
       page: "account",
       name: "Thành viên",
       icon: "fa-user",
-      href: "?page=account",
+      page: "account",
       fncid: 4,
     },
     {
       page: "publisher",
       name: "Nhà xuất bản",
       icon: "fa-upload",
-      href: "?page=publisher",
+      page: "publisher",
       fncid: 5,
     },
     {
       page: "author",
       name: "Tác giả",
       icon: "fa-book-open-reader",
-      href: "?page=author",
+      page: "author",
       fncid: 6,
     },
     {
       page: "category",
       name: "Thể loại sách",
       icon: "fa-list",
-      href: "?page=category",
+      page: "category",
       fncid: 7,
     },
     {
       page: "supplier",
       name: "Nhà cung cấp",
       icon: "fa-industry",
-      href: "?page=supplier",
+      page: "supplier",
       fncid: 8,
     },
     {
       page: "receipt",
       name: "Nhập hàng",
       icon: "fa-file-invoice",
-      href: "?page=receipt",
+      page: "receipt",
       fncid: 9,
     },
-    
+
     {
       page: "role",
       name: "Phân quyền",
       icon: "fa-gavel",
-      href: "?page=role",
+      page: "role",
       fncid: 10,
     },
     {
       page: "discount",
       name: "Khuyễn mãi",
       icon: "fa-file-invoice",
-      href: "?page=discount",
+      page: "discount",
       fncid: 11,
     },
-    
   ];
 
   let html = ""; // Khởi tạo biến html ở đây
@@ -128,7 +142,7 @@ function renderSiderBars(data) {
 
     data.forEach((role) => {
       if (siderbarItem.fncid == role.function_id || siderbarItem.fncid == 1) {
-        href = siderbarItem.href;
+        href = `?page=` + siderbarItem.page;
       }
     });
 
@@ -142,10 +156,50 @@ function renderSiderBars(data) {
       nonActive = "nonActive";
     }
 
-    html += `<li class="sidebar__item ${active} ${nonActive}"  fncid="${siderbarItem.fncid}">
+    html += `<li class="sidebar__item ${active} ${nonActive}"  fncid="${siderbarItem.fncid}" page="${siderbarItem.page}">
               <a href="${href}"><i class="fa-solid ${siderbarItem.icon}"></i>${siderbarItem.name}</a>
             </li>`;
   });
 
   siderBars.innerHTML = html;
+}
+
+function notAllowedEntry(data) {
+  var url = window.location.href;
+  var urlParams = new URLSearchParams(new URL(url).search);
+  var pageParam = urlParams.get("page");
+
+  if (!pageParam || pageParam == "home") return;
+
+  const fncid = document
+    .querySelector(`.sidebar__items .sidebar__item[page="${pageParam}"]`)
+    .getAttribute("fncid");
+
+  console.log(fncid);
+
+  var isIncludeRole = false;
+  data.forEach((role) => {
+    if (fncid == role.function_id) {
+      isIncludeRole = true;
+    }
+  });
+
+  if (!isIncludeRole) {
+    window.location.href = "../admin";
+  }
+}
+
+function updateData4Boxes(data) {
+  const thunhap = document.querySelector(".thunhap");
+  const donhang = document.querySelector(".donhang");
+  const sanpham = document.querySelector(".sanpham");
+  const thanhvien = document.querySelector(".thanhvien");
+
+  const totalIncome = +data.totalIncome;
+  const formattedTotalIncome = totalIncome.toLocaleString("vi-VN");
+
+  thunhap.innerHTML = formattedTotalIncome + " đ";
+  donhang.innerHTML = data.totalOrders;
+  sanpham.innerHTML = data.totalProducts;
+  thanhvien.innerHTML = data.totalAccounts;
 }

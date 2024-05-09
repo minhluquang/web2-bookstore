@@ -67,6 +67,7 @@ thead th:nth-child(4) {
 .input-field input[type="text"],
 .input-field input[type="email"],
 .input-field input[type="password"],
+.input-field input[type="number"],
 .input-field select {
   width: 100%;
   padding: 8px;

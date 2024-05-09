@@ -46,7 +46,7 @@
                     <div class="genre-name">SÁCH MỚI RA MẮT</div>
                 <div class="product-list">';
 
-                $products = getNewProducts();
+                $products = getNewProducts(1);
                 $index = 0;
                 foreach ($products as $product) {
                     if ($index == 4) break;

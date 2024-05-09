@@ -86,17 +86,18 @@
 
 .form-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
-.form-actions button {
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  outline: none;
+.btn {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #007bff; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    border: none;
+    border-radius: 5px;
+    margin-left: auto; /* Đẩy nút về bên phải nhất */
+    margin-right: 20px;
 }
 
 .saveButton {
@@ -277,6 +278,12 @@
   flex-direction: column;
   /* height: 70%; */
   border-radius: 5px;
+}
+
+.addModal-content h2 {
+  text-align: center;
+  padding: 10px 0;
+  margin-bottom: 20px;
 }
 
 .close {

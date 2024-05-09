@@ -17,8 +17,8 @@
     }
   }
 
-  function getNewProducts() {
-    $result = getNewProductsModel();
+  function getNewProducts($status) {
+    $result = getNewProductsModel($status);
     if ($result !== false) {
       $products = $result->fetch_all(MYSQLI_ASSOC);
       return $products;

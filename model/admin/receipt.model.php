@@ -95,10 +95,10 @@ function receipt_detail($field){
       
       foreach ($result as $row) {
           $htmlResult .= '<tr>
-                            <td>' . $row['product_id'] . '</td>
-                            <td>' . $row['name'] . '</td>
-                            <td>' . $row['quantity'] . '</td>
-                            <td>' . $row['input_price'] . '</td>
+                            <td style=" width: 10%">' . $row['product_id'] . '</td>
+                            <td style=" width: 55%">' . $row['name'] . '</td>
+                            <td style=" width: 15%">' . $row['quantity'] . '</td>
+                            <td style=" width: 20%">' . $row['input_price'] . '</td>
                           </tr>';
       }
       
@@ -146,7 +146,7 @@ function receipt_detail($field){
     
         $htmlResult = '<option value="">Chọn sản phẩm</option>';
         foreach ($stmt as $row) {
-          $htmlResult .= '<option value="' . $row['id'] . '">' . $row['id'] . '-' . $row['name'] . '</option>';
+          $htmlResult .= '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
         }
     
         echo $htmlResult;

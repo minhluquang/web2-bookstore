@@ -106,7 +106,5 @@ if (!isset($_SESSION['usernameAdmin'])) {
     }
     ?>
   </div>
-
 </body>
-
 </html>
