@@ -90,5 +90,4 @@ $_SESSION["render"] ->setTable("accounts");
     </div>
     <!-- End: Modal Edit -->
 </body>
-
 </html>
