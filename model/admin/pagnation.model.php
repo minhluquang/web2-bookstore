@@ -267,7 +267,7 @@ class pagnation
                     }
                     break;
                     
-
+                
                 case "orders": {
                         echo '
                     <div class="table__wrapper">
@@ -485,6 +485,44 @@ class pagnation
                     </div>';
                     }
                     break;
+                    case "discounts": {
+                        echo '
+                    <div class="table__wrapper">
+                    <table id="content-product">
+                        <thead class="menu">
+                            <tr>
+                            <th>Tên mã giảm giá</th>                 
+                            <th>Loại mã giảm giá</th>
+                            <th>Giá trị mã giảm giá</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Trạng thái</th>                                    
+                            <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-content" id="content">
+                    ';
+
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';                                    
+                            echo '<td class="type">'.$row['type'].'</td>';
+                            echo '<td class="discount_value">' . $row['discount_value'] . '</td>';
+                            echo '<td class="start_date">'.$row['start_date'].'</td>';
+                            echo '<td class="end_date">'.$row['end_date'].'</td>';
+                            echo '<td class="status">'.$row['status'].'</td>';
+                            echo '<td class="actions">
+                            <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
+                        </td>
+                        </tr>';
+                        }
+                        echo ' 
+                    </tbody>
+                    </table>
+                    </div>';
+                    }
+                    break;
                 case "functions" : {
                     echo '
                     <div class="table__wrapper">
@@ -596,6 +634,9 @@ function getFilterSQL($table, $data)
         case 'categories':
             return getCategoryFilterSQL($data);
             break;
+         case 'discounts':
+                return getDiscountFilterSQL($data);
+             break;
         case 'publishers':
             return getPublisherFilterSQL($data);
             break;
@@ -834,5 +875,28 @@ function getRoleFilterSQL($data)
     }
     return  $filter;
 }
+function getDiscountFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['discount_name'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`discount_code` LIKE '%" . $data['discount_name'] . "%'";
+        }       
+        if (!empty($data['discount_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['discount_status'] == "active") {
+
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['discount_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+
+        }
 
 
+
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return  $filter;
+}

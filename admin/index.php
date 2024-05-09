@@ -89,6 +89,9 @@ if (!isset($_SESSION['usernameAdmin'])) {
           case 'discount':
             require_once('public/discount.php');
             break;
+            case 'receipt':
+              require_once('public/receipt.php');
+              break;
           // case 'account':
           // require_once('public/account.php');
           // break;
