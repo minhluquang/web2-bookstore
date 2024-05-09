@@ -18,10 +18,9 @@
             </div>
             <div class="card-content">
                 <p>
-                    <span class="number">$1.000</span>
+                    <span class="number thunhap">$1.000</span>
                 </p>
                 <h2>Thu nhập</h2>
-                <p>+8% so với hôm qua</p>
             </div>
         </div>
 
@@ -31,10 +30,9 @@
             </div>
             <div class="card-content">
                 <p>
-                    <span class="number">300</span>
+                    <span class="number donhang">300</span>
                 </p>
                 <h2>Đơn hàng</h2>
-                <p>+5% so với hôm qua</p>
             </div>
         </div>
 
@@ -44,10 +42,9 @@
             </div>
             <div class="card-content">
                 <p>
-                    <span class="number">5</span>
+                    <span class="number sanpham">5</span>
                 </p>
                 <h2>Sản phẩm</h2>
-                <p>+1,2% so với hôm qua</p>
             </div>
         </div>
 
@@ -57,10 +54,9 @@
             </div>
             <div class="card-content">
                 <p>
-                    <span class="number">8</span>
+                    <span class="number thanhvien">8</span>
                 </p>
                 <h2>Thành viên</h2>
-                <p>+0,5% so với hôm qua</p>
             </div>
         </div>
     </div>

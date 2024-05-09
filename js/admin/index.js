@@ -22,6 +22,20 @@ $(document).ready(function () {
     url: "../controller/admin/index.controller.php",
     dataType: "html",
     data: {
+      isAutoUpdateData: true,
+    },
+  }).done(function (result) {
+    const data = JSON.parse(result);
+    if (data) {
+      updateData4Boxes(data);
+    }
+  });
+
+  $.ajax({
+    type: "post",
+    url: "../controller/admin/index.controller.php",
+    dataType: "html",
+    data: {
       isRender: true,
     },
   }).done(function (result) {
@@ -173,4 +187,19 @@ function notAllowedEntry(data) {
   if (!isIncludeRole) {
     window.location.href = "../admin";
   }
+}
+
+function updateData4Boxes(data) {
+  const thunhap = document.querySelector(".thunhap");
+  const donhang = document.querySelector(".donhang");
+  const sanpham = document.querySelector(".sanpham");
+  const thanhvien = document.querySelector(".thanhvien");
+
+  const totalIncome = +data.totalIncome;
+  const formattedTotalIncome = totalIncome.toLocaleString("vi-VN");
+
+  thunhap.innerHTML = formattedTotalIncome + " đ";
+  donhang.innerHTML = data.totalOrders;
+  sanpham.innerHTML = data.totalProducts;
+  thanhvien.innerHTML = data.totalAccounts;
 }
