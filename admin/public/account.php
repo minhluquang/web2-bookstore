@@ -29,15 +29,25 @@ $_SESSION["render"] ->setTable("accounts");
                 <p>Mã khách hàng</p>
                 <input type="text" placeholder="Nhập mã khách hàng" />
             </div>
-
             <div class="body__filter--field body__filter--roleClient" id="userRoleClient">
                 <p>Loại tài khoản</p>
                 <select>
-                    <option value="user" selected>Người dùng</option>
+                    <option value="all" selected>Tất cả</option>
+                    <option value="customer" >Người dùng</option>
                     <option value="admin">Quản trị viên</option>
                     <option value="staff">Nhân viên</option>
                 </select>
             </div>
+
+            <div class="body__filter--field body__filter--statusClient" id="userStatus">
+                <p>Loại tài khoản</p>
+                <select>
+                    <option value="all" selected>Tất cả</option>
+                    <option value="active">Hoạt động</option>
+                    <option value="nonActive">Ngưng hoạt động</option>
+                </select>
+            </div>
+            
         </div>
 
         <div class="admin__content--body__filter--gr1">
@@ -72,7 +82,7 @@ $_SESSION["render"] ->setTable("accounts");
                 <!-- ... -->
             </div>
             <div class="form-actions">
-                <button class="editFunctionButton">Chỉnh sửa quyền nhân viên</button>
+                <button class="editFunctionButton">Đổi mật khẩu</button>
                 <button class="editAccountButton d-none">Chỉnh thông tin tài khoản</button>
                 <button type="submit" class="saveButton">Lưu</button>
             </div>

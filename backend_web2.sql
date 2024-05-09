@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2024 at 02:39 PM
+-- Generation Time: May 02, 2024 at 07:24 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`username`, `password`, `role_id`) VALUES
-('admin@sgu.edu.vn', 'admin', 1),
+('admin', 'admin', 1),
 ('customer@sgu.edu.vn', 'customer', 3),
 ('staff', 'staff', 2);
 
@@ -283,28 +283,24 @@ INSERT INTO `discounts` (`discount_code`, `discount_value`, `type`, `start_date`
 
 CREATE TABLE `functions` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `status` int(11) NOT NULL,
-  `delete_date` date DEFAULT NULL,
-  `update_date` date DEFAULT NULL
+  `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `functions`
 --
 
-INSERT INTO `functions` (`id`, `name`, `status`, `delete_date`, `update_date`) VALUES
-(1, 'Quản lý sản phẩm', 1, NULL, NULL),
-(2, 'Quản lý đơn hàng', 1, NULL, NULL),
-(3, 'Quản lý tài khoản', 1, NULL, NULL),
-(4, 'Quản lý danh mục', 1, NULL, NULL),
-(5, 'Thống kê và báo cáo', 1, NULL, NULL),
-(6, 'Quản lý thông tin giao hàng', 1, NULL, NULL),
-(7, 'Quản lý nhà xuất bản', 1, NULL, NULL),
-(8, 'Quản lý tác giả', 1, NULL, NULL),
-(9, 'Quản lý nhà cung cấp', 1, NULL, NULL),
-(10, '  Quản lý phân quyền ', 1, NULL, '2024-05-01'),
-(15, 'Trần Minh Trí', 0, '2024-05-01', '2024-05-01');
+INSERT INTO `functions` (`id`, `name`) VALUES
+(1, 'Thống kê và báo cáo'),
+(2, 'Quản lý sản phẩm'),
+(3, 'Quản lý đơn hàng'),
+(4, 'Quản lý tài khoản'),
+(5, 'Quản lý nhà xuất bản'),
+(6, 'Quản lý tác giả'),
+(7, 'Quản lý thể loại'),
+(8, 'Quản lý nhà cung cấp'),
+(9, 'Quản lý nhập hàng'),
+(10, 'Quản lý phân quyền');
 
 -- --------------------------------------------------------
 
@@ -323,26 +319,23 @@ CREATE TABLE `function_details` (
 --
 
 INSERT INTO `function_details` (`function_id`, `role_id`, `action`) VALUES
-(1, 1, 1),
-(1, 2, 1),
-(2, 1, 1),
 (2, 2, 1),
-(3, 1, 1),
 (3, 2, 1),
-(4, 1, 1),
-(4, 2, 1),
-(5, 1, 1),
 (5, 2, 1),
-(6, 1, 1),
 (6, 2, 1),
-(7, 1, 1),
 (7, 2, 1),
-(8, 1, 1),
 (8, 2, 1),
-(9, 1, 1),
 (9, 2, 1),
-(10, 1, 1),
-(10, 2, 0);
+(1, 1, 1),
+(2, 1, 1),
+(3, 1, 1),
+(4, 1, 1),
+(5, 1, 1),
+(6, 1, 1),
+(7, 1, 1),
+(8, 1, 1),
+(9, 1, 1),
+(10, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -536,26 +529,25 @@ INSERT INTO `products` (`id`, `name`, `publisher_id`, `image_path`, `create_date
 
 CREATE TABLE `publishers` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL
+  `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `publishers`
 --
 
-INSERT INTO `publishers` (`id`, `name`, `email`) VALUES
-(1, 'Nhà Xuất Bản Nhã Nam', 'abc@gmail.com'),
-(2, 'Nhà Xuất Bản Hội Nhà Văn', 'abc@gmail.com'),
-(3, 'Nhà Xuất Bản Hà Nội', 'abc@gmail.com'),
-(4, 'Nhà Xuât Bản Phụ Nữ', 'abc@gmail.com'),
-(5, 'Nhà Xuất Bản Dân Trí', 'abc@gmail.com'),
-(6, 'Nhà Xuất Bản Thế Giới', 'abc@gmail.com'),
-(7, 'Nhà Xuất Bản Tổng Hợp Thành phố Hồ Chí Minh', 'abc@gmail.com'),
-(8, 'Nhà Xuất Bản Văn Học', 'abc@gmail.com'),
-(9, 'Nhà Xuất Bản Thông Tấn', 'abc@gmail.com'),
-(10, 'Nhà Xuất Bản Lao Động', 'abc@gmail.com'),
-(11, 'Nhà Xuất Bản Thanh Niên', 'abc@gmail.com');
+INSERT INTO `publishers` (`id`, `name`) VALUES
+(1, 'Nhà Xuất Bản Nhã Nam'),
+(2, 'Nhà Xuất Bản Hội Nhà Văn'),
+(3, 'Nhà Xuất Bản Hà Nội'),
+(4, 'Nhà Xuât Bản Phụ Nữ'),
+(5, 'Nhà Xuất Bản Dân Trí'),
+(6, 'Nhà Xuất Bản Thế Giới'),
+(7, 'Nhà Xuất Bản Tổng Hợp Thành phố Hồ Chí Minh'),
+(8, 'Nhà Xuất Bản Văn Học'),
+(9, 'Nhà Xuất Bản Thông Tấn'),
+(10, 'Nhà Xuất Bản Lao Động'),
+(11, 'Nhà Xuất Bản Thanh Niên');
 
 -- --------------------------------------------------------
 
@@ -601,8 +593,8 @@ CREATE TABLE `suppliers` (
 INSERT INTO `suppliers` (`id`, `name`, `email`, `number_phone`, `status`, `delete_date`, `create_date`, `update_date`) VALUES
 (1, '        Nhã Nam        ', '      info@nhanam.com  ', '   32425325', 1, '2024-04-30', NULL, '2024-04-30'),
 (2, ' Omega Plus ', ' info@omegaplus.vn ', ' 09323299 ', 1, NULL, NULL, '2024-04-30'),
-(3, ' Fahasa ', ' cskh@fahasa.com.vn ', ' 190063646 ', 0, '2024-05-01', NULL, '2024-04-30'),
-(4, ' abc ', ' abc@abc.com ', ' 1111111 ', 0, '2024-05-01', '2024-04-30', '2024-04-30');
+(3, ' Fahasa ', ' cskh@fahasa.com.vn ', ' 190063646 ', 1, NULL, NULL, '2024-04-30'),
+(4, ' abc ', ' abc@abc.com ', ' 1111111 ', 0, '2024-04-30', '2024-04-30', '2024-04-30');
 
 --
 -- Indexes for dumped tables
@@ -757,7 +749,7 @@ ALTER TABLE `delivery_infoes`
 -- AUTO_INCREMENT for table `functions`
 --
 ALTER TABLE `functions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `goodsreceipts`

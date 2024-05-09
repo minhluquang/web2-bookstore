@@ -1,5 +1,6 @@
 <?php
   include_once("controller/category.controller.php");
+  include_once("controller/product.controller.php");
   $items_per_page = 8;
   $current_page = 1;
 ?>
@@ -34,7 +35,7 @@
         <div class="sidebar-item">
           <div class="sidebar-item__title">
             <h2>Thể loại</h2>
-            <!-- <button class="reset_theloai"><i class="fa-solid fa-rotate-right"></i> Reset</button> -->
+            <a href="index.php?page=product" class="reset_theloai"><i class="fa-solid fa-rotate-right"></i> Reset</a>
           </div>
           <ul class="sidebar-item__list">
             <?php
@@ -45,6 +46,15 @@
                     <input type="checkbox" id="theloai_'.$category['id'].'" data="'.$category['id'].'" name="theloai"/><label for="theloai_'.$category['id'].'">'.$category['name'].'</label>
                   </li>';
               }
+
+              // Nếu tồn tại sản phẩm chưa có thuộc tính thì thêm ckb khác
+              // $isExistUnknowCategoryProduct = getProductsByUnknownCategory();
+              // if ($isExistUnknowCategoryProduct > 0) {
+              //   echo '
+              //     <li>
+              //       <input type="checkbox" id="theloai_0" data="0" name="theloai"/><label for="theloai_0">Khác</label>
+              //     </li>';
+              // }
             ?>
             
         </div>

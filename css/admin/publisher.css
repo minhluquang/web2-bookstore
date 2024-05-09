@@ -17,3 +17,29 @@
 .modal-body-2 input {
   width: 100%;
 }
+.create-cancel {
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: calc(49% - 70px);
+  background-color: #9fa4a8;
+  border: none !important;
+  width: 70px !important;
+  height: 35px !important;
+  border-radius: 5px !important;
+  color: #383434 !important;
+}
+.create-confirm {
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: calc(49% - 70px);
+  background-color: #44d944;
+  border: none !important;
+  width: 70px !important;
+  height: 35px !important;
+  border-radius: 5px !important;
+  color: #383434 !important;
+}
+
+.body__filter--field {
+  width: calc(100% / 3);
+}

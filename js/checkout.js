@@ -13056,6 +13056,18 @@ function changePhuongXa() {
   }
 }
 
+// Kiểm tra mã giảm giá còn hạn sử dụng không
+function isValidDateApply(data) {
+  const dateApply = new Date();
+  const startDate = new Date(data.start_date);
+  const finishDate = new Date(data.finish_date);
+
+  if (startDate <= dateApply && dateApply <= finishDate) {
+    return true;
+  }
+  return false;
+}
+
 // Kiểm tra ajax áp dụng mã btn
 $(document).ready(function () {
   $(".promoBtn").click(function (e) {
@@ -13081,7 +13093,7 @@ $(document).ready(function () {
       },
     }).done(function (result) {
       const data = JSON.parse(result);
-      if (data.success) {
+      if (data.success && isValidDateApply(data)) {
         $(".promo-message").html("");
         $(".promoBtn").addClass("hide");
         $(".promoChangeBtn").removeClass("hide");
@@ -13114,7 +13126,16 @@ $(document).ready(function () {
 
         showPromoMessage("Đã áp dụng mã khuyến mãi thành công");
       } else {
-        showPromoMessage(data.message, true);
+        if (data.success && !isValidDateApply(data)) {
+          showPromoMessage(
+            "Mã khuyến mãi chưa đến hạn sử dụng hoặc đã hết hạn",
+            true
+          );
+        } else {
+          showPromoMessage(data.message, true);
+        }
+
+        // showPromoMessage(data.message, true);
       }
     });
   });

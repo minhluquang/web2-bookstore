@@ -164,7 +164,8 @@ $(document).ready(function () {
           window.location.href = "index.php";
           alert("Bạn đã đăng nhập thành công!");
         } else {
-          $(".result").html(data.message);
+          alert(data.message);
+          // $(".result").html(data.message);
         }
       });
     }
@@ -192,7 +193,7 @@ const validationFormDangKy = () => {
     isNotEmptyUsername = false;
   } else if (!regexUsername.test(registerUsername.value.trim())) {
     errMessageUsernameRegister.innerText =
-      "Nhập username đúng định dạng, kí tự bắt đầu là chữ (ví dụ: minhne04)";
+      "Nhập username đúng định dạng, kí tự bắt đầu là chữ và tối thiểu 8 kí tự (ví dụ: minhne04)";
     isNotEmptyUsername = false;
   } else {
     errMessageUsernameRegister.innerText = "";

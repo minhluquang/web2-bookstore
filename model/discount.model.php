@@ -6,7 +6,7 @@ function checkIsExistDiscountCode($discountCode) {
   if ($database->conn) {
     $sql = "SELECT *
             FROM discounts
-            WHERE discount_code = '$discountCode'";
+            WHERE discount_code = '$discountCode' AND status = 1";
     $result = $database->query($sql);
     $database->close();
     if (mysqli_num_rows($result) > 0) {

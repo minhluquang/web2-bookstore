@@ -27,6 +27,36 @@
     }
   }
 
+  function getProductsByUnknownCategoryModel() {
+    $database = new connectDB();
+    if ($database->conn) {
+      $sql = "SELECT DISTINCT 
+      p.id AS id,
+      p.name AS product_name, 
+      p.image_path, 
+      p.quantity, 
+      p.price, 
+      CASE WHEN c.status = 1 THEN CONCAT(' ', c.name) ELSE NULL END AS category_names
+      FROM 
+          products p  
+          INNER JOIN publishers pub ON p.publisher_id = pub.id
+          LEFT JOIN category_details cd ON cd.product_id = p.id  
+          LEFT JOIN categories c ON cd.category_id = c.id
+      GROUP BY 
+          p.id
+      HAVING
+          category_names IS NULL;
+    ";
+
+      $result = $database->query($sql);
+      $database->close();
+      return $result;
+    } else {
+      $database->close();
+      return false;
+    }
+  }
+
   // function getProductsForPaginationModel($item_per_page, $page) {
   //   $database = new connectDB();
   //   if ($database->conn) {

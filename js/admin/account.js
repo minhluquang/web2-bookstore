@@ -1,69 +1,87 @@
 // Load the jquery
 var script = document.createElement("SCRIPT");
-script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
-script.type = 'text/javascript';
+script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
+script.type = "text/javascript";
 document.getElementsByTagName("head")[0].appendChild(script);
 var search = location.search.substring(1);
-urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
-var number_of_item = urlParams['item'];
-var current_page = urlParams['pag'];
+urlParams = JSON.parse(
+  '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+  function (key, value) {
+    return key === "" ? value : decodeURIComponent(value);
+  }
+);
+var number_of_item = urlParams["item"];
+var current_page = urlParams["pag"];
 if (current_page == null) {
-    current_page = 1;
+  current_page = 1;
 }
 if (number_of_item == null) {
-    number_of_item = 5;
+  number_of_item = 5;
 }
 function checkReady() {
-    return new Promise(async function (resolve) {
-        while (!window.jQuery) {
-            await new Promise(resolve => setTimeout(resolve, 20));
-        }
-        resolve();
-    })
+  return new Promise(async function (resolve) {
+    while (!window.jQuery) {
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
+    resolve();
+  });
 }
 async function loadForFirstTime() {
-    await checkReady();
-    loadItem();
+  await checkReady();
+  loadItem();
 }
 function pagnationBtn() {
-    // pagnation
-    document.querySelectorAll('.pag').forEach((btn) => btn.addEventListener('click', function () {
-        current_page=btn.innerHTML;
-        loadItem();
-    }));
-    if (document.getElementsByClassName('pag-pre').length > 0)
-        document.querySelector('.pag-pre').addEventListener('click', function () {
-            current_page = Number(document.querySelector('span.active').innerHTML) - 1;
-            loadItem(number_of_item, current_page);
-        });
-    if (document.getElementsByClassName('pag-con').length > 0)
-        document.querySelector('.pag-con').addEventListener('click', function () {
-            current_page = Number(document.querySelector('span.active').innerHTML) + 1;
+  // pagnation
+  document.querySelectorAll(".pag").forEach((btn) =>
+    btn.addEventListener("click", function () {
+      current_page = btn.innerHTML;
+      loadItem();
+    })
+  );
+  if (document.getElementsByClassName("pag-pre").length > 0)
+    document.querySelector(".pag-pre").addEventListener("click", function () {
+      current_page =
+        Number(document.querySelector("span.active").innerHTML) - 1;
+      loadItem(number_of_item, current_page);
+    });
+  if (document.getElementsByClassName("pag-con").length > 0)
+    document.querySelector(".pag-con").addEventListener("click", function () {
+      current_page =
+        Number(document.querySelector("span.active").innerHTML) + 1;
 
-            loadItem();
-        });
+      loadItem();
+    });
 }
 function loadItem() {
-    $.ajax({
-        url: '../controller/admin/pagnation.controller.php',
-        type: "post",
-        dataType: 'html',
-        data: {
-            number_of_item: number_of_item,
-            current_page: current_page,
-            function: "render"
-        }
-    }).done(function (result) {
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&pag=' + current_page ;
-        window.history.pushState({path:newurl},'',newurl);
-        $('.result').html(result);
-        pagnationBtn();
-        js();
-
-    })
-};
+  $.ajax({
+    url: "../controller/admin/pagnation.controller.php",
+    type: "post",
+    dataType: "html",
+    data: {
+      number_of_item: number_of_item,
+      current_page: current_page,
+      function: "render",
+    },
+  }).done(function (result) {
+    var newurl =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      window.location.pathname +
+      "?page=" +
+      urlParams["page"] +
+      "&item=" +
+      number_of_item +
+      "&pag=" +
+      current_page;
+    window.history.pushState({ path: newurl }, "", newurl);
+    $(".result").html(result);
+    pagnationBtn();
+    js();
+  });
+}
 document.addEventListener("DOMContentLoaded", () => {
-    loadForFirstTime()
+  loadForFirstTime();
 });
 
 var js = function () {
@@ -93,12 +111,9 @@ var js = function () {
           <input type="text" id="editUserName">
       </div>
       <div class="input-field">
-          <label for="editUserEmail">Email</label>
-          <input type="email" id="editUserEmail">
-      </div>
-      <div class="input-field">
           <label for="editUserRole">Loại tài khoản</label>
           <select id="editUserRole">
+              <option value="all">Tất cả</option>
               <option value="customer">Người dùng</option>
               <option value="admin">Quản trị viên</option>
               <option value="staff">Nhân viên</option>
@@ -111,60 +126,50 @@ var js = function () {
               <option value="inactive">Ngưng hoạt động</option>
           </select>
       </div>
-      
     </form>`;
     modalContent.insertAdjacentHTML("afterbegin", html);
   };
 
-  // Render modal chỉnh sửa quyền nhân viên
+  // Render modal Đổi mật khẩu
   const renderModalEditFunctionStaff = () => {
     modalContent.innerHTML = "";
     const html = `
-    <h2>Chỉnh sửa quyền nhân viên</h2>
-    <form id="Form">
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlsp" id="qlsp">
-            <label for="qlsp">Quản lý sản phẩm</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qldh" id="qldh">
-            <label for="qldh">Quản lý đơn hàng</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltk" id="qltk">
-            <label for="qltk">Quản lý tài khoản</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qldm" id="qldm">
-            <label for="qldm">Quản lý danh mục</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltkbc" id="qltkbc">
-            <label for="qltkbc">Quản lý thống kê và báo cáo</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlttgh" id="qlttgh">
-            <label for="qlttgh">Quản lý thông tin giao hàng</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlnxb" id="qlnxb">
-            <label for="qlnxb">Quản lý nhà xuất bản</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltg" id="qltg">
-            <label for="qltg">Quản lý tác giả</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlncc" id="qlncc">
-            <label for="qlncc">Quản lý nhà cung cấp</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlpq" id="qlpq">
-            <label for="qlpq">Quản lý phân quyền</label>
-        </div>
+    <h2>Đổi mật khẩu</h2>
+    <form id="changePasswordForm">
+      <div class="input-field">
+          <label for="changeCurrentPassword">Mật khẩu hiện tại</label>
+          <div class="changeCurrentPasswordContainer">
+            <input type="password" id="changeCurrentPassword" >
+            <button class="changeCurrentPasswordView">
+              <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+              <i class="fa-solid fa-eye view-loginPassword hide"></i>
+            </button>
+          </div>
+      </div>
+      <div class="input-field">
+          <label for="changeNewPassword">Mật khẩu mới</label>
+          <div class="changeNewPasswordContainer">
+            <input type="password" id="changeNewPassword">
+            <button class="changeNewPasswordView">
+              <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+              <i class="fa-solid fa-eye view-loginPassword hide"></i>
+            </button>
+          </div>
+      </div>
+      <div class="input-field">
+          <label for="changeConfirmNewPassword">Nhập lại mật khẩu mới</label>
+          <div class="changeConfirmNewPasswordContainer">
+            <input type="password" id="changeConfirmNewPassword">
+            <button class="changeConfirmNewPasswordView">
+                <i class="fa-solid fa-eye-slash noView-loginPassword"></i>
+                <i class="fa-solid fa-eye view-loginPassword hide"></i>
+            </button>
+          </div>
+      </div>
     </form>
   `;
     modalContent.insertAdjacentHTML("afterbegin", html);
+    anHienMatKhauModalDoiMatKhau();
   };
 
   const handleRenderDataModalEditUser = (button) => {
@@ -173,12 +178,11 @@ var js = function () {
     const row = button.closest("tr");
     const userId = row.querySelector(".id").textContent;
     const userName = row.querySelector(".name").textContent;
-    const userEmail = row.querySelector(".email").textContent;
     const userRole = row.querySelector(".type").getAttribute("value");
     const userStatus = row.querySelector(".status").getAttribute("value");
     document.getElementById("editUserId").value = userId;
     document.getElementById("editUserName").value = userName;
-    document.getElementById("editUserEmail").value = userEmail;
+    // document.getElementById("editUserEmail").value = userEmail;
     var editUserRoleSelect = document.getElementById("editUserRole");
     for (var i = 0; i < editUserRoleSelect.options.length; i++) {
       if (editUserRoleSelect.options[i].value === userRole) {
@@ -208,7 +212,9 @@ var js = function () {
 
   // Handle khi bấm vào nút sửa
   const handleClickedEditButon = (button) => {
-    button.addEventListener("click", () => handleRenderDataModalEditUser(button));
+    button.addEventListener("click", () =>
+      handleRenderDataModalEditUser(button)
+    );
   };
 
   // When the user clicks the edit button, open the modal
@@ -242,12 +248,84 @@ var js = function () {
   });
 
   // Add event listener to the form for handling form submission
-  var editForm = document.getElementById("editForm")
-  if (!editForm == null) editForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the default form submission
-    // Handle form submission (you may send an AJAX request to update the user data)
-    // Once the data is updated, close the modal
-    modal.style.display = "none";
+  var editForm = document.getElementById("editForm");
+  if (!editForm == null)
+    editForm.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+      // Handle form submission (you may send an AJAX request to update the user data)
+      // Once the data is updated, close the modal
+      modal.style.display = "none";
+    });
+};
+
+// Bấm nút ẩn/hiện password
+function anHienMatKhauModalDoiMatKhau() {
+  const currentPasswordNoView = document.querySelector(
+    ".changeCurrentPasswordView .noView-loginPassword"
+  );
+  const currentPasswordView = document.querySelector(
+    ".changeCurrentPasswordView .view-loginPassword"
+  );
+
+  const newPasswordNoView = document.querySelector(
+    ".changeNewPasswordView .noView-loginPassword"
+  );
+  const newPasswordView = document.querySelector(
+    ".changeNewPasswordView .view-loginPassword"
+  );
+
+  const confirmNewPasswordNoView = document.querySelector(
+    ".changeConfirmNewPasswordView .noView-loginPassword"
+  );
+  const confirmNewPasswordView = document.querySelector(
+    ".changeConfirmNewPasswordView .view-loginPassword"
+  );
+
+  const inputCurrentPassword = document.querySelector("#changeCurrentPassword");
+  const inputNewPassword = document.querySelector("#changeNewPassword");
+  const inputConfirmNewPassword = document.querySelector(
+    "#changeConfirmNewPassword"
+  );
+
+  currentPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputCurrentPassword.setAttribute("type", "text");
+    currentPasswordView.classList.toggle("hide");
+    currentPasswordNoView.classList.toggle("hide");
   });
 
+  currentPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputCurrentPassword.setAttribute("type", "password");
+    currentPasswordView.classList.toggle("hide");
+    currentPasswordNoView.classList.toggle("hide");
+  });
+
+  newPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputNewPassword.setAttribute("type", "text");
+    newPasswordView.classList.toggle("hide");
+    newPasswordNoView.classList.toggle("hide");
+  });
+
+  newPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputNewPassword.setAttribute("type", "password");
+    newPasswordView.classList.toggle("hide");
+    newPasswordNoView.classList.toggle("hide");
+  });
+
+  confirmNewPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputConfirmNewPassword.setAttribute("type", "text");
+    confirmNewPasswordView.classList.toggle("hide");
+    confirmNewPasswordNoView.classList.toggle("hide");
+  });
+
+  confirmNewPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    inputConfirmNewPassword.setAttribute("type", "password");
+    confirmNewPasswordView.classList.toggle("hide");
+    confirmNewPasswordNoView.classList.toggle("hide");
+  });
 }

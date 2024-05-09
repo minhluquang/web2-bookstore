@@ -14,8 +14,8 @@ $_SESSION["render"]->setTable("publishers");
   <link rel="stylesheet" href="../css/admin/product.css?v=<?php echo time(); ?> " />
   <link rel="stylesheet" href="../css/admin/filter.css?v=<?php echo time(); ?> " />
   <link rel="stylesheet" href="../css/admin/author.css?v=<?php echo time(); ?> " />
-  <link rel="stylesheet" href="../css/admin/publisher.css?v=<?php echo time(); ?> " />
   <link rel="stylesheet" href="../css/admin/account.css?v=<?php echo time(); ?> " />
+  <link rel="stylesheet" href="../css/admin/publisher.css?v=<?php echo time(); ?> " />
 </head>
 
 <body>

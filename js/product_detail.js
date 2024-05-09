@@ -57,8 +57,13 @@ function addToCart(productId, amount) {
     },
   }).done(function (result) {
     var data = JSON.parse(result);
-    $(".cart-qnt").removeClass("hide");
-    $(".cart-qnt").text(data.quantity);
-    alert(data.message);
+    if (data == false) {
+      window.location.href = "index.php?page=signup";
+      alert(data.message);
+    } else {
+      $(".cart-qnt").removeClass("hide");
+      $(".cart-qnt").text(data.quantity);
+      alert(data.message);
+    }
   });
 }

@@ -132,7 +132,7 @@ body {
 }
 
 .sidebar__item {
-  height: 50px;
+  height: 45px;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -141,6 +141,17 @@ body {
 
 .sidebar__item.active {
   background-color: #eee;
+}
+
+.sidebar__item.nonActive {
+  cursor: not-allowed;
+  color: #dedede;
+}
+
+.sidebar__item.nonActive a,
+.sidebar__item.nonActive a i {
+  cursor: not-allowed;
+  color: #dedede;
 }
 
 .sidebar__item a {

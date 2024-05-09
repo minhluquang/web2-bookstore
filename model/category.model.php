@@ -4,7 +4,8 @@
   function getCategoryListModel() {
     global $database;
     if ($database->conn) {
-      $result = $database->selectAll("categories");
+      $sql = "SELECT * FROM categories WHERE status = 1";
+      $result = $database->query($sql);
       return $result;
     } else {
       return false;
