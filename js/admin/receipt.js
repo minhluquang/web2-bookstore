@@ -325,8 +325,8 @@ openModalBtn.addEventListener('click', function () {
     let detailData = [];
     products.forEach((product) => {
         const productId = product.cells[0].textContent; 
-        const quantity = product.cells[1].textContent; // Lấy số lượng từ cột 2
-        const inputPrice = product.cells[2].textContent; // Lấy giá nhập từ cột 3
+        const quantity = product.cells[2].textContent; // Lấy số lượng từ cột 2
+        const inputPrice = product.cells[3].textContent; // Lấy giá nhập từ cột 3
         totalPrice += parseFloat(quantity) * parseFloat(inputPrice); // Tính tổng tiền
         detailData.push({ productId, quantity, inputPrice });
     });
