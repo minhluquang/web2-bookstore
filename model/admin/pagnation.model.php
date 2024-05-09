@@ -633,9 +633,7 @@ function getFilterSQL($table, $data)
         case 'authors':
             return getAuthorFilterSQL($data);
             break;
-            case 'goodsreceipts':
-                return getReceiptFilterSQL($data);
-                break;
+            
         case 'categories':
             return getCategoryFilterSQL($data);
             break;
