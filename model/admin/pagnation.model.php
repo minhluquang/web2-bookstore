@@ -56,6 +56,7 @@ class pagnation
             'categories' => 'id',
             'suppliers' =>'id',
             'functions' => 'id',
+            'goodsreceipts'=>'id',
             'discounts' =>'discount_code',
         );
         $database = new connectDB();
@@ -188,7 +189,10 @@ class pagnation
                             <th>Tên nhà cung cấp</th>
                             <th>Email </th>
                             <th>Số điện thoại </th>
-                            <th>Trạng thái </th>                           
+                            <th>Trạng thái </th>
+                            <th>Ngày tạo</th>
+                            <th>Ngày cập nhật</th>
+                            <th>Ngày xóa</th>
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -202,7 +206,10 @@ class pagnation
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
-                            echo '<td class="status">' . $row['status'] . '</td>';                          
+                            echo '<td class="status">' . $row['status'] . '</td>';
+                            echo '<td class="date-create">'.$row['create_date'].'</td>';
+                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -215,6 +222,52 @@ class pagnation
                     </div>';
                     }
                     break;
+                    case "goodsreceipts": {
+                        echo '
+                            <div class="table__wrapper">
+                                <table id="content-product">
+                                    <thead class="menu">
+                                        <tr>
+                                            <th>Mã đơn nhập</th>
+                                            <th>Tên nhà cung cấp</th>
+                                            <th>Người nhập đơn</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Ngày tạo</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-content" id="content">
+                        ';
+                    
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';                    
+                            // Truy vấn tên nhà cung cấp từ bảng 'suppliers'
+                            $sup_sql = "SELECT * FROM `suppliers` WHERE id =" . $row['supplier_id'];
+                            $sup_result = $database->query($sup_sql);
+                            $supplier = mysqli_fetch_array($sup_result);
+                            $supplier_name = ($supplier) ? $supplier['name'] : '';
+                    
+                            echo '<td class="supplierName">' . $supplier_name . '</td>';
+                            
+                            echo '<td class="staff_id">' . $row['staff_id'] . '</td>';
+                            echo '<td class="total_price">' . $row['total_price'] . '</td>';
+                            echo '<td class="date_create">' . $row['date_create'] . '</td>';
+                    
+                            echo '<td class="actions">
+                                    <button class="actions--edit">Xem chi tiết</button>
+                                </td>
+                            </tr>';
+                        }
+                    
+                        echo ' 
+                            </tbody>
+                        </table>
+                    </div>';
+                    }
+                    break;
+                    
+
                 case "orders": {
                         echo '
                     <div class="table__wrapper">
@@ -279,6 +332,7 @@ class pagnation
                             <tr>
                                 <th>Mã người dùng</th>
                                 <th>Tên người dùng</th>
+                                <th>Email</th>
                                 <th>Loại tài khoản</th>
                                 <th>Ngày đăng ký</th>
                                 <th>Trạng thái tài khoản</th>
@@ -292,6 +346,7 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['username'] . '</td>';
                             echo '<td class="name">' . 'Tên người dùng' . '</td>';
+                            echo '<td class="email">' . 'Email' . '</td>';
 
                             $sql_role = 'SELECT * from roles WHERE id="' . $row['role_id'] . '"';
                             $row_role = mysqli_fetch_array($database->query($sql_role));
@@ -301,6 +356,7 @@ class pagnation
                             echo '<td class="status" value="active">' . 'Trạng thái tài khoản' . '</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }
@@ -331,13 +387,6 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
-                            $sql_gerne = "SELECT c.name
-                            FROM   authors a
-                            INNER JOIN author_details ad ON ad.author_id = a.id
-                            INNER JOIN category_details cd ON cd.product_id = ad.product_id
-                            INNER JOIN categories c ON c.id = cd.category_id
-                            WHERE a.id =" . $row['id'];
-
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -383,6 +432,7 @@ class pagnation
                     </div>';
                     }
                     break;
+                   
                 case "categories": {
                         echo '
                     <div class="table__wrapper">
@@ -435,45 +485,6 @@ class pagnation
                     </div>';
                     }
                     break;
-                    case "discounts": {
-                        echo '
-                    <div class="table__wrapper">
-                    <table id="content-product">
-                        <thead class="menu">
-                            <tr>
-                            <th>Tên mã giảm giá</th>                 
-                            <th>Loại mã giảm giá</th>
-                            <th>Giá trị mã giảm giá</th>
-                            <th>Ngày bắt đầu</th>
-                            <th>Ngày kết thúc</th>
-                            <th>Trạng thái</th>                                    
-                            <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-content" id="content">
-
-                    ';
-
-                        while ($row = mysqli_fetch_array($result)) {
-                            echo '<tr>';
-                            echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';                                    
-                            echo '<td class="type">'.$row['type'].'</td>';
-                            echo '<td class="discount_value">' . $row['discount_value'] . '</td>';
-                            echo '<td class="start_date">'.$row['start_date'].'</td>';
-                            echo '<td class="end_date">'.$row['end_date'].'</td>';
-                            echo '<td class="status">'.$row['status'].'</td>';
-                            echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
-                        </td>
-                        </tr>';
-                        }
-                        echo ' 
-                    </tbody>
-                    </table>
-                    </div>';
-                    }
-                    break;
                 case "functions" : {
                     echo '
                     <div class="table__wrapper">
@@ -482,6 +493,9 @@ class pagnation
                             <tr>
                             <th>Mã quyền</th>                 
                             <th>Tên quyền</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày xóa</th>  
+                            <th>Ngày cập nhật</th>        
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -493,8 +507,13 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="status">'.$row['status'].'</td>';
+                            // echo '<td class="date-create">'.$row['create_date'].'</td>';
+                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            echo '<td class="date-update">'.$row['update_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
+                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }
@@ -549,6 +568,9 @@ class pagnation
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
+                    case "receipts":
+                        echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
+                        break;
                 case "functions":
                     echo "<div id='zero-item'><h2>Không có quyền nào</h2></div>";
                     break;
@@ -568,11 +590,11 @@ function getFilterSQL($table, $data)
         case 'authors':
             return getAuthorFilterSQL($data);
             break;
+            case 'goodsreceipts':
+                return getReceiptFilterSQL($data);
+                break;
         case 'categories':
             return getCategoryFilterSQL($data);
-            break;
-        case 'discounts':
-            return getDiscountFilterSQL($data);
             break;
         case 'publishers':
             return getPublisherFilterSQL($data);
@@ -583,6 +605,10 @@ function getFilterSQL($table, $data)
         case 'functions': 
             return getRoleFilterSQL($data);
             break;
+        case 'goodsreceipts':
+            return getReceiptFilterSQL($data);
+            break;
+
     }
 }
 function getProductFilterSQL($data)
@@ -632,6 +658,7 @@ function getAuthorFilterSQL($data)
         if (!empty($data['author_name'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['author_name'] . "%'";
+            
         }
         if (!empty($data['author_id'])) {
             if ($filter != "") $filter = $filter . " AND ";
@@ -647,6 +674,48 @@ function getAuthorFilterSQL($data)
     }
     return  $filter;
 }
+    function getReceiptFilterSQL($data)
+    {
+        $filter = "";
+        $innerjoin="";
+        if (!empty($data)) {
+            if (!empty($data['supplierName'])) {
+                // Lấy tên nhà cung cấp từ dữ liệu
+                $supplierName = $data['supplierName'];
+                $filter = $filter." s.name LIKE '%" . $supplierName . "%'";
+                $innerjoin = $innerjoin." INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
+
+            }  
+            if (!empty($data['id'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " id = " . $data['id'];
+            }
+            if (!empty($data['staff_id'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
+            }
+            if (!empty($data['price_start'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " total_price >= " . $data['price_start'];
+            }
+            if (!empty($data['price_end'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " total_price <= " . $data['price_end'];
+            }
+            if (!empty($data['date_type'])) {
+                if (!empty($data['date_start'])) {
+                    if ($filter != "") $filter = $filter . " AND ";
+                    $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
+                }
+                if (!empty($data['date_end'])) {
+                    if ($filter != "") $filter = $filter . " AND ";
+                    $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['dsate_end'] . "'";
+                }
+            }
+            if ($filter != "") $filter = "WHERE " . $filter;
+        }
+        return  $innerjoin . $filter;
+    }
 
 function getCategoryFilterSQL($data)
 {
@@ -666,32 +735,6 @@ function getCategoryFilterSQL($data)
                
                 $filter = $filter . "status = 1 " ;
             } elseif ($data['category_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
-            }
-            
-        }
-        
-       
-
-        if ($filter != "") $filter = "WHERE " . $filter;
-    }
-    return  $filter;
-}
-
-function getDiscountFilterSQL($data)
-{
-    $filter = "";
-    if (!empty($data)) {
-        if (!empty($data['discount_name'])) {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "`discount_code` LIKE '%" . $data['discount_name'] . "%'";
-        }       
-        if (!empty($data['discount_status'])) {
-            if ($filter != "") $filter = $filter . " AND ";
-            if ($data['discount_status'] == "active") {
-               
-                $filter = $filter . "status = 1 " ;
-            } elseif ($data['discount_status'] == "inactive") {
                 $filter = $filter . "status = 0 " ;
             }
             
@@ -791,3 +834,5 @@ function getRoleFilterSQL($data)
     }
     return  $filter;
 }
+
+
