@@ -271,7 +271,10 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             const modal_edit_container = document.querySelector("#modal-edit-container");
             modal.querySelector("#btnClose").addEventListener("click", ()=> {
                 modal_edit_container.classList.remove('show');
-            });           
+            });
+            modal.querySelector(".button-cancel").addEventListener("click", ()=> {
+                modal_edit_container.classList.remove('show');
+            });         
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
             // modal.querySelector('#status').value = this.parentNode.parentNode.querySelector(".status").innerHTML;          
@@ -310,7 +313,7 @@ var edit_btns = document.getElementsByClassName("actions--edit");
             });
             
         });
-
+        
     }
 
 

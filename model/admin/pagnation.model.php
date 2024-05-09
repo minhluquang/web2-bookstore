@@ -190,9 +190,6 @@ class pagnation
                             <th>Email </th>
                             <th>Số điện thoại </th>
                             <th>Trạng thái </th>
-                            <th>Ngày tạo</th>
-                            <th>Ngày cập nhật</th>
-                            <th>Ngày xóa</th>
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -206,10 +203,12 @@ class pagnation
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
-                            echo '<td class="status">' . $row['status'] . '</td>';
-                            echo '<td class="date-create">'.$row['create_date'].'</td>';
-                            echo '<td class="date-update">'.$row['update_date'].'</td>';
-                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            if($row['status'] == 1) {
+                                echo '<td class="status" >Đang hoạt động</td>';
+                            } else {
+                                echo '<td class="status" >Không hoạt động</td>';
+                            }
+                            // echo '<td class="status">' . $row['status'] . '</td>';                          
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -443,9 +442,7 @@ class pagnation
                             <th>Tên thể loại</th>
                             <th>Số lượng sách</th>
                             <th>Trạng thái</th>
-                            <th>Ngày tạo</th>
-                            <th>Ngày cập nhật</th>
-                            <th>Ngày xóa</th>          
+                                      
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -469,10 +466,13 @@ class pagnation
                             } else {
                                 echo '<td class="amount">' . 0 . '</td>';
                             }
-                            echo '<td class="status">'.$row['status'].'</td>';
-                            echo '<td class="date-create">'.$row['create_date'].'</td>';
-                            echo '<td class="date-update">'.$row['update_date'].'</td>';
-                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            if($row['status'] == 1) {
+                                echo '<td class="status" >Đang hoạt động</td>';
+                            } else {
+                                echo '<td class="status" >Không hoạt động</td>';
+                            }
+                            
+                            
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -510,7 +510,12 @@ class pagnation
                             echo '<td class="discount_value">' . $row['discount_value'] . '</td>';
                             echo '<td class="start_date">'.$row['start_date'].'</td>';
                             echo '<td class="end_date">'.$row['end_date'].'</td>';
-                            echo '<td class="status">'.$row['status'].'</td>';
+                            if($row['status'] == 1) {
+                                echo '<td class="status" >Đang hoạt động</td>';
+                            } else {
+                                echo '<td class="status" >Không hoạt động</td>';
+                            }
+                            // echo '<td class="status">'.$row['status'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
