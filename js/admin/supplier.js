@@ -193,6 +193,7 @@ function filterBtn() {
                     <input id="sdtsupplier" type="text" add-index="2" placeholder="Email nhà cung cấp">                   
                 </div>
 
+                <p id ="message"></p>
                 
                 
             </div>
@@ -209,7 +210,7 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
     e.preventDefault();
     modal.innerHTML = create_html;
     const modal_create_container = document.querySelector("#modal-edit-container");
-    modal.querySelector('.button-confirm').addEventListener('click', function (e) {
+    modal_create_container.querySelector('.button-confirm').addEventListener('click', function (e) {
         e.preventDefault();
         const message = modal_create_container.querySelector("#message");
         const name = modal_create_container.querySelector("#namesupplier").value.trim();
