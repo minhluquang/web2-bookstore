@@ -330,10 +330,7 @@ class pagnation
                             <thead class="menu">
                             <tr>
                                 <th>Mã người dùng</th>
-                                <th>Tên người dùng</th>
-                                <th>Email</th>
                                 <th>Loại tài khoản</th>
-                                <th>Ngày đăng ký</th>
                                 <th>Trạng thái tài khoản</th>
                                 <th>Hành động</th>
                             </tr>
@@ -344,19 +341,23 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td class="id">'  . $row['username'] . '</td>';
-                            echo '<td class="name">' . 'Tên người dùng' . '</td>';
-                            echo '<td class="email">' . 'Email' . '</td>';
 
                             $sql_role = 'SELECT * from roles WHERE id="' . $row['role_id'] . '"';
                             $row_role = mysqli_fetch_array($database->query($sql_role));
 
                             echo '<td class="type" value="staff">' . $row_role['name'] . '</td>';
-                            echo '<td class="date-create">' . 'Ngày đăng ký' . '</td>';
-                            echo '<td class="status" value="active">' . 'Trạng thái tài khoản' . '</td>';
+                            $sql_status = 'SELECT * from accounts WHERE username="' . $row['username'] . '"';
+                            $row_status = mysqli_fetch_array($database->query($sql_status));
+
+                           $status = "";
+                           if($row['status'] == 1) $status = "Hoạt động";
+                           if($row['status'] == 0) $status = "Không hoạt động";
+                           
+                            echo '<td class="status" value="active">'.$status.'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
-                        </td>
+                            <button class="actions--pass">Đổi mật khẩu</button>
+                            </td>
                         </tr>';
                         }
                         echo ' 
@@ -407,6 +408,7 @@ class pagnation
                             <th>Mã NXB</th>
                             <th>Tên NXB</th>
                             <th>Email NXB</th>
+                            <th>Trạng Thái</th>
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -419,6 +421,11 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
+                            if($row['status'] == 1) {
+                                echo '<td class="status" >Đang hoạt động</td>';
+                            } else {
+                                echo '<td class="status" >Không hoạt động</td>';
+                            }
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -651,6 +658,9 @@ function getFilterSQL($table, $data)
         case 'functions': 
             return getRoleFilterSQL($data);
             break;
+        case 'accounts':
+            return getUserFilterSQL($data);
+            break;
         case 'goodsreceipts':
             return getReceiptFilterSQL($data);
             break;
@@ -848,6 +858,16 @@ function getPublisherFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`email` LIKE '%" . $data['publisher_email'] . "%'";
         }
+        if (!empty($data['publisher_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['publisher_status'] == "active") {
+               
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['publisher_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
 
         if ($filter != "") $filter = "WHERE " . $filter;
     }
@@ -900,6 +920,31 @@ function getDiscountFilterSQL($data)
         }
 
 
+
+        if ($filter != "") $filter = "WHERE " . $filter;
+    }
+    return  $filter;
+}
+function getUserFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['user_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`username` LIKE '%" . $data['user_id'] . "%'";
+        }
+        if (!empty($data['user_role'])) {     
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " role_id = " . $data['user_role'];
+        }
+        if (!empty($data['user_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['user_status'] == "active") {
+                $filter = $filter . "status = 1 " ;
+            } else if ($data['user_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+        }
 
         if ($filter != "") $filter = "WHERE " . $filter;
     }

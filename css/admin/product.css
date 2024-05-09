@@ -228,7 +228,8 @@ td:last-child {
   border-color: #ffc107 !important;
 }
 
-.actions--delete {
+.actions--delete,
+.actions--pass {
   color: #fff !important;
   background-color: #dc3545 !important;
   border-color: #dc3545 !important;

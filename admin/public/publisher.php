@@ -34,7 +34,14 @@ $_SESSION["render"]->setTable("publishers");
         <p>Email nhà xuất bản</p>
         <input id="publisherEmail"  type="text" placeholder="Nhập email nhà xuất bản" />
       </div>
-
+      <div class="body__filter--field body__filter--idClient filter_category" id="">
+                <p>Trạng thái</p>
+                <select name="status" id="statusSelect">
+                    <option value="active" selected>Hoạt động</option>
+                    <option value="inactive">Không hoạt động</option>
+                    <option value="">Tất cả</option>
+                </select>
+            </div>
     </div>
 
 
