@@ -12877,33 +12877,37 @@ var phuongXaData = {
   ],
 };
 
-
-
 var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
-    filter_form.querySelector("#userIdClient").value = (urlParams['id'] != null) ? urlParams['id'] : "";
-    filter_form.querySelector("#userRoleClient").value = (urlParams['id'] != null) ? urlParams['role'] : "";
-    filter_form.querySelector("#userStatus").value = (urlParams['id'] != null) ? urlParams['status'] : "";
+  filter_form.querySelector("#userIdClient").value =
+    urlParams["id"] != null ? urlParams["id"] : "";
+  filter_form.querySelector("#userRoleClient").value =
+    urlParams["id"] != null ? urlParams["role"] : "";
+  filter_form.querySelector("#userStatus").value =
+    urlParams["id"] != null ? urlParams["status"] : "";
 }
 function pushFilterToURL() {
   var filter = getFilterFromForm();
   var url_key = {
-      "user_id": "id",
-      "user_role" : "role",
-      "user_status":"status"
-  }
+    user_id: "id",
+    user_role: "role",
+    user_status: "status",
+  };
   var url = "";
-  Object.keys(filter).forEach(key => {
-      url += (filter[key] != null && filter[key] != "") ? `&${url_key[key]}=${filter[key]}` : "";
+  Object.keys(filter).forEach((key) => {
+    url +=
+      filter[key] != null && filter[key] != ""
+        ? `&${url_key[key]}=${filter[key]}`
+        : "";
   });
   return url;
 }
 function getFilterFromForm() {
   return {
-      "user_id": filter_form.querySelector("#userIdClient").value,
-      "user_role": filter_form.querySelector("#userRoleClient").value,     
-      "user_status": filter_form.querySelector("#userStatus").value,
-  }
+    user_id: filter_form.querySelector("#userIdClient").value,
+    user_role: filter_form.querySelector("#userRoleClient").value,
+    user_status: filter_form.querySelector("#userStatus").value,
+  };
 }
 // Load the jquery
 var script = document.createElement("SCRIPT");
@@ -12962,74 +12966,92 @@ function pagnationBtn() {
 }
 function loadItem() {
   var filter = getFilterFromForm();
+  $.ajax({
+    url: "../controller/admin/pagnation.controller.php",
+    type: "post",
+    dataType: "html",
+    data: {
+      number_of_item: number_of_item,
+      current_page: current_page,
+      function: "getRecords",
+      filter: filter,
+    },
+  }).done(function (result) {
+    if (current_page > parseInt(result)) current_page = parseInt(result);
+    if (current_page < 1) current_page = 1;
     $.ajax({
-        url: '../controller/admin/pagnation.controller.php',
-        type: "post",
-        dataType: 'html',
-        data: {
-            number_of_item: number_of_item,
-            current_page: current_page,
-            function: "getRecords",
-            filter: filter
-        }
+      url: "../controller/admin/pagnation.controller.php",
+      type: "post",
+      dataType: "html",
+      data: {
+        number_of_item: number_of_item,
+        current_page: current_page,
+        function: "render",
+        filter: filter,
+      },
     }).done(function (result) {
-        if (current_page > parseInt(result)) current_page = parseInt(result)
-        if (current_page < 1) current_page = 1;
-        $.ajax({
-            url: '../controller/admin/pagnation.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                number_of_item: number_of_item,
-                current_page: current_page,
-                function: "render",
-                filter: filter
-            }
-        }).done(function (result) {
-
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
-            newurl += pushFilterToURL();
-            window.history.pushState({ path: newurl }, '', newurl);
-            $('.result').html(result);
-            pagnationBtn();
-            filterBtn();
-            js();
-        })
-    })
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        "?page=" +
+        urlParams["page"] +
+        "&item=" +
+        number_of_item +
+        "&current_page=" +
+        current_page;
+      newurl += pushFilterToURL();
+      window.history.pushState({ path: newurl }, "", newurl);
+      $(".result").html(result);
+      pagnationBtn();
+      filterBtn();
+      js();
+    });
+  });
 }
 document.addEventListener("DOMContentLoaded", () => {
   loadForFirstTime();
 });
 function filterBtn() {
   $(".body__filter--action__filter").click((e) => {
-      current_page = 1;
-      e.preventDefault();
-      loadItem();
-  })
+    current_page = 1;
+    e.preventDefault();
+    loadItem();
+  });
   $(".body__filter--action__reset").click((e) => {
-      current_page = 1;
-      status_value = "active";
-      $.ajax({
-          url: '../controller/admin/pagnation.controller.php',
-          type: "post",
-          dataType: 'html',
-          data: {
-              number_of_item: number_of_item,
-              current_page: current_page,
-              function: "render",
-              filter: {
-                  user_status: status_value
-              }
-          }
-      }).done(function (result) {
-          var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams[  'page'] + '&item=' + number_of_item + '&current_page=' + current_page ;
-          window.history.pushState({ path: newurl }, '', newurl);
-          $('.result').html(result);
-          pagnationBtn();
-          js();
-      })
-  })
-
+    current_page = 1;
+    status_value = "active";
+    $.ajax({
+      url: "../controller/admin/pagnation.controller.php",
+      type: "post",
+      dataType: "html",
+      data: {
+        number_of_item: number_of_item,
+        current_page: current_page,
+        function: "render",
+        filter: {
+          user_status: status_value,
+        },
+      },
+    }).done(function (result) {
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        "?page=" +
+        urlParams["page"] +
+        "&item=" +
+        number_of_item +
+        "&current_page=" +
+        current_page;
+      window.history.pushState({ path: newurl }, "", newurl);
+      $(".result").html(result);
+      pagnationBtn();
+      js();
+    });
+  });
 }
 var js = function () {
   const modal = document.getElementById("modal");
@@ -13045,7 +13067,7 @@ var js = function () {
   // Render modal chỉnh sửa thông tin tài khoản
   const renderModalEditInfoUser = () => {
     // Thêm html vào modal-content
-    document.querySelector('.modal-content').innerHTML = "";
+    document.querySelector(".modal-content").innerHTML = "";
     const html = `    
     <span class="close">
     <i class="fa-solid fa-xmark"></i>
@@ -13081,7 +13103,7 @@ var js = function () {
       <button type="submit" class="saveButton">Lưu</button>
   </div>
     `;
-    document.querySelector('.modal-content').innerHTML = html;
+    document.querySelector(".modal-content").innerHTML = html;
   };
 
   // Render modal Đổi mật khẩu
@@ -13094,7 +13116,7 @@ var js = function () {
     const userRole = row.querySelector(".type").getAttribute("value");
     const userStatus = row.querySelector(".status").getAttribute("value");
     document.getElementById("editUserId").value = userId;
-  
+
     // document.getElementById("editUserEmail").value = userEmail;
     var editUserRoleSelect = document.getElementById("editUserRole");
     for (var i = 0; i < editUserRoleSelect.options.length; i++) {
@@ -13111,50 +13133,53 @@ var js = function () {
         break;
       }
     }
-
   };
 
   // Handle khi bấm vào nút sửa
 
   for (var i = 0; i < editButtons.length; i++) {
-      editButtons[i].addEventListener('click',function(e) {
+    editButtons[i].addEventListener("click", function (e) {
       e.preventDefault();
       renderModalEditInfoUser();
-      handleRenderDataModalEditUser(this)
+      handleRenderDataModalEditUser(this);
 
-      modal.querySelector('.saveButton').addEventListener('click',function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+      modal
+        .querySelector(".saveButton")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
           $.ajax({
-            url: '../controller/admin/account.controller.php',
+            url: "../controller/admin/account.controller.php",
             type: "post",
-            dataType: 'html',
+            dataType: "html",
             data: {
-                function: "edit",
-                field: { 
-                    username: modal.querySelector("#editUserId").value,                  
-                    role: modal.querySelector('#editUserRole').value,  
-                    status: modal.querySelector('#editUserStatus').value,                
-                }
-            }
-        }).done(function (result) {
+              function: "edit",
+              field: {
+                username: modal.querySelector("#editUserId").value,
+                role: modal.querySelector("#editUserRole").value,
+                status: modal.querySelector("#editUserStatus").value,
+              },
+            },
+          }).done(function (result) {
             loadItem();
             $("#sqlresult").html(result);
+          });
+          modal.style.display = "none";
         });
-        modal.style.display = "none";
-      })
 
       document.querySelector(".close i").addEventListener("click", function () {
         modal.style.display = "none";
       });
-      document.querySelector('.closeBtn').addEventListener("click",function() {
-        modal.style.display = "none";
-      })
-    } );
+      document
+        .querySelector(".closeBtn")
+        .addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+    });
   }
 
   const renderModalEditFunctionStaff = () => {
-    document.querySelector('.modal-content').innerHTML = "";
+    document.querySelector(".modal-content").innerHTML = "";
     const html_pass = `
 
     <span class="close">
@@ -13200,75 +13225,78 @@ var js = function () {
       <button type="submit" class="changePass">Lưu</button>
   </div>
   `;
-  document.querySelector('.modal-content').innerHTML = html_pass;
+    document.querySelector(".modal-content").innerHTML = html_pass;
   };
 
-
-
-    editPass.forEach(btn => {
-    btn.addEventListener('click',function(e) {
+  editPass.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
       e.preventDefault();
-      document.querySelector('.modal-content').innerHTML = "";
-      console.log(btn)
+      document.querySelector(".modal-content").innerHTML = "";
+      console.log(btn);
       modal.style.display = "block";
       renderModalEditFunctionStaff();
+      viewInputChangePassword();
+
       const username = btn.closest("tr").querySelector(".id").textContent;
 
-      document.querySelector(".changePass").addEventListener("click",function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        const currentPass = document.getElementById("changeCurrentPassword");
-        const newPass = document.getElementById("changeNewPassword");
-        const confirmNewPass = document.getElementById("changeConfirmNewPassword");
-        if(currentPass.value === "") {
-          alert("Vui lòng nhập mật khẩu hiện tại !");
-          currentPass.focus();
-          return;
-        } else if(newPass.value === "") {
-          alert("Vui lòng nhập mật khẩu mới !");
-          newPass.focus();
-          return;
-        } else if(confirmNewPass.value === "") {
-          alert("Vui lòng nhập lại mật khẩu mới !");
-          confirmNewPass.focus();
-          return;
-        } else if(newPass.value !== confirmNewPass.value) {
-          alert("nhập lại mật khẩu không chính xác !");
-          confirmNewPass.focus(); 
-          return;
-        }
+      document
+        .querySelector(".changePass")
+        .addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          const currentPass = document.getElementById("changeCurrentPassword");
+          const newPass = document.getElementById("changeNewPassword");
+          const confirmNewPass = document.getElementById(
+            "changeConfirmNewPassword"
+          );
+          if (currentPass.value === "") {
+            alert("Vui lòng nhập mật khẩu hiện tại !");
+            currentPass.focus();
+            return;
+          } else if (newPass.value === "") {
+            alert("Vui lòng nhập mật khẩu mới !");
+            newPass.focus();
+            return;
+          } else if (confirmNewPass.value === "") {
+            alert("Vui lòng nhập lại mật khẩu mới !");
+            confirmNewPass.focus();
+            return;
+          } else if (newPass.value !== confirmNewPass.value) {
+            alert("nhập lại mật khẩu không chính xác !");
+            confirmNewPass.focus();
+            return;
+          }
 
-        var data = {
-          function: "password",
-          field: {
+          var data = {
+            function: "password",
+            field: {
               username: username,
               currentPassword: currentPass.value,
-              NewPassword: confirmNewPass.value
-          }
-        };
-        $.ajax({
-          url: '../controller/admin/account.controller.php',
-          type: "post",
-          dataType: 'html',
-          data: data,
-      }).done(function (result) {
-          loadItem();
-          $("#sqlresult").html(result);
-          modal.style.display = "none";
-      });
-        
-      })
+              NewPassword: confirmNewPass.value,
+            },
+          };
+          $.ajax({
+            url: "../controller/admin/account.controller.php",
+            type: "post",
+            dataType: "html",
+            data: data,
+          }).done(function (result) {
+            loadItem();
+            $("#sqlresult").html(result);
+            modal.style.display = "none";
+          });
+        });
 
       document.querySelector(".close i").addEventListener("click", function () {
         modal.style.display = "none";
       });
-      document.querySelector('.closeBtn').addEventListener("click",function() {
-        modal.style.display = "none";
-      })
-     
-    })
-    
-  })
+      document
+        .querySelector(".closeBtn")
+        .addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+    });
+  });
 
   const html_add = `
   <span class="close">
@@ -13328,28 +13356,29 @@ var js = function () {
 </div>
   `;
 
-  document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
-    e.preventDefault();
-    document.querySelector('.modal-content').innerHTML = html_add;
-    document.getElementById("tinhthanhpho").onchange = function () {
-      changeQuanHuyen();
-    };
-    document.getElementById("quanhuyen").onchange = function () {
-      changePhuongXa();
-    };
-    
-    // thiết lập select tỉnh thành
-    var tinhThanhSelect = document.getElementById("tinhthanhpho");
-    tinhThanhSelect.innerHTML = "";
-    for (var i = 0; i < tinhThanhData.length; i++) {
-      var option = document.createElement("option");
-      option.text = tinhThanhData[i];
-      tinhThanhSelect.add(option);
-    }
+  document
+    .querySelector(".body__filter--action__add")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelector(".modal-content").innerHTML = html_add;
+      document.getElementById("tinhthanhpho").onchange = function () {
+        changeQuanHuyen();
+      };
+      document.getElementById("quanhuyen").onchange = function () {
+        changePhuongXa();
+      };
 
-    
-    modal.style.display = "block";
-    modal.querySelector('.addButton').addEventListener('click', function (e) {
+      // thiết lập select tỉnh thành
+      var tinhThanhSelect = document.getElementById("tinhthanhpho");
+      tinhThanhSelect.innerHTML = "";
+      for (var i = 0; i < tinhThanhData.length; i++) {
+        var option = document.createElement("option");
+        option.text = tinhThanhData[i];
+        tinhThanhSelect.add(option);
+      }
+
+      modal.style.display = "block";
+      modal.querySelector(".addButton").addEventListener("click", function (e) {
         e.preventDefault();
         const username = document.getElementById("editUserId");
         const password = document.getElementById("password");
@@ -13362,99 +13391,92 @@ var js = function () {
         const diachi = document.getElementById("address");
         const role = document.getElementById("editUserRole");
         const regexPhoneNumber = /^0[0-9]{9}$/;
-        if(username.value === "") {
+        if (username.value === "") {
           alert("Tên đăng nhập không được để trống !");
-          username.focus(); return;
-        } else if(fullname.value === "") {
+          username.focus();
+          return;
+        } else if (fullname.value === "") {
           alert("Họ và tên không được để trống !");
-          fullname.focus(); return;
-        } else if(telephone.value === "") {
+          fullname.focus();
+          return;
+        } else if (telephone.value === "") {
           alert("Số điện thoại không được để trống !");
-          telephone.focus(); return;
-        } else if(!regexPhoneNumber.test(telephone.value)) {
+          telephone.focus();
+          return;
+        } else if (!regexPhoneNumber.test(telephone.value)) {
           alert("Số điện thoại không hợp lệ !");
-          telephone.focus(); return;
-        } else if(tinhthanhpho.value === "Chọn Tỉnh/Thành phố") {
+          telephone.focus();
+          return;
+        } else if (tinhthanhpho.value === "Chọn Tỉnh/Thành phố") {
           alert("Vui lòng chọn tỉnh thành phố !");
-          telephone.focus(); return;
-        } else if(diachi.value === "") {
+          telephone.focus();
+          return;
+        } else if (diachi.value === "") {
           alert("Vui lòng nhập địa chỉ !");
-          telephone.focus(); return;
-        } else if(password.value === "") {
+          telephone.focus();
+          return;
+        } else if (password.value === "") {
           alert("Mật khẩu không được để trống !");
-          password.focus(); return;
-        } else if(password.value.length < 8) {
+          password.focus();
+          return;
+        } else if (password.value.length < 8) {
           alert("Mật khẩu phải từ 8 ký tự trở lên !");
-          password.focus(); return;
-        } else if(role.value === "") {
+          password.focus();
+          return;
+        } else if (role.value === "") {
           alert("Vui lòng chọn loại tài khoản !");
-          role.focus(); return;
+          role.focus();
+          return;
         }
         var data = {
           function: "create",
           field: {
-              username:username.value,
-              password:password.value,
-              role:role.value,
-              fullname:fullname.value,
-              telephone:telephone.value,
-              city:tinhthanhpho.value,
-              quanhuyen:quanhuyen.value,
-              phuongxa:phuongxa.value,
-              diachi:diachi.value,
-          }
+            username: username.value,
+            password: password.value,
+            role: role.value,
+            fullname: fullname.value,
+            telephone: telephone.value,
+            city: tinhthanhpho.value,
+            quanhuyen: quanhuyen.value,
+            phuongxa: phuongxa.value,
+            diachi: diachi.value,
+          },
         };
         $.ajax({
-          url: '../controller/admin/account.controller.php',
+          url: "../controller/admin/account.controller.php",
           type: "post",
-          dataType: 'html',
+          dataType: "html",
           data: data,
-      }).done(function (result) {
-        console.log(result);
-        var tempDiv = document.createElement('div');
-        tempDiv.innerHTML = result;
+        }).done(function (result) {
+          console.log(result);
+          var tempDiv = document.createElement("div");
+          tempDiv.innerHTML = result;
 
-    if (!tempDiv.querySelector('.failed')) {
-        console.log('Result chứa lớp .failed');
-        modal.style.display = "none";
-    } 
+          if (!tempDiv.querySelector(".failed")) {
+            console.log("Result chứa lớp .failed");
+            modal.style.display = "none";
+          }
           loadItem();
           $("#sqlresult").html(result);
-          
-      });  
+        });
+      });
+
+      document.querySelector(".close i").addEventListener("click", function () {
+        modal.style.display = "none";
+      });
+      document
+        .querySelector(".closeBtn")
+        .addEventListener("click", function () {
+          modal.style.display = "none";
+        });
     });
-    
-    document.querySelector(".close i").addEventListener("click", function () {
-      modal.style.display = "none";
-    });
-    document.querySelector('.closeBtn').addEventListener("click",function() {
-      modal.style.display = "none";
-    })
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   window.addEventListener("click", function (event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
   });
-
 };
-
-
 
 function changeQuanHuyen() {
   var tinhthanh_data = document.getElementById("tinhthanhpho").value;
@@ -13483,4 +13505,76 @@ function changePhuongXa() {
       phuongXaSelect.add(option);
     }
   }
+}
+
+// Xử lý xem/ẩn mật khẩu input
+function viewInputChangePassword() {
+  const changeCurrentPasswordNoView = document.querySelector(
+    ".changeCurrentPasswordView .noView-loginPassword"
+  );
+  const changeCurrentPasswordView = document.querySelector(
+    ".changeCurrentPasswordView .view-loginPassword"
+  );
+  const changeNewPasswordNoView = document.querySelector(
+    ".changeNewPasswordView .noView-loginPassword"
+  );
+  const changeNewPasswordView = document.querySelector(
+    ".changeNewPasswordView .view-loginPassword"
+  );
+  const changeConfirmNewPasswordNoView = document.querySelector(
+    ".changeConfirmNewPasswordView .noView-loginPassword"
+  );
+  const changeConfirmNewPasswordView = document.querySelector(
+    ".changeConfirmNewPasswordView .view-loginPassword"
+  );
+
+  const changeCurrentPasswordInput = document.querySelector(
+    "#changeCurrentPassword"
+  );
+  const changeNewPassword = document.querySelector("#changeNewPassword");
+  const changeConfirmNewPassword = document.querySelector(
+    "#changeConfirmNewPassword"
+  );
+
+  changeCurrentPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    changeCurrentPasswordInput.setAttribute("type", "text");
+    changeCurrentPasswordNoView.classList.toggle("hide");
+    changeCurrentPasswordView.classList.toggle("hide");
+  });
+
+  changeCurrentPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    changeCurrentPasswordInput.setAttribute("type", "password");
+    changeCurrentPasswordView.classList.toggle("hide");
+    changeCurrentPasswordNoView.classList.toggle("hide");
+  });
+
+  changeNewPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    changeNewPassword.setAttribute("type", "text");
+    changeNewPasswordView.classList.toggle("hide");
+    changeNewPasswordNoView.classList.toggle("hide");
+  });
+
+  changeNewPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    changeNewPassword.setAttribute("type", "password");
+    changeNewPasswordNoView.classList.toggle("hide");
+    changeNewPasswordView.classList.toggle("hide");
+  });
+
+  changeConfirmNewPasswordNoView.addEventListener("click", (e) => {
+    e.preventDefault();
+    changeConfirmNewPassword.setAttribute("type", "text");
+    changeConfirmNewPasswordView.classList.toggle("hide");
+    changeConfirmNewPasswordNoView.classList.toggle("hide");
+  });
+
+  changeConfirmNewPasswordView.addEventListener("click", (e) => {
+    e.preventDefault();
+    changeConfirmNewPassword.setAttribute("type", "password");
+    changeConfirmNewPasswordView.classList.toggle("hide");
+    changeConfirmNewPasswordNoView.classList.toggle("hide");
+  });
 }
