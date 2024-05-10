@@ -315,6 +315,7 @@ $(document).ready(function () {
           wardRegister: ward,
         },
       }).done(function (result) {
+        console.log(result);
         const data = JSON.parse(result);
         if (data.success) {
           // toast.classList.add("active");
@@ -323,8 +324,11 @@ $(document).ready(function () {
           alert("Bạn đã đăng ký thành công!");
           $(".result").html("");
         } else {
-          $(".result").addClass("error");
-          $(".result").html(data.message);
+          if (data.existUsername) {
+            errMessageUsernameRegister.innerText = "Username đã tồn tại";
+          }
+          // $(".result").addClass("error");
+          // $(".result").html(data.message);
         }
       });
     }

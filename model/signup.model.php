@@ -58,6 +58,7 @@
     if (mysqli_num_rows($resultCheckExistUsername) > 0) {
       return (object) array (
         'success' => false,
+        'existUsername' => true,
         'message' => "Hệ thống đã tồn tại username: $username"
       );
     }
