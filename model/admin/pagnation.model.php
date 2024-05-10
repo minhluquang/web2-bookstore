@@ -109,7 +109,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id" publisher_id="' . $row['publisher_id'] . '">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -672,35 +672,39 @@ function getProductFilterSQL($data)
     $filter = "";
     $innerjoin = "";
     if (!empty($data)) {
-        if (!empty($data['product_name'])) {
+        if (!empty($data['name'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "`name` LIKE '%" . $data['product_name'] . "%'";
+            $filter = $filter . "`name` LIKE '%" . $data['name'] . "%'";
         }
-        if (!empty($data['product_id'])) {
+        if (!empty($data['id'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " id = " . $data['product_id'];
+            $filter = $filter . " id = " . $data['id'];
         }
-        if (!empty($data['product_price_start'])) {
+        if (!empty($data['price_start'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " price >= " . $data['product_price_start'];
+            $filter = $filter . " price >= " . $data['price_start'];
         }
-        if (!empty($data['product_price_end'])) {
+        if (!empty($data['price_end'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " price <= " . $data['product_price_end'];
+            $filter = $filter . " price <= " . $data['price_end'];
         }
-        if (!empty($data['product_category'])) {
+        if ((isset($data['status'])&&$data['status']==0)||!empty($data['status'])&&$data['status']!=-1) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " cd.product_id=products.id ";
-            $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['product_category'] . "'";
+            $filter = $filter . " status=" . $data['status'];
         }
-        if (!empty($data['product_date_type'])) {
-            if (!empty($data['product_date_start'])) {
+        if (!empty($data['category'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " cd.id=products.id ";
+            $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['category'] . "'";
+        }
+        if (!empty($data['date_type'])) {
+            if (!empty($data['date_start'])) {
                 if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['product_date_type'] . "` >= '" . $data['product_date_start'] . "'";
+                $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
             }
-            if (!empty($data['product_date_end'])) {
+            if (!empty($data['date_end'])) {
                 if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['product_date_type'] . "` <= '" . $data['product_date_end'] . "'";
+                $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['date_end'] . "'";
             }
         }
         if ($filter != "") $filter = "WHERE " . $filter;

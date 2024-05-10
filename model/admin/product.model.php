@@ -6,40 +6,18 @@ include_once("{$base_dir}connect.php");
 function product_delete($id)
 {
   $database = new connectDB();
-  $sql_cat = 'DELETE FROM category_details WHERE product_id="' . $id . '"';
-  $result_cat = $database->query($sql_cat);
-  $sql_au = 'DELETE FROM author_details WHERE product_id="' . $id . '"';
-  $result_au = $database->query($sql_au);
-  $sql_receipt = 'DELETE FROM goodsreceipt_details WHERE product_id="' . $id . '"';
-  $result_receipt = $database->query($sql_receipt);
-  $sql_order = 'DELETE FROM order_details WHERE product_id="' . $id . '"';
-  $result_order = $database->query($sql_order);
-  $sql_product = 'DELETE FROM products WHERE id="' . $id . '"';
-  $result_product = $database->query($sql_product);
+
+  $sql = 'UPDATE products SET status="0" WHERE id="' . $id . '"';
+  $result = $database->query($sql);
 
   $database->close();
-  if ($result_cat && $result_au && $result_receipt && $result_order && $result_product) {
+  if ($result) {
     return (object) array(
       'success' => true,
       'message' => "<span class='success'>Xóa sản phẩm với mã $id thành công</span>"
     );
   } else {
-    $error = "<span class='failed'>Xóa sản phẩm với mã $id KHÔNG thành công</span>\n";
-    if (!$result_cat) {
-      $error += "Lỗi khi xử lý bảng category_details\n";
-    }
-    if (!$result_au) {
-      $error += "Lỗi khi xử lý bảng author_details\n";
-    }
-    if (!$result_receipt) {
-      $error += "Lỗi khi xử lý bảng goodsreceipt_details\n";
-    }
-    if (!$result_order) {
-      $error += "Lỗi khi xử lý bảng order_details\n";
-    }
-    if (!$result_product) {
-      $error += "Lỗi khi xử lý bảng products\n";
-    }
+    $error = "<span class='failed'>Xóa sản phẩm với mã $id KHÔNG thành công</span>";
     return (object) array(
       'success' => false,
       'message' => $error
@@ -82,6 +60,18 @@ function product_getPublishers()
   $database->close();
   return $ans;
 }
+function product_getSuppliers()
+{
+  $database = new connectDB();
+  $sql = 'SELECT * FROM suppliers';
+  $result = $database->query($sql);
+  $ans = "<option value=''>Chọn nhà cung cấp</option>";
+  while ($row = mysqli_fetch_array($result)) {
+    $ans = $ans . "<option value=" . $row["id"] . ">" . $row["name"] . "</option>\n";
+  }
+  $database->close();
+  return $ans;
+}
 function product_create($field)
 {
   $database = new connectDB();
@@ -118,9 +108,9 @@ function product_create($field)
     fwrite($ifp, base64_decode($data[1]));
     // clean up the file resource
     fclose($ifp);
-    $sql = "INSERT INTO products (id, name, publisher_id, image_path, create_date, update_date, price, quantity) 
+    $sql = "INSERT INTO products (id, name, publisher_id, image_path, create_date, update_date, price, quantity,supplier_id,status) 
           VALUES ('" . $field['id'] . "', '" . $field['name'] . "', '" . $field['publisher_id'] . "', '" . $image_path .
-      "', '" . $date  . "', '" . $date  . "', '" . $field['price'] . "', '0') ";
+      "', '" . $date  . "', '" . $date  . "', '" . $field['price'] . "', '0','".$field['supplier_id']."','1') ";
     $result = $database->execute($sql);
     if ($result) {
       $result = "<span class='success'>Tạo sản phẩm thành công</span>";
@@ -188,7 +178,7 @@ function product_edit($field)
   }
   $sql = "UPDATE products
           SET name= '" . $field['name'] . "',publisher_id= '" . $field['publisher_id'] . "',image_path= '" . $image_path .
-    "',update_date= '" . $date  . "',price= '" . $field['price'] . "' WHERE id=" . $field['id'];
+    "',update_date= '" . $date  . "',price= '" . $field['price'] . "',supplier_id= '" . $field['supplier_id']. "' WHERE id=" . $field['id'];
 
   $result = $database->execute($sql);
   

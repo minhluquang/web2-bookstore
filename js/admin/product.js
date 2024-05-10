@@ -8,18 +8,20 @@ function getFilterFromURL() {
     filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
     filter_form.querySelector("#price_start").value = (urlParams['price_start'] != null) ? urlParams['price_start'] : "";
     filter_form.querySelector("#price_end").value = (urlParams['price_end'] != null) ? urlParams['price_end'] : "";
+    filter_form.querySelector("#status").value = (urlParams['status'] != null) ? urlParams['status'] : "1";
 }
 function pushFilterToURL() {
     var filter = getFilterFromForm();
     var url_key = {
-        "product_name": "name",
-        "product_id": "id",
-        "product_category": "category",
-        "product_date_type": "date_type",
-        "product_date_start": "date_start",
-        "product_date_end": "date_end",
-        "product_price_start": "price_start",
-        "product_price_end": "price_end",
+        "name": "name",
+        "id": "id",
+        "category": "category",
+        "date_type": "date_type",
+        "date_start": "date_start",
+        "date_end": "date_end",
+        "price_start": "price_start",
+        "price_end": "price_end",
+        "status": "status",
     }
     var url = "";
     Object.keys(filter).forEach(key => {
@@ -29,14 +31,16 @@ function pushFilterToURL() {
 }
 function getFilterFromForm() {
     return {
-        "product_name": filter_form.querySelector("#productName").value,
-        "product_id": filter_form.querySelector("#productId").value,
-        "product_category": filter_form.querySelector("#categorySelect").value,
-        "product_date_type": filter_form.querySelector("#cateDateSelect").value,
-        "product_date_start": filter_form.querySelector("#date_start").value,
-        "product_date_end": filter_form.querySelector("#date_end").value,
-        "product_price_start": filter_form.querySelector("#price_start").value,
-        "product_price_end": filter_form.querySelector("#price_end").value,
+        "name": filter_form.querySelector("#productName").value,
+        "id": filter_form.querySelector("#productId").value,
+        "category": filter_form.querySelector("#categorySelect").value,
+        "date_type": filter_form.querySelector("#cateDateSelect").value,
+        "date_start": filter_form.querySelector("#date_start").value,
+        "date_end": filter_form.querySelector("#date_end").value,
+        "price_start": filter_form.querySelector("#price_start").value,
+        "price_end": filter_form.querySelector("#price_end").value,
+        "status": filter_form.querySelector("#status").value,
+        
     }
 }
 // Load the jquery
@@ -148,6 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function filterBtn() {
+    document.querySelector(".body__filter--actions").querySelector("div").innerHTML=`<button type="reset" class="body__filter--action__reset">Reset</button>
+    <button class="body__filter--action__filter">Lọc</button>`
     $(".body__filter--action__filter").click((e) => {
         current_page = 1;
         e.preventDefault();
@@ -280,6 +286,11 @@ var js = function () {
                             </select>
                         </div>
                         <div class="flex">
+                            <label for="supplier_id">Nhà cung cấp</label>
+                            <select id="supplier_id">
+                            </select>
+                        </div>
+                        <div class="flex">
                             <span style="display:flex;">
                                 <label for="categorySelect" style="flex: 50%">Thể loại</label>
                                 <button type="button" class="open-multiselect" id="category-multiselect">Thêm</button>
@@ -345,6 +356,16 @@ var js = function () {
         }).done(function (result) {
             document.querySelector("#modal").querySelector("#publisher_id").innerHTML = result;
         })
+        $.ajax({
+            url: '../controller/admin/product.controller.php',
+            type: "post",
+            dataType: 'html',
+            data: {
+                function: "getSuppliers"
+            }
+        }).done(function (result) {
+            document.querySelector("#modal").querySelector("#supplier_id").innerHTML = result;
+        })
         modal.querySelector('.button-confirm').addEventListener('click', function (e) {
             e.preventDefault();
             $.ajax({
@@ -359,6 +380,7 @@ var js = function () {
                         publisher_id: modal.querySelector('#publisher_id').value,
                         image: document.getElementById('imagePreview').src,
                         price: modal.querySelector('#price').value,
+                        supplier_id: modal.querySelector('#supplier_id').value,
                         category: multiselect_array["category"],
                         author: multiselect_array["author"],
                     }
@@ -457,6 +479,7 @@ var js = function () {
             // const modal_edit_container = document.querySelector("#modal-edit-container");
 
             var publisher_value = this.parentNode.parentNode.querySelector(".id").getAttribute("publisher_id");
+            var supplier_value = this.parentNode.parentNode.querySelector(".id").getAttribute("supplier_id");
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             $.ajax({
                 url: '../controller/admin/product.controller.php',
@@ -489,6 +512,18 @@ var js = function () {
             }).done(function (result) {
                 modal.querySelector("#publisher_id").innerHTML = result;
                 modal.querySelector('#publisher_id').value = publisher_value;
+
+            })
+            $.ajax({
+                url: '../controller/admin/product.controller.php',
+                type: "post",
+                dataType: 'html',
+                data: {
+                    function: "getSuppliers"
+                }
+            }).done(function (result) {
+                modal.querySelector("#supplier_id").innerHTML = result;
+                modal.querySelector('#supplier_id').value = supplier_value;
 
             })
             if (this.parentNode.parentNode.querySelector(".type").getAttribute("value") == "[]") multiselect_array["category"] = [];
@@ -602,6 +637,7 @@ var js = function () {
                             id: id,
                             name: modal.querySelector('#name').value,
                             publisher_id: modal.querySelector('#publisher_id').value,
+                            supplier_id: modal.querySelector('#supplier_id').value,
                             image: image,
                             price: modal.querySelector('#price').value,
                             category: multiselect_array["category"],

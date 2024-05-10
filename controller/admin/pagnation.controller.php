@@ -23,7 +23,8 @@
             $render = $_SESSION["render"];
             if (isset($_POST["filter"])) $render->setFilter(getFilterSQL($render->getTable(), $_POST["filter"]));
             else $render->setFilter("");
-            $orderby = $_POST["orderby"];
+            $orderby;
+            if(!empty($_POST["orderby"])) $orderby=$_POST["orderby"];
             $type = " ASC";
             if (!empty($_POST["order_type"])) $type = " " . $_POST["order_type"];
             if (empty($orderby)) {

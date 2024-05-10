@@ -16,6 +16,9 @@ if (isset($_POST['function'])) {
     case 'getPublishers':
       getPublishers();
       break;
+    case 'getSuppliers':
+      getSuppliers();
+      break;
     case 'create':
       create();
       break;
@@ -55,4 +58,8 @@ function getAuthors()
 function getPublishers()
 {
   echo product_getPublishers();
+}
+function getSuppliers()
+{
+  echo product_getSuppliers();
 }
