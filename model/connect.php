@@ -3,7 +3,7 @@
     private $servername = "localhost";
     private $username = "root";
     private $databasename = "backend_web2";
-    private $password = "";
+    private $password = "12345";
     public $conn; // Đây là thuộc tính chứa kết nối
   
     public function __construct() {

@@ -612,7 +612,10 @@ class pagnation
                     break;
                 case "suppliers":
                     echo "<div id='zero-item'><h2>Không có nhà cung cấp nào</h2></div>";
-                     break;    
+                     break;
+                     case "discounts":
+                        echo "<div id='zero-item'><h2>Không có mã khuyến mãi nào</h2></div>";
+                         break;
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
