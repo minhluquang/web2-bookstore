@@ -128,3 +128,12 @@
   }
 }
 
+@media (min-width: 1650px) {
+  .input-wrapper input {
+    padding: 0 140px 0 10px;
+  }
+
+  .searchInputContainer i {
+    right: 110px;
+  }
+}
