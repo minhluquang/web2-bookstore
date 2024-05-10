@@ -53,7 +53,7 @@
 
     foreach ($orderDetails as $orderDetail) {
       // Thay đổi đơn hàng thành status_id = 3 (đã huỷ)
-      if (deleteOrderByOrderId($orderId)) {
+      if (deleteOrderByOrderId($orderId) && updateQuantityProductByIdModel($orderDetail['product_id'], $orderDetail['quantity'])) {
         $reponse = (object) array (
           "success" => true,
           "message" => "Hệ thống đã xoá thành công đơn hàng"

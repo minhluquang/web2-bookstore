@@ -27,6 +27,15 @@
               $isAllowed = "";
 
               $productDetail = getProductDetailById($productId, true);
+
+              if (!$productDetail) {
+                echo '<div style="font-size: 24px; text-align: center; font-weight: bold;">CHÚNG TÔI ĐÃ CỐ GẮNG HẾT SỨC, NHƯNG KHÔNG THỂ TÌM THẤY CHI TIẾT SẢN PHẨM, VUI LÒNG THỬ LẠI SAU!</div>';
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+                return;
+              }
+
               $priceFormat = number_format($productDetail['price'], 0, ',', '.').' ₫';
               $quantityStatus;
               if ($productDetail['quantity'] > 0) {
@@ -80,7 +89,10 @@
                     '.$quantityStatus.'
                   </div>
                 </div>
-                <button class="modal-btn '.$isAllowed.'">Thêm vào giỏ</button>
+                <div class="modal-actions">
+                  <button class="modal-btn themVaoGio '.$isAllowed.'">Thêm vào giỏ</button>
+                  <button class="modal-btn muaNgay '.$isAllowed.'">Mua ngay</button>
+                </div>
               </div>';
             } else {
               echo "CHÚNG TÔI ĐÃ CỐ GẮNG HẾT SỨC, NHƯNG KHÔNG THỂ TÌM THẤY CHI TIẾT SẢN PHẨM, VUI LÒNG THỬ LẠI SAU!";

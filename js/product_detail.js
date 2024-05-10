@@ -24,9 +24,9 @@ btnIncreaseQnt.addEventListener("click", (e) => {
 
 // Xử lý thêm vào giỏ bằng ajax
 $(document).ready(function () {
-  $(".modal-btn").click(function (e) {
+  $(".themVaoGio").click(function (e) {
     // Ngăn chặn thêm sp vào giỏ hàng khi kho hết
-    if ($(".modal-btn.notAllowed")[0]) {
+    if ($(".themVaoGio.notAllowed")[0]) {
       return;
     }
 
@@ -41,6 +41,26 @@ $(document).ready(function () {
       .getAttribute("value");
 
     addToCart(productId, amount);
+  });
+
+  $(".muaNgay").click(function (e) {
+    // Ngăn chặn thêm sp vào giỏ hàng khi kho hết
+    if ($(".muaNgay.notAllowed")[0]) {
+      return;
+    }
+
+    e.preventDefault();
+
+    const currentURL = window.location.href;
+    const searchParams = new URLSearchParams(currentURL);
+    const productId = searchParams.get("pid");
+    const amount = $(this)
+      .closest(".modal-content__model-right")
+      .find(".modal-qnt .modal-qnt-select input[type=text]")[0]
+      .getAttribute("value");
+
+    addToCart(productId, amount);
+    window.location.href = "index.php?page=cart";
   });
 });
 

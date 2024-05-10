@@ -164,6 +164,13 @@ body {
   color: #8f8f8f;
 }
 
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
 .modal-btn {
   width: 100%;
   border: none;
