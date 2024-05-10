@@ -109,7 +109,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '"status="' . $row['status'] . '">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -164,7 +164,6 @@ class pagnation
                             // button
                             echo '<td class="actions ">
                         <button class="actions--edit" >Sửa</button>
-                        <button class="actions--delete" >Xoá</button>
                         </td>';
                             echo '</tr>';
                         }

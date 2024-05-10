@@ -40,7 +40,7 @@ function getFilterFromForm() {
         "price_start": filter_form.querySelector("#price_start").value,
         "price_end": filter_form.querySelector("#price_end").value,
         "status": filter_form.querySelector("#status").value,
-        
+
     }
 }
 // Load the jquery
@@ -53,7 +53,7 @@ urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') +
 var number_of_item = urlParams['item'];
 var current_page = urlParams['current_page'];
 var orderby = urlParams['orderby'];
-var order_type =urlParams['order_type'];
+var order_type = urlParams['order_type'];
 if (current_page == null) {
     current_page = 1;
 }
@@ -63,7 +63,7 @@ if (number_of_item == null) {
 if (orderby == null) {
     orderby = "";
 }
-if (order_type != "ASC" && order_type!="DESC") {
+if (order_type != "ASC" && order_type != "DESC") {
     order_type = "ASC";
 }
 function checkReady() {
@@ -136,7 +136,7 @@ function loadItem() {
             }
         }).done(function (result) {
 
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page+'&orderby=' + orderby+'&order_type=' + order_type;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page + '&orderby=' + orderby + '&order_type=' + order_type;
             newurl += pushFilterToURL();
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function filterBtn() {
-    document.querySelector(".body__filter--actions").querySelector("div").innerHTML=`<button type="reset" class="body__filter--action__reset">Reset</button>
+    document.querySelector(".body__filter--actions").querySelector("div").innerHTML = `<button type="reset" class="body__filter--action__reset">Reset</button>
     <button class="body__filter--action__filter">Lọc</button>`
     $(".body__filter--action__filter").click((e) => {
         current_page = 1;
@@ -171,7 +171,7 @@ function filterBtn() {
                 function: "render",
             }
         }).done(function (result) {
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page+'&orderby=' + orderby+'&order_type=' + order_type;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page + '&orderby=' + orderby + '&order_type=' + order_type;
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
             pagnationBtn();
@@ -182,11 +182,11 @@ function filterBtn() {
 
 //js
 var js = function () {
-    if (orderby != ""&&order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("."+order_type).classList.remove("hidden");
-    else document.querySelector("[data-order]").querySelector("."+order_type).classList.remove("hidden");
+    if (orderby != "" && order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("." + order_type).classList.remove("hidden");
+    else document.querySelector("[data-order]").querySelector("." + order_type).classList.remove("hidden");
     document.querySelector(".result").querySelectorAll("th").forEach((th) => {
         if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
-            if(orderby=="") orderby =document.querySelector("[data-order]").getAttribute("data-order");
+            if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
             if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
                 order_type = "DESC";
             }
@@ -267,28 +267,33 @@ var js = function () {
                             <div class="img">
                                 <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display: none;">
                             </div>
-                            <input type="file" name="choose-img" id="fileInput">
+                            <input type="file" name="choose-img" id="fileInput" accept="image/*">
                         </div>
+                        <span class="error-message fileInput hidden"></span>
 
                     </div>
                     <div class="modal-body-2">
                         <div class="flex">
                             <label for="name">Tên sản phẩm</label>
                             <input id="name" type="text" add-index="2" placeholder="Tên sản phẩm">
+                            <span class="error-message name hidden"></span>
                         </div>
                         <div class="flex">
                             <label for="price">Giá sản phẩm</label>
                             <input id="price" type="text" add-index="3" placeholder="Giá sản phẩm">
+                            <span class="error-message price hidden"></span>
                         </div>
                         <div class="flex">
                             <label for="publisher_id">Nhà xuất bản</label>
                             <select id="publisher_id">
                             </select>
+                            <span class="error-message publisher_id hidden"></span>
                         </div>
                         <div class="flex">
                             <label for="supplier_id">Nhà cung cấp</label>
                             <select id="supplier_id">
                             </select>
+                            <span class="error-message supplier_id hidden"></span>
                         </div>
                         <div class="flex">
                             <span style="display:flex;">
@@ -307,6 +312,13 @@ var js = function () {
                             <select id="author">
                             </select> -->
                         </div>
+                        <div class="flex">
+                            <label for="status">Trạng thái</label>
+                            <select id="status">
+                                <option value="1" selected>Đang kinh doanh</option>
+                                <option value="0">Ngừng kinh doanh</option>
+                            </select>
+                        </div>
                     </div>
                     <input type="reset" value="Hủy" class="button-cancel">
                     <input type="submit" value="Xác nhận" class="button-confirm" >
@@ -323,6 +335,7 @@ var js = function () {
         const modal_edit_container = modal.querySelector("#modal-edit-container");
         modal.querySelector('#choose-img-select').remove();
         modal.querySelector('.choose-img').classList.remove("hidden");
+        modal.querySelector('#status').parentElement.classList.add("hidden");
         modal.querySelector('#modal-header').innerHTML = "Thêm sản phẩm";
 
         $.ajax({
@@ -368,6 +381,7 @@ var js = function () {
         })
         modal.querySelector('.button-confirm').addEventListener('click', function (e) {
             e.preventDefault();
+            if (!checkInput()) return;
             $.ajax({
                 url: '../controller/admin/product.controller.php',
                 type: "post",
@@ -536,6 +550,7 @@ var js = function () {
             modal.querySelector('#modal-header').innerHTML = "Sửa sản phẩm mã " + this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector("#category-amount").innerHTML = "Đã chọn " + multiselect_array["category"].length.toString() + " thể loại";
             modal.querySelector("#author-amount").innerHTML = "Đã chọn " + multiselect_array["author"].length.toString() + " tác giả";
+            modal.querySelector("#status").value = this.parentNode.parentNode.querySelector(".id").getAttribute("status");
 
             const fileInput = document.getElementById('fileInput');
             fileInput.addEventListener('change', function () {
@@ -625,6 +640,7 @@ var js = function () {
             // confirm edit
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
+                if (!checkInput()) return;
                 image = document.getElementById('imagePreview').src;
                 if (chooseImgContainer.classList.contains("hidden")) image = ""
                 $.ajax({
@@ -642,6 +658,7 @@ var js = function () {
                             price: modal.querySelector('#price').value,
                             category: multiselect_array["category"],
                             author: multiselect_array["author"],
+                            status:modal.querySelector('#status').value
                         }
                     }
                 }).done(function (result) {
@@ -655,79 +672,146 @@ var js = function () {
 
     }
 
-    // delete
+    // // delete
 
-    const del_btns = document.getElementsByClassName("actions--delete");
+    // const del_btns = document.getElementsByClassName("actions--delete");
 
-    for (var i = 0; i < del_btns.length; i++) {
-        del_btns[i].addEventListener('click', function () {
-            let selected_content = this.parentNode.parentNode;
-            let product_id = selected_content.querySelector('.id').innerHTML;
-            let product_name = selected_content.querySelector('.name').innerHTML;
-            let img_link = selected_content.querySelector('img').src;
-            var del_html = `
-        <div class="modal-edit-product-container show" id="modal-edit-container">
-        <div class="modal-edit-product">
-            <div class="modal-header">
-                <h3>Xác nhận xóa sản phẩm</h3>
-                <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body">
-                <div class="del-body">
-                    <div class="image">
-                        <img id="imagePreview" src="${img_link}" alt="image not found">
-                    </div>
-                    <div class="thongtin">
-                        <div><span style="font-weight: bold;">Mã sản phẩm :</span> <span id="product-delete-id">${product_id}</span> </div>
-                        <div><span style="font-weight: bold;">Tên sản phẩm :</span> <span>${product_name}</span> </div>
-                    </div>
-                </div>
-                <div class="del-btn-container">
-                    <input type="button" value="Hủy" class="del-cancel">
-                    <input type="button" value="Xác nhận" class="del-confirm">
-                </div>
-            </div>
-        </div>
-    </div>
+    // for (var i = 0; i < del_btns.length; i++) {
+    //     del_btns[i].addEventListener('click', function () {
+    //         let selected_content = this.parentNode.parentNode;
+    //         let product_id = selected_content.querySelector('.id').innerHTML;
+    //         let product_name = selected_content.querySelector('.name').innerHTML;
+    //         let img_link = selected_content.querySelector('img').src;
+    //         var del_html = `
+    //     <div class="modal-edit-product-container show" id="modal-edit-container">
+    //     <div class="modal-edit-product">
+    //         <div class="modal-header">
+    //             <h3>Xác nhận xóa sản phẩm</h3>
+    //             <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+    //         </div>
+    //         <div class="modal-body">
+    //             <div class="del-body">
+    //                 <div class="image">
+    //                     <img id="imagePreview" src="${img_link}" alt="image not found">
+    //                 </div>
+    //                 <div class="thongtin">
+    //                     <div><span style="font-weight: bold;">Mã sản phẩm :</span> <span id="product-delete-id">${product_id}</span> </div>
+    //                     <div><span style="font-weight: bold;">Tên sản phẩm :</span> <span>${product_name}</span> </div>
+    //                 </div>
+    //             </div>
+    //             <div class="del-btn-container">
+    //                 <input type="button" value="Hủy" class="del-cancel">
+    //                 <input type="button" value="Xác nhận" class="del-confirm">
+    //             </div>
+    //         </div>
+    //     </div>
+    // </div>
 
-        `;
+    //     `;
 
 
-            modal.innerHTML = del_html;
-            $('.del-confirm').click(function (e) {
-                e.preventDefault();
-                var $id = $('#product-delete-id').html();
-                $.ajax({
-                    url: '../controller/admin/product.controller.php',
-                    type: "post",
-                    dataType: 'html',
-                    data: {
-                        function: "delete",
-                        id: $id
-                    }
-                }).done(function (result) {
-                    loadItem();
-                    $("#sqlresult").html(result);
-                    modal_edit_container.classList.remove('show');
-                })
-            })
+    //         modal.innerHTML = del_html;
+    //         $('.del-confirm').click(function (e) {
+    //             e.preventDefault();
+    //             var $id = $('#product-delete-id').html();
+    //             $.ajax({
+    //                 url: '../controller/admin/product.controller.php',
+    //                 type: "post",
+    //                 dataType: 'html',
+    //                 data: {
+    //                     function: "delete",
+    //                     id: $id
+    //                 }
+    //             }).done(function (result) {
+    //                 loadItem();
+    //                 $("#sqlresult").html(result);
+    //                 modal_edit_container.classList.remove('show');
+    //             })
+    //         })
 
-            // Button close
-            const modal_edit_container = document.querySelector("#modal-edit-container");
+    //         // Button close
+    //         const modal_edit_container = document.querySelector("#modal-edit-container");
 
-            const btnClose = document.querySelector("#btnClose");
-            // console.log(btnClose)
-            btnClose.addEventListener('click', () => {
-                // console.log(modal_edit_container)
-                modal_edit_container.classList.remove('show')
-            });
-            // Button cancel
-            const btnCancel = document.querySelector(".del-cancel");
-            // console.log(btnClose)
-            btnCancel.addEventListener('click', () => {
-                // console.log(modal_edit_container)
-                modal_edit_container.classList.remove('show')
-            });
-        });
+    //         const btnClose = document.querySelector("#btnClose");
+    //         // console.log(btnClose)
+    //         btnClose.addEventListener('click', () => {
+    //             // console.log(modal_edit_container)
+    //             modal_edit_container.classList.remove('show')
+    //         });
+    //         // Button cancel
+    //         const btnCancel = document.querySelector(".del-cancel");
+    //         // console.log(btnClose)
+    //         btnCancel.addEventListener('click', () => {
+    //             // console.log(modal_edit_container)
+    //             modal_edit_container.classList.remove('show')
+    //         });
+    //     });
+    // }
+    function checkInput() {
+        var success = true;
+
+        const price_regex = /^[0-9]+$/;
+
+        const fileinput = modal.querySelector("#fileInput");
+        const name = modal.querySelector("#name");
+        const price = modal.querySelector("#price");
+        const publisher = modal.querySelector("#publisher_id");
+        const supplier = modal.querySelector("#supplier_id");
+
+        fileinput.classList.remove("error-field")
+        name.classList.remove("error-field")
+        price.classList.remove("error-field")
+        publisher.classList.remove("error-field")
+        supplier.classList.remove("error-field")
+
+
+        const fileinput_err = modal.querySelector(".error-message.fileInput");
+        const name_err = modal.querySelector(".error-message.name");
+        const price_err = modal.querySelector(".error-message.price");
+        const publisher_err = modal.querySelector(".error-message.publisher_id");
+        const supplier_err = modal.querySelector(".error-message.supplier_id");
+
+        fileinput_err.classList.add("hidden")
+        name_err.classList.add("hidden")
+        price_err.classList.add("hidden")
+        publisher_err.classList.add("hidden")
+        supplier_err.classList.add("hidden")
+
+        if (!modal.querySelector('.choose-img').classList.contains("hidden"))
+        if (fileinput.files.length == 0) {
+            fileinput.classList.add("error-field")
+            fileinput_err.classList.remove("hidden")
+            fileinput_err.innerHTML = "Chưa chọn file hình ảnh"
+            success = false;
+        };
+        if (name.value.trim().length == 0) {
+            name.classList.add("error-field")
+            name_err.classList.remove("hidden")
+            name_err.innerHTML = "Không được để trống"
+            success = false;
+        };
+        if (price.value.trim().length == 0) {
+            price.classList.add("error-field")
+            price_err.classList.remove("hidden")
+            price_err.innerHTML = "Không được để trống"
+            success = false;
+        } else if (!price_regex.test(price.value)) {
+            price_err.classList.remove("hidden")
+            price_err.innerHTML = "Giá chỉ đuọc chứa số"
+            success = false;
+        }
+        if (publisher.value == "") {
+            publisher.classList.add("error-field")
+            publisher_err.classList.remove("hidden")
+            publisher_err.innerHTML = "Chưa chọn NXB"
+            success = false;
+        };
+        if (supplier.value == "") {
+            supplier.classList.add("error-field")
+            supplier_err.classList.remove("hidden")
+            supplier_err.innerHTML = "Chưa chọn nhà cung cấp "
+            success = false;
+        };
+        return success;
     }
 }
