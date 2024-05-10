@@ -9,37 +9,47 @@ function author_delete($id)
     global $database;
 
     // Delete rows from author_details table
-    $sql_delete_au = 'DELETE FROM author_details WHERE author_id = "' . $id . '"';
-    $result_delete_au = $database->query($sql_delete_au);
+    $sql = "SELECT * FROM authors WHERE id= ". $id ."";
 
-    if ($result_delete_au !== false) {
-        // Proceed with deleting the author from the authors table
-        $sql_author = 'DELETE FROM authors WHERE id = "' . $id . '"';
-        $result_author = $database->query($sql_author);
+    $result = $database->query($sql);
+    $row = $result->fetch_assoc();
 
-        if ($result_author !== false) {
-            return (object) array(
-                'success' => true,
-                'message' => "<span class='success'>Xóa tác giả với mã $id thành công</span>"
-            );
-        } else {
-            return (object) array(
-                'success' => false,
-                'message' => "<span class='failed'>Xóa tác giả với mã $id KHÔNG thành công - Lỗi khi xử lý bảng authors</span>\n"
-            );
-        }
-    } else {
-        return (object) array(
-            'success' => false,
-            'message' => "<span class='failed'>Xóa tác giả với mã $id KHÔNG thành công - Lỗi khi xử lý bảng author_details</span>\n"
-        );
-    }
+    if ($row != null) {
+        $sql = "UPDATE authors
+    SET status = ". 0 . " WHERE id = ". $id ."";
+         $result = $database->query($sql);
+
+         if($result) {
+            $result = "<span class='success'>Xoá tác giả thành công</span>";
+          } else {
+            $result = "<span class='failed'>Xoá tác giả  không thành công</span>";
+          }
+          return $result;
+          } else {
+             return $result = "<span class='failed'>Tác giả  '. $id .' không tồn tại</span>";
+          }
 }
 
 
 
 
 
+function getMaximumAuthorId() {
+    global $database;
+
+    // Query to get the maximum author ID
+    $sql_max_id = "SELECT MAX(id) AS max_id FROM authors";
+    $result_max_id = $database->query($sql_max_id);
+
+    if ($result_max_id->num_rows > 0) {
+        $row = $result_max_id->fetch_assoc();
+        return $row['max_id'];
+    }
+
+    return 0; // Return 0 if no ID found
+}
+
+// Updated author_create function
 function author_create($field)
 {
     global $database;
@@ -53,12 +63,18 @@ function author_create($field)
     $result_check = $database->query($sql_check);
 
     if ($result_check->num_rows > 0) {
-        return "<span class='failed'>Tác giả với email $email đã tồn tại</span>";
+        return ;
     } else {
-        // Thực hiện thêm tác giả mới
-        $sql_insert = "INSERT INTO authors (name, email) VALUES ('$name', '$email')";
+        // Lấy ID tác giả lớn nhất
+        $maxId = getMaximumAuthorId();
+
+        // Tăng ID lên 1 để tạo ID mới
+        $newId = $maxId + 1;
+
+        // Thực hiện thêm tác giả mới với ID mới
+        $sql_insert = "INSERT INTO authors (id, name, email, status) VALUES ('$newId', '$name', '$email', '" . 1 . "')";
         $result_insert = $database->query($sql_insert);
-        
+
         if ($result_insert) {
             return "<span class='success'>Tạo tác giả thành công</span>";
         } else {
@@ -66,7 +82,6 @@ function author_create($field)
         }
     }
 }
-
 
 
 

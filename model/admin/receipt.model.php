@@ -5,7 +5,16 @@ $base_dir = realpath(dirname(__FILE__)  . $ds . '..') . $ds;
 include_once("{$base_dir}connect.php");
 $database = new connectDB();
 
-
+function getNewReceiptId($database) {
+  $sql = "SELECT MAX(id) AS max_id FROM goodsreceipts";
+  $result = $database->query($sql);
+  if ($result && $result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      return intval($row['max_id']) + 1; // Tăng ID cuối cùng lên 1 để lấy ID mới
+  } else {
+      return 1; // Nếu không có đơn hàng nào, trả về ID đầu tiên
+  }
+}
 function receipt_create($field)
 {
     $database = new connectDB(); // Assuming connectDB class is defined for database connection
@@ -17,21 +26,17 @@ function receipt_create($field)
     $supplierId = $field['supplierId'];
     $totalPrice = $field['totalPrice'];
     $staffId = $field['staffId'];
+    $receiptId = getNewReceiptId($database);
+
+    
 
     // Insert information into goodsreceipts table
-    $sqlInsertReceipt = "INSERT INTO goodsreceipts (supplier_id, staff_id, total_price, date_create) 
-                         VALUES ('".$supplierId."', '".$staffId."', '".$totalPrice."', '".$date."')";
+    $sqlInsertReceipt = "INSERT INTO goodsreceipts (id,supplier_id, staff_id, total_price, date_create) 
+                         VALUES ('".$receiptId."','".$supplierId."', '".$staffId."', '".$totalPrice."', '".$date."')";
     $resultReceipt = $database->query($sqlInsertReceipt);
 
     if ($resultReceipt) {
-        // Get the last inserted receipt ID immediately after insertion
-        $sqlGetLastId = "SELECT LAST_INSERT_ID() AS last_id";
-        $resultLastId = $database->query($sqlGetLastId);
-        
-        if ($resultLastId && $resultLastId->num_rows > 0) {
-            $row = $resultLastId->fetch_assoc();
-            $receiptId = $row['last_id'];
-
+       
             // Insert details into goodsreceipt_details table
             foreach ($field['details'] as $detail) {
                 $productId = $detail['productId'];
@@ -54,9 +59,7 @@ function receipt_create($field)
         } else {
             return "<span class='failed'>Error retrieving last inserted ID</span>";
         }
-    } else {
-        return "<span class='failed'>Tạo đơn nhập hàng không thành công</span>";
-    }
+   
 }
 
 
@@ -140,7 +143,7 @@ function receipt_detail($field){
       $goodsreceipt_id = $field['id']; 
 
       try {
-        $sql = "SELECT id, name FROM products WHERE supplier_id = $goodsreceipt_id";
+        $sql = "SELECT id, name FROM products p WHERE supplier_id = $goodsreceipt_id AND p.status=1" ;
         $stmt = $database->query($sql);
       
     
@@ -160,7 +163,7 @@ function receipt_detail($field){
   
       try {
           $id = $field['id'];
-          $sql = "SELECT price FROM products WHERE supplier_id = '$id'";
+          $sql = "SELECT price FROM products p WHERE p.id = '$id'";
           $stmt = $database->query($sql);
   
           if ($stmt->num_rows > 0) {

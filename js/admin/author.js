@@ -3,6 +3,7 @@ function getFilterFromURL() {
   filter_form.querySelector("#authorName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
   filter_form.querySelector("#authorId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
   filter_form.querySelector("#authorEmail").value = (urlParams['email'] != null) ? urlParams['email'] : "";
+  filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
 
 }
 function pushFilterToURL() {
@@ -11,7 +12,7 @@ function pushFilterToURL() {
     "author_name": "name",
     "author_id": "id",
     "author_email": "email",
-
+    "author_status":"status"
   }
   var url = "";
   Object.keys(filter).forEach(key => {
@@ -23,7 +24,9 @@ function getAUFilterFromForm() {
   return {
     "author_name": filter_form.querySelector("#authorName").value,
     "author_id": filter_form.querySelector("#authorId").value,
-    "author_email": filter_form.querySelector("#authorEmail").value
+    "author_email": filter_form.querySelector("#authorEmail").value,
+    "author_status": filter_form.querySelector("#statusSelect").value,
+
   }
 
 }
@@ -123,6 +126,7 @@ function filterBtn() {
   })
   $(".body__filter--action__reset").click((e) => {
     current_page = 1;
+    status_value = "active";
     $.ajax({
       url: '../controller/admin/pagnation.controller.php',
       type: "post",
@@ -131,12 +135,14 @@ function filterBtn() {
         number_of_item: number_of_item,
         current_page: current_page,
         function: "render",
+        filter: {
+          author_status: status_value
+      }
       }
     }).done(function (result) {
       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
       window.history.pushState({ path: newurl }, '', newurl);
       $('.result').html(result);
-      console.log(result);
       pagnationBtn();
       js();
     })
@@ -335,7 +341,7 @@ const js = function () {
       document.querySelector("#author-delete-name").textContent = selected_content.querySelector(".name").innerHTML;
       document.querySelector("#author-delete-email").textContent = selected_content.querySelector(".email").innerHTML;
 
-      const btnConfirmDelete = document.querySelector(".del-confirm");
+      const btnConfirmDelete = document.querySelector("#del-confirm");
       btnConfirmDelete.addEventListener("click", (e) => {
         e.preventDefault();
         var $id = $('#author-delete-id').html();
@@ -372,16 +378,7 @@ const js = function () {
       }
     });
 
-    const edit_btns = document.getElementsByClassName("actions--edit");
-    for (let i = 0; i < edit_btns.length; i++) {
-      edit_btns[i].addEventListener("click", () => {
-        let selected_content = edit_btns[i].parentNode.parentNode;
-        let author_id = selected_content.querySelector(".id").innerHTML;
-        let author_name = selected_content.querySelector(".name").innerHTML;
-        let author_email = selected_content.querySelector(".email").innerHTML;
-        renderModalEditInfoAuthor(author_id, author_name, author_email);
-      });
-    }
+   
 
     /*const del_btns = document.getElementsByClassName("actions--delete");
     for (let i = 0; i < del_btns.length; i++) {

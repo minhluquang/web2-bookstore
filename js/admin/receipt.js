@@ -155,48 +155,76 @@ function filterBtn() {
 }
 
 function addProduct() {
-  // Get values from form fields
-  const supplier = document.getElementById('supplier').value;
-  const productId = document.getElementById('productId').value;
-  const productName = document.getElementById('productId').selectedOptions[0].text;
-  const quantity = document.getElementById('quantity').value;
-  
-  // AJAX request to get inputPrice
-  $.ajax({
-    url: '../controller/admin/receipt.controller.php',
-    type: "post",
-    dataType: 'html',
-    data: {
-      function: "getPrice",
-      field: {
-        id: supplier
+  let productName = ""; 
+  let productId = "";
+  let quantity = "";
+
+  // Add event listener to productId dropdown
+  const productIdDropdown = document.getElementById('productId');
+  productIdDropdown.addEventListener('change', function() {
+    const selectedProductId = this.value; 
+    productName = document.getElementById('productId').selectedOptions[0].text;
+    productId = document.getElementById('productId').value;
+    
+    if (!selectedProductId) return; 
+
+    // AJAX request to get inputPrice
+    $.ajax({
+      url: '../controller/admin/receipt.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        function: "getPrice",
+        field: { id: selectedProductId }
       }
-    }
-  }).done(function (result) {
-    // Gán giá trị Result từ AJAX vào inputPrice
-    const inputPrice = 0.8 * parseFloat(result); // Chuyển đổi kết quả thành số và tính giá
+    }).done(function (result) {
+      const inputPrice = 0.8 * parseFloat(result);
+      document.getElementById('inputPrice').value = inputPrice;
+    }).fail(function() {
+      alert('Đã xảy ra lỗi khi lấy giá.');
+    });
+  });
 
-    // Check if all fields are filled
-    if (supplier.trim() === '' || productId.trim() === '' || quantity.trim() === '' || inputPrice === 0) {
-      alert('Vui lòng nhập đầy đủ thông tin và lấy giá thành công.');
-      return; 
+  // Add click event listener to addProduct button
+  document.getElementById("addProduct").addEventListener("click", function() {
+    quantity = document.getElementById('quantity').value;
+    if (productId.trim() === '' || quantity.trim() === '') {
+      alert('Vui lòng nhập đầy đủ thông tin.');
+      return;
     }
 
-    // Add product to table
     const tableBody = document.getElementById('productTableBody');
-    const newRow = tableBody.insertRow();
-    newRow.innerHTML = `
-      <td>${productId}</td>
-      <td>${productName}</td>
-      <td>${quantity}</td>
-      <td>${inputPrice}</td>
-    `;
+    let productExists = false;
+
+    // Check if product already exists in table
+    Array.from(tableBody.rows).forEach(function(row) {
+      if (row.cells[0].textContent === productId) {
+        // Product exists, update quantity
+        let prevQuantity = parseInt(row.cells[2].textContent);
+        let newQuantity = prevQuantity + parseInt(quantity);
+        row.cells[2].textContent = newQuantity;
+        productExists = true;
+      }
+    });
+
+    if (!productExists) {
+      // Add product to table if it doesn't exist
+      const newRow = tableBody.insertRow();
+      newRow.innerHTML = `
+        <td>${productId}</td>
+        <td>${productName}</td> 
+        <td>${quantity}</td>
+        <td>${document.getElementById('inputPrice').value}</td>
+      `;
+    }
+
     // Reset form fields
     document.getElementById('productId').value = '';
     document.getElementById('quantity').value = '';
-    
-  })
+    document.getElementById('inputPrice').value = '';
+  });
 }
+
 
 function deleteRow() {
   const table = document.getElementById('addTable'); // Lấy thẻ table
@@ -257,7 +285,7 @@ const js = function () {
         <input type="number" id="inputPrice" readonly>
       </div>
       <div class="form-actions">
-        <button type="button" onclick="addProduct()" class="btn">Thêm sản phẩm</button>
+        <button type="button"  class="btn" id="addProduct">Thêm sản phẩm</button>
         <button type="button"  onclick="deleteRow()">Xóa</button>
 
       </div>    
@@ -287,6 +315,7 @@ const closeAddIcon = document.querySelector(".addModal-content .close i");
 
 openModalBtn.addEventListener('click', function () {
   addModalContent.innerHTML = addHtml;
+  addModalContent.addEventListener('click',addProduct());
   addModal.style.display = "block";
 
   // Populate suppliers dropdown

@@ -25,8 +25,8 @@ $_SESSION["render"] ->setTable("goodsreceipts");
         <p>* Lưu ý: Định dạng dữ liệu ngày được hiển thị là dạng dd/mm/yyyy</p>
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--nameClient" id="">
-                <p>Tên đơn nhập hàng</p>
-                <input id="supplierName" type="text" placeholder="Nhập tên đơn nhập hàng" />
+                <p>Tên nhà cung cấp</p>
+                <input id="supplierName" type="text" placeholder="Nhập tên nhà cung cấp" />
             </div>
             <div class="body__filter--field body__filter--idClient" id="">
                 <p>Mã đơn nhập hàng</p>
