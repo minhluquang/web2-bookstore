@@ -114,15 +114,11 @@
           }
         }
         $sql .= ")";
-
-        if ((($startRange == 0 || $startRange) && $endRange)) {
-          $sql .= " AND ";
-        }
       }
 
       // Câu lệnh query theo khoảng giá
       if (($startRange == 0 || $startRange) && $endRange) {
-        $sql .= " price BETWEEN $startRange AND $endRange";
+        $sql .= " AND price BETWEEN $startRange AND $endRange";
       }
 
       // Câu lệnh sắp theo thứ tự price/p.id
