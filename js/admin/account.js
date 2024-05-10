@@ -158,7 +158,6 @@ var js = function () {
   const editAccountButton = document.querySelector(".editAccountButton");
   const closeIcon = document.querySelector(".close i");
   const editPass = document.querySelectorAll(".actions--pass");
-console.log(editPass);
   // Lưu nút button sửa đã bấm để lấy thông tin user
   let storeButtonClicked;
 
@@ -374,6 +373,7 @@ console.log(editPass);
       }).done(function (result) {
           loadItem();
           $("#sqlresult").html(result);
+          modal.style.display = "none";
       });
         
       })
@@ -388,6 +388,115 @@ console.log(editPass);
     })
     
   })
+
+  const html_add = `
+  <span class="close">
+  <i class="fa-solid fa-xmark"></i>
+</span>
+<div class="form">
+<h2>Thông tin tài khoản</h2>
+    <form id="editForm">
+    <div class="input-field">
+        <label for="editUserId">Mã người dùng</label>
+        <input type="text" id="editUserId">
+    </div>
+    <div class="input-field">
+        <label for="password">Mật khẩu</label>
+        <input type="text" id="password">
+    </div>
+    <div class="input-field">
+        <label for="confirmPassword">Nhập lại mật khẩu</label>
+        <input type="text" id="confirmPassword">
+    </div>
+    <div class="input-field">
+        <label for="editUserRole">Loại tài khoản</label>
+        <select id="editUserRole">
+            <option value="">Tất cả</option>
+            <option value="3">Người dùng</option>
+            <option value="1">Quản trị viên</option>
+            <option value="2">Nhân viên</option>
+        </select>
+    </div>
+  </form>
+</div>
+<div class="form-actions">
+    <button class="closeBtn">Hủy</button>
+    <button type="submit" class="addButton">Tạo tài khoản</button>
+</div>
+  `;
+
+  document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelector('.modal-content').innerHTML = html_add;
+    modal.style.display = "block";
+    modal.querySelector('.addButton').addEventListener('click', function (e) {
+        e.preventDefault();
+        const username = document.getElementById("editUserId");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const role = document.getElementById("editUserRole");
+        
+        if(username.value === "") {
+          alert("Tên đăng nhập không được để trống !");
+          username.focus(); return;
+        } else if(password.value === "") {
+          alert("Mật khẩu không được để trống !");
+          password.focus(); return;
+        } else if(password.value.length < 8) {
+          alert("Mật khẩu phải từ 8 ký tự trở lên !");
+          password.focus(); return;
+        } else if(confirmPassword.value === "") {
+          alert("Vui lòng nhập lại mật khẩu !");
+          confirmPassword.focus(); return;
+        } else if(password.value !== confirmPassword.value) {
+          alert("Nhập lại mật khẩu không chính xác !");
+          confirmPassword.focus(); return;
+        } else if(role.value === "") {
+          alert("Vui lòng chọn loại tài khoản !");
+          role.focus(); return;
+        }
+        console.log(username,password.value,role.value);
+        var data = {
+          function: "create",
+          field: {
+              username:username.value,
+              password:password.value,
+              role:role.value,
+          }
+        };
+        console.log("Hello");
+        $.ajax({
+          url: '../controller/admin/account.controller.php',
+          type: "post",
+          dataType: 'html',
+          data: data,
+      }).done(function (result) {
+          loadItem();
+          $("#sqlresult").html(result);
+          modal.style.display = "none";
+      });  
+    });
+    
+    document.querySelector(".close i").addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+    document.querySelector('.closeBtn').addEventListener("click",function() {
+      modal.style.display = "none";
+    })
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   window.addEventListener("click", function (event) {

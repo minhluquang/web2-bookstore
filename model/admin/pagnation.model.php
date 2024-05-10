@@ -544,10 +544,7 @@ class pagnation
                         <thead class="menu">
                             <tr>
                             <th>Mã quyền</th>                 
-                            <th>Tên quyền</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày xóa</th>  
-                            <th>Ngày cập nhật</th>        
+                            <th>Tên quyền</th>      
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -559,13 +556,12 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="status">'.$row['status'].'</td>';
+                            // echo '<td class="status">'.$row['status'].'</td>';
                             // echo '<td class="date-create">'.$row['create_date'].'</td>';
-                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
-                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            // echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            // echo '<td class="date-update">'.$row['update_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }

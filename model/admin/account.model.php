@@ -106,3 +106,23 @@ function passEdit($field) {
     return "<span class='failed'>Thay đổi mật khẩu thất bại</span>";
 }
 }
+function create_account($field) {
+  global $database;
+  $username = $field['username'];
+  $password = $field['password'];
+  $pass_hash = password_hash($password,PASSWORD_DEFAULT);
+  $role = $field['role'];
+
+  $sql_check = "SELECT * FROM accounts WHERE username = '$username'"; 
+  $result = $database -> query($sql_check);
+  if(mysqli_num_rows($result) > 0) {
+    return "<span class='failed'>Tên đăng nhập đã tồn tại</span>"; 
+  }
+  $sql_insert = "INSERT INTO accounts (username, password, role_id,status) VALUES ('$username', '$pass_hash', '$role',1)";
+  if ($database->query($sql_insert)) {
+    return "<span class='success'>Tạo tài khoản thành công</span>";
+  } else {
+    return "<span class='failed'>Đã xảy ra lỗi khi thêm tài khoản</span>";
+  }
+
+}
