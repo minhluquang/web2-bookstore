@@ -178,6 +178,17 @@ const modal = document.querySelector("#modal");
         const modal_create_container = document.querySelector(".modal-edit-product-container");
         modal.querySelector('.create-confirm').addEventListener('click', function (e) {
             e.preventDefault();
+        const name = modal.querySelector('#namePublisher');
+        const email = modal.querySelector('#emailPublisher');
+        if(name.value === "") {
+            alert("Tên không được để trống !");
+            name.focus();
+            return;
+        } else if(email.value === "") {
+            alert("Email không được để trống !");
+            email.focus();
+            return;
+        }
             $.ajax({
                 url: '../controller/admin/publisher.controller.php',
                 type: "post",
@@ -185,8 +196,8 @@ const modal = document.querySelector("#modal");
                 data: {
                     function: "create",
                     field: {                   
-                        name: modal.querySelector('#namePublisher').value, 
-                        email:modal.querySelector('#emailPublisher').value,                
+                        name: name.value, 
+                        email:email.value,                
                     }
                 }
             }).done(function (result) {

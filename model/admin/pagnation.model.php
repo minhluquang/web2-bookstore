@@ -350,11 +350,18 @@ class pagnation
                            if($row['status'] == 0) $status = "Không hoạt động";
                            
                             echo '<td class="status" value="active">'.$status.'</td>';
-                            echo '<td class="actions">
+                            if($row['username'] == "adminfahasa") {
+                                echo '<td class="actions">
+                                <button class="actions--pass">Đổi mật khẩu</button>
+                                </td>
+                            </tr>';
+                            } else {
+                                echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--pass">Đổi mật khẩu</button>
                             </td>
                         </tr>';
+                            }
                         }
                         echo ' 
                     </tbody>

@@ -13293,10 +13293,6 @@ var js = function () {
         <label for="password">Mật khẩu</label>
         <input type="text" id="password">
     </div>
-    <div class="input-field">
-        <label for="confirmPassword">Nhập lại mật khẩu</label>
-        <input type="text" id="confirmPassword">
-    </div>
       <div class="input-field">
         <label for="tinhthanhpho">Tỉnh/thành phố</label>
          <select id="tinhthanhpho"></select>
@@ -13357,7 +13353,7 @@ var js = function () {
         e.preventDefault();
         const username = document.getElementById("editUserId");
         const password = document.getElementById("password");
-        const confirmPassword = document.getElementById("confirmPassword");
+        // const confirmPassword = document.getElementById("confirmPassword");
         const fullname = document.getElementById("fullname");
         const telephone = document.getElementById("telephone");
         const tinhthanhpho = document.getElementById("tinhthanhpho");
@@ -13390,12 +13386,6 @@ var js = function () {
         } else if(password.value.length < 8) {
           alert("Mật khẩu phải từ 8 ký tự trở lên !");
           password.focus(); return;
-        } else if(confirmPassword.value === "") {
-          alert("Vui lòng nhập lại mật khẩu !");
-          confirmPassword.focus(); return;
-        } else if(password.value !== confirmPassword.value) {
-          alert("Nhập lại mật khẩu không chính xác !");
-          confirmPassword.focus(); return;
         } else if(role.value === "") {
           alert("Vui lòng chọn loại tài khoản !");
           role.focus(); return;
@@ -13420,9 +13410,17 @@ var js = function () {
           dataType: 'html',
           data: data,
       }).done(function (result) {
+        console.log(result);
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = result;
+
+    if (!tempDiv.querySelector('.failed')) {
+        console.log('Result chứa lớp .failed');
+        modal.style.display = "none";
+    } 
           loadItem();
           $("#sqlresult").html(result);
-          modal.style.display = "none";
+          
       });  
     });
     

@@ -229,14 +229,13 @@ td:last-child {
 }
 
 .actions--delete,
-.actions--pass,
-.addButton {
+.actions--pass {
   color: #fff !important;
   background-color: #dc3545 !important;
   border-color: #dc3545 !important;
 }
 
-.actions--view {
+.actions--view,.addButton {
   color: #fff !important;
   background-color: #198754 !important;
   border-color: #198754 !important;
