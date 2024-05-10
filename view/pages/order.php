@@ -28,7 +28,7 @@
             echo '<h2>Đơn hàng của bạn</h2>';
             foreach ($orders as $order) {
               $isHideCancelOrder = '';
-              if ($order['order_status_id'] == 5 || $order['order_status_id'] == 3) {
+              if ($order['order_status_id'] == 5 || $order['order_status_id'] == 3 || $order['order_status_id'] == 4) {
                 $isHideCancelOrder = 'hide';
               }
 
@@ -59,13 +59,14 @@
               $countOrderDetail = 0; 
               foreach ($orderDetails as $orderDetail) {
                 $countOrderDetail++;
-                if ($countOrderDetail > 3) break; //Chỉ in ra 3 cái
                 $formatPrice = number_format($orderDetail['price'], 0, ',', '.');
                 $totalPrice = $orderDetail['quantity'] * $orderDetail['price'];
                 $totalPriceOfOrder += $totalPrice;
                 $formatTotalPrice = number_format($totalPrice, 0, ',', '.');
-  
-                echo '              
+                
+                 //Chỉ in ra 3 cái
+                if ($countOrderDetail <= 3) {
+                  echo '              
                   <div class="order-item-wrapper">
                     <div class="order-item">
                       <div class="img-product-order">
@@ -98,6 +99,7 @@
                       </div>
                     </div>
                   </div>';
+                }
               }
   
               $formatTotalPriceOfOrder = number_format($totalPriceOfOrder, 0, ',', '.');

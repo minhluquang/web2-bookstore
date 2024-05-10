@@ -18,17 +18,44 @@ include_once("{$base_dir}connect.php");
         // So sánh mật khẩu nhập vào với mật khẩu trong cơ sở dữ liệu
         if (password_verify($password, $db_password)) {
           $database->close();
-          return true;
+          if ($row['status'] == 0) {
+            $reponse = (object) array (
+              "success" => false,
+              "status" => $row['status'],
+              "message" => "Tài khoản của bạn đã bị khoá!" 
+            );
+            return $reponse;
+          } else {
+            $reponse = (object) array (
+              "success" => true,
+              "status" => $row['status'],
+              "message" => "Đăng nhập thành công!" 
+            );
+            return $reponse;
+          }
         } else {
           $database->close();
-          return false;
+          $reponse = (object) array (
+            "success" => false,
+            "status" => $row['status'],
+            "message" => "Tài khoản hoặc mật khẩu không chính xác!" 
+          );
+          return $reponse;
         }
       } else {
-        return false;
+        $reponse = (object) array (
+          "success" => false,
+          "message" => "Tài khoản không đủ quyền truy cập!" 
+        );
+        return $reponse;
       }
     } else {
       $database->close();
-      return false;
+      $reponse = (object) array (
+        "success" => false,
+        "message" => "Server hiện không phản hồi!" 
+      );
+      return $reponse;
     }
   }
 
