@@ -250,7 +250,15 @@ class pagnation
                             echo '<td class="supplierName">' . $supplier_name . '</td>';
                             
                             echo '<td class="staff_id">' . $row['staff_id'] . '</td>';
-                            echo '<td class="total_price">' . $row['total_price'] . '</td>';
+                            echo '<td class="total_price">';
+                            $price_number =  $row['total_price'];
+                            $price = "";
+                            while ($price_number > 0) {
+                                $price = substr("$price_number", -3, 3) . '.' . $price;
+                                $price_number = substr("$price_number", 0, -3);
+                            }
+
+                            echo  trim($price, '. ') . '&#8363;</td>';
                             echo '<td class="date_create">' . $row['date_create'] . '</td>';
                     
                             echo '<td class="actions">

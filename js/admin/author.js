@@ -254,10 +254,6 @@ const js = function () {
           <label for="editAuthorEmail">Email</label>
           <input type="email" id="editAuthorEmail">
         </div>
-        <div class="input-field">
-          <label for="editAuthorRole">Thể loại viết</label>
-          <input type="text" id="editAuthorGenres" readonly>
-        </div>
       </form>
     </div>`;
 

@@ -94,8 +94,8 @@ function author_edit($field) {
     $row = mysqli_fetch_array($result);
     if ($row != null) {
         $sql = "UPDATE authors
-              SET name= '" . $field['name'] . "',email= '" . $field['email'] . "' 
-            WHERE id=".$field['id'];
+        SET name = '" . $field['name'] . "', email = '" . $field['email'] . "', status = 1 
+        WHERE id = " . $field['id'];
         
         $result = $database->execute($sql);
         if ($result) {
