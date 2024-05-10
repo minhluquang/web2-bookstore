@@ -87,9 +87,9 @@ if (isset($_POST['abate']) && $_POST['abate']) {
   if (!isset($_SESSION['cart-selected'])) {
     $_SESSION['cart-selected'] = [];
   }
-  // else {
-  //   unset($_SESSION['cart-selected']);
-  // }
+  else {
+    unset($_SESSION['cart-selected']);
+  }
 
   foreach ($_POST['selectedProducts'] as $product) {
     $_SESSION['cart-selected'][] = $product;

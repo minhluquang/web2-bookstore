@@ -5,6 +5,7 @@ class pagnation
     private $current_page;
     private $table;
     private $filter = "";
+    private $orderby = "";
 
     public function __construct($number_of_item, $current_page, $table)
     {
@@ -44,26 +45,22 @@ class pagnation
     {
         return $this->filter;
     }
-
+    public function setOrderby($orderby)
+    {
+        $this->orderby = $orderby;
+    }
+    public function getOrderby()
+    {
+        return $this->orderby;
+    }
     public function getData()
     {
-        $id = array(
-            'products' => 'id',
-            'orders' => 'id',
-            'accounts' => 'username',
-            'authors' => 'id',
-            'publishers' => 'id',
-            'categories' => 'id',
-            'suppliers' =>'id',
-            'functions' => 'id',
-            'goodsreceipts'=>'id',
-            'discounts' =>'discount_code',
-        );
+        
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
-        $id = $id[$this->table];
-        $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter ORDER BY $this->table.$id ASC LIMIT $this->number_of_item OFFSET $offset ";
+        $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter $this->orderby LIMIT $this->number_of_item OFFSET $offset ";
         $result = $database->query($sql);
+        $database->close();
         if ($result->num_rows > 0) {
             return (object) array(
                 'success' => true,
@@ -74,7 +71,6 @@ class pagnation
                 'success' => false
             );
         }
-        $database->close();
     }
     function getTotalRecords()
     {
@@ -97,14 +93,14 @@ class pagnation
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                                <th>Mã SP</th>
+                                <th data-order="id">Mã SP <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
                                 <th>Ảnh</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Thể loại</th>
+                                <th data-order="name">Tên Sản Phẩm <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th>Thể loại</i></th>
                                 <th>Ngày cập nhật/Ngày tạo</th>
                                 <th>Tác giả</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
+                                <th data-order="price">Giá <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th data-order="quantity">Số lượng <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -113,7 +109,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id" publisher_id="' . $row['publisher_id'] . '">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -311,7 +307,7 @@ class pagnation
                             $result_address = $database->query($sql_address);
                             $row_address = mysqli_fetch_array($result_address);
 
-                            echo '<td class="address">' . $row_address['address'] . '</td>';
+                            echo '<td class="address">' . $row_address['address'].', '.$row_address['ward'] .', '.$row_address['district'] .', '.$row_address['city'] . '</td>';
 
                             $sql_status = 'SELECT * from order_statuses WHERE id="' . $row[6] . '"';
                             $result_status  = $database->query($sql_status);
@@ -362,11 +358,18 @@ class pagnation
                            if($row['status'] == 0) $status = "Không hoạt động";
                            
                             echo '<td class="status" value="active">'.$status.'</td>';
-                            echo '<td class="actions">
+                            if($row['username'] == "adminfahasa") {
+                                echo '<td class="actions">
+                                <button class="actions--pass">Đổi mật khẩu</button>
+                                </td>
+                            </tr>';
+                            } else {
+                                echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--pass">Đổi mật khẩu</button>
                             </td>
                         </tr>';
+                            }
                         }
                         echo ' 
                     </tbody>
@@ -556,10 +559,7 @@ class pagnation
                         <thead class="menu">
                             <tr>
                             <th>Mã quyền</th>                 
-                            <th>Tên quyền</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày xóa</th>  
-                            <th>Ngày cập nhật</th>        
+                            <th>Tên quyền</th>      
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -571,13 +571,12 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="status">'.$row['status'].'</td>';
+                            // echo '<td class="status">'.$row['status'].'</td>';
                             // echo '<td class="date-create">'.$row['create_date'].'</td>';
-                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
-                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            // echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            // echo '<td class="date-update">'.$row['update_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }
@@ -628,7 +627,10 @@ class pagnation
                     break;
                 case "suppliers":
                     echo "<div id='zero-item'><h2>Không có nhà cung cấp nào</h2></div>";
-                     break;    
+                     break;
+                     case "discounts":
+                        echo "<div id='zero-item'><h2>Không có mã khuyến mãi nào</h2></div>";
+                         break;
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
@@ -684,35 +686,39 @@ function getProductFilterSQL($data)
     $filter = "";
     $innerjoin = "";
     if (!empty($data)) {
-        if (!empty($data['product_name'])) {
+        if (!empty($data['name'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "`name` LIKE '%" . $data['product_name'] . "%'";
+            $filter = $filter . "`name` LIKE '%" . $data['name'] . "%'";
         }
-        if (!empty($data['product_id'])) {
+        if (!empty($data['id'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " id = " . $data['product_id'];
+            $filter = $filter . " id = " . $data['id'];
         }
-        if (!empty($data['product_price_start'])) {
+        if (!empty($data['price_start'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " price >= " . $data['product_price_start'];
+            $filter = $filter . " price >= " . $data['price_start'];
         }
-        if (!empty($data['product_price_end'])) {
+        if (!empty($data['price_end'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " price <= " . $data['product_price_end'];
+            $filter = $filter . " price <= " . $data['price_end'];
         }
-        if (!empty($data['product_category'])) {
+        if ((isset($data['status'])&&$data['status']==0)||!empty($data['status'])&&$data['status']!=-1) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " cd.product_id=products.id ";
-            $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['product_category'] . "'";
+            $filter = $filter . " status=" . $data['status'];
         }
-        if (!empty($data['product_date_type'])) {
-            if (!empty($data['product_date_start'])) {
+        if (!empty($data['category'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " cd.id=products.id ";
+            $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['category'] . "'";
+        }
+        if (!empty($data['date_type'])) {
+            if (!empty($data['date_start'])) {
                 if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['product_date_type'] . "` >= '" . $data['product_date_start'] . "'";
+                $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
             }
-            if (!empty($data['product_date_end'])) {
+            if (!empty($data['date_end'])) {
                 if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['product_date_type'] . "` <= '" . $data['product_date_end'] . "'";
+                $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['date_end'] . "'";
             }
         }
         if ($filter != "") $filter = "WHERE " . $filter;

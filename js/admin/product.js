@@ -8,18 +8,20 @@ function getFilterFromURL() {
     filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
     filter_form.querySelector("#price_start").value = (urlParams['price_start'] != null) ? urlParams['price_start'] : "";
     filter_form.querySelector("#price_end").value = (urlParams['price_end'] != null) ? urlParams['price_end'] : "";
+    filter_form.querySelector("#status").value = (urlParams['status'] != null) ? urlParams['status'] : "1";
 }
 function pushFilterToURL() {
     var filter = getFilterFromForm();
     var url_key = {
-        "product_name": "name",
-        "product_id": "id",
-        "product_category": "category",
-        "product_date_type": "date_type",
-        "product_date_start": "date_start",
-        "product_date_end": "date_end",
-        "product_price_start": "price_start",
-        "product_price_end": "price_end",
+        "name": "name",
+        "id": "id",
+        "category": "category",
+        "date_type": "date_type",
+        "date_start": "date_start",
+        "date_end": "date_end",
+        "price_start": "price_start",
+        "price_end": "price_end",
+        "status": "status",
     }
     var url = "";
     Object.keys(filter).forEach(key => {
@@ -29,14 +31,16 @@ function pushFilterToURL() {
 }
 function getFilterFromForm() {
     return {
-        "product_name": filter_form.querySelector("#productName").value,
-        "product_id": filter_form.querySelector("#productId").value,
-        "product_category": filter_form.querySelector("#categorySelect").value,
-        "product_date_type": filter_form.querySelector("#cateDateSelect").value,
-        "product_date_start": filter_form.querySelector("#date_start").value,
-        "product_date_end": filter_form.querySelector("#date_end").value,
-        "product_price_start": filter_form.querySelector("#price_start").value,
-        "product_price_end": filter_form.querySelector("#price_end").value,
+        "name": filter_form.querySelector("#productName").value,
+        "id": filter_form.querySelector("#productId").value,
+        "category": filter_form.querySelector("#categorySelect").value,
+        "date_type": filter_form.querySelector("#cateDateSelect").value,
+        "date_start": filter_form.querySelector("#date_start").value,
+        "date_end": filter_form.querySelector("#date_end").value,
+        "price_start": filter_form.querySelector("#price_start").value,
+        "price_end": filter_form.querySelector("#price_end").value,
+        "status": filter_form.querySelector("#status").value,
+        
     }
 }
 // Load the jquery
@@ -48,11 +52,19 @@ var search = location.search.substring(1);
 urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
 var number_of_item = urlParams['item'];
 var current_page = urlParams['current_page'];
+var orderby = urlParams['orderby'];
+var order_type =urlParams['order_type'];
 if (current_page == null) {
     current_page = 1;
 }
 if (number_of_item == null) {
     number_of_item = 5;
+}
+if (orderby == null) {
+    orderby = "";
+}
+if (order_type != "ASC" && order_type!="DESC") {
+    order_type = "ASC";
 }
 function checkReady() {
     return new Promise(async function (resolve) {
@@ -87,7 +99,7 @@ function pagnationBtn() {
     if (document.getElementsByClassName('pag-pre').length > 0)
         document.querySelector('.pag-pre').addEventListener('click', function () {
             current_page = Number(document.querySelector('span.active').innerHTML) - 1;
-            loadItem(number_of_item, current_page);
+            loadItem();
         });
     if (document.getElementsByClassName('pag-con').length > 0)
         document.querySelector('.pag-con').addEventListener('click', function () {
@@ -118,11 +130,13 @@ function loadItem() {
                 number_of_item: number_of_item,
                 current_page: current_page,
                 function: "render",
-                filter: filter
+                filter: filter,
+                orderby: orderby,
+                order_type: order_type
             }
         }).done(function (result) {
 
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page+'&orderby=' + orderby+'&order_type=' + order_type;
             newurl += pushFilterToURL();
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
@@ -138,6 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function filterBtn() {
+    document.querySelector(".body__filter--actions").querySelector("div").innerHTML=`<button type="reset" class="body__filter--action__reset">Reset</button>
+    <button class="body__filter--action__filter">Lọc</button>`
     $(".body__filter--action__filter").click((e) => {
         current_page = 1;
         e.preventDefault();
@@ -155,7 +171,7 @@ function filterBtn() {
                 function: "render",
             }
         }).done(function (result) {
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page+'&orderby=' + orderby+'&order_type=' + order_type;
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
             pagnationBtn();
@@ -166,6 +182,22 @@ function filterBtn() {
 
 //js
 var js = function () {
+    if (orderby != ""&&order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("."+order_type).classList.remove("hidden");
+    else document.querySelector("[data-order]").querySelector("."+order_type).classList.remove("hidden");
+    document.querySelector(".result").querySelectorAll("th").forEach((th) => {
+        if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
+            if(orderby=="") orderby =document.querySelector("[data-order]").getAttribute("data-order");
+            if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
+                order_type = "DESC";
+            }
+            else {
+                order_type = "ASC"
+            }
+            orderby = th.getAttribute("data-order");
+            loadItem();
+            // console.log(orderby,order_type);
+        })
+    });
     function displayImage(input) {
         const file = input.files[0]; // Lấy ra tệp được chọn từ input file
         const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh
@@ -187,7 +219,7 @@ var js = function () {
     }
     var multiselect_array = {
         category: [],
-        author :[]
+        author: []
     }
     const multiselect = document.querySelector("#multiselect");
     const multiselect_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
@@ -254,6 +286,11 @@ var js = function () {
                             </select>
                         </div>
                         <div class="flex">
+                            <label for="supplier_id">Nhà cung cấp</label>
+                            <select id="supplier_id">
+                            </select>
+                        </div>
+                        <div class="flex">
                             <span style="display:flex;">
                                 <label for="categorySelect" style="flex: 50%">Thể loại</label>
                                 <button type="button" class="open-multiselect" id="category-multiselect">Thêm</button>
@@ -280,7 +317,7 @@ var js = function () {
     const modal = document.querySelector("#modal");
 
     document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
-        modal.innerHTML = modal_html;   
+        modal.innerHTML = modal_html;
         multiselect_array["category"] = []
         multiselect_array["author"] = []
         const modal_edit_container = modal.querySelector("#modal-edit-container");
@@ -319,6 +356,16 @@ var js = function () {
         }).done(function (result) {
             document.querySelector("#modal").querySelector("#publisher_id").innerHTML = result;
         })
+        $.ajax({
+            url: '../controller/admin/product.controller.php',
+            type: "post",
+            dataType: 'html',
+            data: {
+                function: "getSuppliers"
+            }
+        }).done(function (result) {
+            document.querySelector("#modal").querySelector("#supplier_id").innerHTML = result;
+        })
         modal.querySelector('.button-confirm').addEventListener('click', function (e) {
             e.preventDefault();
             $.ajax({
@@ -333,6 +380,7 @@ var js = function () {
                         publisher_id: modal.querySelector('#publisher_id').value,
                         image: document.getElementById('imagePreview').src,
                         price: modal.querySelector('#price').value,
+                        supplier_id: modal.querySelector('#supplier_id').value,
                         category: multiselect_array["category"],
                         author: multiselect_array["author"],
                     }
@@ -366,22 +414,22 @@ var js = function () {
             displayImage(this); // Gọi hàm displayImage và truyền vào input element
         });
 
-        var multiselect_filter = (select)=>{
+        var multiselect_filter = (select) => {
             let search = new RegExp(multiselect.querySelector("input").value.toString(), "ui");
             if (!search.test(select.innerHTML.replace('<i class="fa-solid fa-xmark cancel-multiselect"></i>', ""))) {
                 multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
             }
             else
                 if (multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.contains("hidden"))
-                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
         }
-        var multiselect_setup = (type,key,content) =>{
+        var multiselect_setup = (type, key, content) => {
             multiselect.innerHTML = multiselect_html;;
             multiselect.querySelector("#btnClose").addEventListener('click', () => {
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
             });
             multiselect.querySelector("input").addEventListener('input', () => {
-                multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select)=>{multiselect_filter(select)})
+                multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => { multiselect_filter(select) })
             });
             multiselect.querySelector(".button-cancel").addEventListener('click', () => {
                 multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
@@ -390,7 +438,7 @@ var js = function () {
                 })
                 multiselect.querySelector("input").value = "";
             });
-            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn "+type;
+            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn " + type;
             multiselect.querySelector("#multiselect-selected").innerHTML = content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
             multiselect.querySelector("#multiselect-available").innerHTML = content;
             multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
@@ -402,7 +450,7 @@ var js = function () {
                 multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
                 this.classList.add("hidden")
             }))
-            
+
             multiselect_array[key].forEach(function (select) {
                 multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
                 multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
@@ -414,14 +462,14 @@ var js = function () {
                     if (!select.classList.contains("hidden")) multiselect_array[key].push(select.getAttribute("data-value"))
                 })
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                modal.querySelector("#"+key+"-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " "+type;
+                modal.querySelector("#" + key + "-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " " + type;
             })
         }
         modal.querySelector("#category-multiselect").addEventListener("click", () => {
-            multiselect_setup("thể loại","category",category_content)
+            multiselect_setup("thể loại", "category", category_content)
         })
         modal.querySelector("#author-multiselect").addEventListener("click", () => {
-            multiselect_setup("tác giả","author",author_content)
+            multiselect_setup("tác giả", "author", author_content)
         })
     });
     var edit_btns = document.getElementsByClassName("actions--edit");
@@ -431,6 +479,7 @@ var js = function () {
             // const modal_edit_container = document.querySelector("#modal-edit-container");
 
             var publisher_value = this.parentNode.parentNode.querySelector(".id").getAttribute("publisher_id");
+            var supplier_value = this.parentNode.parentNode.querySelector(".id").getAttribute("supplier_id");
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
             $.ajax({
                 url: '../controller/admin/product.controller.php',
@@ -465,16 +514,28 @@ var js = function () {
                 modal.querySelector('#publisher_id').value = publisher_value;
 
             })
-            if(this.parentNode.parentNode.querySelector(".type").getAttribute("value")== "[]") multiselect_array["category"] = [];
+            $.ajax({
+                url: '../controller/admin/product.controller.php',
+                type: "post",
+                dataType: 'html',
+                data: {
+                    function: "getSuppliers"
+                }
+            }).done(function (result) {
+                modal.querySelector("#supplier_id").innerHTML = result;
+                modal.querySelector('#supplier_id').value = supplier_value;
+
+            })
+            if (this.parentNode.parentNode.querySelector(".type").getAttribute("value") == "[]") multiselect_array["category"] = [];
             else multiselect_array["category"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
-            if(this.parentNode.parentNode.querySelector(".author").getAttribute("value")== "[]") multiselect_array["author"] = [];
+            if (this.parentNode.parentNode.querySelector(".author").getAttribute("value") == "[]") multiselect_array["author"] = [];
             else multiselect_array["author"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
             modal.innerHTML = modal_html;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
             modal.querySelector('#price').value = this.parentNode.parentNode.querySelector(".price").innerHTML.replace(/[₫.]+/g, '');
             modal.querySelector('#modal-header').innerHTML = "Sửa sản phẩm mã " + this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector("#category-amount").innerHTML = "Đã chọn " + multiselect_array["category"].length.toString() + " thể loại";
-            modal.querySelector("#author-amount").innerHTML = "Đã chọn " +  multiselect_array["author"].length.toString() + " tác giả";
+            modal.querySelector("#author-amount").innerHTML = "Đã chọn " + multiselect_array["author"].length.toString() + " tác giả";
 
             const fileInput = document.getElementById('fileInput');
             fileInput.addEventListener('change', function () {
@@ -504,22 +565,22 @@ var js = function () {
                 modal_edit_container.classList.add('hidden');
             });
 
-            var multiselect_filter = (select)=>{
+            var multiselect_filter = (select) => {
                 let search = new RegExp(multiselect.querySelector("input").value.toString(), "ui");
                 if (!search.test(select.innerHTML.replace('<i class="fa-solid fa-xmark cancel-multiselect"></i>', ""))) {
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
                 }
                 else
                     if (multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.contains("hidden"))
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+                        multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
             }
-            var multiselect_setup = (type,key,content) =>{
+            var multiselect_setup = (type, key, content) => {
                 multiselect.innerHTML = multiselect_html;;
                 multiselect.querySelector("#btnClose").addEventListener('click', () => {
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
                 });
                 multiselect.querySelector("input").addEventListener('input', () => {
-                    multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select)=>{multiselect_filter(select)})
+                    multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => { multiselect_filter(select) })
                 });
                 multiselect.querySelector(".button-cancel").addEventListener('click', () => {
                     multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
@@ -528,7 +589,7 @@ var js = function () {
                     })
                     multiselect.querySelector("input").value = "";
                 });
-                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn "+type;
+                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn " + type;
                 multiselect.querySelector("#multiselect-selected").innerHTML = content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
                 multiselect.querySelector("#multiselect-available").innerHTML = content;
                 multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
@@ -540,7 +601,7 @@ var js = function () {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
                     this.classList.add("hidden")
                 }))
-                
+
                 multiselect_array[key].forEach(function (select) {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
@@ -552,14 +613,14 @@ var js = function () {
                         if (!select.classList.contains("hidden")) multiselect_array[key].push(select.getAttribute("data-value"))
                     })
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                    modal.querySelector("#"+key+"-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " "+type;
+                    modal.querySelector("#" + key + "-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " " + type;
                 })
             }
             modal.querySelector("#category-multiselect").addEventListener("click", () => {
-                multiselect_setup("thể loại","category",category_content)
+                multiselect_setup("thể loại", "category", category_content)
             })
             modal.querySelector("#author-multiselect").addEventListener("click", () => {
-                multiselect_setup("tác giả","author",author_content)
+                multiselect_setup("tác giả", "author", author_content)
             })
             // confirm edit
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
@@ -576,6 +637,7 @@ var js = function () {
                             id: id,
                             name: modal.querySelector('#name').value,
                             publisher_id: modal.querySelector('#publisher_id').value,
+                            supplier_id: modal.querySelector('#supplier_id').value,
                             image: image,
                             price: modal.querySelector('#price').value,
                             category: multiselect_array["category"],

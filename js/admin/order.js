@@ -143,8 +143,7 @@ var js = function () {
         modal.querySelector(".del-btn-container").innerHTML = btn_contain
         modal.querySelector(".del-btn-container").querySelectorAll("input").forEach((ch_btn) => ch_btn.addEventListener("click", () => {
           change_status(ch_btn.getAttribute("data-status-id"));
-        }
-        ));
+        }));
       });
 
     })

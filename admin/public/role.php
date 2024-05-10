@@ -31,14 +31,14 @@ $_SESSION["render"] ->setTable("functions");
                 <p>Mã Quyền</p>
                 <input type="text" id="roleId" placeholder="Nhập mã quyền" />
             </div>
-            <div class="body__filter--field body__filter--idClient filter_category" id="">
+            <!-- <div class="body__filter--field body__filter--idClient filter_category" id="">
                 <p>Trạng thái</p>
                 <select name="status" id="statusSelect">
                     <option value="active">Hoạt động</option>
                     <option value="inactive">Không hoạt động</option>
                     <option value="">Tất cả</option>
                 </select>
-            </div>
+            </div> -->
            
         </div>
 

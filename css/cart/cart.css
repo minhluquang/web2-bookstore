@@ -419,14 +419,14 @@ input.qty-cart {
   outline: none;
   border-radius: 4px;
 }
-.not-selectable-container{
+.not-selectable-container {
   overflow: hidden;
   position: relative;
   width: 100%;
   border-radius: inherit;
 }
-.not-selectable{
-  background :rgba(121, 121, 121, 0.7);
+.not-selectable {
+  background: rgba(121, 121, 121, 0.7);
   height: 100%;
   width: 100%;
   position: absolute;
@@ -436,7 +436,8 @@ input.qty-cart {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 11;
 }
-.hidden{
+.hidden {
   display: none;
 }

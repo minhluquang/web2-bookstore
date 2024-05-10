@@ -63,7 +63,14 @@ $_SESSION["render"] ->setTable("products");
                 <p>&#8203;</p>
                 <input id="price_end" type="text" placeholder="Nhập giá kết thúc" />
             </div>
-
+            <div class="body__filter--field body__filter--status" id="">
+                <p>Trạng thái:</p>
+                <select name="status" id="status">
+                    <option value="1" selected>Đang kinh doanh</option>
+                    <option value="0">Ngừng kinh doanh</option>
+                    <option value="-1">Tất cả</option>
+                </select>
+            </div>
         </div>
         <div class="body__filter--actions">
             <button type="button" class="body__filter--action__add">Thêm sản phẩm</button>
