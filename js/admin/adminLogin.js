@@ -42,8 +42,8 @@ $(document).ready(function () {
     }).done(function (result) {
       const data = JSON.parse(result);
       if (data.success) {
-        alert(data.message);
         window.location.href = "../admin/index.php";
+        alert(data.message);
       } else {
         alert(data.message);
       }

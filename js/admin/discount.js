@@ -1,155 +1,180 @@
 var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
-    filter_form.querySelector("#discountName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
-    filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
-
+  filter_form.querySelector("#discountName").value =
+    urlParams["name"] != null ? urlParams["name"] : "";
+  filter_form.querySelector("#statusSelect").value =
+    urlParams["status"] != null ? urlParams["status"] : "active";
 }
 function pushFilterToURL() {
-    var filter = getFilterFromForm();
-    var url_key = {
-        "discount_name": "name",
-        "discount_status":"status"
-        
-        
-    }
-    var url = "";
-    Object.keys(filter).forEach(key => {
-        url += (filter[key] != null && filter[key] != "") ? `&${url_key[key]}=${filter[key]}` : "";
-    });
-    return url;
+  var filter = getFilterFromForm();
+  var url_key = {
+    discount_name: "name",
+    discount_status: "status",
+  };
+  var url = "";
+  Object.keys(filter).forEach((key) => {
+    url +=
+      filter[key] != null && filter[key] != ""
+        ? `&${url_key[key]}=${filter[key]}`
+        : "";
+  });
+  return url;
 }
 function getFilterFromForm() {
-    return {
-        "discount_name": filter_form.querySelector("#discountName").value,
-        "discount_status": filter_form.querySelector("#statusSelect").value,
-        
-    }
+  return {
+    discount_name: filter_form.querySelector("#discountName").value,
+    discount_status: filter_form.querySelector("#statusSelect").value,
+  };
 }
 // Load the jquery
 var script = document.createElement("SCRIPT");
-script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js';
-script.type = 'text/javascript';
+script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
+script.type = "text/javascript";
 document.getElementsByTagName("head")[0].appendChild(script);
 var search = location.search.substring(1);
-urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
-var number_of_item = urlParams['item'];
-var current_page = urlParams['current_page'];
+urlParams = JSON.parse(
+  '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+  function (key, value) {
+    return key === "" ? value : decodeURIComponent(value);
+  }
+);
+var number_of_item = urlParams["item"];
+var current_page = urlParams["current_page"];
 if (current_page == null) {
-    current_page = 1;
+  current_page = 1;
 }
 if (number_of_item == null) {
-    number_of_item = 5;
+  number_of_item = 5;
 }
 function checkReady() {
-    return new Promise(async function (resolve) {
-        while (!window.jQuery) {
-            await new Promise(resolve => setTimeout(resolve, 20));
-        }
-        resolve();
-    })
+  return new Promise(async function (resolve) {
+    while (!window.jQuery) {
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
+    resolve();
+  });
 }
 async function loadForFirstTime() {
-    await checkReady();
-    getFilterFromURL();
-    loadItem();
-  }
-  function pagnationBtn() {
-    // pagnation
-    document.querySelectorAll('.pag').forEach((btn) => btn.addEventListener('click', function () {
+  await checkReady();
+  getFilterFromURL();
+  loadItem();
+}
+function pagnationBtn() {
+  // pagnation
+  document.querySelectorAll(".pag").forEach((btn) =>
+    btn.addEventListener("click", function () {
       current_page = btn.innerHTML;
       loadItem();
-    }));
-    if (document.getElementsByClassName('pag-pre').length > 0)
-      document.querySelector('.pag-pre').addEventListener('click', function () {
-        current_page = Number(document.querySelector('span.active').innerHTML) - 1;
-        loadItem(number_of_item, current_page);
-      });
-    if (document.getElementsByClassName('pag-con').length > 0)
-      document.querySelector('.pag-con').addEventListener('click', function () {
-        current_page = Number(document.querySelector('span.active').innerHTML) + 1;
-  
-        loadItem();
-      });
-  }
-  function loadItem() {
-    var filter = getFilterFromForm();
+    })
+  );
+  if (document.getElementsByClassName("pag-pre").length > 0)
+    document.querySelector(".pag-pre").addEventListener("click", function () {
+      current_page =
+        Number(document.querySelector("span.active").innerHTML) - 1;
+      loadItem(number_of_item, current_page);
+    });
+  if (document.getElementsByClassName("pag-con").length > 0)
+    document.querySelector(".pag-con").addEventListener("click", function () {
+      current_page =
+        Number(document.querySelector("span.active").innerHTML) + 1;
+
+      loadItem();
+    });
+}
+function loadItem() {
+  var filter = getFilterFromForm();
+  $.ajax({
+    url: "../controller/admin/pagnation.controller.php",
+    type: "post",
+    dataType: "html",
+    data: {
+      number_of_item: number_of_item,
+      current_page: current_page,
+      function: "getRecords",
+      filter: filter,
+    },
+  }).done(function (result) {
+    if (current_page > parseInt(result)) current_page = parseInt(result);
+    if (current_page < 1) current_page = 1;
     $.ajax({
-      url: '../controller/admin/pagnation.controller.php',
+      url: "../controller/admin/pagnation.controller.php",
       type: "post",
-      dataType: 'html',
+      dataType: "html",
       data: {
         number_of_item: number_of_item,
         current_page: current_page,
-        function: "getRecords",
-        filter: filter
-      }
+        function: "render",
+        filter: filter,
+      },
     }).done(function (result) {
-      if (current_page > parseInt(result)) current_page = parseInt(result)
-      if (current_page < 1) current_page = 1;
-      $.ajax({
-        url: '../controller/admin/pagnation.controller.php',
-        type: "post",
-        dataType: 'html',
-        data: {
-          number_of_item: number_of_item,
-          current_page: current_page,
-          function: "render",
-          filter: filter
-        }
-      }).done(function (result) {
-  
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
-        newurl += pushFilterToURL();
-        window.history.pushState({ path: newurl }, '', newurl);
-        $('.result').html(result);
-        pagnationBtn();
-        filterBtn();
-        js();
-      })
-    })
-  };
-  document.addEventListener("DOMContentLoaded", () => {
-    loadForFirstTime()
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        "?page=" +
+        urlParams["page"] +
+        "&item=" +
+        number_of_item +
+        "&current_page=" +
+        current_page;
+      newurl += pushFilterToURL();
+      window.history.pushState({ path: newurl }, "", newurl);
+      $(".result").html(result);
+      pagnationBtn();
+      filterBtn();
+      js();
+    });
   });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  loadForFirstTime();
+});
 
 function filterBtn() {
-    $(".body__filter--action__filter").click((e) => {
-        current_page = 1;
-        e.preventDefault();
-        loadItem();   
-    })
-    $(".body__filter--action__reset").click((e) => {
-        current_page = 1;
-        status_value = "active";
-        $.ajax({
-            url: '../controller/admin/pagnation.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                number_of_item: number_of_item,
-                current_page: current_page,
-                function: "getTotalRecords",
-                filter: {
-                    category_status: status_value
-                }
-            }           
-        }).done(function (result) {
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
-            window.history.pushState({ path: newurl }, '', newurl);
-            $('.result').html(result);
-            console.log(result);
-            loadItem();
-            pagnationBtn();
-            js();
-        })
-    })
+  $(".body__filter--action__filter").click((e) => {
+    current_page = 1;
+    e.preventDefault();
+    loadItem();
+  });
+  $(".body__filter--action__reset").click((e) => {
+    current_page = 1;
+    status_value = "active";
+    $.ajax({
+      url: "../controller/admin/pagnation.controller.php",
+      type: "post",
+      dataType: "html",
+      data: {
+        number_of_item: number_of_item,
+        current_page: current_page,
+        function: "getTotalRecords",
+        filter: {
+          category_status: status_value,
+        },
+      },
+    }).done(function (result) {
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        "?page=" +
+        urlParams["page"] +
+        "&item=" +
+        number_of_item +
+        "&current_page=" +
+        current_page;
+      window.history.pushState({ path: newurl }, "", newurl);
+      $(".result").html(result);
+      loadItem();
+      pagnationBtn();
+      js();
+    });
+  });
 }
 
-
-
-
- var js = function() {
-    const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
+var js = function () {
+  const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
         <h3>Thêm mã giảm giá</h3>
@@ -195,80 +220,88 @@ function filterBtn() {
 </div>
 </div>`;
 
-document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
-    e.preventDefault();
-    modal.innerHTML = create_html;
-    const modal_create_container = document.querySelector("#modal-edit-container");
-    modal.querySelector('.button-confirm').addEventListener('click', function (e) {
-        e.preventDefault();
-        const message = modal_create_container.querySelector("#message");
-        const start_date_str = modal_create_container.querySelector("#start_date").value;
-        const end_date_str = modal_create_container.querySelector("#end_date").value;
-        const discount_code = modal.querySelector('#nameDiscount').value;
-        const type = modal.querySelector('#type_discount').value;
-        const discount_value = modal.querySelector('#value_discount').value;                   
-            
-        const start_date = new Date(start_date_str);
-        const end_date = new Date(end_date_str);
-        var check = true;
+  document
+    .querySelector(".body__filter--action__add")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.innerHTML = create_html;
+      const modal_create_container = document.querySelector(
+        "#modal-edit-container"
+      );
+      modal
+        .querySelector(".button-confirm")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          const message = modal_create_container.querySelector("#message");
+          const start_date_str =
+            modal_create_container.querySelector("#start_date").value;
+          const end_date_str =
+            modal_create_container.querySelector("#end_date").value;
+          const discount_code = modal.querySelector("#nameDiscount").value;
+          const type = modal.querySelector("#type_discount").value;
+          const discount_value = modal.querySelector("#value_discount").value;
 
-        if(start_date > end_date) {
-            message.innerHTML = "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+          const start_date = new Date(start_date_str);
+          const end_date = new Date(end_date_str);
+          var check = true;
+
+          if (start_date > end_date) {
+            message.innerHTML =
+              "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
             check = false;
-        }
-        if (discount_code =="" || type == "" || discount_value =="" || !start_date_str || !end_date_str ) {
+          }
+          if (
+            discount_code == "" ||
+            type == "" ||
+            discount_value == "" ||
+            !start_date_str ||
+            !end_date_str
+          ) {
             message.innerHTML = "*Vui lòng nhập đủ thông tin";
             check = false;
-        }
-        if(type == "PR") {
-            if(discount_value > 100) {
-                message.innerHTML = "*Giá trị không được lớn hơn 100";
-                check = false;
-            }else if (discount_value <= 0) {
-                message.innerHTML = "*Giá trị phải lớn hơn 0";
-                check = false;
+          }
+          if (type == "PR") {
+            if (discount_value > 100) {
+              message.innerHTML = "*Giá trị không được lớn hơn 100";
+              check = false;
+            } else if (discount_value <= 0) {
+              message.innerHTML = "*Giá trị phải lớn hơn 0";
+              check = false;
             }
-        }
-        if (check == true) {
+          }
+          if (check == true) {
             message.innerHTML = "";
             $.ajax({
-                url: '../controller/admin/discount.controller.php',
-                type: "post",
-                dataType: 'html',
-                data: {
-                    function: "create",
-                    field: {                   
-                        discount_code: discount_code,
-                        type: type,
-                        discount_value: discount_value,
-                        start_date: start_date_str,
-                        end_date: end_date_str,
-    
-                    }
-                }
+              url: "../controller/admin/discount.controller.php",
+              type: "post",
+              dataType: "html",
+              data: {
+                function: "create",
+                field: {
+                  discount_code: discount_code,
+                  type: type,
+                  discount_value: discount_value,
+                  start_date: start_date_str,
+                  end_date: end_date_str,
+                },
+              },
             }).done(function (result) {
-                loadItem();
-                $("#sqlresult").html(result);
-               
-            })
-            modal_create_container.classList.add('hidden');
-        }
-        
-        
+              loadItem();
+              $("#sqlresult").html(result);
+            });
+            modal_create_container.classList.add("hidden");
+          }
+        });
+
+      document.querySelector("#btnClose").addEventListener("click", () => {
+        modal_create_container.classList.add("hidden");
+      });
+      document.querySelector(".button-cancel").addEventListener("click", () => {
+        modal_create_container.classList.add("hidden");
+      });
     });
-    
 
-    document.querySelector("#btnClose").addEventListener("click", () => {
-    modal_create_container.classList.add('hidden');
-});
-document.querySelector(".button-cancel").addEventListener("click", () => {
-    modal_create_container.classList.add('hidden');
-});
-
-});
-
-
-const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
+  const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
         <h3>Sửa mã giảm giá</h3>
@@ -315,108 +348,121 @@ const edit_html = `<div class="modal-edit-product-container show" id="modal-edit
 </div>
 </div>`;
 
-var edit_btns = document.getElementsByClassName("actions--edit");
-    for (var i = 0; i < edit_btns.length; i++) {
-        edit_btns[i].addEventListener('click', function(e) {
-            modal.innerHTML = edit_html;
-            const modal_edit_container = document.querySelector("#modal-edit-container");
-            modal.querySelector("#btnClose").addEventListener("click", ()=> {
-                modal_edit_container.classList.remove('show');
-            });
-           
-            modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
-            const type_discount_value = this.parentNode.parentNode.querySelector(".type").innerText;
-            const type_discount= modal.querySelector('#type_discount');
-            for (let i = 0; i < type_discount.options.length; i++) {
-            if (type_discount.options[i].value === type_discount_value) {
-                type_discount.options[i].selected = true;
-                break;
-            }
+  var edit_btns = document.getElementsByClassName("actions--edit");
+  for (var i = 0; i < edit_btns.length; i++) {
+    edit_btns[i].addEventListener("click", function (e) {
+      modal.innerHTML = edit_html;
+      const modal_edit_container = document.querySelector(
+        "#modal-edit-container"
+      );
+      modal.querySelector("#btnClose").addEventListener("click", () => {
+        modal_edit_container.classList.remove("show");
+      });
+
+      modal.querySelector("#name").value =
+        this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+      const type_discount_value =
+        this.parentNode.parentNode.querySelector(".type").innerText;
+      const type_discount = modal.querySelector("#type_discount");
+      for (let i = 0; i < type_discount.options.length; i++) {
+        if (type_discount.options[i].value === type_discount_value) {
+          type_discount.options[i].selected = true;
+          break;
         }
-            modal.querySelector('#value_discount').value = this.parentNode.parentNode.querySelector(".discount_value").innerHTML;
-            modal.querySelector('#start_date').value = this.parentNode.parentNode.querySelector(".start_date").innerHTML;
-            modal.querySelector('#end_date').value = this.parentNode.parentNode.querySelector(".end_date").innerHTML;
+      }
+      modal.querySelector("#value_discount").value =
+        this.parentNode.parentNode.querySelector(".discount_value").innerHTML;
+      modal.querySelector("#start_date").value =
+        this.parentNode.parentNode.querySelector(".start_date").innerHTML;
+      modal.querySelector("#end_date").value =
+        this.parentNode.parentNode.querySelector(".end_date").innerHTML;
 
-            var discount_code = this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
-           
-            
-                           
-            modal.querySelector('.button-confirm').addEventListener('click', function (e) {
-                e.preventDefault();
-                const message = modal_edit_container.querySelector("#message");
-                console.log(message);
-                const start_date_str = modal_edit_container.querySelector("#start_date").value;
-                console.log(start_date_str);
-                const end_date_str = modal_edit_container.querySelector("#end_date").value;
-                console.log(end_date_str);
-                const type = modal_edit_container.querySelector('#type_discount ').value;
-                console.log(type);
-                const discount_value = modal_edit_container.querySelector('#value_discount').value;                        
-                console.log(discount_value)              
-                const start_date = new Date(start_date_str);
-                const end_date = new Date(end_date_str); 
-                
-                var check = true; 
-                if(start_date > end_date) {
-                    message.innerHTML = "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
-                    check = false;
-                }
-                if (type == "" || discount_value =="" || !start_date_str || !end_date_str ) {
-                    message.innerHTML = "*Vui lòng nhập đủ thông tin";
-                    check = false;
-                }
-                if(type == "PR") {
-                    if(discount_value > 100) {
-                        message.innerHTML = "*Giá trị không được lớn hơn 100";
-                        check = false;
-                    }else if (discount_value <= 0) {
-                        message.innerHTML = "*Giá trị phải lớn hơn 0";
-                        check = false;
-                    }
-                }
-                console.log(check);
-                if(check === true) {
-                    message.innerHTML = ""
-                    $.ajax({
-                        url: '../controller/admin/discount.controller.php',
-                        type: "post",
-                        dataType: 'html',
-                        data: {
-                            function: "edit",
-                            field: { 
-                                discount_code: discount_code,             
-                                type:type,
-                                value_discount: discount_value,
-                                start_date: start_date_str,
-                                end_date: end_date_str,
-                                                
-                            }
-                        }
-                    }).done(function (result) {
-                        loadItem();
-                        $("#sqlresult").html(result);
-                       
-                    })
-                    modal_edit_container.classList.remove('show');
-                }
-                
+      var discount_code =
+        this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+
+      modal
+        .querySelector(".button-confirm")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          const message = modal_edit_container.querySelector("#message");
+          console.log(message);
+          const start_date_str =
+            modal_edit_container.querySelector("#start_date").value;
+          console.log(start_date_str);
+          const end_date_str =
+            modal_edit_container.querySelector("#end_date").value;
+          console.log(end_date_str);
+          const type =
+            modal_edit_container.querySelector("#type_discount ").value;
+          console.log(type);
+          const discount_value =
+            modal_edit_container.querySelector("#value_discount").value;
+          console.log(discount_value);
+          const start_date = new Date(start_date_str);
+          const end_date = new Date(end_date_str);
+
+          var check = true;
+          if (start_date > end_date) {
+            message.innerHTML =
+              "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+            check = false;
+          }
+          if (
+            type == "" ||
+            discount_value == "" ||
+            !start_date_str ||
+            !end_date_str
+          ) {
+            message.innerHTML = "*Vui lòng nhập đủ thông tin";
+            check = false;
+          }
+          if (type == "PR") {
+            if (discount_value > 100) {
+              message.innerHTML = "*Giá trị không được lớn hơn 100";
+              check = false;
+            } else if (discount_value <= 0) {
+              message.innerHTML = "*Giá trị phải lớn hơn 0";
+              check = false;
+            }
+          }
+          console.log(check);
+          if (check === true) {
+            message.innerHTML = "";
+            $.ajax({
+              url: "../controller/admin/discount.controller.php",
+              type: "post",
+              dataType: "html",
+              data: {
+                function: "edit",
+                field: {
+                  discount_code: discount_code,
+                  type: type,
+                  value_discount: discount_value,
+                  start_date: start_date_str,
+                  end_date: end_date_str,
+                },
+              },
+            }).done(function (result) {
+              loadItem();
+              $("#sqlresult").html(result);
             });
-            
+            modal_edit_container.classList.remove("show");
+          }
         });
+    });
+  }
 
-    }
+  // delete
 
+  const del_btns = document.getElementsByClassName("actions--delete");
 
-    // delete
+  for (var i = 0; i < del_btns.length; i++) {
+    del_btns[i].addEventListener("click", function () {
+      let selected_content = this.parentNode.parentNode;
+      let discount_code =
+        selected_content.querySelector(".discount_code").innerHTML;
 
-    const del_btns = document.getElementsByClassName("actions--delete");
-
-    for (var i = 0; i < del_btns.length; i++) {
-        del_btns[i].addEventListener('click', function () {
-            let selected_content = this.parentNode.parentNode;
-            let discount_code = selected_content.querySelector('.discount_code').innerHTML;
-
-            var del_html = `
+      var del_html = `
         <div class="modal-edit-product-container show" id="modal-edit-container">
         <div class="modal-edit-product">
             <div class="modal-header">
@@ -440,44 +486,43 @@ var edit_btns = document.getElementsByClassName("actions--edit");
     </div>
         `;
 
-
-            modal.innerHTML = del_html;
-            $('.del-confirm').click(function (e) {
-                e.preventDefault();
-                var $discount_code = $('#discount_code_delete').html();
-                $.ajax({
-                    url: '../controller/admin/discount.controller.php',
-                    type: "post",
-                    dataType: 'html',
-                    data: {
-                        function: "delete",
-                        discount_code: $discount_code
-                    }
-                }).done(function (result) {
-                    loadItem();
-                    $("#sqlresult").html(result);
-                    modal_edit_container.classList.remove('show');
-                })
-            })
-
-            // Button close
-            const modal_edit_container = document.querySelector("#modal-edit-container");
-
-            const btnClose = document.querySelector("#btnClose");
-            // console.log(btnClose)
-            btnClose.addEventListener('click', () => {
-                // console.log(modal_edit_container)
-                modal_edit_container.classList.remove('show')
-            });
-            // Button cancel
-            const btnCancel = document.querySelector(".del-cancel");
-            // console.log(btnClose)
-            btnCancel.addEventListener('click', () => {
-                // console.log(modal_edit_container)
-                modal_edit_container.classList.remove('show')
-            });
+      modal.innerHTML = del_html;
+      $(".del-confirm").click(function (e) {
+        e.preventDefault();
+        var $discount_code = $("#discount_code_delete").html();
+        $.ajax({
+          url: "../controller/admin/discount.controller.php",
+          type: "post",
+          dataType: "html",
+          data: {
+            function: "delete",
+            discount_code: $discount_code,
+          },
+        }).done(function (result) {
+          loadItem();
+          $("#sqlresult").html(result);
+          modal_edit_container.classList.remove("show");
         });
-    }
+      });
 
+      // Button close
+      const modal_edit_container = document.querySelector(
+        "#modal-edit-container"
+      );
 
- }
+      const btnClose = document.querySelector("#btnClose");
+      // console.log(btnClose)
+      btnClose.addEventListener("click", () => {
+        // console.log(modal_edit_container)
+        modal_edit_container.classList.remove("show");
+      });
+      // Button cancel
+      const btnCancel = document.querySelector(".del-cancel");
+      // console.log(btnClose)
+      btnCancel.addEventListener("click", () => {
+        // console.log(modal_edit_container)
+        modal_edit_container.classList.remove("show");
+      });
+    });
+  }
+};
