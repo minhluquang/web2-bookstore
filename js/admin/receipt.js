@@ -155,19 +155,18 @@ function filterBtn() {
 }
 
 function addProduct() {
-  // Get values from form fields
+  let productName = ""; 
   let productId = "";
-  let quantity ="";
-  let productName = ""; // Sử dụng let để có thể thay đổi giá trị
+  let quantity = "";
 
   // Add event listener to productId dropdown
   const productIdDropdown = document.getElementById('productId');
   productIdDropdown.addEventListener('change', function() {
     const selectedProductId = this.value; 
     productName = document.getElementById('productId').selectedOptions[0].text;
-     productId = document.getElementById('productId').value;
-   
-    if (!selectedProductId) return; // Exit if no product is selected
+    productId = document.getElementById('productId').value;
+    
+    if (!selectedProductId) return; 
 
     // AJAX request to get inputPrice
     $.ajax({
@@ -176,15 +175,10 @@ function addProduct() {
       dataType: 'html',
       data: {
         function: "getPrice",
-        field: {
-          id: selectedProductId // Send the selected product ID
-        }
+        field: { id: selectedProductId }
       }
     }).done(function (result) {
-      // Calculate inputPrice
       const inputPrice = 0.8 * parseFloat(result);
-
-      // Update inputPrice field
       document.getElementById('inputPrice').value = inputPrice;
     }).fail(function() {
       alert('Đã xảy ra lỗi khi lấy giá.');
@@ -194,27 +188,43 @@ function addProduct() {
   // Add click event listener to addProduct button
   document.getElementById("addProduct").addEventListener("click", function() {
     quantity = document.getElementById('quantity').value;
-    if ( productId.trim() === '' || quantity.trim() === '') {
+    if (productId.trim() === '' || quantity.trim() === '') {
       alert('Vui lòng nhập đầy đủ thông tin.');
       return;
     }
-   
 
-    // Add product to table
     const tableBody = document.getElementById('productTableBody');
-    const newRow = tableBody.insertRow();
-    newRow.innerHTML = `
-      <td>${productId}</td>
-      <td>${productName}</td> 
-      <td>${quantity}</td>
-      <td>${document.getElementById('inputPrice').value}</td>
-    `;
+    let productExists = false;
+
+    // Check if product already exists in table
+    Array.from(tableBody.rows).forEach(function(row) {
+      if (row.cells[0].textContent === productId) {
+        // Product exists, update quantity
+        let prevQuantity = parseInt(row.cells[2].textContent);
+        let newQuantity = prevQuantity + parseInt(quantity);
+        row.cells[2].textContent = newQuantity;
+        productExists = true;
+      }
+    });
+
+    if (!productExists) {
+      // Add product to table if it doesn't exist
+      const newRow = tableBody.insertRow();
+      newRow.innerHTML = `
+        <td>${productId}</td>
+        <td>${productName}</td> 
+        <td>${quantity}</td>
+        <td>${document.getElementById('inputPrice').value}</td>
+      `;
+    }
+
     // Reset form fields
     document.getElementById('productId').value = '';
     document.getElementById('quantity').value = '';
-    document.getElementById('inputPrice').value = ''; // Reset inputPrice as well
+    document.getElementById('inputPrice').value = '';
   });
 }
+
 
 function deleteRow() {
   const table = document.getElementById('addTable'); // Lấy thẻ table
