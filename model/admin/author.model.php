@@ -34,6 +34,22 @@ function author_delete($id)
 
 
 
+function getMaximumAuthorId() {
+    global $database;
+
+    // Query to get the maximum author ID
+    $sql_max_id = "SELECT MAX(id) AS max_id FROM authors";
+    $result_max_id = $database->query($sql_max_id);
+
+    if ($result_max_id->num_rows > 0) {
+        $row = $result_max_id->fetch_assoc();
+        return $row['max_id'];
+    }
+
+    return 0; // Return 0 if no ID found
+}
+
+// Updated author_create function
 function author_create($field)
 {
     global $database;
@@ -47,12 +63,18 @@ function author_create($field)
     $result_check = $database->query($sql_check);
 
     if ($result_check->num_rows > 0) {
-        return "<span class='failed'>Tác giả với email $email đã tồn tại</span>";
+        return ;
     } else {
-        // Thực hiện thêm tác giả mới
-        $sql_insert = "INSERT INTO authors (name, email,status) VALUES ('$name', '$email','" . 1 . "')";
+        // Lấy ID tác giả lớn nhất
+        $maxId = getMaximumAuthorId();
+
+        // Tăng ID lên 1 để tạo ID mới
+        $newId = $maxId + 1;
+
+        // Thực hiện thêm tác giả mới với ID mới
+        $sql_insert = "INSERT INTO authors (id, name, email, status) VALUES ('$newId', '$name', '$email', '" . 1 . "')";
         $result_insert = $database->query($sql_insert);
-        
+
         if ($result_insert) {
             return "<span class='success'>Tạo tác giả thành công</span>";
         } else {
@@ -60,7 +82,6 @@ function author_create($field)
         }
     }
 }
-
 
 
 
