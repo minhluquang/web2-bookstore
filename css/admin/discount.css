@@ -20,6 +20,6 @@
     width: 12% !important;
   }
   
-  #message {
+  .message {
     color: red;
   }

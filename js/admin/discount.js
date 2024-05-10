@@ -186,7 +186,8 @@ var js = function () {
             <div class="modal-body-2">
                 <div class="flex">
                     <label for="nameDiscount">Tên mã giảm giá</label>
-                    <input id="nameDiscount" type="text" add-index="2" placeholder="Tên mã giảm giá">         
+                    <input id="nameDiscount" type="text" add-index="2" placeholder="Tên mã giảm giá">   
+                    <p id="message_name" class = "message"></p>      
                 </div>
                 <div class="flex">
                     <label for="type_discount">Loại mã giảm giá giá</label>
@@ -195,21 +196,24 @@ var js = function () {
                     <option value="AR" >Giảm theo giá tiền </option>
                     <option value="PR">Giảm theo phần trăm</option>                 
                 </select>
-                             
+                <p id="message_type" class = "message"></p> 
                 </div>
                 <div class="flex">
                     <label for="value_discount">Giá trị mã giảm giá</label>
-                    <input id="value_discount" type="text" add-index="2" placeholder="Giá trị mã giảm giá">         
+                    <input id="value_discount" type="text" add-index="2" placeholder="Giá trị mã giảm giá"> 
+                    <p id="message_value" class = "message"></p>        
                 </div>
                 <div class="flex">
                     <label for="start_date">Ngày bắt đầu</label>
-                    <input id="start_date" type="date" add-index="2" p>         
+                    <input id="start_date" type="date" add-index="2" p>  
+                    <p id="message_start" class = "message"></p>       
                 </div>
                 <div class="flex">
                     <label for="end_date">Ngày kết thúc</label>
-                    <input id="end_date"" type="date" add-index="2" p>         
+                    <input id="end_date"" type="date" add-index="2" p> 
+                    <p id="message_end" class = "message"></p>       
                 </div>
-                <p id="message"></p>
+                
             </div>
             <div>
             </div>
@@ -232,7 +236,11 @@ var js = function () {
         .querySelector(".button-confirm")
         .addEventListener("click", function (e) {
           e.preventDefault();
-          const message = modal_create_container.querySelector("#message");
+          const message_name = modal_create_container.querySelector("#message_name");
+          const message_type = modal_create_container.querySelector("#message_type");
+          const message_value = modal_create_container.querySelector("#message_value");
+          const message_start = modal_create_container.querySelector("#message_start");
+          const message_end = modal_create_container.querySelector("#message_end");
           const start_date_str =
             modal_create_container.querySelector("#start_date").value;
           const end_date_str =
@@ -245,32 +253,82 @@ var js = function () {
           const end_date = new Date(end_date_str);
           var check = true;
 
-          if (start_date > end_date) {
-            message.innerHTML =
-              "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+          if (discount_code == "") {
+            message_name.innerHTML = "*Vui lòng nhập tên mã khuyến mãi";
+            modal.querySelector("#nameDiscount").focus();
+            check = false;
+          }else {
+            message_name.innerHTML = "";
+          }
+
+          if (type == "") {
+            message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
+            modal.querySelector("#type_discount").focus();
             check = false;
           }
-          if (
-            discount_code == "" ||
-            type == "" ||
-            discount_value == "" ||
-            !start_date_str ||
-            !end_date_str
-          ) {
-            message.innerHTML = "*Vui lòng nhập đủ thông tin";
+         else {
+          message_type.innerHTML = "";
+         }
+
+          if (discount_value == "") {
+            message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
+            modal.querySelector("#value_discount").focus();
             check = false;
-          }
-          if (type == "PR") {
+          }else if(type == "PR") {
+            
             if (discount_value > 100) {
-              message.innerHTML = "*Giá trị không được lớn hơn 100";
+              message_value.innerHTML = "*Giá trị không được lớn hơn 100";
               check = false;
             } else if (discount_value <= 0) {
-              message.innerHTML = "*Giá trị phải lớn hơn 0";
+              message_value.innerHTML = "*Giá trị phải lớn hơn 0";
               check = false;
+            }else {
+              message_value.innerHTML = "";
             }
+          } else if (type == "AR") {
+       
+            if (discount_value <= 0) {
+              message_value.innerHTML = "*Giá trị phải lớn hơn 0";
+              check = false;
+            }else {
+              message_value.innerHTML = "";
+            }
+          }else {
+            message_value.innerHTML = "";
           }
+
+          if (!start_date_str) {
+            message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+            modal_create_container.querySelector("#start_date").focus();
+            check = false;
+          }else if (start_date > end_date) {
+            message_start.innerHTML =
+              "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
+             
+          } else {
+            message_start.innerHTML ="";
+          }
+
+          
+          if (!end_date_str) {
+            message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+            modal_create_container.querySelector("#end_date").focus();
+            check = false;
+          }else if(start_date > end_date) {
+            message_end.innerHTML =
+            "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+          check = false;
+          }else {
+            message_end.innerHTML = "";
+          }
+          
+          
           if (check == true) {
-            message.innerHTML = "";
+            message_end.innerHTML = "";
+            message_name.innerHTML = "";
+            message_start.innerHTML = "";
+            message_type.innerHTML = "";
+            message_value.innerHTML = "";
             $.ajax({
               url: "../controller/admin/discount.controller.php",
               type: "post",
@@ -322,21 +380,24 @@ var js = function () {
                     <option value="AR" >Giảm theo giá tiền </option>
                     <option value="PR">Giảm theo phần trăm</option>                 
                 </select>
-                             
+                <p id="message_type" class ="message"></p>
                 </div>
                 <div class="flex">
                     <label for="value_discount">Giá trị mã giảm giá</label>
-                    <input id="value_discount" type="text" add-index="2" placeholder="Giá trị mã giảm giá">         
+                    <input id="value_discount" type="text" add-index="2" placeholder="Giá trị mã giảm giá">   
+                    <p id="message_value" class ="message"></p>      
                 </div>
                 <div class="flex">
                     <label for="start_date">Ngày bắt đầu</label>
-                    <input id="start_date" type="date" add-index="2" p>         
+                    <input id="start_date" type="date" add-index="2" p>    
+                    <p id="message_start" class ="message"></p>     
                 </div>
                 <div class="flex">
                     <label for="end_date">Ngày kết thúc</label>
-                    <input id="end_date"" type="date" add-index="2" p>         
+                    <input id="end_date"" type="date" add-index="2" p>      
+                    <p id="message_end" class ="message"></p>   
                 </div>
-                <p id="message"></p>
+               
                 
             </div>
             <div>
@@ -384,50 +445,87 @@ var js = function () {
         .querySelector(".button-confirm")
         .addEventListener("click", function (e) {
           e.preventDefault();
-          const message = modal_edit_container.querySelector("#message");
-          console.log(message);
+          const message_type = modal_edit_container.querySelector("#message_type");
+          const message_value = modal_edit_container.querySelector("#message_value");
+          const message_start = modal_edit_container.querySelector("#message_start");
+          const message_end = modal_edit_container.querySelector("#message_end");
           const start_date_str =
             modal_edit_container.querySelector("#start_date").value;
-          console.log(start_date_str);
           const end_date_str =
             modal_edit_container.querySelector("#end_date").value;
-          console.log(end_date_str);
           const type =
             modal_edit_container.querySelector("#type_discount ").value;
-          console.log(type);
           const discount_value =
             modal_edit_container.querySelector("#value_discount").value;
-          console.log(discount_value);
           const start_date = new Date(start_date_str);
           const end_date = new Date(end_date_str);
 
           var check = true;
-          if (start_date > end_date) {
-            message.innerHTML =
-              "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+         
+
+          if (type == "") {
+            message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
+            modal.querySelector("#type_discount").focus();
             check = false;
           }
-          if (
-            type == "" ||
-            discount_value == "" ||
-            !start_date_str ||
-            !end_date_str
-          ) {
-            message.innerHTML = "*Vui lòng nhập đủ thông tin";
+         else {
+          message_type.innerHTML = "";
+         }
+
+          if (discount_value == "") {
+            message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
+            modal_edit_container.querySelector("#value_discount").focus();
             check = false;
-          }
-          if (type == "PR") {
+          }else if(type == "PR") {
+            
             if (discount_value > 100) {
-              message.innerHTML = "*Giá trị không được lớn hơn 100";
+              message_value.innerHTML = "*Giá trị không được lớn hơn 100";
               check = false;
             } else if (discount_value <= 0) {
-              message.innerHTML = "*Giá trị phải lớn hơn 0";
+              message_value.innerHTML = "*Giá trị phải lớn hơn 0";
               check = false;
+            }else {
+              message_value.innerHTML = "";
             }
+          } else if (type == "AR") {
+       
+            if (discount_value <= 0) {
+              message_value.innerHTML = "*Giá trị phải lớn hơn 0";
+              check = false;
+            }else {
+              message_value.innerHTML = "";
+            }
+          }else {
+            message_value.innerHTML = "";
           }
-          console.log(check);
+
+          if (!start_date_str) {
+            message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+            check = false;
+          }else if (start_date > end_date) {
+            message_start.innerHTML =
+              "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc."; 
+          } else {
+            message_start.innerHTML ="";
+          }
+
+          
+          if (!end_date_str) {
+            message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+            modal_create_container.querySelector("#end_date").focus();
+            check = false;
+          }else if(start_date > end_date) {
+            message_end.innerHTML =
+            "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+          check = false;
+          }else {
+            message_end.innerHTML = "";
+          }
           if (check === true) {
-            message.innerHTML = "";
+            message_end.innerHTML = "";
+            message_start.innerHTML = "";
+            message_type.innerHTML = "";
+            message_value.innerHTML = "";
             $.ajax({
               url: "../controller/admin/discount.controller.php",
               type: "post",
