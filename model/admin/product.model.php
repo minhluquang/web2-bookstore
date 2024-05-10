@@ -114,13 +114,13 @@ function product_create($field)
     $result = $database->execute($sql);
     if ($result) {
       $result = "<span class='success'>Tạo sản phẩm thành công</span>";
-      if(count($field['category'])>0){
+      if(isset($field['category'])&& count($field['category'])>0){
         foreach ($field['category'] as $category_id) {
           $sql = "INSERT INTO `category_details` (`product_id`, `category_id`) VALUES ('" . $field['id'] . "', '" . $category_id . "'); ";
           $database->execute($sql);
         }
       }
-      if(count($field['author'])>0){
+      if(isset($field['author'])&& count($field['author'])>0){
         foreach ($field['author'] as $author_id) {
           $sql = "INSERT INTO `author_details` (`product_id`, `author_id`) VALUES ('" . $field['id'] . "', '" . $author_id . "'); ";
           $database->execute($sql);
