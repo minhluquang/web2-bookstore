@@ -13414,10 +13414,10 @@ var js = function () {
         var tempDiv = document.createElement('div');
         tempDiv.innerHTML = result;
 
-    if (!tempDiv.querySelector('.failed')) {
-        console.log('Result chứa lớp .failed');
-        modal.style.display = "none";
-    } 
+    if (tempDiv.querySelector('.failed')) {
+        alert(tempDiv.textContent);
+        
+    } else modal.style.display = "none";
           loadItem();
           $("#sqlresult").html(result);
           
@@ -13431,20 +13431,6 @@ var js = function () {
       modal.style.display = "none";
     })
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   window.addEventListener("click", function (event) {
     if (event.target == modal) {
