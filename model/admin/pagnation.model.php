@@ -5,6 +5,7 @@ class pagnation
     private $current_page;
     private $table;
     private $filter = "";
+    private $orderby = "";
 
     public function __construct($number_of_item, $current_page, $table)
     {
@@ -44,26 +45,22 @@ class pagnation
     {
         return $this->filter;
     }
-
+    public function setOrderby($orderby)
+    {
+        $this->orderby = $orderby;
+    }
+    public function getOrderby()
+    {
+        return $this->orderby;
+    }
     public function getData()
     {
-        $id = array(
-            'products' => 'id',
-            'orders' => 'id',
-            'accounts' => 'username',
-            'authors' => 'id',
-            'publishers' => 'id',
-            'categories' => 'id',
-            'suppliers' =>'id',
-            'functions' => 'id',
-            'goodsreceipts'=>'id',
-            'discounts' =>'discount_code',
-        );
+        
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
-        $id = $id[$this->table];
-        $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter ORDER BY $this->table.$id ASC LIMIT $this->number_of_item OFFSET $offset ";
+        $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter $this->orderby LIMIT $this->number_of_item OFFSET $offset ";
         $result = $database->query($sql);
+        $database->close();
         if ($result->num_rows > 0) {
             return (object) array(
                 'success' => true,
@@ -74,7 +71,6 @@ class pagnation
                 'success' => false
             );
         }
-        $database->close();
     }
     function getTotalRecords()
     {
@@ -97,14 +93,14 @@ class pagnation
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                                <th>Mã SP</th>
+                                <th data-order="id">Mã SP <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
                                 <th>Ảnh</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Thể loại</th>
+                                <th data-order="name">Tên Sản Phẩm <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th>Thể loại</i></th>
                                 <th>Ngày cập nhật/Ngày tạo</th>
                                 <th>Tác giả</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
+                                <th data-order="price">Giá <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th data-order="quantity">Số lượng <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -303,7 +299,7 @@ class pagnation
                             $result_address = $database->query($sql_address);
                             $row_address = mysqli_fetch_array($result_address);
 
-                            echo '<td class="address">' . $row_address['address'] . '</td>';
+                            echo '<td class="address">' . $row_address['address'].', '.$row_address['ward'] .', '.$row_address['district'] .', '.$row_address['city'] . '</td>';
 
                             $sql_status = 'SELECT * from order_statuses WHERE id="' . $row[6] . '"';
                             $result_status  = $database->query($sql_status);

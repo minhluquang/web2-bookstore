@@ -48,11 +48,19 @@ var search = location.search.substring(1);
 urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
 var number_of_item = urlParams['item'];
 var current_page = urlParams['current_page'];
+var orderby = urlParams['orderby'];
+var order_type =urlParams['order_type'];
 if (current_page == null) {
     current_page = 1;
 }
 if (number_of_item == null) {
     number_of_item = 5;
+}
+if (orderby == null) {
+    orderby = "";
+}
+if (order_type != "ASC" && order_type!="DESC") {
+    order_type = "ASC";
 }
 function checkReady() {
     return new Promise(async function (resolve) {
@@ -87,7 +95,7 @@ function pagnationBtn() {
     if (document.getElementsByClassName('pag-pre').length > 0)
         document.querySelector('.pag-pre').addEventListener('click', function () {
             current_page = Number(document.querySelector('span.active').innerHTML) - 1;
-            loadItem(number_of_item, current_page);
+            loadItem();
         });
     if (document.getElementsByClassName('pag-con').length > 0)
         document.querySelector('.pag-con').addEventListener('click', function () {
@@ -118,11 +126,13 @@ function loadItem() {
                 number_of_item: number_of_item,
                 current_page: current_page,
                 function: "render",
-                filter: filter
+                filter: filter,
+                orderby: orderby,
+                order_type: order_type
             }
         }).done(function (result) {
 
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page+'&orderby=' + orderby+'&order_type=' + order_type;
             newurl += pushFilterToURL();
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
@@ -155,7 +165,7 @@ function filterBtn() {
                 function: "render",
             }
         }).done(function (result) {
-            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+            var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page+'&orderby=' + orderby+'&order_type=' + order_type;
             window.history.pushState({ path: newurl }, '', newurl);
             $('.result').html(result);
             pagnationBtn();
@@ -166,6 +176,21 @@ function filterBtn() {
 
 //js
 var js = function () {
+    if (orderby != ""&&order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("."+order_type).classList.remove("hidden");
+    else document.querySelector("[data-order]").querySelector("."+order_type).classList.remove("hidden");
+    document.querySelector(".result").querySelectorAll("th").forEach((th) => {
+        if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
+            if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
+                order_type = "DESC";
+            }
+            else {
+                order_type = "ASC"
+            }
+            orderby = th.getAttribute("data-order");
+            loadItem();
+            // console.log(orderby,order_type);
+        })
+    });
     function displayImage(input) {
         const file = input.files[0]; // Lấy ra tệp được chọn từ input file
         const imagePreview = document.getElementById('imagePreview'); // Lấy thẻ img hiển thị trước ảnh
@@ -187,7 +212,7 @@ var js = function () {
     }
     var multiselect_array = {
         category: [],
-        author :[]
+        author: []
     }
     const multiselect = document.querySelector("#multiselect");
     const multiselect_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
@@ -280,7 +305,7 @@ var js = function () {
     const modal = document.querySelector("#modal");
 
     document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
-        modal.innerHTML = modal_html;   
+        modal.innerHTML = modal_html;
         multiselect_array["category"] = []
         multiselect_array["author"] = []
         const modal_edit_container = modal.querySelector("#modal-edit-container");
@@ -366,22 +391,22 @@ var js = function () {
             displayImage(this); // Gọi hàm displayImage và truyền vào input element
         });
 
-        var multiselect_filter = (select)=>{
+        var multiselect_filter = (select) => {
             let search = new RegExp(multiselect.querySelector("input").value.toString(), "ui");
             if (!search.test(select.innerHTML.replace('<i class="fa-solid fa-xmark cancel-multiselect"></i>', ""))) {
                 multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
             }
             else
                 if (multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.contains("hidden"))
-                multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
         }
-        var multiselect_setup = (type,key,content) =>{
+        var multiselect_setup = (type, key, content) => {
             multiselect.innerHTML = multiselect_html;;
             multiselect.querySelector("#btnClose").addEventListener('click', () => {
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
             });
             multiselect.querySelector("input").addEventListener('input', () => {
-                multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select)=>{multiselect_filter(select)})
+                multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => { multiselect_filter(select) })
             });
             multiselect.querySelector(".button-cancel").addEventListener('click', () => {
                 multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
@@ -390,7 +415,7 @@ var js = function () {
                 })
                 multiselect.querySelector("input").value = "";
             });
-            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn "+type;
+            multiselect.querySelector("#multiselect-header").innerHTML = "Chọn " + type;
             multiselect.querySelector("#multiselect-selected").innerHTML = content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
             multiselect.querySelector("#multiselect-available").innerHTML = content;
             multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
@@ -402,7 +427,7 @@ var js = function () {
                 multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
                 this.classList.add("hidden")
             }))
-            
+
             multiselect_array[key].forEach(function (select) {
                 multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
                 multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
@@ -414,14 +439,14 @@ var js = function () {
                     if (!select.classList.contains("hidden")) multiselect_array[key].push(select.getAttribute("data-value"))
                 })
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                modal.querySelector("#"+key+"-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " "+type;
+                modal.querySelector("#" + key + "-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " " + type;
             })
         }
         modal.querySelector("#category-multiselect").addEventListener("click", () => {
-            multiselect_setup("thể loại","category",category_content)
+            multiselect_setup("thể loại", "category", category_content)
         })
         modal.querySelector("#author-multiselect").addEventListener("click", () => {
-            multiselect_setup("tác giả","author",author_content)
+            multiselect_setup("tác giả", "author", author_content)
         })
     });
     var edit_btns = document.getElementsByClassName("actions--edit");
@@ -465,16 +490,16 @@ var js = function () {
                 modal.querySelector('#publisher_id').value = publisher_value;
 
             })
-            if(this.parentNode.parentNode.querySelector(".type").getAttribute("value")== "[]") multiselect_array["category"] = [];
+            if (this.parentNode.parentNode.querySelector(".type").getAttribute("value") == "[]") multiselect_array["category"] = [];
             else multiselect_array["category"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
-            if(this.parentNode.parentNode.querySelector(".author").getAttribute("value")== "[]") multiselect_array["author"] = [];
+            if (this.parentNode.parentNode.querySelector(".author").getAttribute("value") == "[]") multiselect_array["author"] = [];
             else multiselect_array["author"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
             modal.innerHTML = modal_html;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
             modal.querySelector('#price').value = this.parentNode.parentNode.querySelector(".price").innerHTML.replace(/[₫.]+/g, '');
             modal.querySelector('#modal-header').innerHTML = "Sửa sản phẩm mã " + this.parentNode.parentNode.querySelector(".id").innerHTML;
             modal.querySelector("#category-amount").innerHTML = "Đã chọn " + multiselect_array["category"].length.toString() + " thể loại";
-            modal.querySelector("#author-amount").innerHTML = "Đã chọn " +  multiselect_array["author"].length.toString() + " tác giả";
+            modal.querySelector("#author-amount").innerHTML = "Đã chọn " + multiselect_array["author"].length.toString() + " tác giả";
 
             const fileInput = document.getElementById('fileInput');
             fileInput.addEventListener('change', function () {
@@ -504,22 +529,22 @@ var js = function () {
                 modal_edit_container.classList.add('hidden');
             });
 
-            var multiselect_filter = (select)=>{
+            var multiselect_filter = (select) => {
                 let search = new RegExp(multiselect.querySelector("input").value.toString(), "ui");
                 if (!search.test(select.innerHTML.replace('<i class="fa-solid fa-xmark cancel-multiselect"></i>', ""))) {
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.add("hidden")
                 }
                 else
                     if (multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.contains("hidden"))
-                    multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
+                        multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
             }
-            var multiselect_setup = (type,key,content) =>{
+            var multiselect_setup = (type, key, content) => {
                 multiselect.innerHTML = multiselect_html;;
                 multiselect.querySelector("#btnClose").addEventListener('click', () => {
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
                 });
                 multiselect.querySelector("input").addEventListener('input', () => {
-                    multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select)=>{multiselect_filter(select)})
+                    multiselect.querySelector("#multiselect-available").querySelectorAll('.multiselect-content').forEach((select) => { multiselect_filter(select) })
                 });
                 multiselect.querySelector(".button-cancel").addEventListener('click', () => {
                     multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach(function (select) {
@@ -528,7 +553,7 @@ var js = function () {
                     })
                     multiselect.querySelector("input").value = "";
                 });
-                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn "+type;
+                multiselect.querySelector("#multiselect-header").innerHTML = "Chọn " + type;
                 multiselect.querySelector("#multiselect-selected").innerHTML = content.replace(/class="multiselect-content"/gi, 'class="multiselect-content hidden"');
                 multiselect.querySelector("#multiselect-available").innerHTML = content;
                 multiselect.querySelector("#multiselect-selected").querySelectorAll('.multiselect-content').forEach((select) => select.addEventListener('click', function () {
@@ -540,7 +565,7 @@ var js = function () {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + this.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
                     this.classList.add("hidden")
                 }))
-                
+
                 multiselect_array[key].forEach(function (select) {
                     multiselect.querySelector("#multiselect-selected").querySelector('[data-value="' + select.toString() + '"]').classList.remove("hidden")
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.toString() + '"]').classList.add("hidden")
@@ -552,14 +577,14 @@ var js = function () {
                         if (!select.classList.contains("hidden")) multiselect_array[key].push(select.getAttribute("data-value"))
                     })
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
-                    modal.querySelector("#"+key+"-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " "+type;
+                    modal.querySelector("#" + key + "-amount").innerHTML = "Đã chọn " + multiselect_array[key].length.toString() + " " + type;
                 })
             }
             modal.querySelector("#category-multiselect").addEventListener("click", () => {
-                multiselect_setup("thể loại","category",category_content)
+                multiselect_setup("thể loại", "category", category_content)
             })
             modal.querySelector("#author-multiselect").addEventListener("click", () => {
-                multiselect_setup("tác giả","author",author_content)
+                multiselect_setup("tác giả", "author", author_content)
             })
             // confirm edit
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
