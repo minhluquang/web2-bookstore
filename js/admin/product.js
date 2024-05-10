@@ -180,6 +180,7 @@ var js = function () {
     else document.querySelector("[data-order]").querySelector("."+order_type).classList.remove("hidden");
     document.querySelector(".result").querySelectorAll("th").forEach((th) => {
         if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
+            if(orderby=="") orderby =document.querySelector("[data-order]").getAttribute("data-order");
             if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
                 order_type = "DESC";
             }
