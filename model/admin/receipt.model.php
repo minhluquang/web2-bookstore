@@ -140,7 +140,7 @@ function receipt_detail($field){
       $goodsreceipt_id = $field['id']; 
 
       try {
-        $sql = "SELECT id, name FROM products WHERE supplier_id = $goodsreceipt_id";
+        $sql = "SELECT id, name FROM products p WHERE supplier_id = $goodsreceipt_id AND p.status=1" ;
         $stmt = $database->query($sql);
       
     
@@ -160,7 +160,7 @@ function receipt_detail($field){
   
       try {
           $id = $field['id'];
-          $sql = "SELECT price FROM products WHERE supplier_id = '$id'";
+          $sql = "SELECT price FROM products p WHERE p.id = '$id'";
           $stmt = $database->query($sql);
   
           if ($stmt->num_rows > 0) {

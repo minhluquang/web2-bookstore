@@ -9,31 +9,25 @@ function author_delete($id)
     global $database;
 
     // Delete rows from author_details table
-    $sql_delete_au = 'DELETE FROM author_details WHERE author_id = "' . $id . '"';
-    $result_delete_au = $database->query($sql_delete_au);
+    $sql = "SELECT * FROM authors WHERE id= ". $id ."";
 
-    if ($result_delete_au !== false) {
-        // Proceed with deleting the author from the authors table
-        $sql_author = 'DELETE FROM authors WHERE id = "' . $id . '"';
-        $result_author = $database->query($sql_author);
+    $result = $database->query($sql);
+    $row = $result->fetch_assoc();
 
-        if ($result_author !== false) {
-            return (object) array(
-                'success' => true,
-                'message' => "<span class='success'>Xóa tác giả với mã $id thành công</span>"
-            );
-        } else {
-            return (object) array(
-                'success' => false,
-                'message' => "<span class='failed'>Xóa tác giả với mã $id KHÔNG thành công - Lỗi khi xử lý bảng authors</span>\n"
-            );
-        }
-    } else {
-        return (object) array(
-            'success' => false,
-            'message' => "<span class='failed'>Xóa tác giả với mã $id KHÔNG thành công - Lỗi khi xử lý bảng author_details</span>\n"
-        );
-    }
+    if ($row != null) {
+        $sql = "UPDATE authors
+    SET status = ". 0 . " WHERE id = ". $id ."";
+         $result = $database->query($sql);
+
+         if($result) {
+            $result = "<span class='success'>Xoá tác giả thành công</span>";
+          } else {
+            $result = "<span class='failed'>Xoá tác giả  không thành công</span>";
+          }
+          return $result;
+          } else {
+             return $result = "<span class='failed'>Tác giả  '. $id .' không tồn tại</span>";
+          }
 }
 
 
@@ -56,7 +50,7 @@ function author_create($field)
         return "<span class='failed'>Tác giả với email $email đã tồn tại</span>";
     } else {
         // Thực hiện thêm tác giả mới
-        $sql_insert = "INSERT INTO authors (name, email) VALUES ('$name', '$email')";
+        $sql_insert = "INSERT INTO authors (name, email,status) VALUES ('$name', '$email','" . 1 . "')";
         $result_insert = $database->query($sql_insert);
         
         if ($result_insert) {

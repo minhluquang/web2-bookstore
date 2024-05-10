@@ -374,6 +374,7 @@ class pagnation
                             <th>Mã tác giả</th>
                             <th>Tên tác giả</th>
                             <th>Email tác giả</th>
+                            <th>Trạng thái</th>                                    
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -386,6 +387,11 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
+                            if($row['status'] == 1) {
+                                echo '<td class="status" >Đang hoạt động</td>';
+                            } else {
+                                echo '<td class="status" >Không hoạt động</td>';
+                            }
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -611,7 +617,7 @@ class pagnation
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
-                    case "receipts":
+                    case "goodsreceipts":
                         echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
                         break;
                 case "functions":
@@ -712,6 +718,16 @@ function getAuthorFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`email` LIKE '%" . $data['author_email'] . "%'";
         }
+        if (!empty($data['author_status'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            if ($data['author_status'] == "active") {
+               
+                $filter = $filter . "status = 1 " ;
+            } elseif ($data['author_status'] == "inactive") {
+                $filter = $filter . "status = 0 " ;
+            }
+            
+        }
 
 
         if ($filter != "") $filter = "WHERE " . $filter;
@@ -732,7 +748,7 @@ function getAuthorFilterSQL($data)
             }  
             if (!empty($data['id'])) {
                 if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " id = " . $data['id'];
+                $filter = $filter . " goodsreceipts.id = " . $data['id'];
             }
             if (!empty($data['staff_id'])) {
                 if ($filter != "") $filter = $filter . " AND ";

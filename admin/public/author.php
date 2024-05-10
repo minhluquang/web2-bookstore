@@ -22,19 +22,26 @@ $_SESSION["render"] ->setTable("authors");
     <form class="admin__content--body__filter">
         <h1>Lọc thông tin tác giả</h1>
         <div class="admin__content--body__filter--gr1">
-            <div class="body__filter--field body__filter--nameClient" >
+            <div class="body__filter--field body__filter--nameClient filter_author" >
                 <p>Tên tác giả</p>
                 <input type="text" id="authorName" placeholder="Nhập tên tác giả" />
             </div>
-            <div class="body__filter--field body__filter--idClient" >
+            <div class="body__filter--field body__filter--idClient filter_author" >
                 <p>Mã tác giả</p>
                 <input type="text" id="authorId" placeholder="Nhập mã tác giả" />
             </div>
-            <div class="body__filter--field body__filter--idClient" >
+            <div class="body__filter--field body__filter--idClient filter_author" >
                 <p>Email tác giả</p>
                 <input type="text" id="authorEmail" placeholder="Nhập email tác giả" />
             </div>
-
+            <div class="body__filter--field body__filter--idClient filter_author" id="">
+                <p>Trạng thái</p>
+                <select name="status" id="statusSelect">
+                    <option value="active" selected>Hoạt động</option>
+                    <option value="inactive">Không hoạt động</option>
+                    <option value="">Tất cả</option>
+                </select>
+            </div>
 
         </div>
 
@@ -46,6 +53,7 @@ $_SESSION["render"] ->setTable("authors");
                 <button class="body__filter--action__filter">Lọc</button>
             </div>
         </div>
+        
     </form>
 
     <div id="addAuthorModal" class="modal">
@@ -94,7 +102,7 @@ $_SESSION["render"] ->setTable("authors");
                 <!-- ... -->
             </div>
             <div class="form-actions">
-        <button type="submit" class="del-confirm" id="del-confirm">Xác nhận</button>
+        <button type="submit"  id="del-confirm" class="btn">Xác nhận</button>
         <button type="button" class="del-cancel">Hủy bỏ</button>
       </div>
         </div> 
