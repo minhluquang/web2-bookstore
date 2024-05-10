@@ -28,7 +28,7 @@
             echo '<h2>Đơn hàng của bạn</h2>';
             foreach ($orders as $order) {
               $isHideCancelOrder = '';
-              if ($order['order_status_id'] == 2 || $order['order_status_id'] == 3) {
+              if ($order['order_status_id'] == 5 || $order['order_status_id'] == 3) {
                 $isHideCancelOrder = 'hide';
               }
 

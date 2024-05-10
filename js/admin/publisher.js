@@ -3,6 +3,7 @@ function getFilterFromURL() {
     filter_form.querySelector("#publisherName").value = (urlParams['name'] != null) ? urlParams['name'] : "";
     filter_form.querySelector("#publisherId").value = (urlParams['id'] != null) ? urlParams['id'] : "";
     filter_form.querySelector("#publisherEmail").value = (urlParams['email'] != null) ? urlParams['email'] : "";
+    filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "active";
 }
 function pushFilterToURL() {
     var filter = getFilterFromForm();
@@ -10,6 +11,7 @@ function pushFilterToURL() {
         "publisher_name": "name",
         "publisher_id": "id",
         "publisher_email": "email",
+        "publisher_status":"status"
 
     }
     var url = "";
@@ -24,6 +26,7 @@ function getFilterFromForm() {
         "publisher_name": filter_form.querySelector("#publisherName").value,
         "publisher_id": filter_form.querySelector("#publisherId").value,     
         "publisher_email": filter_form.querySelector("#publisherEmail").value,
+        "publisher_status": filter_form.querySelector("#statusSelect").value,
     }
 }
 // Load the jquery

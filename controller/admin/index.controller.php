@@ -31,4 +31,31 @@
       echo false;
     }
   }
+
+  if (isset($_POST['isAutoUpdateData']) && $_POST['isAutoUpdateData']) {
+    $totalIncome = getTotalIncome();
+    $totalIncome = $totalIncome->fetch_assoc();
+
+    $totalOrders = getTotalOrders();
+    $totalOrders = $totalOrders->fetch_assoc();
+
+    $totalProducts = getTotalProducts();
+    $totalProducts = $totalProducts->fetch_assoc();
+
+    $totalAccounts = getTotalAccounts();
+    $totalAccounts = $totalAccounts->fetch_assoc();
+
+    if ($totalIncome && $totalOrders && $totalProducts && $totalAccounts) {
+      $result = array(
+          'totalIncome' => $totalIncome['total_income'],
+          'totalOrders' => $totalOrders['order_count'],
+          'totalProducts' => $totalProducts['product_count'],
+          'totalAccounts' => $totalAccounts['member_count']
+      );
+
+      echo json_encode($result);
+    } else {
+        echo json_encode(false);
+    }
+  }
 ?>

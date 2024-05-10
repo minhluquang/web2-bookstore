@@ -61,6 +61,10 @@ function order_render($id)
           <td>".trim($total_str,'.')."&#8363;</td>
           </tr>";
   }
+  $sql = "SELECT * FROM orders WHERE id='$id'";
+  $result = $database->query($sql);
+  $result = mysqli_fetch_array($result);
+  $result = $result["status_id"];
   echo "<tr>
   <th></th>
   <td></td>
@@ -75,13 +79,14 @@ function order_render($id)
   <td class='total-price'>Thành Tiền</td>
   <td class='total-price' id='price-number'></td>
   </tr>
-  <input type='hidden' id='id' value='$id'>";
+  <input type='hidden' id='id' value='$id'>
+  <input type='hidden' id='status' value='$result'>";
   $database->close();
 }
 
-function order_change_status($id,$status){
+function order_change_status($id,$status,$staff_id){
   $database = new connectDB();
-  $sql = "UPDATE orders SET status_id='$status' WHERE id='$id'";
+  $sql = "UPDATE orders SET status_id='$status' ,staff_id='$staff_id' WHERE id='$id'";
   $database->execute($sql);
 }
 

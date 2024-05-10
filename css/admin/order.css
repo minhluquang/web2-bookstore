@@ -235,3 +235,9 @@
   overflow: hidden; /* Ẩn nội dung vượt ra khỏi phần tử */
   text-overflow: ellipsis;
 }
+
+
+
+.hidden{
+  display:none;
+}

@@ -11,7 +11,7 @@
               FROM category_details cd
               INNER JOIN products p ON p.id = cd.product_id
               INNER JOIN categories c ON c.id = cd.category_id
-              WHERE c.id = $category_id";
+              WHERE c.id = $category_id AND p.status = 1";
 
       if ($item_amount && $page) {
         $offset = ($page - 1) * $item_amount;
@@ -42,6 +42,7 @@
           INNER JOIN publishers pub ON p.publisher_id = pub.id
           LEFT JOIN category_details cd ON cd.product_id = p.id  
           LEFT JOIN categories c ON cd.category_id = c.id
+          WHERE p.status = 1
       GROUP BY 
           p.id
       HAVING
@@ -96,24 +97,16 @@
                       p.quantity
               FROM category_details cd
               INNER JOIN products p ON p.id = cd.product_id
-              INNER JOIN categories c ON c.id = cd.category_id";
-
-      if ($keyword || count($listCategoryIds) > 0 || (($startRange == 0 || $startRange) && $endRange)) {
-        $sql .= " WHERE ";
-      }
-
+              INNER JOIN categories c ON c.id = cd.category_id
+              WHERE p.status = 1 ";
       // Câu lệnh query theo tên sản phẩm
       if ($keyword) {
-        $sql .= "p.name LIKE '%$keyword%'";
-
-        if (count($listCategoryIds) > 0 || (($startRange == 0 || $startRange)&& $endRange)) {
-          $sql .= " AND ";
-        }
-      }        
+        $sql .= " AND p.name LIKE '%$keyword%'";
+      }     
       
       // Câu lệnh query theo thể loại
       if (count($listCategoryIds) > 0) {
-        $sql .= "(";
+        $sql .= " AND (";
         foreach ($listCategoryIds as $key => $categoryId) {
           $sql .= "c.id = $categoryId";
           if ($key < count($listCategoryIds) - 1) {
@@ -203,7 +196,7 @@
     if ($database->conn) {
       $sql = "SELECT * 
               FROM products
-              WHERE name LIKE '%$keyword%'
+              WHERE name LIKE '%$keyword%'  AND status = 1
               ORDER BY id DESC";
       $result = $database->query($sql);
       $database->close();
@@ -214,12 +207,17 @@
     }
   }
 
-  function getNewProductsModel() {
+  function getNewProductsModel($status) {
     $database = new connectDB();
     if ($database->conn) {
       $sql = "SELECT * 
-              FROM products
-              ORDER BY id DESC";
+              FROM products";
+           
+      if ($status) {
+        $sql .= " WHERE status = $status";
+      }
+      
+      $sql .= " ORDER BY id DESC";
       $result = $database->query($sql);
       $database->close();
       return $result;
