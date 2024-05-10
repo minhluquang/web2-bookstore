@@ -46,7 +46,6 @@
                 type: "post",
                 dataType: "html",
             }).done(function(result) {
-                console.log(result);
                 location.reload();
             })
         }

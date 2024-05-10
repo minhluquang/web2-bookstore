@@ -153,11 +153,16 @@ function filterBtn() {
     })
   })
 }
-
+function formatCurrency(amount) {
+  // Chuyển đổi số thành chuỗi có dạng 100,000
+  const formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return formattedAmount + " VND"; // Thêm đơn vị tiền tệ vào sau giá trị
+}
 function addProduct() {
   let productName = ""; 
   let productId = "";
   let quantity = "";
+  let inputPrice = ""; // Declare inputPrice in a wider scope
 
   // Add event listener to productId dropdown
   const productIdDropdown = document.getElementById('productId');
@@ -178,8 +183,8 @@ function addProduct() {
         field: { id: selectedProductId }
       }
     }).done(function (result) {
-      const inputPrice = 0.8 * parseFloat(result);
-      document.getElementById('inputPrice').value = inputPrice;
+      inputPrice = 0.8 * parseFloat(result);
+      document.getElementById('inputPrice').value = inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     }).fail(function() {
       alert('Đã xảy ra lỗi khi lấy giá.');
     });
@@ -199,10 +204,11 @@ function addProduct() {
     // Check if product already exists in table
     Array.from(tableBody.rows).forEach(function(row) {
       if (row.cells[0].textContent === productId) {
-        // Product exists, update quantity
+        // Product exists, update quantity and price
         let prevQuantity = parseInt(row.cells[2].textContent);
         let newQuantity = prevQuantity + parseInt(quantity);
         row.cells[2].textContent = newQuantity;
+        row.cells[3].textContent = inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         productExists = true;
       }
     });
@@ -214,7 +220,7 @@ function addProduct() {
         <td>${productId}</td>
         <td>${productName}</td> 
         <td>${quantity}</td>
-        <td>${document.getElementById('inputPrice').value}</td>
+        <td>${inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
       `;
     }
 
@@ -224,6 +230,9 @@ function addProduct() {
     document.getElementById('inputPrice').value = '';
   });
 }
+
+
+
 
 
 function deleteRow() {
@@ -282,7 +291,7 @@ const js = function () {
       </div>
       <div class="input-field">
         <label for="inputPrice">Giá nhập:</label>
-        <input type="number" id="inputPrice" readonly>
+        <input type="text" id="inputPrice" readonly>
       </div>
       <div class="form-actions">
         <button type="button"  class="btn" id="addProduct">Thêm sản phẩm</button>
@@ -341,45 +350,53 @@ openModalBtn.addEventListener('click', function () {
   closeAddIcon.addEventListener('click', function () {
     addModal.style.display = "none";
   });
- 
+  
   addButton.addEventListener('click', function (e) {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của nút (không gửi biểu mẫu)
-
-    // Lấy giá trị từ các trường input
+    e.preventDefault(); // Prevent default button behavior (form submission)
+  
+    // Get values from input fields
     const supplierId = document.getElementById('supplier').value;
+  
     const products = document.querySelectorAll('#productTableBody tr');
-    let totalPrice = 0; // Tổng tiền của đơn hàng
-
-    // Tính tổng tiền và chuỗi dữ liệu chi tiết
+    let totalPrice = 0; // Total order price
+  
+    // Calculate total price and create detail data array
     let detailData = [];
     products.forEach((product) => {
-        const productId = product.cells[0].textContent; 
-        const quantity = product.cells[2].textContent; // Lấy số lượng từ cột 2
-        const inputPrice = product.cells[3].textContent; // Lấy giá nhập từ cột 3
-        totalPrice += parseFloat(quantity) * parseFloat(inputPrice); // Tính tổng tiền
-        detailData.push({ productId, quantity, inputPrice });
+      const productId = product.cells[0].textContent;
+      const quantity = product.cells[2].textContent;
+      const inputPriceText = product.cells[3].textContent; // Chuỗi định dạng tiền VND
+      const inputPrice = parseFloat(inputPriceText.replace(/[^\d.-]/g, ''))*1000; 
+      console.log(inputPrice);
+           totalPrice += parseFloat(quantity) * inputPrice; // Calculate total price
+      detailData.push({ productId, quantity, inputPrice });
     });
-
-    // Thực hiện gửi dữ liệu thông qua Ajax
+  
+    if (totalPrice === 0) {
+      alert('Vui lòng nhập đầy đủ thông tin.');
+      return;
+    }
+  
     $.ajax({
-        url: '../controller/admin/receipt.controller.php',
-        type: "post",
-        dataType: 'html',
-        data: {
-            function: "create",
-            field: {
-                supplierId: supplierId,
-                totalPrice: totalPrice,
-                details: detailData,
-                staffId: "stafffahasa"
-            }
+      url: '../controller/admin/receipt.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        function: "create",
+        field: {
+          supplierId: supplierId,
+          totalPrice: totalPrice,
+          details: detailData,
+          staffId: "stafffahasa"
         }
+      }
     }).done(function (result) {
-        loadItem(); 
-        $("#sqlresult").html(result);
-        addModal.style.display = "none";
+      loadItem(); 
+      $("#sqlresult").html(result);
+      addModal.style.display = "none";
     });
-});
+  });
+  
 
 
 

@@ -106,3 +106,41 @@ function passEdit($field) {
     return "<span class='failed'>Thay đổi mật khẩu thất bại</span>";
 }
 }
+function create_account($field) {
+  global $database;
+  $username = $field['username'];
+  $password = $field['password'];
+  $pass_hash = password_hash($password,PASSWORD_DEFAULT);
+  $role = $field['role'];
+  $success_1 = false;
+  $success_2 = false;
+
+  $sql_check = "SELECT * FROM accounts WHERE username = '$username'"; 
+  $result = $database -> query($sql_check);
+  if(mysqli_num_rows($result) > 0) {
+    return "<span class='failed'>Tên đăng nhập đã tồn tại</span>"; 
+  }
+  $sql_insert = "INSERT INTO accounts (username, password, role_id,status) VALUES ('$username', '$pass_hash', '$role',1)";
+  if ($database->query($sql_insert)) {
+    $success_1 = true;
+  } else {
+    return "<span class='failed'>Tạo tài khoản thất bại</span>";
+  }
+
+  $fullname = $field['fullname'];
+  $telephone = $field['telephone'];
+  $tinhthanhpho = $field['city'];
+  $quanhuyen = $field['quanhuyen'];
+  $phuongxa = $field['phuongxa'];
+  $diachi = $field["diachi"];
+  $sql = "INSERT INTO delivery_infoes(user_id, fullname, phone_number, address, city, district, ward) VALUES ('$username','$fullname','$telephone','$diachi','$tinhthanhpho','$quanhuyen','$phuongxa')";
+  $result_insert = $database -> query($sql);
+  if($result_insert) {
+    $success_2 = true;
+  }
+  if($success_1 == true && $success_2 == true) {
+    return "<span class='success'>Tạo tài khoản thành công</span>";
+  } else {
+    return "<span class='failed'>Tạo tài khoản thất bại</span>";
+  }
+}

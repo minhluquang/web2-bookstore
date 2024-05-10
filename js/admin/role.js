@@ -10,7 +10,7 @@ function pushFilterToURL() {
     var url_key = {
         "role_name": "name",
         "role_id": "id",
-        "role_status":"status"
+        // "role_status":"status"
     }
     var url = "";
     Object.keys(filter).forEach(key => {
@@ -22,7 +22,7 @@ function getFilterFromForm() {
     return {
         "role_name": filter_form.querySelector("#roleName").value,
         "role_id": filter_form.querySelector("#roleId").value,     
-        "role_status": filter_form.querySelector("#statusSelect").value,
+        // "role_status": filter_form.querySelector("#statusSelect").value,
         
     }
 }

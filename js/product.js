@@ -118,7 +118,6 @@ function renderProductsPerPage(
       modelPath,
     },
   }).done(function (result) {
-    console.log(result);
     const data = JSON.parse(result);
     try {
       if (data.success) {

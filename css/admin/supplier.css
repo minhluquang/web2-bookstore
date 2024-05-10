@@ -9,18 +9,18 @@
   width: 20% !important;
 }
 #content-product thead th:nth-child(3) {
-  width: 20% !important;
+  width: 28% !important;
 }
 #content-product thead th:nth-child(4) {
-  width: 20% !important;
+  width: 15% !important;
 }
 #content-product thead th:nth-child(5) {
-  width: 20% !important;
+  width: 15% !important;
 }
 #content-product thead th:nth-child(6) {
-  width: 10% !important;
+  width: 12% !important;
 }
 
-#message {
+.message {
   color:  red;
 }

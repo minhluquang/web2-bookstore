@@ -246,7 +246,15 @@ class pagnation
                             echo '<td class="supplierName">' . $supplier_name . '</td>';
                             
                             echo '<td class="staff_id">' . $row['staff_id'] . '</td>';
-                            echo '<td class="total_price">' . $row['total_price'] . '</td>';
+                            echo '<td class="total_price">';
+                            $price_number =  $row['total_price'];
+                            $price = "";
+                            while ($price_number > 0) {
+                                $price = substr("$price_number", -3, 3) . '.' . $price;
+                                $price_number = substr("$price_number", 0, -3);
+                            }
+
+                            echo  trim($price, '. ') . '&#8363;</td>';
                             echo '<td class="date_create">' . $row['date_create'] . '</td>';
                     
                             echo '<td class="actions">
@@ -350,11 +358,18 @@ class pagnation
                            if($row['status'] == 0) $status = "Không hoạt động";
                            
                             echo '<td class="status" value="active">'.$status.'</td>';
-                            echo '<td class="actions">
+                            if($row['username'] == "adminfahasa") {
+                                echo '<td class="actions">
+                                <button class="actions--pass">Đổi mật khẩu</button>
+                                </td>
+                            </tr>';
+                            } else {
+                                echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--pass">Đổi mật khẩu</button>
                             </td>
                         </tr>';
+                            }
                         }
                         echo ' 
                     </tbody>
@@ -544,10 +559,7 @@ class pagnation
                         <thead class="menu">
                             <tr>
                             <th>Mã quyền</th>                 
-                            <th>Tên quyền</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày xóa</th>  
-                            <th>Ngày cập nhật</th>        
+                            <th>Tên quyền</th>      
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -559,13 +571,12 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="status">'.$row['status'].'</td>';
+                            // echo '<td class="status">'.$row['status'].'</td>';
                             // echo '<td class="date-create">'.$row['create_date'].'</td>';
-                            echo '<td class="date-delete">'.$row['delete_date'].'</td>';
-                            echo '<td class="date-update">'.$row['update_date'].'</td>';
+                            // echo '<td class="date-delete">'.$row['delete_date'].'</td>';
+                            // echo '<td class="date-update">'.$row['update_date'].'</td>';
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
                         </td>
                         </tr>';
                         }
@@ -616,7 +627,10 @@ class pagnation
                     break;
                 case "suppliers":
                     echo "<div id='zero-item'><h2>Không có nhà cung cấp nào</h2></div>";
-                     break;    
+                     break;
+                     case "discounts":
+                        echo "<div id='zero-item'><h2>Không có mã khuyến mãi nào</h2></div>";
+                         break;
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;

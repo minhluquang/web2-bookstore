@@ -9,21 +9,10 @@ if (isset($_POST['usernameLogin']) && isset($_POST['passwordLogin'])) {
 
   // Kiểm tra thông tin đăng nhập
   $loginResult = checkLogin($user, $pass);
-  if ($loginResult) {
+  if ($loginResult->success && $loginResult->status == 1) {
     $_SESSION['username'] = $user;
-    $response = (object) array(
-      "success" => true,
-      "username" => $user,
-      "message" => "Đăng nhập thành công!"
-    );
-    echo json_encode($response);
-  } else {
-    $response = (object) array(
-      "success" => false,
-      "message" => "Tài khoản hoặc mật khẩu không chính xác!"
-    );
-    echo json_encode($response);
   }
+  echo json_encode($loginResult);
 }
 
 // Kiểm tra nếu có dữ liệu gửi từ Ajax (REGISTER)

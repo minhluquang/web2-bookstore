@@ -235,7 +235,7 @@ td:last-child {
   border-color: #dc3545 !important;
 }
 
-.actions--view {
+.actions--view,.addButton {
   color: #fff !important;
   background-color: #198754 !important;
   border-color: #198754 !important;
