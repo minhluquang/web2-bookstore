@@ -358,13 +358,43 @@ thead th:nth-child(1) {
 }
 .table-container {
   height: 520px;
+  font-family: "Mulish";
+  width: 100%;
   overflow-y: scroll;
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
 }
+.table__wrapper {
+  font-family: "Mulish";
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 20px;
+}
 
+.container table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+#content-product thead th:nth-child(1) {
+  width: 4% !important;
+}
+#content-product thead th:nth-child(3) {
+  width: 12% !important;
+}
+#content-product thead th:nth-child(2) {
+  width: 5% !important;
+}
+#content-product thead th:nth-child(4),
+#content-product thead th:nth-child(6) {
+  width: 6% !important;
+}
+.table-content .image img {
+  width:90% !important;
+}
 #close {
   float: right;
   border: none;
