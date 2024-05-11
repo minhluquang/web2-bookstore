@@ -214,6 +214,5 @@ function getStatDetails($id, $date_start, $date_end,$order,$type)
   }
   echo '<tr><td></td><td></td><td></td><td></td><td>' . $sum . '</td><td>' . $quantity . '</td></tr>;';
   echo '</tbody></table>';
-  echo print_r($arr);
   $database->close();
 }
