@@ -172,33 +172,27 @@ const js = function () {
   const addButton = document.getElementById("addButton");
   const closeAddIcon = document.querySelector(".addModal-content .close i");
 
-  // Thêm HTML vào modal content
 
-  // Mở modal khi click vào nút "Thêm tác giả"
   openModalBtn.addEventListener('click', function () {
     addModalContent.innerHTML = addHtml;
     addAuthorModal.style.display = "block";
   });
 
-  // Đóng modal khi click vào nút close
   closeAddIcon.addEventListener('click', function () {
     addAuthorModal.style.display = "none";
   });
 
   addButton.addEventListener('click', function (e) {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của nút (không gửi biểu mẫu)
+    e.preventDefault(); 
 
-    // Lấy giá trị từ các trường input
     const name = document.getElementById("addAuthorName").value.trim();
     const email = document.getElementById("addAuthorEmail").value.trim();
 
-    // Kiểm tra nội dung trống
     if (name === '' || email === '') {
       alert("Vui lòng điền đầy đủ thông tin tên và email.");
-      return; // Ngừng thực hiện khi có trường trống
+      return; 
     }
 
-    // Thực hiện gửi dữ liệu thông qua Ajax
     $.ajax({
       url: '../controller/admin/author.controller.php',
       type: "post",
@@ -215,7 +209,6 @@ const js = function () {
       $("#sqlresult").html(result);
     });
 
-    // Đóng modal sau khi xử lý xong
     addAuthorModal.style.display = "none";
   });
 
@@ -287,7 +280,6 @@ const js = function () {
     }
   });
 
-  // Sự kiện click cho từng nút "Chỉnh sửa" trên danh sách tác giả
   var edit_btns = document.getElementsByClassName("actions--edit");
   for (var i = 0; i < edit_btns.length; i++) {
     edit_btns[i].addEventListener('click', function () {
@@ -351,8 +343,8 @@ const js = function () {
           }
         }).done(function (result) {
 
-          loadItem(); // Gọi hàm loadItem() để tải lại danh sách tác giả sau khi xóa
-          $("#sqlresult").html(result); // Hiển thị kết quả từ server (nếu cần)
+          loadItem(); 
+          $("#sqlresult").html(result); 
           deleteModal.style.display = "none";
           deleteModal.classList.remove('show');
         })
@@ -376,55 +368,7 @@ const js = function () {
 
    
 
-    /*const del_btns = document.getElementsByClassName("actions--delete");
-    for (let i = 0; i < del_btns.length; i++) {
-      del_btns[i].addEventListener("click", () => {
-
-        let selected_content = del_btns[i].parentNode.parentNode;
-        let author_id = selected_content.querySelector(".id").innerHTML;
-        let author_name = selected_content.querySelector(".name").innerHTML;
-        let author_email = selected_content.querySelector(".email").innerHTML;
-        showConfirmDeleteModal(author_id, author_name, author_email);
-      });
     
-
-    const btnConfirmDelete = document.querySelector("#deleteModal .del-confirm");
-    btnConfirmDelete.addEventListener("click", (e) => {
-      e.preventDefault();
-      var $id = $('#author-delete-id').html();
-      // Lấy mã tác giả từ modal xác nhận xóa
-      // Gửi yêu cầu AJAX để xóa tác giả
-      $.ajax({
-        url: '../controller/admin/author.controller.php',
-        type: 'post',
-        dataType: 'html',
-        data: {
-          function: 'delete',
-          id: $id 
-        }
-      }).done(function (result) {
-        // Xử lý kết quả trả về từ server
-        loadItem(); // Gọi hàm loadItem() để tải lại danh sách tác giả sau khi xóa
-        $("#result").html(result); // Hiển thị kết quả từ server (nếu cần)
-        hideConfirmDeleteModal(); // Ẩn modal sau khi xóa thành công
-        modal.classList.remove('show');
-      }).fail(function (xhr, status, error) {
-        // Xử lý lỗi nếu có
-        console.error(xhr.responseText); // Log lỗi ra console nếu cần
-        alert('Đã xảy ra lỗi khi xóa tác giả.'); // Hiển thị thông báo lỗi
-      });
-    });
-  } 
-
-    const btnCancelDelete = document.querySelector("#deleteModal .del-cancel");
-    btnCancelDelete.addEventListener("click", () => {
-      hideConfirmDeleteModal();
-    });
-
-    const btnCloseDelModal = document.querySelector("#deleteModal .btn-close i");
-    btnCloseDelModal.addEventListener("click", () => {
-      hideConfirmDeleteModal();
-    });*/
   };
 
 

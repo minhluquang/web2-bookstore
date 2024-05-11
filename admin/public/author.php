@@ -83,8 +83,7 @@ $_SESSION["render"] ->setTable("authors");
                 <i class="fa-solid fa-xmark"></i>
             </span>
             <div class="form">
-                <!-- Code will be render here -->
-                <!-- ... -->
+              
             </div>
             <div class="form-actions">
       <button class="editAuthorButton d-none">Chỉnh thông tin tác giả</button>
@@ -98,8 +97,7 @@ $_SESSION["render"] ->setTable("authors");
                 <i class="fa-solid fa-xmark"></i>
             </span>
             <div class="form">
-                <!-- Code will be render here -->
-                <!-- ... -->
+               
             </div>
             <div class="form-actions">
         <button type="submit"  id="del-confirm" class="btn">Xác nhận</button>

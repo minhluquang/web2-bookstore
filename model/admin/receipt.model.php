@@ -10,19 +10,18 @@ function getNewReceiptId($database) {
   $result = $database->query($sql);
   if ($result && $result->num_rows > 0) {
       $row = $result->fetch_assoc();
-      return intval($row['max_id']) + 1; // Tăng ID cuối cùng lên 1 để lấy ID mới
+      return intval($row['max_id']) + 1; 
   } else {
-      return 1; // Nếu không có đơn hàng nào, trả về ID đầu tiên
+      return 1; 
   }
 }
 function receipt_create($field)
 {
-    $database = new connectDB(); // Assuming connectDB class is defined for database connection
+    $database = new connectDB(); 
     
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $date = date('Y-m-d', time());
 
-    // Extract information from $field array
     $supplierId = $field['supplierId'];
     $totalPrice = $field['totalPrice'];
     $staffId = $field['staffId'];
@@ -30,14 +29,12 @@ function receipt_create($field)
 
     
 
-    // Insert information into goodsreceipts table
     $sqlInsertReceipt = "INSERT INTO goodsreceipts (id,supplier_id, staff_id, total_price, date_create) 
                          VALUES ('".$receiptId."','".$supplierId."', '".$staffId."', '".$totalPrice."', '".$date."')";
     $resultReceipt = $database->query($sqlInsertReceipt);
 
     if ($resultReceipt) {
        
-            // Insert details into goodsreceipt_details table
             foreach ($field['details'] as $detail) {
                 $productId = $detail['productId'];
                 $quantity = $detail['quantity'];
@@ -47,7 +44,6 @@ function receipt_create($field)
                                     VALUES ('".$productId."', '".$receiptId."', '".$quantity."', '".$inputPrice."')";
                 $resultDetail = $database->query($sqlInsertDetail);
 
-                // Update product quantity
                 $sqlUpdateQuantity = "UPDATE products SET quantity = quantity + '".$quantity."' WHERE id = '".$productId."'";
                 $resultUpdateQuantity = $database->query($sqlUpdateQuantity);
 
@@ -75,16 +71,13 @@ function receipt_detail($field){
   $goodsreceipt_id = $field['id']; // Đảm bảo bạn truyền vào $field['id']
 
   try {
-      // Truy vấn SQL để lấy thông tin sản phẩm từ bảng goodsreceipt_details và kết nối với bảng products
       $sql = "SELECT gd.product_id, p.name, gd.quantity, gd.input_price
               FROM goodsreceipt_details gd
               INNER JOIN products p ON gd.product_id = p.id
               WHERE gd.goodsreceipt_id = '$goodsreceipt_id'";
 
-      // Thực hiện truy vấn và lấy dữ liệu
       $result = $database->query($sql);
 
-      // Xây dựng đoạn mã HTML từ dữ liệu
       $htmlResult = '<table id="Table">
                       <thead>
                         <tr>
@@ -108,16 +101,13 @@ function receipt_detail($field){
       $htmlResult .= '</tbody>
                     </table>';
       
-      // Trả về đoạn mã HTML
       return $htmlResult;
 
   } catch(PDOException $e) {
-      // Xử lý nếu có lỗi kết nối hoặc truy vấn
       return "Lỗi: " . $e->getMessage();
   }
 }
     function receipt_getSuppliers(){
-      // Kết nối đến cơ sở dữ liệu
       $database = new connectDB();
 
       try {
@@ -138,7 +128,6 @@ function receipt_detail($field){
     }
 
     function receipt_getIdProducts($field){
-      // Kết nối đến cơ sở dữ liệu
       $database = new connectDB();
       $goodsreceipt_id = $field['id']; 
 
@@ -169,9 +158,9 @@ function receipt_detail($field){
           if ($stmt->num_rows > 0) {
               $row = $stmt->fetch_assoc();
               $inputPrice = $row['price'];
-              return $inputPrice; // Trả về giá trị inputPrice
+              return $inputPrice; 
           } else {
-              return 0; // Trả về giá trị mặc định nếu không tìm thấy dữ liệu
+              return 0; 
           }
       } catch(PDOException $e) {
           return "Lỗi: " . $e->getMessage();
