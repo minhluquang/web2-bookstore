@@ -129,11 +129,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function filterBtn() {
   $(".body__filter--action__filter").click((e) => {
-    current_page = 1;
     e.preventDefault();
-    loadItem();
-  })
+
+    var message_date_end = filter_form.querySelector("#message_date_end");
+    var message_date_start = filter_form.querySelector("#message_date_begin");
+    var message_price_end = filter_form.querySelector("#message_price_end");
+    var message_price_start = filter_form.querySelector("#message_price_begin");
+    const start_date_str = filter_form.querySelector("#date_start").value;
+    const end_date_str = filter_form.querySelector("#date_end").value;
+    const start_price_str = filter_form.querySelector("#price_start").value;
+    const end_price_str = filter_form.querySelector("#price_end").value;
+    const start_date = new Date(start_date_str);
+    const end_date = new Date(end_date_str);
+    const start_price = parseInt(start_price_str);
+    const end_price = parseInt(end_price_str);
+    var check = true;
+
+    if (!start_date_str && end_date_str) {
+      message_date_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+      check = false;
+    } else if (!end_date_str && start_date_str) {
+      message_date_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+      check = false;
+    } else if (start_date > end_date) {
+      message_date_start.innerHTML = "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
+      check = false;
+    } else {
+      message_date_start.innerHTML = "";
+      message_date_end.innerHTML = "";
+    }
+
+    if ((start_price_str || end_price_str) && (isNaN(start_price) || isNaN(end_price))) {
+      if (!start_price_str) {
+        message_price_start.innerHTML = "*Nhập giá bắt đầu";
+      } else {
+        message_price_start.innerHTML = "*Nhập giá kết thúc";
+      }
+      check = false;
+    } else if (start_price >= end_price) {
+      message_price_start.innerHTML = "*Giá bắt đầu phải nhỏ hơn giá kết thúc và là số nguyên.";
+      check = false;
+    } else {
+      message_price_start.innerHTML = "";
+      message_price_end.innerHTML = "";
+    }
+
+    if (check) {
+      current_page = 1;
+      loadItem();
+    }
+  });
+
   $(".body__filter--action__reset").click((e) => {
+    var message_date_end = filter_form.querySelector("#message_date_end");
+    var message_date_start = filter_form.querySelector("#message_date_begin");
+    var message_price_end = filter_form.querySelector("#message_price_end");
+    var message_price_start = filter_form.querySelector("#message_price_begin");
+    message_date_start.innerHTML = "";
+    message_date_end.innerHTML = "";
+    message_price_start.innerHTML = "";
+    message_price_end.innerHTML = "";
+
     current_page = 1;
     $.ajax({
       url: '../controller/admin/pagnation.controller.php',
@@ -151,8 +207,11 @@ function filterBtn() {
       pagnationBtn();
       js();
     })
-  })
+  });
 }
+
+
+
 
 function addProduct() {
   let productName = ""; 
@@ -225,7 +284,7 @@ function addProduct() {
 
 
 function deleteRow() {
-  const table = document.getElementById('addTable'); // Lấy thẻ table
+  const table = document.getElementById('addTable'); 
   const rowCount = table.rows.length; 
   if (rowCount > 1) {
     table.deleteRow(rowCount - 1); 
