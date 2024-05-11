@@ -62,7 +62,7 @@
             </div>
         </div>
     </div>
-    <div class="thongkechitiet__container">
+    <div class="thongkechitiet__container hidden">
         <h1>Thống kê theo thể loại</h1>
         <div class="content-container">
             <div class="date">
