@@ -367,16 +367,15 @@ openModalBtn.addEventListener('click', function () {
       const quantity = product.cells[2].textContent;
       const inputPriceText = product.cells[3].textContent; // Chuỗi định dạng tiền VND
       const inputPrice = parseFloat(inputPriceText.replace(/[^\d.-]/g, ''))*1000; 
-      console.log(inputPrice);
            totalPrice += parseFloat(quantity) * inputPrice; // Calculate total price
       detailData.push({ productId, quantity, inputPrice });
     });
-  
     if (totalPrice === 0) {
       alert('Vui lòng nhập đầy đủ thông tin.');
       return;
     }
-  
+    const staffName =  document.querySelector(".topbar__admin-info h2").innerHTML.trim();
+    console.log(staffName);
     $.ajax({
       url: '../controller/admin/receipt.controller.php',
       type: "post",
@@ -387,7 +386,7 @@ openModalBtn.addEventListener('click', function () {
           supplierId: supplierId,
           totalPrice: totalPrice,
           details: detailData,
-          staffId: "stafffahasa"
+          staffId: staffName,
         }
       }
     }).done(function (result) {
