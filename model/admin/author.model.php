@@ -83,22 +83,27 @@ function author_create($field)
 
 function author_edit($field) {
     global $database; 
-    $sql = "SELECT * from authors WHERE id = " . $field['id'] . "";
-    $result = null;
-    $result = $database->query($sql);
-    $row = mysqli_fetch_array($result);
-    if ($row != null) {
+
+    $sql_check = "SELECT * FROM authors WHERE email = '" . $field['email'] . "' AND id != " . $field['id'];
+    $result_check = $database->query($sql_check);
+
+    if ($result_check && $result_check->num_rows > 0) {
+        // Email đã tồn tại cho một tác giả khác, không thể sửa đổi thành email này
+        return "<span class='failed'>Email đã tồn tại cho một tác giả khác. Không thể sửa đổi.</span>";
+    } else {
+        // Tiến hành sửa đổi thông tin tác giả
         $sql = "UPDATE authors
         SET name = '" . $field['name'] . "', email = '" . $field['email'] . "', status = 1 
         WHERE id = " . $field['id'];
-        
-        $result = $database->execute($sql);
+
+        $result = $database->query($sql);
+
         if ($result) {
-          $result = "<span class='success'>Sửa tác giả thành công</span>";
-        } else $result = "<span class='failed'>Sửa tác giả không thành công</span>";
-    
-        return ($result);
-      } else return "<span class='failed'>Tác giả " . $row['id'] . " không tồn tại</span>";
-
-
+            return "<span class='success'>Sửa tác giả thành công</span>";
+        } else {
+            return "<span class='failed'>Sửa tác giả không thành công</span>";
+        }
+    }
 }
+
+
