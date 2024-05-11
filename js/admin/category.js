@@ -235,7 +235,8 @@ var js = function () {
             modal_create_container.querySelector("#nameCategory").value;
           var check = true;
           if (name == "") {
-            message.innerHTML = "*Vui lòng điền đủ thông tin";
+            message.innerHTML = "*Vui lòng điền tên thể loại";
+            modal_create_container.querySelector("#nameCategory").focus();
             check = false;
           }
           if (check == true) {
@@ -318,7 +319,8 @@ var js = function () {
           var check = true;
 
           if (name == "") {
-            message.innerHTML = "*Vui lòng điền đầy đủ thông tin";
+            message.innerHTML = "*Vui lòng điền tên thể loại";
+            modal_edit_container.querySelector("#name").focus();
             check = false;
           }
           if (check == true) {

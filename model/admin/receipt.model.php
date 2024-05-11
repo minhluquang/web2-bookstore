@@ -101,8 +101,8 @@ function receipt_detail($field){
                             <td style=" width: 10%">' . $row['product_id'] . '</td>
                             <td style=" width: 55%">' . $row['name'] . '</td>
                             <td style=" width: 15%">' . $row['quantity'] . '</td>
-                            <td style=" width: 20%">' . $row['input_price'] . '</td>
-                          </tr>';
+                            <td style=" width: 20%">' . number_format($row['input_price']) . '&#8363</td>
+                            </tr>';
       }
       
       $htmlResult .= '</tbody>
