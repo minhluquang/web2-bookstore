@@ -40,11 +40,19 @@ var search = location.search.substring(1);
 urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) { return key === "" ? value : decodeURIComponent(value) })
 var number_of_item = urlParams['item'];
 var current_page = urlParams['pag'];
+var orderby = urlParams['orderby'];
+var order_type = urlParams['order_type'];
 if (current_page == null) {
-  current_page = 1;
+    current_page = 1;
 }
 if (number_of_item == null) {
-  number_of_item = 5;
+    number_of_item = 5;
+}
+if (orderby == null) {
+    orderby = "";
+}
+if (order_type != "ASC" && order_type != "DESC") {
+    order_type = "ASC";
 }
 function checkReady() {
   return new Promise(async function (resolve) {
@@ -100,6 +108,8 @@ function loadItem() {
         number_of_item: number_of_item,
         current_page: current_page,
         function: "render",
+        orderby: orderby,
+        order_type: order_type,
         filter: filter
       }
     }).done(function (result) {
@@ -135,6 +145,8 @@ function filterBtn() {
         number_of_item: number_of_item,
         current_page: current_page,
         function: "render",
+        orderby: orderby,
+        order_type: order_type,
         filter: {
           author_status: status_value
       }
@@ -150,7 +162,21 @@ function filterBtn() {
 }
 
 const js = function () {
-
+  if (orderby != "" && order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML+=(order_type=="ASC")?' <i class="fas fa-sort-up">':' <i class="fas fa-sort-down">';
+  else document.querySelector("[data-order]").innerHTML+=(order_type=="ASC")?' <i class="fas fa-sort-up">':' <i class="fas fa-sort-down">';
+  document.querySelector(".result").querySelectorAll("th").forEach((th) => {
+      if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
+          if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
+          if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
+              order_type = "DESC";
+          }
+          else {
+              order_type = "ASC"
+          }
+          orderby = th.getAttribute("data-order");
+          loadItem();
+      })
+  });
   const addHtml = `
   <div class="form">
     <h2>Thêm Tác Giả</h2>
@@ -384,16 +410,3 @@ const js = function () {
   });
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

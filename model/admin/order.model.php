@@ -3,33 +3,7 @@ $ds = DIRECTORY_SEPARATOR;
 $base_dir = realpath(dirname(__FILE__)  . $ds . '..') . $ds;
 include_once("{$base_dir}connect.php");
 $database = new connectDB();
-function order_delete($id)
-{
-  $database = new connectDB();
-  $sql_details = 'DELETE FROM `order_details` WHERE order_id="' . $id . '"';
-  $result_details = $database->query($sql_details);
-  $sql_order = 'DELETE FROM `orders` WHERE id="' . $id . '"';
-  $result_order = $database->query($sql_order);
-  $database->close();
-  if ($result_details && $result_order) {
-    return (object) array(
-      'success' => true,
-      'message' => "Xóa dơn hàng với mã $id thành công"
-    );
-  } else {
-    $error = "Xóa đơn hàng với mã $id KHÔNG thành công\n";
-    if (!$result_details) {
-      $error += "Lỗi khi xử lý bảng order_details\n";
-    }
-    if (!$result_order) {
-      $error += "Lỗi khi xử lý bảng orders\n";
-    }
-    return (object) array(
-      'success' => false,
-      'message' => $error
-    );
-  }
-}
+
 function order_render($id)
 {
   $database = new connectDB();
@@ -88,8 +62,36 @@ function order_change_status($id,$status,$staff_id){
   $database = new connectDB();
   $sql = "UPDATE orders SET status_id='$status' ,staff_id='$staff_id' WHERE id='$id'";
   $database->execute($sql);
+  $sql = "SELECT * FROM order_details where order_id =" .$id;
+  $result = $database->query($sql);
+  while($row = mysqli_fetch_array($result))
+  updateQuantityProductByIdModel($row["product_id"],$row["quantity"]);
+$database->close(); 
 }
-
+function updateQuantityProductByIdModel($id, $quantity) {
+  $database = new connectDB();
+  if ($database->conn) {
+    $sql = "SELECT *
+            FROM products
+            WHERE id = $id";
+    $isExist = $database->query($sql);
+    
+    // Nếu sản phẩm tồn tại
+    if ($isExist && $isExist->num_rows > 0) {
+      $sqlUpdateAmount = "UPDATE products
+                          SET quantity = quantity + $quantity
+                          WHERE id = $id";
+      $result = $database->execute($sqlUpdateAmount);
+      $database->close();
+      return $result;
+    } 
+    $database->close();
+    return false;
+  } else {
+    $database->close();
+    return false;
+  }
+}
 function getOrderStatusByOrderIdModel($id) {
   $database = new connectDB();
   if ($database->conn) {

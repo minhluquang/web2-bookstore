@@ -55,7 +55,7 @@ class pagnation
     }
     public function getData()
     {
-        
+
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
         $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter $this->orderby LIMIT $this->number_of_item OFFSET $offset ";
@@ -110,7 +110,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '"status="' . $row['status'] . '">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="' . $row['publisher_id'] . '" supplier_id="' . $row['supplier_id'] . '"status="' . $row['status'] . '">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -175,16 +175,16 @@ class pagnation
                         </div>';
                     }
                     break;
-                    case "suppliers": {
+                case "suppliers": {
                         echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                            <th>Mã nhà cung cấp</th>
-                            <th>Tên nhà cung cấp</th>
-                            <th>Email </th>
-                            <th>Số điện thoại </th>
+                            <th data-order="id">Mã nhà cung cấp</th>
+                            <th data-order="name">Tên nhà cung cấp</th>
+                            <th data-order="email">Email </th>
+                            <th data-order="number_phone">Số điện thoại </th>
                             <th>Trạng thái </th>
                             <th>Hành động</th>
                             </tr>
@@ -199,7 +199,7 @@ class pagnation
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
                             echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
-                            if($row['status'] == 1) {
+                            if ($row['status'] == 1) {
                                 echo '<td class="status" >Đang hoạt động</td>';
                             } else {
                                 echo '<td class="status" >Không hoạt động</td>';
@@ -217,13 +217,13 @@ class pagnation
                     </div>';
                     }
                     break;
-                    case "goodsreceipts": {
+                case "goodsreceipts": {
                         echo '
                             <div class="table__wrapper">
                                 <table id="content-product">
                                     <thead class="menu">
                                         <tr>
-                                            <th>Mã đơn nhập</th>
+                                            <th data-order="id">Mã đơn nhập</th>
                                             <th>Tên nhà cung cấp</th>
                                             <th>Người nhập đơn</th>
                                             <th>Tổng tiền</th>
@@ -233,18 +233,18 @@ class pagnation
                                     </thead>
                                     <tbody class="table-content" id="content">
                         ';
-                    
+
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
-                            echo '<td class="id">'  . $row['id'] . '</td>';                    
+                            echo '<td class="id">'  . $row['id'] . '</td>';
                             // Truy vấn tên nhà cung cấp từ bảng 'suppliers'
                             $sup_sql = "SELECT * FROM `suppliers` WHERE id =" . $row['supplier_id'];
                             $sup_result = $database->query($sup_sql);
                             $supplier = mysqli_fetch_array($sup_result);
                             $supplier_name = ($supplier) ? $supplier['name'] : '';
-                    
+
                             echo '<td class="supplierName">' . $supplier_name . '</td>';
-                            
+
                             echo '<td class="staff_id">' . $row['staff_id'] . '</td>';
                             echo '<td class="total_price">';
                             $price_number =  $row['total_price'];
@@ -256,21 +256,21 @@ class pagnation
 
                             echo  trim($price, '. ') . '&#8363;</td>';
                             echo '<td class="date_create">' . $row['date_create'] . '</td>';
-                    
+
                             echo '<td class="actions">
                                     <button class="actions--edit">Xem chi tiết</button>
                                 </td>
                             </tr>';
                         }
-                    
+
                         echo ' 
                             </tbody>
                         </table>
                     </div>';
                     }
                     break;
-                    
-                
+
+
                 case "orders": {
                         echo '
                     <div class="table__wrapper">
@@ -307,7 +307,7 @@ class pagnation
                             $result_address = $database->query($sql_address);
                             $row_address = mysqli_fetch_array($result_address);
 
-                            echo '<td class="address">' . $row_address['address'].', '.$row_address['ward'] .', '.$row_address['district'] .', '.$row_address['city'] . '</td>';
+                            echo '<td class="address">' . $row_address['address'] . ', ' . $row_address['ward'] . ', ' . $row_address['district'] . ', ' . $row_address['city'] . '</td>';
 
                             $sql_status = 'SELECT * from order_statuses WHERE id="' . $row[6] . '"';
                             $result_status  = $database->query($sql_status);
@@ -333,7 +333,7 @@ class pagnation
                         <table id="content-product">
                             <thead class="menu">
                             <tr>
-                                <th>Mã người dùng</th>
+                                <th  data-order="username">Mã người dùng</th>
                                 <th>Loại tài khoản</th>
                                 <th>Trạng thái tài khoản</th>
                                 <th>Hành động</th>
@@ -353,12 +353,12 @@ class pagnation
                             $sql_status = 'SELECT * from accounts WHERE username="' . $row['username'] . '"';
                             $row_status = mysqli_fetch_array($database->query($sql_status));
 
-                           $status = "";
-                           if($row['status'] == 1) $status = "Hoạt động";
-                           if($row['status'] == 0) $status = "Không hoạt động";
-                           
-                            echo '<td class="status" value="active">'.$status.'</td>';
-                            if($row['username'] == "adminfahasa") {
+                            $status = "";
+                            if ($row['status'] == 1) $status = "Hoạt động";
+                            if ($row['status'] == 0) $status = "Không hoạt động";
+
+                            echo '<td class="status" value="active">' . $status . '</td>';
+                            if ($row['username'] == "adminfahasa") {
                                 echo '<td class="actions">
                                 <button class="actions--pass">Đổi mật khẩu</button>
                                 </td>
@@ -383,9 +383,9 @@ class pagnation
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                            <th>Mã tác giả</th>
-                            <th>Tên tác giả</th>
-                            <th>Email tác giả</th>
+                            <th data-order="id">Mã tác giả</th>
+                            <th data-order="name">Tên tác giả</th>
+                            <th  data-order="email">Email tác giả</th>
                             <th>Trạng thái</th>                                    
                             <th>Hành động</th>
                             </tr>
@@ -399,15 +399,15 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
-                            if($row['status'] == 1) {
+                            if ($row['status'] == 1) {
                                 echo '<td class="status" >Đang hoạt động</td>';
                             } else {
                                 echo '<td class="status" >Không hoạt động</td>';
                             }
                             echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>' ;
-                           if($row['status'] == 1) 
-                           echo '<button class="actions--delete">Xoá</button>
+                            <button class="actions--edit">Sửa</button>';
+                            if ($row['status'] == 1)
+                                echo '<button class="actions--delete">Xoá</button>
                             
                         </td>
                         </tr>';
@@ -424,9 +424,9 @@ class pagnation
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                            <th>Mã NXB</th>
-                            <th>Tên NXB</th>
-                            <th>Email NXB</th>
+                            <th  data-order="id">Mã NXB</th>
+                            <th  data-order="name">Tên NXB</th>
+                            <th  data-order="email">Email NXB</th>
                             <th>Trạng Thái</th>
                             <th>Hành động</th>
                             </tr>
@@ -440,7 +440,7 @@ class pagnation
                             echo '<td class="id">'  . $row['id'] . '</td>';
                             echo '<td class="name">' . $row['name'] . '</td>';
                             echo '<td class="email">' . $row['email'] . '</td>';
-                            if($row['status'] == 1) {
+                            if ($row['status'] == 1) {
                                 echo '<td class="status" >Đang hoạt động</td>';
                             } else {
                                 echo '<td class="status" >Không hoạt động</td>';
@@ -457,15 +457,15 @@ class pagnation
                     </div>';
                     }
                     break;
-                   
+
                 case "categories": {
                         echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                            <th>Mã thể loại</th>                 
-                            <th>Tên thể loại</th>
+                            <th  data-order="id">Mã thể loại</th>                 
+                            <th data-order="name">Tên thể loại</th>
                             <th>Số lượng sách</th>
                             <th>Trạng thái</th>
                                       
@@ -492,13 +492,13 @@ class pagnation
                             } else {
                                 echo '<td class="amount">' . 0 . '</td>';
                             }
-                            if($row['status'] == 1) {
+                            if ($row['status'] == 1) {
                                 echo '<td class="status" >Đang hoạt động</td>';
                             } else {
                                 echo '<td class="status" >Không hoạt động</td>';
                             }
-                            
-                            
+
+
                             echo '<td class="actions">
                             <button class="actions--edit">Sửa</button>
                             <button class="actions--delete">Xoá</button>
@@ -511,17 +511,17 @@ class pagnation
                     </div>';
                     }
                     break;
-                    case "discounts": {
+                case "discounts": {
                         echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                            <th>Tên mã giảm giá</th>                 
+                            <th data-order="discount_code">Tên mã giảm giá</th>                 
                             <th>Loại mã giảm giá</th>
-                            <th>Giá trị mã giảm giá</th>
-                            <th>Ngày bắt đầu</th>
-                            <th>Ngày kết thúc</th>
+                            <th data-order="discount_value">Giá trị mã giảm giá</th>
+                            <th data-order="start_date">Ngày bắt đầu</th>
+                            <th data-order="end_date">Ngày kết thúc</th>
                             <th>Trạng thái</th>                                    
                             <th>Hành động</th>
                             </tr>
@@ -531,12 +531,12 @@ class pagnation
 
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
-                            echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';                                    
-                            echo '<td class="type">'.$row['type'].'</td>';
+                            echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';
+                            echo '<td class="type">' . $row['type'] . '</td>';
                             echo '<td class="discount_value">' . $row['discount_value'] . '</td>';
-                            echo '<td class="start_date">'.$row['start_date'].'</td>';
-                            echo '<td class="end_date">'.$row['end_date'].'</td>';
-                            if($row['status'] == 1) {
+                            echo '<td class="start_date">' . $row['start_date'] . '</td>';
+                            echo '<td class="end_date">' . $row['end_date'] . '</td>';
+                            if ($row['status'] == 1) {
                                 echo '<td class="status" >Đang hoạt động</td>';
                             } else {
                                 echo '<td class="status" >Không hoạt động</td>';
@@ -554,14 +554,14 @@ class pagnation
                     </div>';
                     }
                     break;
-                case "functions" : {
-                    echo '
+                case "functions": {
+                        echo '
                     <div class="table__wrapper">
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                            <th>Mã quyền</th>                 
-                            <th>Tên quyền</th>      
+                            <th data-order="id">Mã quyền</th>                 
+                            <th data-order="name">Tên quyền</th>      
                             <th>Hành động</th>
                             </tr>
                         </thead>
@@ -586,8 +586,8 @@ class pagnation
                     </tbody>
                     </table>
                     </div>';
-                }
-                break;
+                    }
+                    break;
             }
             echo '<div class="pagination">';
 
@@ -629,19 +629,19 @@ class pagnation
                     break;
                 case "suppliers":
                     echo "<div id='zero-item'><h2>Không có nhà cung cấp nào</h2></div>";
-                     break;
-                     case "discounts":
-                        echo "<div id='zero-item'><h2>Không có mã khuyến mãi nào</h2></div>";
-                         break;
+                    break;
+                case "discounts":
+                    echo "<div id='zero-item'><h2>Không có mã khuyến mãi nào</h2></div>";
+                    break;
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
-                    case "orders":
-                        echo "<div id='zero-item'><h2>Không có đơn hàng nào</h2></div>";
-                        break;
-                    case "goodsreceipts":
-                        echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
-                        break;
+                case "orders":
+                    echo "<div id='zero-item'><h2>Không có đơn hàng nào</h2></div>";
+                    break;
+                case "goodsreceipts":
+                    echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
+                    break;
                 case "functions":
                     echo "<div id='zero-item'><h2>Không có quyền nào</h2></div>";
                     break;
@@ -663,20 +663,20 @@ function getFilterSQL($table, $data)
             break;
         case 'orders':
             return getOrderFilterSQL($data);
-             break;    
+            break;
         case 'categories':
             return getCategoryFilterSQL($data);
             break;
-         case 'discounts':
-                return getDiscountFilterSQL($data);
-             break;
+        case 'discounts':
+            return getDiscountFilterSQL($data);
+            break;
         case 'publishers':
             return getPublisherFilterSQL($data);
             break;
         case 'suppliers':
             return getSupplierFilterSQL($data);
             break;
-        case 'functions': 
+        case 'functions':
             return getRoleFilterSQL($data);
             break;
         case 'accounts':
@@ -685,7 +685,6 @@ function getFilterSQL($table, $data)
         case 'goodsreceipts':
             return getReceiptFilterSQL($data);
             break;
-
     }
 }
 function getProductFilterSQL($data)
@@ -709,7 +708,7 @@ function getProductFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " price <= " . $data['price_end'];
         }
-        if ((isset($data['status'])&&$data['status']==0)||!empty($data['status'])&&$data['status']!=-1) {
+        if ((isset($data['status']) && $data['status'] == 0) || !empty($data['status']) && $data['status'] != -1) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " status=" . $data['status'];
         }
@@ -739,7 +738,6 @@ function getAuthorFilterSQL($data)
         if (!empty($data['author_name'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['author_name'] . "%'";
-            
         }
         if (!empty($data['author_id'])) {
             if ($filter != "") $filter = $filter . " AND ";
@@ -752,12 +750,11 @@ function getAuthorFilterSQL($data)
         if (!empty($data['author_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['author_status'] == "active") {
-               
-                $filter = $filter . "status = 1 " ;
+
+                $filter = $filter . "status = 1 ";
             } elseif ($data['author_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
-            
         }
 
 
@@ -765,48 +762,47 @@ function getAuthorFilterSQL($data)
     }
     return  $filter;
 }
-    function getReceiptFilterSQL($data)
-    {
-        $filter = "";
-        $innerjoin="";
-        if (!empty($data)) {
-            if (!empty($data['supplierName'])) {
-                // Lấy tên nhà cung cấp từ dữ liệu
-                $supplierName = $data['supplierName'];
-                $filter = $filter." s.name LIKE '%" . $supplierName . "%'";
-                $innerjoin = $innerjoin." INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
-
-            }  
-            if (!empty($data['id'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " goodsreceipts.id = " . $data['id'];
-            }
-            if (!empty($data['staff_id'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
-            }
-            if (!empty($data['price_start'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " total_price >= " . $data['price_start'];
-            }
-            if (!empty($data['price_end'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " total_price <= " . $data['price_end'];
-            }
-            if (!empty($data['date_type'])) {
-                if (!empty($data['date_start'])) {
-                    if ($filter != "") $filter = $filter . " AND ";
-                    $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
-                }
-                if (!empty($data['date_end'])) {
-                    if ($filter != "") $filter = $filter . " AND ";
-                    $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['dsate_end'] . "'";
-                }
-            }
-            if ($filter != "") $filter = "WHERE " . $filter;
+function getReceiptFilterSQL($data)
+{
+    $filter = "";
+    $innerjoin = "";
+    if (!empty($data)) {
+        if (!empty($data['supplierName'])) {
+            // Lấy tên nhà cung cấp từ dữ liệu
+            $supplierName = $data['supplierName'];
+            $filter = $filter . " s.name LIKE '%" . $supplierName . "%'";
+            $innerjoin = $innerjoin . " INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
         }
-        return  $innerjoin . $filter;
+        if (!empty($data['id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " goodsreceipts.id = " . $data['id'];
+        }
+        if (!empty($data['staff_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
+        }
+        if (!empty($data['price_start'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " total_price >= " . $data['price_start'];
+        }
+        if (!empty($data['price_end'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " total_price <= " . $data['price_end'];
+        }
+        if (!empty($data['date_type'])) {
+            if (!empty($data['date_start'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
+            }
+            if (!empty($data['date_end'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['dsate_end'] . "'";
+            }
+        }
+        if ($filter != "") $filter = "WHERE " . $filter;
     }
+    return  $innerjoin . $filter;
+}
 
 function getCategoryFilterSQL($data)
 {
@@ -816,22 +812,21 @@ function getCategoryFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['category_name'] . "%'";
         }
-        if (!empty($data['category_id'])) {     
+        if (!empty($data['category_id'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " id = " . $data['category_id'];
         }
         if (!empty($data['category_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['category_status'] == "active") {
-               
-                $filter = $filter . "status = 1 " ;
+
+                $filter = $filter . "status = 1 ";
             } elseif ($data['category_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
-            
         }
-        
-       
+
+
 
         if ($filter != "") $filter = "WHERE " . $filter;
     }
@@ -846,20 +841,18 @@ function getOrderFilterSQL($data)
             if ($filter != "") $filter .= " AND ";
             $filter = $filter . "`customer_id` LIKE '%" . $data['id_customer'] . "%'";
         }
-        if (!empty($data['id_staff'])) {     
+        if (!empty($data['id_staff'])) {
             if ($filter != "") $filter .= " AND ";
             $filter .= "staff_id = " . $data['id_staff'];
         }
-        if (!empty($data['id_Order'])) {     
+        if (!empty($data['id_Order'])) {
             if ($filter != "") $filter .= " AND ";
             $filter .= "id = " . $data['id_Order'];
         }
 
-        if (!empty($data['Order_status']) && $data['Order_status']!="all") {
+        if (!empty($data['Order_status']) && $data['Order_status'] != "all") {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "status_id = ".$data['Order_status'] ;
-
-            
+            $filter = $filter . "status_id = " . $data['Order_status'];
         }
         if (!empty($data['date_begin'])) {
             if ($filter != "") $filter .= " AND ";
@@ -869,7 +862,7 @@ function getOrderFilterSQL($data)
             if ($filter != "") $filter .= " AND ";
             $filter .= "date_create <= '" . $data['date_end'] . "'";
         }
-        
+
         if ($filter != "") $filter = " WHERE " . $filter;
     }
     return $filter;
@@ -884,21 +877,20 @@ function getSupplierFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['supplier_name'] . "%'";
         }
-        if (!empty($data['supplier_id'])) {     
+        if (!empty($data['supplier_id'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " id = " . $data['supplier_id'];
         }
         if (!empty($data['supplier_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['supplier_status'] == "active") {
-               
-                $filter = $filter . "status = 1 " ;
+
+                $filter = $filter . "status = 1 ";
             } elseif ($data['supplier_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
-            
         }
-        
+
         if (!empty($data['supplier_date_type'])) {
             if (!empty($data['supplier_date_start'])) {
                 if ($filter != "") $filter = $filter . " AND ";
@@ -934,12 +926,11 @@ function getPublisherFilterSQL($data)
         if (!empty($data['publisher_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['publisher_status'] == "active") {
-               
-                $filter = $filter . "status = 1 " ;
+
+                $filter = $filter . "status = 1 ";
             } elseif ($data['publisher_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
-            
         }
 
         if ($filter != "") $filter = "WHERE " . $filter;
@@ -954,19 +945,18 @@ function getRoleFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`name` LIKE '%" . $data['role_name'] . "%'";
         }
-        if (!empty($data['role_id'])) {     
+        if (!empty($data['role_id'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " id = " . $data['role_id'];
         }
         if (!empty($data['role_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['role_status'] == "active") {
-               
-                $filter = $filter . "status = 1 " ;
+
+                $filter = $filter . "status = 1 ";
             } else if ($data['role_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
-            
         }
 
         if ($filter != "") $filter = "WHERE " . $filter;
@@ -980,16 +970,15 @@ function getDiscountFilterSQL($data)
         if (!empty($data['discount_name'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`discount_code` LIKE '%" . $data['discount_name'] . "%'";
-        }       
+        }
         if (!empty($data['discount_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['discount_status'] == "active") {
 
-                $filter = $filter . "status = 1 " ;
+                $filter = $filter . "status = 1 ";
             } elseif ($data['discount_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
-
         }
 
 
@@ -1006,16 +995,16 @@ function getUserFilterSQL($data)
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . "`username` LIKE '%" . $data['user_id'] . "%'";
         }
-        if (!empty($data['user_role'])) {     
+        if (!empty($data['user_role'])) {
             if ($filter != "") $filter = $filter . " AND ";
             $filter = $filter . " role_id = " . $data['user_role'];
         }
         if (!empty($data['user_status'])) {
             if ($filter != "") $filter = $filter . " AND ";
             if ($data['user_status'] == "active") {
-                $filter = $filter . "status = 1 " ;
+                $filter = $filter . "status = 1 ";
             } else if ($data['user_status'] == "inactive") {
-                $filter = $filter . "status = 0 " ;
+                $filter = $filter . "status = 0 ";
             }
         }
 

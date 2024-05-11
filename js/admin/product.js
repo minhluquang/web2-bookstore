@@ -132,7 +132,7 @@ function loadItem() {
                 function: "render",
                 filter: filter,
                 orderby: orderby,
-                order_type: order_type
+                order_type: order_type,
             }
         }).done(function (result) {
 
