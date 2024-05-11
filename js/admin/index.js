@@ -19,6 +19,7 @@ $(document).ready(function () {
       }
     });
   });
+  checkFunction();
   $("#close").click(function () {
     document.querySelector("#chitiet").classList.toggle("show");
   })
@@ -271,6 +272,21 @@ function StatDetail() {
     });
   })
 
-
-
+}
+function checkFunction() {
+  $.ajax({
+    type: "post",
+    url: "../controller/admin/index.controller.php",
+    dataType: "html",
+    data: {
+      checkFunction: true,
+      function_id: 1,
+    },
+  }).done(function(result){
+    console.log(result);
+    if(result == "1"){
+      document.querySelector(".thongkechitiet__container").classList.remove("hidden");
+    }
+    else document.querySelector(".thongkechitiet__container").remove();
+  })
 }

@@ -153,18 +153,13 @@ function filterBtn() {
     })
   })
 }
-function formatCurrency(amount) {
-  // Chuyển đổi số thành chuỗi có dạng 100,000
-  const formattedAmount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  return formattedAmount + " VND"; // Thêm đơn vị tiền tệ vào sau giá trị
-}
+
 function addProduct() {
   let productName = ""; 
   let productId = "";
   let quantity = "";
-  let inputPrice = ""; // Declare inputPrice in a wider scope
+  let inputPrice = ""; 
 
-  // Add event listener to productId dropdown
   const productIdDropdown = document.getElementById('productId');
   productIdDropdown.addEventListener('change', function() {
     const selectedProductId = this.value; 
@@ -173,7 +168,6 @@ function addProduct() {
     
     if (!selectedProductId) return; 
 
-    // AJAX request to get inputPrice
     $.ajax({
       url: '../controller/admin/receipt.controller.php',
       type: "post",
@@ -190,7 +184,6 @@ function addProduct() {
     });
   });
 
-  // Add click event listener to addProduct button
   document.getElementById("addProduct").addEventListener("click", function() {
     quantity = document.getElementById('quantity').value;
     if (productId.trim() === '' || quantity.trim() === '') {
@@ -201,10 +194,8 @@ function addProduct() {
     const tableBody = document.getElementById('productTableBody');
     let productExists = false;
 
-    // Check if product already exists in table
     Array.from(tableBody.rows).forEach(function(row) {
       if (row.cells[0].textContent === productId) {
-        // Product exists, update quantity and price
         let prevQuantity = parseInt(row.cells[2].textContent);
         let newQuantity = prevQuantity + parseInt(quantity);
         row.cells[2].textContent = newQuantity;
@@ -214,7 +205,6 @@ function addProduct() {
     });
 
     if (!productExists) {
-      // Add product to table if it doesn't exist
       const newRow = tableBody.insertRow();
       newRow.innerHTML = `
         <td>${productId}</td>
@@ -224,7 +214,6 @@ function addProduct() {
       `;
     }
 
-    // Reset form fields
     document.getElementById('productId').value = '';
     document.getElementById('quantity').value = '';
     document.getElementById('inputPrice').value = '';
@@ -239,7 +228,7 @@ function deleteRow() {
   const table = document.getElementById('addTable'); // Lấy thẻ table
   const rowCount = table.rows.length; 
   if (rowCount > 1) {
-    table.deleteRow(rowCount - 1); // Xóa dòng cuối cùng (trừ dòng header)
+    table.deleteRow(rowCount - 1); 
   } else {
     alert('Không có dòng để xóa.');
   }
@@ -327,7 +316,6 @@ openModalBtn.addEventListener('click', function () {
   addModalContent.addEventListener('click',addProduct());
   addModal.style.display = "block";
 
-  // Populate suppliers dropdown
   $.ajax({
     url: '../controller/admin/receipt.controller.php',
     type: "post",
@@ -346,37 +334,32 @@ openModalBtn.addEventListener('click', function () {
   });
   
 
-  // Đóng modal khi click vào nút close
   closeAddIcon.addEventListener('click', function () {
     addModal.style.display = "none";
   });
   
   addButton.addEventListener('click', function (e) {
-    e.preventDefault(); // Prevent default button behavior (form submission)
+    e.preventDefault(); 
   
-    // Get values from input fields
     const supplierId = document.getElementById('supplier').value;
   
     const products = document.querySelectorAll('#productTableBody tr');
-    let totalPrice = 0; // Total order price
+    let totalPrice = 0; 
   
-    // Calculate total price and create detail data array
     let detailData = [];
     products.forEach((product) => {
       const productId = product.cells[0].textContent;
       const quantity = product.cells[2].textContent;
-      const inputPriceText = product.cells[3].textContent; // Chuỗi định dạng tiền VND
+      const inputPriceText = product.cells[3].textContent; 
       const inputPrice = parseFloat(inputPriceText.replace(/[^\d.-]/g, ''))*1000; 
-      console.log(inputPrice);
-           totalPrice += parseFloat(quantity) * inputPrice; // Calculate total price
+           totalPrice += parseFloat(quantity) * inputPrice; 
       detailData.push({ productId, quantity, inputPrice });
     });
-  
     if (totalPrice === 0) {
       alert('Vui lòng nhập đầy đủ thông tin.');
       return;
     }
-  
+    const staffName =  document.querySelector(".topbar__admin-info h2").innerHTML.trim();
     $.ajax({
       url: '../controller/admin/receipt.controller.php',
       type: "post",
@@ -387,7 +370,7 @@ openModalBtn.addEventListener('click', function () {
           supplierId: supplierId,
           totalPrice: totalPrice,
           details: detailData,
-          staffId: "stafffahasa"
+          staffId: staffName,
         }
       }
     }).done(function (result) {
@@ -473,7 +456,7 @@ btn.addEventListener('click', function () {
     $.ajax({
       url: '../controller/admin/receipt.controller.php',
       type: "post",
-      dataType: 'html', // Chuyển về dạng HTML để nhận đoạn mã HTML từ server
+      dataType: 'html', 
       data: {
         function: "details",
         field: {

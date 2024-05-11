@@ -65,4 +65,10 @@
     if(empty($_POST["orderby"]))echo getStatDetails($_POST["category_id"],$_POST["date_start"],$_POST["date_end"],"id","ASC");
     else echo getStatDetails($_POST["category_id"],$_POST["date_start"],$_POST["date_end"],$_POST["orderby"],$_POST["order_type"]);
   }
+  if(isset($_POST['checkFunction']) && $_POST['checkFunction'] && isset($_POST['function_id'])){
+    if (session_status() == PHP_SESSION_NONE) {
+      session_start();
+    }
+    echo checkFunction($_SESSION['usernameAdmin'],$_POST['function_id']);
+  }
 ?>

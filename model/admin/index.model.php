@@ -124,15 +124,16 @@ function getStats($date_start, $date_end)
 
   $database->close();
 }
-function searchForValue($id, $array,$str) {
+function searchForValue($id, $array, $str)
+{
   foreach ($array as $key => $val) {
-      if ($val[$str] == $id) {
-          return $key;
-      }
+    if ($val[$str] == $id) {
+      return $key;
+    }
   }
   return -1;
 }
-function getStatDetails($id, $date_start, $date_end,$order,$type)
+function getStatDetails($id, $date_start, $date_end, $order, $type)
 {
   $database = new connectDB();
   $sql = "SELECT 
@@ -166,24 +167,25 @@ function getStatDetails($id, $date_start, $date_end,$order,$type)
   $quantity = 0;
   $arr = array();
   while ($detail = mysqli_fetch_array($detail_result)) {
-    $key = searchForValue($detail["product_id"],$arr,"id");
-    if ($key!=-1) {
+    $key = searchForValue($detail["product_id"], $arr, "id");
+    if ($key != -1) {
       $arr[$key]["total"] += $detail["discounted_price"] * $detail["quantity"];
       $arr[$key]["quantity"] += $detail["quantity"];
-    } else $arr[] = 
-    array(
-      "id"=>$detail["product_id"],
-      "img"=>$detail["image_path"], 
-      "name"=>$detail["name"], 
-      "price"=>$detail["original_price"], 
-      "total"=>$detail["discounted_price"] * $detail["quantity"], 
-      "quantity"=>$detail["quantity"]);
+    } else $arr[] =
+      array(
+        "id" => $detail["product_id"],
+        "img" => $detail["image_path"],
+        "name" => $detail["name"],
+        "price" => $detail["original_price"],
+        "total" => $detail["discounted_price"] * $detail["quantity"],
+        "quantity" => $detail["quantity"]
+      );
     $sum += $detail["discounted_price"] * $detail["quantity"];
     $quantity += $detail["quantity"];
   }
-  if(count($arr)<1){
+  if (count($arr) < 1) {
     echo "<div id='zero-item'><h2>Không bán được sản phẩm nào</h2></div>";
-    return ;
+    return;
   }
   echo '
   <table id="content-product">
@@ -197,9 +199,9 @@ function getStatDetails($id, $date_start, $date_end,$order,$type)
       </tr>
   </thead>
     <tbody class="table-content" id="content">';
-    $key_values = array_column($arr, $order); 
-    if($type=="ASC")array_multisort($key_values, SORT_ASC, $arr);
-    else if($type=="DESC")array_multisort($key_values, SORT_DESC, $arr);
+  $key_values = array_column($arr, $order);
+  if ($type == "ASC") array_multisort($key_values, SORT_ASC, $arr);
+  else if ($type == "DESC") array_multisort($key_values, SORT_DESC, $arr);
   foreach ($arr as $value) {
     echo '<tr>
     <td class="id">' . $value["id"] . '</td>
@@ -214,5 +216,16 @@ function getStatDetails($id, $date_start, $date_end,$order,$type)
   }
   echo '<tr><td></td><td></td><td></td><td></td><td>' . $sum . '</td><td>' . $quantity . '</td></tr>;';
   echo '</tbody></table>';
+  $database->close();
+}
+function checkFunction($username, $function_id)
+{
+  $sql = "SELECT *
+  FROM accounts a
+  INNER JOIN function_details fd ON a.role_id = fd.role_id 
+  WHERE a.username = '$username' AND function_id = $function_id";
+  $database = new connectDB();
+  $result = mysqli_fetch_array($database->query($sql));
+  echo $result["action"];
   $database->close();
 }
