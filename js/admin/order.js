@@ -146,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 function filterBtn() {
   $(".body__filter--action__filter").click((e) => {
+    e.preventDefault();
       current_page = 1;
       var idOrder = filter_form.querySelector("#idOrder").value.trim();
       var idCus = filter_form.querySelector("#idCus").value.trim();
@@ -168,13 +169,7 @@ function filterBtn() {
       }else {
         message_idOrder.innerHTML = "";
       }
-      // if (!idCus.match(regex) && idCus !== "") {
-      //   message_idCus.innerHTML = "*Mã khách hàng phải là kí tự số";
-      //   filter_form.querySelector("#idCus").focus();
-      //   check = false;
-      // }else {
-      //   message_idCus.innerHTML = "";
-      // }
+
       if (!idStaff.match(regex) && idStaff !== "") {
         message_idStaff.innerHTML = "*Mã nhân viên phải là kí tự số";
         filter_form.querySelector("#idStaff").focus();
