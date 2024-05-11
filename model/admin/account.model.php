@@ -61,12 +61,10 @@ function account_edit($field)
     $role = mysqli_real_escape_string($database->conn, $field['role']);
     $status = $field['status'] == "active" ? 1 : 0;
 
-    // Query to check if the account exists
     $sql_select = "SELECT * FROM accounts WHERE username = '$username'";
     $result_select = $database->query($sql_select);
 
     if ($result_select && $result_select->num_rows > 0) {
-        // Account exists, perform the update
         $sql_update = "UPDATE accounts SET role_id = '$role', status = '$status' WHERE username = '$username'";
         $result_update = $database->query($sql_update);
 
@@ -76,7 +74,6 @@ function account_edit($field)
             return "<span class='failed'>Sửa tài khoản không thành công</span>";
         }
     } else {
-        // Account does not exist
         return "<span class='failed'>Tài khoản $username không tồn tại</span>";
     }
 }
