@@ -1,3 +1,43 @@
+var filter_form = document.querySelector(".admin__content--body__filter");
+function getFilterFromURL() {
+  filter_form.querySelector("#idOrder").value = (urlParams['idOrder'] != null) ? urlParams['idOrder'] : "";
+  filter_form.querySelector("#idCus").value = (urlParams['idCus'] != null) ? urlParams['idCus'] : "";
+  filter_form.querySelector("#idStaff").value = (urlParams['idStaff'] != null) ? urlParams['idStaff'] : "";
+  filter_form.querySelector("#statusSelect").value = (urlParams['status'] != null) ? urlParams['status'] : "";
+  filter_form.querySelector("#date_begin").value = (urlParams['date_begin'] != null) ? urlParams['date_begin'] : "";
+  filter_form.querySelector("#date_end").value = (urlParams['date_end'] != null) ? urlParams['date_end'] : "";
+}
+function pushFilterToURL() {
+  var filter = getFilterFromForm();
+  var url_key = {
+    id_customer: "idCus",
+    id_staff: "idStaff",
+    id_Order: "idOrder",
+    Order_status:"status",
+    date_begin: "date_begin",
+    date_end: "date_end",
+  };
+  var url = "";
+  Object.keys(filter).forEach((key) => {
+    url +=
+      filter[key] != null && filter[key] != ""
+        ? `&${url_key[key]}=${filter[key]}`
+        : "";
+  });
+  return url;
+}
+function getFilterFromForm() {
+  return {
+    id_customer: filter_form.querySelector("#idCus").value,
+    id_staff: filter_form.querySelector("#idStaff").value,
+    id_Order: filter_form.querySelector("#idOrder").value,
+    Order_status: filter_form.querySelector("#statusSelect").value,
+    date_begin: filter_form.querySelector("#date_begin").value,
+    date_end: filter_form.querySelector("#date_end").value,
+  };
+}
+
+
 // Load the jquery
 var script = document.createElement("SCRIPT");
 script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
@@ -53,6 +93,7 @@ function pagnationBtn() {
     });
 }
 function loadItem() {
+  var filter = getFilterFromForm();
   $.ajax({
     url: "../controller/admin/pagnation.controller.php",
     type: "post",
@@ -60,29 +101,152 @@ function loadItem() {
     data: {
       number_of_item: number_of_item,
       current_page: current_page,
-      function: "render",
+      function: "getRecords",
+      filter: filter,
     },
   }).done(function (result) {
-    var newurl =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      window.location.pathname +
-      "?page=" +
-      urlParams["page"] +
-      "&item=" +
-      number_of_item +
-      "&pag=" +
-      current_page;
-    window.history.pushState({ path: newurl }, "", newurl);
-    $(".result").html(result);
-    pagnationBtn();
-    js();
+    if (current_page > parseInt(result)) current_page = parseInt(result);
+    if (current_page < 1) current_page = 1;
+    $.ajax({
+      url: "../controller/admin/pagnation.controller.php",
+      type: "post",
+      dataType: "html",
+      data: {
+        number_of_item: number_of_item,
+        current_page: current_page,
+        function: "render",
+        filter: filter,
+      },
+    }).done(function (result) {
+      var newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname +
+        "?page=" +
+        urlParams["page"] +
+        "&item=" +
+        number_of_item +
+        "&current_page=" +
+        current_page;
+      newurl += pushFilterToURL();
+      window.history.pushState({ path: newurl }, "", newurl);
+      $(".result").html(result);
+      pagnationBtn();
+      filterBtn();
+      js();
+    });
   });
 }
 document.addEventListener("DOMContentLoaded", () => {
   loadForFirstTime();
 });
+document.addEventListener("DOMContentLoaded", () => {
+  loadForFirstTime();
+});
+function filterBtn() {
+  $(".body__filter--action__filter").click((e) => {
+      current_page = 1;
+      var idOrder = filter_form.querySelector("#idOrder").value.trim();
+      var idCus = filter_form.querySelector("#idCus").value.trim();
+      var idStaff = filter_form.querySelector("#idStaff").value.trim();
+      var message_idOrder = filter_form.querySelector("#message_idOrder");
+      var message_idCus = filter_form.querySelector("#message_idCus");
+      var message_idStaff = filter_form.querySelector("#message_idStaff");
+      var message_end = filter_form.querySelector("#message_end");
+      var message_start =filter_form.querySelector("#message_begin");
+      const start_date_str = filter_form.querySelector("#date_begin").value;
+    const end_date_str = filter_form.querySelector("#date_end").value;
+    const start_date = new Date(start_date_str);
+    const end_date = new Date(end_date_str);
+      var check = true;
+      var regex = /^\d+$/;
+      if (!idOrder.match(regex) && idOrder !== "") {
+        message_idOrder.innerHTML = "*Mã đơn hàng phải là kí tự số";
+        filter_form.querySelector("#idOrder").focus();
+        check = false;
+      }else {
+        message_idOrder.innerHTML = "";
+      }
+      // if (!idCus.match(regex) && idCus !== "") {
+      //   message_idCus.innerHTML = "*Mã khách hàng phải là kí tự số";
+      //   filter_form.querySelector("#idCus").focus();
+      //   check = false;
+      // }else {
+      //   message_idCus.innerHTML = "";
+      // }
+      if (!idStaff.match(regex) && idStaff !== "") {
+        message_idStaff.innerHTML = "*Mã nhân viên phải là kí tự số";
+        filter_form.querySelector("#idStaff").focus();
+        check = false;
+      }else {
+        message_idStaff.innerHTML = "";
+      }
+
+      if (!start_date_str && end_date_str) {
+        message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+        check = false;
+      }else if (start_date > end_date) {
+        message_start.innerHTML =
+          "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
+         
+      } else {
+        message_start.innerHTML ="";
+      }
+
+      
+      if (!end_date_str && start_date_str) {
+        message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+        check = false;
+      }else if(start_date > end_date) {
+        message_end.innerHTML =
+        "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+      check = false;
+      }else {
+        message_end.innerHTML = "";
+      }
+      if (check == true) {
+        message_idOrder.innerHTML = "";
+        message_idCus.innerHTML = "";
+        message_idStaff.innerHTML = "";
+        message_start.innerHTML ="";
+        message_end.innerHTML = "";
+        current_page = 1;
+        loadItem();
+      }
+
+  })
+  $(".body__filter--action__reset").click((e) => {
+    var message_idOrder = filter_form.querySelector("#message_idOrder");
+      var message_idCus = filter_form.querySelector("#message_idCus");
+      var message_idStaff = filter_form.querySelector("#message_idStaff");
+      var message_end = filter_form.querySelector("#message_end");
+      var message_start =filter_form.querySelector("#message_begin");
+    message_idOrder.innerHTML = "";
+    message_idCus.innerHTML = "";
+    message_idStaff.innerHTML = "";
+    message_start.innerHTML="";
+    message_end.innerHTML = "";
+    check = true;
+      current_page = 1;
+      $.ajax({
+          url: '../controller/admin/pagnation.controller.php',
+          type: "post",
+          dataType: 'html',
+          data: {
+              number_of_item: number_of_item,
+              current_page: current_page,
+              function: "render",
+          }
+      }).done(function (result) {
+          var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?page=' + urlParams['page'] + '&item=' + number_of_item + '&current_page=' + current_page;
+          window.history.pushState({ path: newurl }, '', newurl);
+          $('.result').html(result);
+          pagnationBtn();
+          js();
+      })
+  })
+}
 
 var js = function () {
   const btnDetails = document.querySelectorAll(".actions--view");

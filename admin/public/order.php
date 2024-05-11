@@ -24,42 +24,51 @@ $_SESSION["render"]->setTable("orders");
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--idOrder">
                 <p>Mã đơn hàng</p>
-                <input type="text" placeholder="Nhập mã sản phẩm" />
+                <input id="idOrder" type="text" placeholder="Nhập mã sản phẩm" />
+                <p id="message_idOrder" class = "message"></p>
             </div>
             <div class="body__filter--field body__filter--idClient">
                 <p>Mã khách hàng</p>
-                <input type="text" placeholder="Nhập mã khách hàng" />
+                <input id="idCus" type="text" placeholder="Nhập mã khách hàng" />
+                <p id="message_idCus" class = "message"></p>
             </div>
 
             <div class="body__filter--field body__filter--idClient">
                 <p>Mã nhân viên</p>
-                <input type="text" placeholder="Nhập mã khách hàng" />
+                <input id="idStaff" type="text" placeholder="Nhập mã khách hàng" />
+                <p id="message_idStaff" class = "message"></p>
             </div>
         </div>
 
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field w-30 body__filter--status">
                 <p>Trạng thái</p>
-                <select name="" id="">
+                <select name="" id="statusSelect">
                     <option value="all">Tất cả</option>
-                    <option value="valid">Đã xử lý</option>
-                    <option value="invalid">Chưa xử lý</option>
+                    <option value="1">Chờ duyệt</option>
+                    <option value="2">Đã Duyệt</option>
+                    <option value="3">Đã Hủy</option>
+                    <option value="4">Đang giao</option>
+                    <option value="5">Đã giao</option>
                 </select>
             </div>
             <div class="body__filter--field w-30 body__filter--orderDate">
                 <label>Từ ngày:</label>
-                <input type="date" />
+                <input id="date_begin" type="date" />
+                <p id="message_begin" class = "message"></p>
             </div>
 
             <div class="body__filter--field w-30 body__filter--orderDate">
                 <label>Đến ngày:</label>
-                <input type="date" />
+                <input id="date_end" type="date" />
+                <p id="message_end" class = "message"></p>
+
             </div>
         </div>
         <div class="body__filter--actions d-flex-right">
             <div>
                 <button type="reset" class="body__filter--action__reset">Reset</button>
-                <button class="body__filter--action__filter">Lọc</button>
+                <button type="button" class="body__filter--action__filter">Lọc</button>
             </div>
         </div>
     </form>
