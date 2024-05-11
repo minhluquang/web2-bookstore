@@ -185,7 +185,7 @@ const validationFormDangKy = () => {
 
   const regexFullName = /[a-zA-ZÀ-ỹ]+(\s[a-zA-ZÀ-ỹ]+){1,}$/;
   const regexPhoneNumber = /^0[0-9]{9}$/;
-  const regexAddress = /^[0-9\/]+(\s[a-zA-ZÀ-ỹ]+){2,}$/;
+  const regexAddress = /^\d[0-9\/]+(\s[a-zA-ZÀ-ỹ]+){2,}$/;
   const regexUsername = /^[a-zA-Z][a-zA-Z0-9]{7,}$/;
 
   if (registerUsername.value.trim() == "") {
@@ -315,7 +315,6 @@ $(document).ready(function () {
           wardRegister: ward,
         },
       }).done(function (result) {
-        console.log(result);
         const data = JSON.parse(result);
         if (data.success) {
           // toast.classList.add("active");
@@ -326,6 +325,7 @@ $(document).ready(function () {
         } else {
           if (data.existUsername) {
             errMessageUsernameRegister.innerText = "Username đã tồn tại";
+            registerUsername.focus();
           }
           // $(".result").addClass("error");
           // $(".result").html(data.message);

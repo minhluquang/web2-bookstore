@@ -28,6 +28,7 @@ $_SESSION["render"] ->setTable("products");
             <div class="body__filter--field body__filter--idClient" id="">
                 <p>Mã Sản Phẩm</p>
                 <input id="productId" type="text" placeholder="Nhập mã sản phẩm" />
+                <p id="message_productId" class = "message"></p>
             </div>
             <div class="body__filter--field body__filter--status" id="">
                 <p>Loại sản phẩm</p>
@@ -48,10 +49,12 @@ $_SESSION["render"] ->setTable("products");
             <div class="body__filter--field body__filter--datefrom" >
                 <label>Từ ngày</label>
                 <input type="date" id="date_start" />
+                <p id="message_begin" class = "message"></p>
             </div>
             <div class="body__filter--field body__filter--dateto" >
                 <label>Đến ngày</label>
                 <input type="date" id="date_end" />
+                <p id="message_end" class = "message"></p>
             </div>
         </div>
         <div class="admin__content--body__filter--gr1">

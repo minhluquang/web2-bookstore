@@ -255,12 +255,12 @@ function addToCart(productId, amount) {
       amount: amount,
     },
   }).done(function (result) {
-    if (!result) {
+    let data = JSON.parse(result);
+    if (!data.success) {
       window.location.href = "index.php?page=signup";
       alert("Vui lòng đăng nhập để có thể thêm sản phẩm!");
       return;
     }
-    var data = JSON.parse(result);
     $(".cart-qnt").removeClass("hide");
     $(".cart-qnt").text(data.quantity);
     alert(data.message);

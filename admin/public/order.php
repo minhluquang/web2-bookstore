@@ -24,7 +24,7 @@ $_SESSION["render"]->setTable("orders");
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--idOrder">
                 <p>Mã đơn hàng</p>
-                <input id="idOrder" type="text" placeholder="Nhập mã sản phẩm" />
+                <input id="idOrder" type="text" placeholder="Nhập mã đơn hàng" />
                 <p id="message_idOrder" class = "message"></p>
             </div>
             <div class="body__filter--field body__filter--idClient">

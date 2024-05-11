@@ -65,6 +65,9 @@
     if(empty($_POST["orderby"]))echo getStatDetails($_POST["category_id"],$_POST["date_start"],$_POST["date_end"],"id","ASC");
     else echo getStatDetails($_POST["category_id"],$_POST["date_start"],$_POST["date_end"],$_POST["orderby"],$_POST["order_type"]);
   }
+  if(isset($_POST['getBestSellers']) && $_POST['getBestSellers'] && !empty($_POST["date_start"])&& !empty($_POST["date_end"])){
+    getBestSellers($_POST["date_start"],$_POST["date_end"]);
+  }
   if(isset($_POST['checkFunction']) && $_POST['checkFunction'] && isset($_POST['function_id'])){
     if (session_status() == PHP_SESSION_NONE) {
       session_start();
