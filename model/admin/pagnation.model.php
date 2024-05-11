@@ -59,6 +59,7 @@ class pagnation
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
         $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter $this->orderby LIMIT $this->number_of_item OFFSET $offset ";
+        // echo $sql;
         $result = $database->query($sql);
         $database->close();
         if ($result->num_rows > 0) {
@@ -635,6 +636,9 @@ class pagnation
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
+                    case "orders":
+                        echo "<div id='zero-item'><h2>Không có đơn hàng nào</h2></div>";
+                        break;
                     case "goodsreceipts":
                         echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
                         break;
@@ -657,7 +661,9 @@ function getFilterSQL($table, $data)
         case 'authors':
             return getAuthorFilterSQL($data);
             break;
-            
+        case 'orders':
+            return getOrderFilterSQL($data);
+             break;    
         case 'categories':
             return getCategoryFilterSQL($data);
             break;
@@ -822,6 +828,44 @@ function getCategoryFilterSQL($data)
     }
     return  $filter;
 }
+
+function getOrderFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['id_customer'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter = $filter . "`customer_id` LIKE '%" . $data['id_customer'] . "%'";
+        }
+        if (!empty($data['id_staff'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "staff_id = " . $data['id_staff'];
+        }
+        if (!empty($data['id_Order'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "id = " . $data['id_Order'];
+        }
+
+        if (!empty($data['Order_status']) && $data['Order_status']!="all") {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "status_id = ".$data['Order_status'] ;
+
+            
+        }
+        if (!empty($data['date_begin'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create >= '" . $data['date_begin'] . "'";
+        }
+        if (!empty($data['date_end'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create <= '" . $data['date_end'] . "'";
+        }
+        
+        if ($filter != "") $filter = " WHERE " . $filter;
+    }
+    return $filter;
+}
+
 
 function getSupplierFilterSQL($data)
 {

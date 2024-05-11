@@ -13395,6 +13395,10 @@ var js = function () {
           alert("Tên đăng nhập không được để trống !");
           username.focus();
           return;
+        } else if (username.value.length < 8) {
+          alert("Tên đăng nhập phải từ 8 ký tự !");
+          username.focus();
+          return;
         } else if (fullname.value === "") {
           alert("Họ và tên không được để trống !");
           fullname.focus();
@@ -13409,11 +13413,11 @@ var js = function () {
           return;
         } else if (tinhthanhpho.value === "Chọn Tỉnh/Thành phố") {
           alert("Vui lòng chọn tỉnh thành phố !");
-          telephone.focus();
+          tinhthanhpho.focus();
           return;
         } else if (diachi.value === "") {
           alert("Vui lòng nhập địa chỉ !");
-          telephone.focus();
+          diachi.focus();
           return;
         } else if (password.value === "") {
           alert("Mật khẩu không được để trống !");

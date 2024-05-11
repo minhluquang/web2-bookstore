@@ -153,3 +153,7 @@
   padding: 15px 30px;
   border-radius: 8px;
 }
+
+.admin__content--body__filter .message {
+  color: red;
+}
