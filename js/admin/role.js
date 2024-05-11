@@ -148,6 +148,7 @@ function filterBtn() {
 }
 
  var js = function() {
+    const modal = document.getElementById("modal");
     const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
@@ -233,70 +234,13 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
     $.ajax({
         url: '../controller/admin/role.controller.php',
         type: "post",
-        dataType: 'json',
+        dataType: 'html',
         data: {
             function : "init",
         }
     }).done(function(arr){
-       modal.innerHTML = `
-       <div class="modal-edit-product-container show" id="modal-edit-container">
-<div class="modal-edit-product">
-    <div class="modal-header">
-        <h3>Sửa quyền</h3>
-        <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="modal-body">
-    <form id="Form " style="margin-top: 10px;">
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="tkvabc" id="1" ${arr[0].action==1 ? "checked" : ""}>
-            <label for="qlsp">Quản lý thống kê và báo cáo</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlsp" id="2" ${arr[1].action==1 ? "checked" : ""}>
-            <label for="qlsp">Quản lý sản phẩm</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qldh" id="3" ${arr[2].action==1 ? "checked" : ""}>
-            <label for="qldh">Quản lý đơn hàng</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltk" id="4" ${arr[3].action==1 ? "checked" : ""}>
-            <label for="qltk">Quản lý tài khoản</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlnxb" id="5" ${arr[4].action==1 ? "checked" : ""}>
-            <label for="qlnxb">Quản lý nhà xuất bản</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltg" id="6" ${arr[5].action==1 ? "checked" : ""}>
-            <label for="qltg">Quản lý tác giả</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qltl" id="7" ${arr[6].action==1 ? "checked" : ""}>
-            <label for="qlttgh">Quản lý thể loại</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlncc" id="8" ${arr[7].action==1 ? "checked" : ""}>
-            <label for="qlncc">Quản lý nhà cung cấp</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlnh" id="9" ${arr[8].action==1 ? "checked" : ""}>
-            <label for="qlncc">Quản lý nhập hàng</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlpq" id="10" ${arr[9].action==1 ? "checked" : ""}>
-            <label for="qlpq">Quản lý phân quyền</label>
-        </div>
-        <div class="input-field d-flex-start">
-            <input type="checkbox" name="qlkm" id="11" ${arr[10].action==1 ? "checked" : ""}>
-            <label for="qlpq">Quản lý khuyến mãi</label>
-        </div>
-            <input type="reset" value="Hủy" class="button-cancel">
-            <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
-        </form>
-    </div>
-</div>
-</div>`;
+        console.log(arr);
+        modal.innerHTML = arr;
        const modal_create_container = document.querySelector("#modal-edit-container");
        modal.querySelector('.button-confirm').addEventListener('click', function (e) {
            e.preventDefault();

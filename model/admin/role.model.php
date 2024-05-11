@@ -87,18 +87,42 @@ function editFunction_Details($field) {
 }
 
 function init_model() {
+  $html = '
+  <div class="modal-edit-product-container show" id="modal-edit-container">
+  <div class="modal-edit-product">
+  <div class="modal-header">
+      <h3>Sửa quyền</h3>
+      <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="modal-body">
+  <form id="Form " style="margin-top: 10px;">
+  ';
   global $database;
-  $sql = "SELECT * FROM `function_details` WHERE role_id = 2 ORDER BY function_id ASC";
+  $sql = "SELECT * FROM functions f INNER JOIN function_details fd on fd.function_id = f.id WHERE role_id = 2 ORDER BY id ASC";
   $result = $database->query($sql);
-    if ($result->num_rows > 0) {
-        $function_details = array();
-        while ($row = $result->fetch_assoc()) {
-            $function_details[] = $row;
-        }
-  
-        $json_result = json_encode($function_details);
-        echo $json_result;
-    } else {
-        echo json_encode(array("error" => "No rows found"));
+    if ($result->num_rows < 0) {
+      return "<span class='failed'>Không có quyền nào</span>";
+    } 
+    while ($row = $result->fetch_array()) {
+      $id = $row['id'];
+      $name = $row['name'];
+      $action = $row['action'];
+      $checked = "";
+      if($action == 1) $checked = "checked";
+      $role_html = '
+        <div class="input-field d-flex-start">
+            <input type="checkbox"  id="'.$id.'" '. $checked.'>
+            <label>'.$name.'</label>
+        </div>
+      ';
+      $html = $html . $role_html;
     }
+    $html = $html . '
+            <input type="reset" value="Hủy" class="button-cancel">
+            <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
+        </form>
+    </div>
+</div>
+</div>';
+    return $html;
 }

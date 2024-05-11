@@ -155,11 +155,61 @@ function filterBtn() {
     document.querySelector(".body__filter--actions").querySelector("div").innerHTML = `<button type="reset" class="body__filter--action__reset">Reset</button>
     <button class="body__filter--action__filter">Lọc</button>`
     $(".body__filter--action__filter").click((e) => {
-        current_page = 1;
         e.preventDefault();
-        loadItem();
+        var message_productId = filter_form.querySelector("#message_productId");
+        var productId = filter_form.querySelector("#productId").value.trim();
+        var message_end = filter_form.querySelector("#message_end");
+      var message_start =filter_form.querySelector("#message_begin");
+      const start_date_str = filter_form.querySelector("#date_start").value;
+    const end_date_str = filter_form.querySelector("#date_end").value;
+    const start_date = new Date(start_date_str);
+    const end_date = new Date(end_date_str);
+        var check = true;
+        var regex = /^\d+$/;
+        if (!productId.match(regex) && productId !== "") {
+            message_productId.innerHTML = "*Mã sản phẩm phải là kí tự số";
+            filter_form.querySelector("#productId").focus();
+            check = false;
+          }else {
+            message_productId.innerHTML = "";
+          }
+          if (!start_date_str && end_date_str) {
+            message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+            check = false;
+          }else if (start_date > end_date) {
+            message_start.innerHTML =
+              "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
+             
+          } else {
+            message_start.innerHTML ="";
+          }
+    
+          
+          if (!end_date_str && start_date_str) {
+            message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+            check = false;
+          }else if(start_date > end_date) {
+            message_end.innerHTML =
+            "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+          check = false;
+          }else {
+            message_end.innerHTML = "";
+          }
+          if (check == true) {
+            message_productId.innerHTML = "";
+            message_start.innerHTML ="";
+            message_end.innerHTML = "";
+            current_page = 1;
+            loadItem();
+          }
     })
     $(".body__filter--action__reset").click((e) => {
+        var message_productId = filter_form.querySelector("#message_productId");
+        var message_end = filter_form.querySelector("#message_end");
+        var message_start =filter_form.querySelector("#message_begin");
+        message_productId.innerHTML = "";
+        message_start.innerHTML ="";
+        message_end.innerHTML = "";
         current_page = 1;
         $.ajax({
             url: '../controller/admin/pagnation.controller.php',
