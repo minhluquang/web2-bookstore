@@ -191,11 +191,11 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
   <table id="content-product">
   <thead class="menu">
       <tr>
-          <th data-order="id">Mã SP <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
-          <th>Ảnh</th> <th data-order="name">Tên Sản Phẩm <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
-          <th data-order="price">Giá <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+          <th data-order="id">Mã SP</th>
+          <th>Ảnh</th> <th data-order="name">Tên Sản Phẩm</th>
+          <th data-order="price">Giá</th>
           <th data-order="total">Tổng doanh thu <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></th>
-          <th data-order="quantity">Số lượng <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+          <th data-order="quantity">Số lượng</th>
       </tr>
   </thead>
     <tbody class="table-content" id="content">';
@@ -215,6 +215,91 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
 </tr>';
   }
   echo '<tr><td></td><td></td><td></td><td></td><td>' . $sum . '</td><td>' . $quantity . '</td></tr>;';
+  echo '</tbody></table>';
+  $database->close();
+}
+function getBestSellers($date_start, $date_end)
+{
+  $database = new connectDB();
+  $sql = "SELECT 
+        p.id AS product_id,
+        p.name,
+        p.image_path,
+        o.id,
+        od.quantity,
+        p.price AS original_price,
+        CASE 
+            WHEN d.type = 'PR' THEN p.price - (p.price * d.discount_value / 100)
+            WHEN d.type = 'AR' THEN p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id))
+            ELSE p.price
+        END AS discounted_price,
+        SUM(od.quantity) OVER (PARTITION BY od.order_id) as sum
+        FROM 
+            products p
+        INNER JOIN 
+            category_details cd ON p.id = cd.product_id
+        INNER JOIN 
+            order_details od ON p.id = od.product_id
+        INNER JOIN 
+            orders o ON od.order_id = o.id
+        LEFT JOIN 
+            discounts d ON o.discount_code = d.discount_code
+        WHERE 
+        o.status_id = 5 and o.date_create between '$date_start' and DATE_ADD('$date_end',INTERVAL 0 DAY)
+        ORDER BY p.id ASC";
+  $detail_result = $database->query($sql);
+  $sum = 0;
+  $quantity = 0;
+  $arr = array();
+  while ($detail = mysqli_fetch_array($detail_result)) {
+    $key = searchForValue($detail["product_id"], $arr, "id");
+    if ($key != -1) {
+      $arr[$key]["total"] += $detail["discounted_price"] * $detail["quantity"];
+      $arr[$key]["quantity"] += $detail["quantity"];
+    } else $arr[] =
+      array(
+        "id" => $detail["product_id"],
+        "img" => $detail["image_path"],
+        "name" => $detail["name"],
+        "price" => $detail["original_price"],
+        "total" => $detail["discounted_price"] * $detail["quantity"],
+        "quantity" => $detail["quantity"]
+      );
+    $sum += $detail["discounted_price"] * $detail["quantity"];
+    $quantity += $detail["quantity"];
+  }
+  if (count($arr) < 1) {
+    echo "<div id='zero-item'><h2>Không bán được sản phẩm nào</h2></div>";
+    return;
+  }
+  echo '
+  <table id="content-product">
+  <thead class="menu">
+      <tr>
+          <th>Mã SP</th>
+          <th>Ảnh</th> 
+          <th>Tên Sản Phẩm</th>
+          <th>Giá</th>
+          <th>Tổng doanh thu</th>
+          <th>Số lượng</th>
+      </tr>
+  </thead>
+    <tbody class="table-content" id="content">';
+  $key_values = array_column($arr, "quantity");
+  array_multisort($key_values, SORT_DESC, $arr);
+  foreach ($arr as $key => $value) {
+    if($key<5)
+    echo '<tr>
+    <td class="id">' . $value["id"] . '</td>
+    <td class="image">
+        <img src="../' . $value["img"] . '" alt="image not found">
+    </td>
+    <td class="name">' . $value["name"] . '</td>
+    <td class="price">' . $value["price"] . '</td>
+    <td class="total">' . $value["total"] . '</td>
+    <td class="amount">' . $value["quantity"] . '</td>
+</tr>';
+  }
   echo '</tbody></table>';
   $database->close();
 }

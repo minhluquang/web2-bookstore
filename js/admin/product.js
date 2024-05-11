@@ -182,8 +182,8 @@ function filterBtn() {
 
 //js
 var js = function () {
-    if (orderby != "" && order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("." + order_type).classList.remove("hidden");
-    else document.querySelector("[data-order]").querySelector("." + order_type).classList.remove("hidden");
+    if (orderby != "" && order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML+=(order_type=="ASC")?' <i class="fas fa-sort-up">':' <i class="fas fa-sort-down">';
+    else document.querySelector("[data-order]").innerHTML+=(order_type=="ASC")?' <i class="fas fa-sort-up">':' <i class="fas fa-sort-down">';
     document.querySelector(".result").querySelectorAll("th").forEach((th) => {
         if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
             if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
@@ -195,7 +195,6 @@ var js = function () {
             }
             orderby = th.getAttribute("data-order");
             loadItem();
-            // console.log(orderby,order_type);
         })
     });
     function displayImage(input) {

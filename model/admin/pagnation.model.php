@@ -93,14 +93,14 @@ class pagnation
                     <table id="content-product">
                         <thead class="menu">
                             <tr>
-                                <th data-order="id">Mã SP <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th data-order="id">Mã SP</i></th>
                                 <th>Ảnh</th>
-                                <th data-order="name">Tên Sản Phẩm <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th data-order="name">Tên Sản Phẩm</i></th>
                                 <th>Thể loại</i></th>
                                 <th>Ngày cập nhật/Ngày tạo</th>
                                 <th>Tác giả</th>
-                                <th data-order="price">Giá <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
-                                <th data-order="quantity">Số lượng <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></i></th>
+                                <th data-order="price">Giá</i></th>
+                                <th data-order="quantity">Số lượng</i></th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -276,11 +276,11 @@ class pagnation
                         <table id="content-product">
                             <thead class="menu">
                                 <tr>
-                                    <th>Mã đơn</th>
-                                    <th>Mã KH</th>
-                                    <th>Mã NV</th>
-                                    <th>Ngày tạo</th>
-                                    <th>Tổng giá</th>
+                                    <th data-order="id">Mã đơn</th>
+                                    <th data-order="customer_id">Mã KH</th>
+                                    <th data-order="staff_id">Mã NV</th>
+                                    <th data-order="date_create">Ngày tạo</th>
+                                    <th data-order="total_price">Tổng giá</th>
                                     <th>Địa chỉ giao</th>
                                     <th>Trạng thái</th>
                                     <th>Mã giảm giá</th>

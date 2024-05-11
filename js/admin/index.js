@@ -25,6 +25,19 @@ $(document).ready(function () {
   })
   $("#filter").click(function () {
     $.ajax({
+      url: '../controller/admin/index.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        getBestSellers : true,
+        date_start: document.querySelector("#startdate").value,
+        date_end: document.querySelector("#enddate").value,
+      }
+    }).done(function (result) {
+      $('.result').html(result);
+      console.log(result);
+    })
+    $.ajax({
       type: "post",
       url: "../controller/admin/index.controller.php",
       dataType: "html",
@@ -254,11 +267,12 @@ function StatDetail() {
     },
   }).done(function (result) {
     $(".table-container").html(result)
-    document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("." + order_type).classList.remove("hidden");
+    var chitiet_table = document.querySelector("#chitiet-table")
+    chitiet_table.querySelector("[data-order=" + "'" + orderby + "']").querySelector("." + order_type).classList.remove("hidden");
 
-    document.querySelector(".table-container").querySelectorAll("th").forEach((th) => {
+    chitiet_table.querySelector(".table-container").querySelectorAll("th").forEach((th) => {
       if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
-        if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
+        if (orderby == "") orderby = chitiet_table.querySelector("[data-order]").getAttribute("data-order");
         if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
           order_type = "DESC";
         }
@@ -267,7 +281,7 @@ function StatDetail() {
         }
         orderby = th.getAttribute("data-order");
         StatDetail();
-
+        
       })
     });
   })
@@ -282,10 +296,11 @@ function checkFunction() {
       checkFunction: true,
       function_id: 1,
     },
-  }).done(function(result){
-    console.log(result);
-    if(result == "1"){
+  }).done(function (result) {
+    if (result == "1") {
       document.querySelector(".thongkechitiet__container").classList.remove("hidden");
+     
+
     }
     else document.querySelector(".thongkechitiet__container").remove();
   })
