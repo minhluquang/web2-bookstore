@@ -77,7 +77,7 @@ function addToCart(productId, amount) {
     },
   }).done(function (result) {
     var data = JSON.parse(result);
-    if (data == false) {
+    if (!data.success) {  
       window.location.href = "index.php?page=signup";
       alert(data.message);
     } else {

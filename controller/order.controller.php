@@ -59,7 +59,6 @@
           "message" => "Hệ thống đã xoá thành công đơn hàng"
         );
         echo json_encode($reponse);
-        return;
       } else {
         $reponse = (object) array (
           "success" => false,

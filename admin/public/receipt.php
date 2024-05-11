@@ -43,20 +43,28 @@ $_SESSION["render"] ->setTable("goodsreceipts");
             <div class="body__filter--field body__filter--datefrom" >
                 <label>Từ ngày</label>
                 <input type="date" id="date_start" />
+                <p id="message_date_begin" class = "message"></p>
+
             </div>
             <div class="body__filter--field body__filter--dateto" >
                 <label>Đến ngày</label>
                 <input type="date" id="date_end" />
+                <p id="message_date_end" class = "message"></p>
+
             </div>
         </div>
         <div class="admin__content--body__filter--gr1">
             <div class="body__filter--field body__filter--idClient" id="">
                 <p>Lọc theo tổng tiền</p>
                 <input id="price_start" type="text" placeholder="Từ" />
+                <p id="message_price_begin" class = "message"></p>
+
             </div>
             <div class="body__filter--field body__filter--idClient" id="">
                 <p>&#8203;</p>
                 <input id="price_end" type="text" placeholder="Đến" />
+                <p id="message_price_end" class = "message"></p>
+
             </div>
 
         </div>

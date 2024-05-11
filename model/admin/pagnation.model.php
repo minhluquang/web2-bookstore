@@ -59,7 +59,6 @@ class pagnation
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
         $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter $this->orderby LIMIT $this->number_of_item OFFSET $offset ";
-        // echo $sql;
         $result = $database->query($sql);
         $database->close();
         if ($result->num_rows > 0) {
@@ -636,12 +635,9 @@ class pagnation
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
-                case "orders":
-                    echo "<div id='zero-item'><h2>Không có đơn hàng nào</h2></div>";
-                    break;
-                case "goodsreceipts":
-                    echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
-                    break;
+                    case "goodsreceipts":
+                        echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
+                        break;
                 case "functions":
                     echo "<div id='zero-item'><h2>Không có quyền nào</h2></div>";
                     break;
@@ -714,7 +710,7 @@ function getProductFilterSQL($data)
         }
         if (!empty($data['category'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " cd.id=products.id ";
+            $filter = $filter . " cd.product_id = products.id ";
             $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['category'] . "'";
         }
         if (!empty($data['date_type'])) {
@@ -762,47 +758,46 @@ function getAuthorFilterSQL($data)
     }
     return  $filter;
 }
-function getReceiptFilterSQL($data)
-{
-    $filter = "";
-    $innerjoin = "";
-    if (!empty($data)) {
-        if (!empty($data['supplierName'])) {
-            // Lấy tên nhà cung cấp từ dữ liệu
-            $supplierName = $data['supplierName'];
-            $filter = $filter . " s.name LIKE '%" . $supplierName . "%'";
-            $innerjoin = $innerjoin . " INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
-        }
-        if (!empty($data['id'])) {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " goodsreceipts.id = " . $data['id'];
-        }
-        if (!empty($data['staff_id'])) {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
-        }
-        if (!empty($data['price_start'])) {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " total_price >= " . $data['price_start'];
-        }
-        if (!empty($data['price_end'])) {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " total_price <= " . $data['price_end'];
-        }
-        if (!empty($data['date_type'])) {
-            if (!empty($data['date_start'])) {
+    function getReceiptFilterSQL($data)
+    {
+        $filter = "";
+        $innerjoin="";
+        if (!empty($data)) {
+            if (!empty($data['supplierName'])) {
+                // Lấy tên nhà cung cấp từ dữ liệu
+                $supplierName = $data['supplierName'];
+                $filter = $filter." s.name LIKE '%" . $supplierName . "%'";
+                $innerjoin = $innerjoin." INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
+
+            }  
+            if (!empty($data['id'])) {
                 if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
+                $filter = $filter . " goodsreceipts.id = " . $data['id'];
+            }
+            if (!empty($data['staff_id'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
+            }
+            if (!empty($data['price_start'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " total_price >= " . $data['price_start'];
+            }
+            if (!empty($data['price_end'])) {
+                if ($filter != "") $filter = $filter . " AND ";
+                $filter = $filter . " total_price <= " . $data['price_end'];
+            }
+            if (!empty($data['date_start'])) {
+                if ($filter != "") $filter .= " AND ";
+                $filter .= "date_create >= '" . $data['date_start'] . "'";
             }
             if (!empty($data['date_end'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['dsate_end'] . "'";
+                if ($filter != "") $filter .= " AND ";
+                $filter .= "date_create <= '" . $data['date_end'] . "'";
             }
+            if ($filter != "") $filter = "WHERE " . $filter;
         }
-        if ($filter != "") $filter = "WHERE " . $filter;
+        return  $innerjoin . $filter;
     }
-    return  $innerjoin . $filter;
-}
 
 function getCategoryFilterSQL($data)
 {
@@ -832,42 +827,6 @@ function getCategoryFilterSQL($data)
     }
     return  $filter;
 }
-
-function getOrderFilterSQL($data)
-{
-    $filter = "";
-    if (!empty($data)) {
-        if (!empty($data['id_customer'])) {
-            if ($filter != "") $filter .= " AND ";
-            $filter = $filter . "`customer_id` LIKE '%" . $data['id_customer'] . "%'";
-        }
-        if (!empty($data['id_staff'])) {
-            if ($filter != "") $filter .= " AND ";
-            $filter .= "staff_id = " . $data['id_staff'];
-        }
-        if (!empty($data['id_Order'])) {
-            if ($filter != "") $filter .= " AND ";
-            $filter .= "id = " . $data['id_Order'];
-        }
-
-        if (!empty($data['Order_status']) && $data['Order_status'] != "all") {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "status_id = " . $data['Order_status'];
-        }
-        if (!empty($data['date_begin'])) {
-            if ($filter != "") $filter .= " AND ";
-            $filter .= "date_create >= '" . $data['date_begin'] . "'";
-        }
-        if (!empty($data['date_end'])) {
-            if ($filter != "") $filter .= " AND ";
-            $filter .= "date_create <= '" . $data['date_end'] . "'";
-        }
-
-        if ($filter != "") $filter = " WHERE " . $filter;
-    }
-    return $filter;
-}
-
 
 function getSupplierFilterSQL($data)
 {
@@ -1011,4 +970,42 @@ function getUserFilterSQL($data)
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return  $filter;
+}
+
+
+function getOrderFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['id_customer'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter = $filter . "`customer_id` LIKE '%" . $data['id_customer'] . "%'";
+        }
+        if (!empty($data['id_staff'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter = $filter . "`staff_id` LIKE '%" . $data['id_staff'] . "%'";
+        }
+        if (!empty($data['id_Order'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "id = " . $data['id_Order'];
+        }
+
+        if (!empty($data['Order_status']) && $data['Order_status']!="all") {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "status_id = ".$data['Order_status'] ;
+
+            
+        }
+        if (!empty($data['date_begin'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create >= '" . $data['date_begin'] . "'";
+        }
+        if (!empty($data['date_end'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create <= '" . $data['date_end'] . "'";
+        }
+        
+        if ($filter != "") $filter = " WHERE " . $filter;
+    }
+    return $filter;
 }
