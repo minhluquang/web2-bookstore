@@ -991,7 +991,7 @@ function getOrderFilterSQL($data)
         }
         if (!empty($data['id_staff'])) {     
             if ($filter != "") $filter .= " AND ";
-            $filter .= "staff_id = " . $data['id_staff'];
+            $filter = $filter . "`staff_id` LIKE '%" . $data['id_staff'] . "%'";
         }
         if (!empty($data['id_Order'])) {     
             if ($filter != "") $filter .= " AND ";

@@ -180,13 +180,13 @@ function filterBtn() {
     // }else {
     //   message_idCus.innerHTML = "";
     // }
-    if (!idStaff.match(regex) && idStaff !== "") {
-      message_idStaff.innerHTML = "*Mã nhân viên phải là kí tự số";
-      filter_form.querySelector("#idStaff").focus();
-      check = false;
-    } else {
-      message_idStaff.innerHTML = "";
-    }
+    // if (!idStaff.match(regex) && idStaff !== "") {
+    //   message_idStaff.innerHTML = "*Mã nhân viên phải là kí tự số";
+    //   filter_form.querySelector("#idStaff").focus();
+    //   check = false;
+    // } else {
+    //   message_idStaff.innerHTML = "";
+    // }
 
     if (!start_date_str && end_date_str) {
       message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
