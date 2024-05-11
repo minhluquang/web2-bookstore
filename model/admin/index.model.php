@@ -126,11 +126,11 @@ function getStats($date_start, $date_end)
 }
 function searchForValue($id, $array,$str) {
   foreach ($array as $key => $val) {
-      if ($val[$str] === $id) {
+      if ($val[$str] == $id) {
           return $key;
       }
   }
-  return null;
+  return -1;
 }
 function getStatDetails($id, $date_start, $date_end,$order,$type)
 {
@@ -167,7 +167,7 @@ function getStatDetails($id, $date_start, $date_end,$order,$type)
   $arr = array();
   while ($detail = mysqli_fetch_array($detail_result)) {
     $key = searchForValue($detail["product_id"],$arr,"id");
-    if ($key!=null) {
+    if ($key!=-1) {
       $arr[$key]["total"] += $detail["discounted_price"] * $detail["quantity"];
       $arr[$key]["quantity"] += $detail["quantity"];
     } else $arr[] = 
@@ -214,5 +214,6 @@ function getStatDetails($id, $date_start, $date_end,$order,$type)
   }
   echo '<tr><td></td><td></td><td></td><td></td><td>' . $sum . '</td><td>' . $quantity . '</td></tr>;';
   echo '</tbody></table>';
+  echo print_r($arr);
   $database->close();
 }
