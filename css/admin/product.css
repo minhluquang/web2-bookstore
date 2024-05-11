@@ -578,3 +578,12 @@ td:last-child {
 .body__filter--field {
   width: calc(100% / 3);
 }
+
+.error-field {
+  border: 1px solid !important; 
+  border-color: #d96557 !important;
+  outline-color: #c44031 !important;
+}
+.error-message {
+  color: #c44031;
+}

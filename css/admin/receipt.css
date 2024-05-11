@@ -1,3 +1,9 @@
+#content-product thead th:nth-child(3) {
+  width: 15%;
+}
+#content-product thead th:nth-child(4) {
+  width: 15%;
+}
 .editModal-content {
   position: relative;
   background-color: #fefefe;
@@ -38,10 +44,6 @@
   margin-right: 10px; /* Khoảng cách với input */
 }
 
-.input-field input[type="text"],
-.input-field input[type="email"] {
-  width: 70%; /* Độ rộng của input */
-}
 
 /* Chỉnh kích thước dòng trong bảng */
 .book-table table {

@@ -158,8 +158,8 @@ function addProduct() {
   let productName = ""; 
   let productId = "";
   let quantity = "";
+  let inputPrice = ""; 
 
-  // Add event listener to productId dropdown
   const productIdDropdown = document.getElementById('productId');
   productIdDropdown.addEventListener('change', function() {
     const selectedProductId = this.value; 
@@ -168,7 +168,6 @@ function addProduct() {
     
     if (!selectedProductId) return; 
 
-    // AJAX request to get inputPrice
     $.ajax({
       url: '../controller/admin/receipt.controller.php',
       type: "post",
@@ -178,14 +177,13 @@ function addProduct() {
         field: { id: selectedProductId }
       }
     }).done(function (result) {
-      const inputPrice = 0.8 * parseFloat(result);
-      document.getElementById('inputPrice').value = inputPrice;
+      inputPrice = 0.8 * parseFloat(result);
+      document.getElementById('inputPrice').value = inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
     }).fail(function() {
       alert('Đã xảy ra lỗi khi lấy giá.');
     });
   });
 
-  // Add click event listener to addProduct button
   document.getElementById("addProduct").addEventListener("click", function() {
     quantity = document.getElementById('quantity').value;
     if (productId.trim() === '' || quantity.trim() === '') {
@@ -196,29 +194,26 @@ function addProduct() {
     const tableBody = document.getElementById('productTableBody');
     let productExists = false;
 
-    // Check if product already exists in table
     Array.from(tableBody.rows).forEach(function(row) {
       if (row.cells[0].textContent === productId) {
-        // Product exists, update quantity
         let prevQuantity = parseInt(row.cells[2].textContent);
         let newQuantity = prevQuantity + parseInt(quantity);
         row.cells[2].textContent = newQuantity;
+        row.cells[3].textContent = inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         productExists = true;
       }
     });
 
     if (!productExists) {
-      // Add product to table if it doesn't exist
       const newRow = tableBody.insertRow();
       newRow.innerHTML = `
         <td>${productId}</td>
         <td>${productName}</td> 
         <td>${quantity}</td>
-        <td>${document.getElementById('inputPrice').value}</td>
+        <td>${inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
       `;
     }
 
-    // Reset form fields
     document.getElementById('productId').value = '';
     document.getElementById('quantity').value = '';
     document.getElementById('inputPrice').value = '';
@@ -226,11 +221,14 @@ function addProduct() {
 }
 
 
+
+
+
 function deleteRow() {
   const table = document.getElementById('addTable'); // Lấy thẻ table
   const rowCount = table.rows.length; 
   if (rowCount > 1) {
-    table.deleteRow(rowCount - 1); // Xóa dòng cuối cùng (trừ dòng header)
+    table.deleteRow(rowCount - 1); 
   } else {
     alert('Không có dòng để xóa.');
   }
@@ -282,7 +280,7 @@ const js = function () {
       </div>
       <div class="input-field">
         <label for="inputPrice">Giá nhập:</label>
-        <input type="number" id="inputPrice" readonly>
+        <input type="text" id="inputPrice" readonly>
       </div>
       <div class="form-actions">
         <button type="button"  class="btn" id="addProduct">Thêm sản phẩm</button>
@@ -318,7 +316,6 @@ openModalBtn.addEventListener('click', function () {
   addModalContent.addEventListener('click',addProduct());
   addModal.style.display = "block";
 
-  // Populate suppliers dropdown
   $.ajax({
     url: '../controller/admin/receipt.controller.php',
     type: "post",
@@ -337,49 +334,52 @@ openModalBtn.addEventListener('click', function () {
   });
   
 
-  // Đóng modal khi click vào nút close
   closeAddIcon.addEventListener('click', function () {
     addModal.style.display = "none";
   });
- 
+  
   addButton.addEventListener('click', function (e) {
-    e.preventDefault(); // Ngăn chặn hành vi mặc định của nút (không gửi biểu mẫu)
-
-    // Lấy giá trị từ các trường input
+    e.preventDefault(); 
+  
     const supplierId = document.getElementById('supplier').value;
+  
     const products = document.querySelectorAll('#productTableBody tr');
-    let totalPrice = 0; // Tổng tiền của đơn hàng
-
-    // Tính tổng tiền và chuỗi dữ liệu chi tiết
+    let totalPrice = 0; 
+  
     let detailData = [];
     products.forEach((product) => {
-        const productId = product.cells[0].textContent; 
-        const quantity = product.cells[2].textContent; // Lấy số lượng từ cột 2
-        const inputPrice = product.cells[3].textContent; // Lấy giá nhập từ cột 3
-        totalPrice += parseFloat(quantity) * parseFloat(inputPrice); // Tính tổng tiền
-        detailData.push({ productId, quantity, inputPrice });
+      const productId = product.cells[0].textContent;
+      const quantity = product.cells[2].textContent;
+      const inputPriceText = product.cells[3].textContent; 
+      const inputPrice = parseFloat(inputPriceText.replace(/[^\d.-]/g, ''))*1000; 
+           totalPrice += parseFloat(quantity) * inputPrice; 
+      detailData.push({ productId, quantity, inputPrice });
     });
-
-    // Thực hiện gửi dữ liệu thông qua Ajax
+    if (totalPrice === 0) {
+      alert('Vui lòng nhập đầy đủ thông tin.');
+      return;
+    }
+    const staffName =  document.querySelector(".topbar__admin-info h2").innerHTML.trim();
     $.ajax({
-        url: '../controller/admin/receipt.controller.php',
-        type: "post",
-        dataType: 'html',
-        data: {
-            function: "create",
-            field: {
-                supplierId: supplierId,
-                totalPrice: totalPrice,
-                details: detailData,
-                staffId: "stafffahasa"
-            }
+      url: '../controller/admin/receipt.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        function: "create",
+        field: {
+          supplierId: supplierId,
+          totalPrice: totalPrice,
+          details: detailData,
+          staffId: staffName,
         }
+      }
     }).done(function (result) {
-        loadItem(); 
-        $("#sqlresult").html(result);
-        addModal.style.display = "none";
+      loadItem(); 
+      $("#sqlresult").html(result);
+      addModal.style.display = "none";
     });
-});
+  });
+  
 
 
 
@@ -456,7 +456,7 @@ btn.addEventListener('click', function () {
     $.ajax({
       url: '../controller/admin/receipt.controller.php',
       type: "post",
-      dataType: 'html', // Chuyển về dạng HTML để nhận đoạn mã HTML từ server
+      dataType: 'html', 
       data: {
         function: "details",
         field: {

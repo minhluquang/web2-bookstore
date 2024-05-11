@@ -1,3 +1,6 @@
+var orderby = "id";
+var order_type = "ASC";
+var title = "";
 $(document).ready(function () {
   $(".btnLogoutAdmin").click(function () {
     $.ajax({
@@ -13,6 +16,37 @@ $(document).ready(function () {
         location.reload();
       } else {
         alert("Hệ thống gặp sự cố không thể đăng xuất!");
+      }
+    });
+  });
+  checkFunction();
+  $("#close").click(function () {
+    document.querySelector("#chitiet").classList.toggle("show");
+  })
+  $("#filter").click(function () {
+    $.ajax({
+      type: "post",
+      url: "../controller/admin/index.controller.php",
+      dataType: "html",
+      data: {
+        getStats: true,
+        date_start: document.querySelector("#startdate").value,
+        date_end: document.querySelector("#enddate").value,
+      },
+    }).done(function (result) {
+      if (result) {
+        $("#thongke-container").html(result)
+        document.querySelectorAll(".chitietbtn").forEach((btn) => btn.addEventListener('click', function () {
+          document.querySelector("#chitiet").classList.toggle("show");
+          document.querySelector("#title").querySelector("span").innerHTML = btn.parentNode.querySelector(".sanpham").innerHTML;
+          title = btn.getAttribute("data-id");
+          orderby = "id";
+          order_type = "ASC";
+          StatDetail();
+        }))
+
+      } else {
+        alert("Hệ thống gặp sự cố!");
       }
     });
   });
@@ -202,4 +236,57 @@ function updateData4Boxes(data) {
   donhang.innerHTML = data.totalOrders;
   sanpham.innerHTML = data.totalProducts;
   thanhvien.innerHTML = data.totalAccounts;
+}
+
+function StatDetail() {
+
+  $.ajax({
+    type: "post",
+    url: "../controller/admin/index.controller.php",
+    dataType: "html",
+    data: {
+      getStatDetails: true,
+      category_id: title,
+      date_start: document.querySelector("#startdate").value,
+      date_end: document.querySelector("#enddate").value,
+      orderby: orderby,
+      order_type: order_type,
+    },
+  }).done(function (result) {
+    $(".table-container").html(result)
+    document.querySelector("[data-order=" + "'" + orderby + "']").querySelector("." + order_type).classList.remove("hidden");
+
+    document.querySelector(".table-container").querySelectorAll("th").forEach((th) => {
+      if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
+        if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
+        if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
+          order_type = "DESC";
+        }
+        else {
+          order_type = "ASC"
+        }
+        orderby = th.getAttribute("data-order");
+        StatDetail();
+
+      })
+    });
+  })
+
+}
+function checkFunction() {
+  $.ajax({
+    type: "post",
+    url: "../controller/admin/index.controller.php",
+    dataType: "html",
+    data: {
+      checkFunction: true,
+      function_id: 1,
+    },
+  }).done(function(result){
+    console.log(result);
+    if(result == "1"){
+      document.querySelector(".thongkechitiet__container").classList.remove("hidden");
+    }
+    else document.querySelector(".thongkechitiet__container").remove();
+  })
 }

@@ -110,7 +110,7 @@ class pagnation
                         while ($row = mysqli_fetch_array($result)) {
                             // masp
                             echo '<tr>
-                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '">' . $row['id'] . '</td>';
+                        <td class="id" publisher_id="' . $row['publisher_id'] .'" supplier_id="' . $row['supplier_id'] . '"status="' . $row['status'] . '">' . $row['id'] . '</td>';
                             // img
 
                             echo '<td class="image">
@@ -165,7 +165,6 @@ class pagnation
                             // button
                             echo '<td class="actions ">
                         <button class="actions--edit" >Sửa</button>
-                        <button class="actions--delete" >Xoá</button>
                         </td>';
                             echo '</tr>';
                         }
@@ -247,7 +246,15 @@ class pagnation
                             echo '<td class="supplierName">' . $supplier_name . '</td>';
                             
                             echo '<td class="staff_id">' . $row['staff_id'] . '</td>';
-                            echo '<td class="total_price">' . $row['total_price'] . '</td>';
+                            echo '<td class="total_price">';
+                            $price_number =  $row['total_price'];
+                            $price = "";
+                            while ($price_number > 0) {
+                                $price = substr("$price_number", -3, 3) . '.' . $price;
+                                $price_number = substr("$price_number", 0, -3);
+                            }
+
+                            echo  trim($price, '. ') . '&#8363;</td>';
                             echo '<td class="date_create">' . $row['date_create'] . '</td>';
                     
                             echo '<td class="actions">
@@ -398,8 +405,10 @@ class pagnation
                                 echo '<td class="status" >Không hoạt động</td>';
                             }
                             echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
+                            <button class="actions--edit">Sửa</button>' ;
+                           if($row['status'] == 1) 
+                           echo '<button class="actions--delete">Xoá</button>
+                            
                         </td>
                         </tr>';
                         }
