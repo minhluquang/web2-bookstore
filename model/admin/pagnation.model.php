@@ -657,7 +657,9 @@ function getFilterSQL($table, $data)
         case 'authors':
             return getAuthorFilterSQL($data);
             break;
-            
+        case 'orders':
+            return getOrderFilterSQL($data);
+                break;  
         case 'categories':
             return getCategoryFilterSQL($data);
             break;
@@ -709,7 +711,7 @@ function getProductFilterSQL($data)
         }
         if (!empty($data['category'])) {
             if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . " cd.id=products.id ";
+            $filter = $filter . " cd.product_id = products.id ";
             $innerjoin = $innerjoin . "INNER JOIN category_details	as cd ON cd.category_id =' " . $data['category'] . "'";
         }
         if (!empty($data['date_type'])) {
@@ -976,4 +978,42 @@ function getUserFilterSQL($data)
         if ($filter != "") $filter = "WHERE " . $filter;
     }
     return  $filter;
+}
+
+
+function getOrderFilterSQL($data)
+{
+    $filter = "";
+    if (!empty($data)) {
+        if (!empty($data['id_customer'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter = $filter . "`customer_id` LIKE '%" . $data['id_customer'] . "%'";
+        }
+        if (!empty($data['id_staff'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "staff_id = " . $data['id_staff'];
+        }
+        if (!empty($data['id_Order'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "id = " . $data['id_Order'];
+        }
+
+        if (!empty($data['Order_status']) && $data['Order_status']!="all") {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "status_id = ".$data['Order_status'] ;
+
+            
+        }
+        if (!empty($data['date_begin'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create >= '" . $data['date_begin'] . "'";
+        }
+        if (!empty($data['date_end'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create <= '" . $data['date_end'] . "'";
+        }
+        
+        if ($filter != "") $filter = " WHERE " . $filter;
+    }
+    return $filter;
 }
