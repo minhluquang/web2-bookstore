@@ -404,8 +404,10 @@ class pagnation
                                 echo '<td class="status" >Không hoạt động</td>';
                             }
                             echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
+                            <button class="actions--edit">Sửa</button>' ;
+                           if($row['status'] == 1) 
+                           echo '<button class="actions--delete">Xoá</button>
+                            
                         </td>
                         </tr>';
                         }
