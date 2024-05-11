@@ -759,48 +759,39 @@ function getAuthorFilterSQL($data)
     }
     return  $filter;
 }
-    function getReceiptFilterSQL($data)
-    {
-        $filter = "";
-        $innerjoin="";
-        if (!empty($data)) {
-            if (!empty($data['supplierName'])) {
-                // Lấy tên nhà cung cấp từ dữ liệu
-                $supplierName = $data['supplierName'];
-                $filter = $filter." s.name LIKE '%" . $supplierName . "%'";
-                $innerjoin = $innerjoin." INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
-
-            }  
-            if (!empty($data['id'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " goodsreceipts.id = " . $data['id'];
-            }
-            if (!empty($data['staff_id'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
-            }
-            if (!empty($data['price_start'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " total_price >= " . $data['price_start'];
-            }
-            if (!empty($data['price_end'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " total_price <= " . $data['price_end'];
-            }
-            if (!empty($data['date_type'])) {
-                if (!empty($data['date_start'])) {
-                    if ($filter != "") $filter = $filter . " AND ";
-                    $filter = $filter . " `" . $data['date_type'] . "` >= '" . $data['date_start'] . "'";
-                }
-                if (!empty($data['date_end'])) {
-                    if ($filter != "") $filter = $filter . " AND ";
-                    $filter = $filter . " `" . $data['date_type'] . "` <= '" . $data['dsate_end'] . "'";
-                }
-            }
-            if ($filter != "") $filter = "WHERE " . $filter;
+function getReceiptFilterSQL($data)
+{
+    $filter = "";
+    $innerjoin = "";
+    if (!empty($data)) {
+        if (!empty($data['supplierName'])) {
+            $supplierName = $data['supplierName'];
+            $filter .= " s.name LIKE '%" . $supplierName . "%'";
+            $innerjoin .= " INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
         }
-        return  $innerjoin . $filter;
+        if (!empty($data['id'])) {
+            if (!empty($filter)) $filter .= " AND ";
+            $filter .= " goodsreceipts.id = " . $data['id'];
+        }
+        if (!empty($data['staff_id'])) {
+            if (!empty($filter)) $filter .= " AND ";
+            $filter .= "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
+        }
+        if (!empty($data['price_start']) && is_numeric($data['price_start']) && !empty($data['price_end']) && is_numeric($data['price_end']) && $data['price_start'] < $data['price_end']) {
+            if (!empty($filter)) $filter .= " AND ";
+            $filter .= " total_price BETWEEN " . $data['price_start'] . " AND " . $data['price_end'];
+        }
+        if (!empty($data['date_type'])) {
+            if (!empty($data['date_start']) && !empty($data['date_end']) && $data['date_start'] < $data['date_end']) {
+                if (!empty($filter)) $filter .= " AND ";
+                $filter .= " `" . $data['date_type'] . "` BETWEEN '" . $data['date_start'] . "' AND '" . $data['date_end'] . "'";
+            }
+        }
+        if (!empty($filter)) $filter = " WHERE " . $filter;
     }
+    return $innerjoin . $filter;
+}
+
 
 function getCategoryFilterSQL($data)
 {
