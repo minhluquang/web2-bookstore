@@ -59,31 +59,37 @@ $(document).ready(function () {
       .find(".modal-qnt .modal-qnt-select input[type=text]")[0]
       .getAttribute("value");
 
-    addToCart(productId, amount);
-    window.location.href = "index.php?page=cart";
+    const isSuccess = addToCart(productId, amount);
+    if (isSuccess) {
+      window.location.href = "index.php?page=cart";
+    }
   });
 });
 
 // Function xử lý addToCart
 function addToCart(productId, amount) {
-  $.ajax({
-    type: "post",
-    url: "controller/cart.controller.php",
-    dataType: "html",
-    data: {
-      "product-action__addToCart": true,
-      productId: productId,
-      amount: amount,
-    },
-  }).done(function (result) {
-    var data = JSON.parse(result);
-    if (!data.success) {  
-      window.location.href = "index.php?page=signup";
-      alert(data.message);
-    } else {
-      $(".cart-qnt").removeClass("hide");
-      $(".cart-qnt").text(data.quantity);
-      alert(data.message);
-    }
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: "post",
+      url: "controller/cart.controller.php",
+      dataType: "html",
+      data: {
+        "product-action__addToCart": true,
+        productId: productId,
+        amount: amount,
+      },
+    }).done(function (result) {
+      var data = JSON.parse(result);
+      if (!data.success) {
+        window.location.href = "index.php?page=signup";
+        alert(data.message);
+        resolve(false);
+      } else {
+        $(".cart-qnt").removeClass("hide");
+        $(".cart-qnt").text(data.quantity);
+        alert(data.message);
+        resolve(true);
+      }
+    });
   });
 }
