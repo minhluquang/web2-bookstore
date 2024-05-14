@@ -532,7 +532,12 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';
                             echo '<td class="type">' . $row['type'] . '</td>';
-                            echo '<td class="discount_value">' . $row['discount_value'] . '</td>';
+                            if($row['type'] == "PR") {
+                                echo '<td class="discount_value">' . $row['discount_value'] . '%</td>';
+                            } else {
+                                echo '<td class="discount_value">' . $row['discount_value'] . 'đ</td>';
+                            }
+                          
                             echo '<td class="start_date">' . $row['start_date'] . '</td>';
                             echo '<td class="end_date">' . $row['end_date'] . '</td>';
                             if ($row['status'] == 1) {
