@@ -10,29 +10,29 @@ function order_render($id)
   $sql = "SELECT * FROM order_details WHERE order_id='$id'";
   $result = $database->query($sql);
   $count = 0;
-  while($row = mysqli_fetch_array($result)){
+  while ($row = mysqli_fetch_array($result)) {
     $count++;
-    $total_tmp = ($row["price"])*($row["quantity"]);
+    $total_tmp = ($row["price"]) * ($row["quantity"]);
     $total_str = "";
     while ($total_tmp > 0) {
-        $total_str = substr("$total_tmp", -3, 3) . '.' . $total_str;
-        $total_tmp = substr("$total_tmp", 0, -3);
+      $total_str = substr("$total_tmp", -3, 3) . '.' . $total_str;
+      $total_tmp = substr("$total_tmp", 0, -3);
     }
     $price = "";
     $price_number = $row["price"];
     while ($price_number > 0) {
-        $price = substr("$price_number", -3, 3) . '.' . $price;
-        $price_number = substr("$price_number", 0, -3);
+      $price = substr("$price_number", -3, 3) . '.' . $price;
+      $price_number = substr("$price_number", 0, -3);
     }
-    $sql = "SELECT * FROM products WHERE id='".$row["product_id"]."'";
+    $sql = "SELECT * FROM products WHERE id='" . $row["product_id"] . "'";
     $result_product = $database->query($sql);
     $product = mysqli_fetch_array($result_product);
     echo "<tr>
           <th scope='row'>$count</th>
-          <td>".$product["name"]."</td>
-          <td>".trim($price,'.')."&#8363;</td>
+          <td>" . $product["name"] . "</td>
+          <td>" . trim($price, '.') . "&#8363;</td>
           <td>{$row["quantity"]}</td>
-          <td>".trim($total_str,'.')."&#8363;</td>
+          <td>" . trim($total_str, '.') . "&#8363;</td>
           </tr>";
   }
   $sql = "SELECT * FROM orders WHERE id='$id'";
@@ -58,24 +58,28 @@ function order_render($id)
   $database->close();
 }
 
-function order_change_status($id,$status,$staff_id){
+function order_change_status($id, $status, $staff_id)
+{
   $database = new connectDB();
   $sql = "UPDATE orders SET status_id='$status' ,staff_id='$staff_id' WHERE id='$id'";
-  $database->execute($sql);
-  $sql = "SELECT * FROM order_details where order_id =" .$id;
-  $result = $database->query($sql);
-  while($row = mysqli_fetch_array($result))
-  updateQuantityProductByIdModel($row["product_id"],$row["quantity"]);
-$database->close(); 
+  $database->execute($sql); {
+    if ($status == "3")
+      $sql = "SELECT * FROM order_details where order_id =" . $id;
+    $result = $database->query($sql);
+    while ($row = mysqli_fetch_array($result))
+      updateQuantityProductByIdModel($row["product_id"], $row["quantity"]);
+  }
+  $database->close();
 }
-function updateQuantityProductByIdModel($id, $quantity) {
+function updateQuantityProductByIdModel($id, $quantity)
+{
   $database = new connectDB();
   if ($database->conn) {
     $sql = "SELECT *
             FROM products
             WHERE id = $id";
     $isExist = $database->query($sql);
-    
+
     // Nếu sản phẩm tồn tại
     if ($isExist && $isExist->num_rows > 0) {
       $sqlUpdateAmount = "UPDATE products
@@ -84,7 +88,7 @@ function updateQuantityProductByIdModel($id, $quantity) {
       $result = $database->execute($sqlUpdateAmount);
       $database->close();
       return $result;
-    } 
+    }
     $database->close();
     return false;
   } else {
@@ -92,7 +96,8 @@ function updateQuantityProductByIdModel($id, $quantity) {
     return false;
   }
 }
-function getOrderStatusByOrderIdModel($id) {
+function getOrderStatusByOrderIdModel($id)
+{
   $database = new connectDB();
   if ($database->conn) {
     $sql = "SELECT status_id
