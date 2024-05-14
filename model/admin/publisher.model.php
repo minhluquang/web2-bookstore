@@ -67,8 +67,8 @@ function publisher_create($field)
   $result = $database->query($sql);
   $row = mysqli_fetch_array($result);
   if ($row == null) {
-    $sql = "INSERT INTO publishers ( name, email) 
-          VALUES ('" . $field['name'] . "', '" . $field['email']  . "') ";
+    $sql = "INSERT INTO publishers ( name, email,status) 
+          VALUES ('" . $field['name'] . "', '" . $field['email']  . "',1) ";
     $result = $database->execute($sql);
     if ($result) {
       $result = "<span class='success'>Tạo thể loại thành công</span>";
