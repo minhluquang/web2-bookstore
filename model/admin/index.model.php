@@ -74,6 +74,18 @@ function getTotalAccounts()
     return false;
   }
 }
+
+function money_format($money)
+{
+  if($money==0)  return  "0&#8363;";
+  $formated = "";
+  while ($money > 0) {
+    $formated = substr("$money", -3, 3) . '.' . $formated;
+    $money = substr("$money", 0, -3);
+  }
+
+  return  trim($formated, '. ')."&#8363;";
+}
 function getStats($date_start, $date_end)
 {
   $database = new connectDB();
@@ -116,7 +128,7 @@ function getStats($date_start, $date_end)
       $quantity += $detail["quantity"];
     }
     $total += $sum;
-    echo '<div class="money"> ' . $sum . ' VND</div>
+    echo '<div class="money"> ' . money_format($sum). '</div>
           <div class="soluong">Số lượng bán được: ' . $quantity . '</div>
           <button type="button" class="chitietbtn" data-id="' . $row['id'] . '">Chi tiết</button>
           </div>';
@@ -194,7 +206,7 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
           <th data-order="id">Mã SP</th>
           <th>Ảnh</th> <th data-order="name">Tên Sản Phẩm</th>
           <th data-order="price">Giá</th>
-          <th data-order="total">Tổng doanh thu <i class="fas fa-sort-up ASC hidden"></i> <i class="fas fa-sort-down DESC hidden"></th>
+          <th data-order="total">Tổng doanh thu</th>
           <th data-order="quantity">Số lượng</th>
       </tr>
   </thead>
@@ -209,12 +221,12 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
         <img src="../' . $value["img"] . '" alt="image not found">
     </td>
     <td class="name">' . $value["name"] . '</td>
-    <td class="price">' . $value["price"] . '</td>
-    <td class="total">' . $value["total"] . '</td>
+    <td class="price">' . money_format($value["price"]) . '</td>
+    <td class="total">' . money_format($value["total"]) . '</td>
     <td class="amount">' . $value["quantity"] . '</td>
 </tr>';
   }
-  echo '<tr><td></td><td></td><td></td><td></td><td>' . $sum . '</td><td>' . $quantity . '</td></tr>;';
+  echo '<tr><td></td><td></td><td></td><td></td><td>' . money_format($sum ). '</td><td>' . $quantity . '</td></tr>;';
   echo '</tbody></table>';
   $database->close();
 }
@@ -279,7 +291,7 @@ function getBestSellers($date_start, $date_end)
           <th>Mã SP</th>
           <th>Ảnh</th> 
           <th>Tên Sản Phẩm</th>
-          <th>Giá</th>
+          <th>Giá gốc</th>
           <th>Tổng doanh thu</th>
           <th>Số lượng</th>
       </tr>
@@ -288,15 +300,15 @@ function getBestSellers($date_start, $date_end)
   $key_values = array_column($arr, "quantity");
   array_multisort($key_values, SORT_DESC, $arr);
   foreach ($arr as $key => $value) {
-    if($key<5)
-    echo '<tr>
+    if ($key < 5)
+      echo '<tr>
     <td class="id">' . $value["id"] . '</td>
     <td class="image">
         <img src="../' . $value["img"] . '" alt="image not found">
     </td>
     <td class="name">' . $value["name"] . '</td>
-    <td class="price">' . $value["price"] . '</td>
-    <td class="total">' . $value["total"] . '</td>
+    <td class="price">' . money_format($value["price"]) . '</td>
+    <td class="total">' . money_format($value["total"]) . '</td>
     <td class="amount">' . $value["quantity"] . '</td>
 </tr>';
   }
