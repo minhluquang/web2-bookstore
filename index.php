@@ -31,6 +31,9 @@ if (isset($_GET['page']) && $_GET['page'] != '') {
     case 'order':
       require_once('view/pages/order.php');
       break;
+    case 'resetPassword':
+      require_once('view/pages/resetPassword.php');
+      break;
     default:
       // Xử lý trường hợp không khớp với bất kỳ trang nào
       require_once('view/pages/notFound.php');

@@ -197,3 +197,72 @@ button {
 .registerConfirmPasswordContainer i.hide {
   display: none;
 }
+.hidden{
+  display: none;
+}
+
+.verify_code_background{
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+.verify_code_confirm_container{
+  /* height: 500px; */
+  width: 500px;
+  max-height: 95%;
+  max-width: 95%;
+  background-color: #fff;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 2;
+  border-radius: 7px;
+  padding-bottom: 2%;
+  /* display: flex; */
+  
+  text-align: center;
+}
+.verify_code_confirm_container .title{
+  /* text-align: center; */
+  margin-top: 2%;
+}
+.verify_code_confirm_container input{
+  text-align: center;
+  width: 50%;
+  /* margin-top: auto; */
+  border: #333 1.5px solid;
+  margin: 2% 0 2% 0 ;
+
+  /* margin-top: 2%; */
+}
+
+.fakelink{
+  color:#c92127;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 5px;
+}
+.reload{
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
+}
+.reload img{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 5;
+}
+.resetPassword{
+  text-align: left;
+}
