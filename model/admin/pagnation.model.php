@@ -118,39 +118,38 @@ class pagnation
                             echo '<td class="name">' . $row['name'] . '</td>';
                             //catagory
                             $cat_sql = "SELECT *  FROM `categories` WHERE id IN (SELECT category_id  FROM `category_details` WHERE product_id = '" . $row['id'] . "')";
-                            $cat_result = $database->query($cat_sql);
+                            $select_result = $database->query($cat_sql);
 
-                            $cat_str = '<td class="type" value="[';
-                            $category = mysqli_fetch_array($cat_result);
-                            if ($category) {
-                                $cat_str = $cat_str . $category['id'] . ']">';
-                                $cat_str = $cat_str . $category['name'];
-                            } else $cat_str = $cat_str . ']">';
-
-                            while ($category = mysqli_fetch_array($cat_result)) {
-                                $search = '/' . preg_quote(']', '/') . '/';
-                                $cat_str = preg_replace($search, ',' . $category['id'] . ']', $cat_str, 1);
-                                $cat_str = $cat_str . ", " . $category['name'];
+                            $str = "";
+                            $deleted_str = "";
+                            $name = "";
+                            while ($select = mysqli_fetch_array($select_result)) {
+                                if($select['status']==1)$str = $str . $select['id'] .',';
+                                else $deleted_str = $deleted_str . $select['id'] .',';
+                                if($select['status']==1)$name = $name . $select['name'] .', ';
                             }
-                            echo $cat_str . '</td>';
+                            $str =  rtrim($str,", ")  ;
+                            $deleted_str =  rtrim($deleted_str,", ")  ;
+                            $name =  rtrim($name,", ")  ;
+                            echo '<td class="type" value="['. $str.']"'.'value_hidden="['. $deleted_str.']".>'. $name.'</td>';
                             // date
                             echo '<td class="date">' . date("d/m/Y", strtotime($row['update_date'])) . ' ' . date("d/m/Y", strtotime($row['create_date'])) . '</td>';
                             //author
                             $author_sql = "SELECT *  FROM `authors` WHERE id IN (SELECT author_id  FROM `author_details` WHERE product_id = '" . $row['id'] . "')";
-                            $author_result = $database->query($author_sql);
-                            $author_str = '<td class="author" value="[';
-                            $author = mysqli_fetch_array($author_result);
-                            if ($author) {
-                                $author_str = $author_str . $author['id'] . ']">';
-                                $author_str = $author_str . $author['name'];
-                            } else $author_str = $author_str . ']">';
+                            $select_result = $database->query($author_sql);
 
-                            while ($author = mysqli_fetch_array($author_result)) {
-                                $search = '/' . preg_quote(']', '/') . '/';
-                                $author_str = preg_replace($search, ',' . $author['id'] . ']', $author_str, 1);
-                                $author_str = $author_str . ", " . $author['name'];
+                            $str = "";
+                            $deleted_str = "";
+                            $name = "";
+                            while ($select = mysqli_fetch_array($select_result)) {
+                                if($select['status']==1)$str = $str . $select['id'] .',';
+                                else $deleted_str = $deleted_str . $select['id'] .',';
+                                if($select['status']==1)$name = $name . $select['name'] .', ';
                             }
-                            echo $author_str . '</td>';
+                            $str =  rtrim($str,", ")  ;
+                            $deleted_str =  rtrim($deleted_str,", ")  ;
+                            $name =  rtrim($name,", ")  ;
+                            echo '<td class="author" value="['. $str.']"'.'value_hidden="['. $deleted_str.']".>'. $name.'</td>';
                             //price and amount
                             echo '<td class="price">';
 

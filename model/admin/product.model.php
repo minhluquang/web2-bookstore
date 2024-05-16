@@ -31,7 +31,7 @@ function product_getCategories()
   $result = $database->query($sql);
   $ans = "<option value=''>Chọn thể loại</option>";
   while ($row = mysqli_fetch_array($result)) {
-    $ans = $ans . "<option value=" . $row["id"] . ">" . $row["name"] . "</option>\n";
+    if($row['status']==1)$ans = $ans . "<option value=" . $row["id"] . ">" . $row["name"] . "</option>\n";
   }
   $database->close();
   return $ans;
@@ -43,7 +43,7 @@ function product_getAuthors()
   $result = $database->query($sql);
   $ans = "<option value=''>Chọn tác giả</option>";
   while ($row = mysqli_fetch_array($result)) {
-    $ans = $ans . "<option value=" . $row["id"] . ">" . $row["name"] . "</option>\n";
+    if($row['status']==1)$ans = $ans . "<option value=" . $row["id"] . ">" . $row["name"] . "</option>\n";
   }
   $database->close();
   return $ans;

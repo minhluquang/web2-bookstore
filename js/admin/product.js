@@ -268,7 +268,9 @@ var js = function () {
     }
     var multiselect_array = {
         category: [],
-        author: []
+        author: [],
+        category_hidden: [],
+        author_hidden: [],
     }
     const multiselect = document.querySelector("#multiselect");
     const multiselect_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
@@ -376,7 +378,27 @@ var js = function () {
         </div>
     </div>`;
     const modal = document.querySelector("#modal");
-
+    $.ajax({
+        url: '../controller/admin/product.controller.php',
+        type: "post",
+        dataType: 'html',
+        data: {
+            function: "getCategories"
+        }
+    }).done(function (result) {
+        // <span class="multiselect-content" value=1>Tâm lý học<i class="fa-solid fa-xmark cancel-multiselect"></i></span>
+        category_content = result.replace("<option value=''>Chọn thể loại</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
+    })
+    $.ajax({
+        url: '../controller/admin/product.controller.php',
+        type: "post",
+        dataType: 'html',
+        data: {
+            function: "getAuthors"
+        }
+    }).done(function (result) {
+        author_content = result.replace("<option value=''>Chọn tác giả</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
+    })
     document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
         modal.innerHTML = modal_html;
         multiselect_array["category"] = []
@@ -387,27 +409,6 @@ var js = function () {
         modal.querySelector('#status').parentElement.classList.add("hidden");
         modal.querySelector('#modal-header').innerHTML = "Thêm sản phẩm";
 
-        $.ajax({
-            url: '../controller/admin/product.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                function: "getCategories"
-            }
-        }).done(function (result) {
-            // <span class="multiselect-content" value=1>Tâm lý học<i class="fa-solid fa-xmark cancel-multiselect"></i></span>
-            category_content = result.replace("<option value=''>Chọn thể loại</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
-        })
-        $.ajax({
-            url: '../controller/admin/product.controller.php',
-            type: "post",
-            dataType: 'html',
-            data: {
-                function: "getAuthors"
-            }
-        }).done(function (result) {
-            author_content = result.replace("<option value=''>Chọn tác giả</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
-        })
         $.ajax({
             url: '../controller/admin/product.controller.php',
             type: "post",
@@ -487,7 +488,7 @@ var js = function () {
                     multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
         }
         var multiselect_setup = (type, key, content) => {
-            multiselect.innerHTML = multiselect_html;;
+            multiselect.innerHTML = multiselect_html;
             multiselect.querySelector("#btnClose").addEventListener('click', () => {
                 multiselect.querySelector("#modal-edit-container").classList.add('hidden')
             });
@@ -544,27 +545,7 @@ var js = function () {
             var publisher_value = this.parentNode.parentNode.querySelector(".id").getAttribute("publisher_id");
             var supplier_value = this.parentNode.parentNode.querySelector(".id").getAttribute("supplier_id");
             var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
-            $.ajax({
-                url: '../controller/admin/product.controller.php',
-                type: "post",
-                dataType: 'html',
-                data: {
-                    function: "getCategories"
-                }
-            }).done(function (result) {
-                // <span class="multiselect-content" value=1>Tâm lý học<i class="fa-solid fa-xmark cancel-multiselect"></i></span>
-                category_content = result.replace("<option value=''>Chọn thể loại</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
-            })
-            $.ajax({
-                url: '../controller/admin/product.controller.php',
-                type: "post",
-                dataType: 'html',
-                data: {
-                    function: "getAuthors"
-                }
-            }).done(function (result) {
-                author_content = result.replace("<option value=''>Chọn tác giả</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
-            })
+
             $.ajax({
                 url: '../controller/admin/product.controller.php',
                 type: "post",
@@ -591,8 +572,12 @@ var js = function () {
             })
             if (this.parentNode.parentNode.querySelector(".type").getAttribute("value") == "[]") multiselect_array["category"] = [];
             else multiselect_array["category"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
+            if (this.parentNode.parentNode.querySelector(".type").getAttribute("value_hidden") == "[]") multiselect_array["category_hidden"] = [];
+            else multiselect_array["category_hidden"] = this.parentNode.parentNode.querySelector(".type").getAttribute("value_hidden").replace(/[\[ \]]/gi, "").split(",");
             if (this.parentNode.parentNode.querySelector(".author").getAttribute("value") == "[]") multiselect_array["author"] = [];
             else multiselect_array["author"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value").replace(/[\[ \]]/gi, "").split(",");
+            if (this.parentNode.parentNode.querySelector(".author").getAttribute("value_hidden") == "[]") multiselect_array["author_hidden"] = [];
+            else multiselect_array["author_hidden"] = this.parentNode.parentNode.querySelector(".author").getAttribute("value_hidden").replace(/[\[ \]]/gi, "").split(",");
             modal.innerHTML = modal_html;
             modal.querySelector('#name').value = this.parentNode.parentNode.querySelector(".name").innerHTML;
             modal.querySelector('#price').value = this.parentNode.parentNode.querySelector(".price").innerHTML.replace(/[₫.]+/g, '');
@@ -639,7 +624,7 @@ var js = function () {
                         multiselect.querySelector("#multiselect-available").querySelector('[data-value="' + select.getAttribute("data-value").toString() + '"]').classList.remove("hidden")
             }
             var multiselect_setup = (type, key, content) => {
-                multiselect.innerHTML = multiselect_html;;
+                multiselect.innerHTML = multiselect_html;
                 multiselect.querySelector("#btnClose").addEventListener('click', () => {
                     multiselect.querySelector("#modal-edit-container").classList.add('hidden')
                 });
@@ -705,8 +690,8 @@ var js = function () {
                             supplier_id: modal.querySelector('#supplier_id').value,
                             image: image,
                             price: modal.querySelector('#price').value,
-                            category: multiselect_array["category"],
-                            author: multiselect_array["author"],
+                            category: multiselect_array["category"].concat(multiselect_array["category_hidden"]),
+                            author: multiselect_array["author"].concat(multiselect_array["author_hidden"]),
                             status:modal.querySelector('#status').value
                         }
                     }
