@@ -42,6 +42,7 @@
                         <p class="errMessage errMessagePassword"></p>
                     </div>
                     <input class="btnSubmit btnDangNhap" type="submit" value="Đăng nhập" />
+                    <p class="resetPassword"><a class="fakelink" href="?page=resetPassword">Quên mật khẩu?</a></p>
                 </form>
                 <div class="result"></div>
             </div>
@@ -57,6 +58,11 @@
                         <p class="errMessage errMessageUsernameRegister"></p>
                     </div>
                     <div class="form-row form-row-48">
+                        <label for="email">Email</label>
+                        <input type="text" placeholder="Nhập Email" id="registerEmail" name="email" required>
+                        <p class="errMessage errMessageEmailRegister"></p>
+                    </div>
+                    <div class="form-row">
                         <label for="name">Họ và tên</label>
                         <input type="text" placeholder="Nhập Họ và tên" id="registerFullname" name="name" required>
                         <p class="errMessage errMessageFullnameRegister"></p>
@@ -112,7 +118,19 @@
                     <!-- <div class="result"></div> -->
                 </form>
             </div>
-        </div> 
+        </div>
+    </div>
+    <div class="verify_code_background hidden">
+        <div class="verify_code_confirm_container">
+            <h1 class="title">Xác Nhận tài khoản</h1>
+            <h4 class="verify_code_msg"></h4>
+            <input type="text" id="verify_code" maxlength="6">
+            <button type="button" class="btnSubmit btnSendCode">Xác Nhận</button>
+            <p class="new_verify_code fakelink">Không nhận được mã xác nhận?</p>
+        </div>
+    </div>
+    <div class="reload hidden">
+        <img src="assets\images\reload.gif" alt="">
     </div>
     <!-- <div class="toast-overlay"></div>
     <div class="toast">

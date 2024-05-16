@@ -153,14 +153,8 @@ class pagnation
                             echo $author_str . '</td>';
                             //price and amount
                             echo '<td class="price">';
-                            $price_number =  $row['price'];
-                            $price = "";
-                            while ($price_number > 0) {
-                                $price = substr("$price_number", -3, 3) . '.' . $price;
-                                $price_number = substr("$price_number", 0, -3);
-                            }
 
-                            echo  trim($price, '. ') . '&#8363;</td> <td class="amount">' . $row['quantity'] . '</td>';
+                            echo  money_format($row['price']) . '</td> <td class="amount">' . $row['quantity'] . '</td>';
                             // button
                             echo '<td class="actions ">
                         <button class="actions--edit" >Sửa</button>
@@ -246,14 +240,7 @@ class pagnation
 
                             echo '<td class="staff_id">' . $row['staff_id'] . '</td>';
                             echo '<td class="total_price">';
-                            $price_number =  $row['total_price'];
-                            $price = "";
-                            while ($price_number > 0) {
-                                $price = substr("$price_number", -3, 3) . '.' . $price;
-                                $price_number = substr("$price_number", 0, -3);
-                            }
-
-                            echo  trim($price, '. ') . '&#8363;</td>';
+                            echo  money_format($row['total_price']) . '</td>';
                             echo '<td class="date_create">' . $row['date_create'] . '</td>';
 
                             echo '<td class="actions">
@@ -295,13 +282,8 @@ class pagnation
                             echo '<td class="customer_id">' . $row[1] . '</td>';
                             echo '<td class="staff_id">' . $row[2] . '</td>';
                             echo '<td class="date-update">' . $row[4] . '</td>';
-                            $price_number = $row['5'];
-                            $price = "";
-                            while ($price_number > 0) {
-                                $price = substr("$price_number", -3, 3) . '.' . $price;
-                                $price_number = substr("$price_number", 0, -3);
-                            }
-                            echo '<td class="total_price">' . trim($price, '.') . '&#8363;</td>';
+
+                            echo '<td class="total_price">' .money_format($row['5'])  . '</td>';
                             $sql_address = 'SELECT * from delivery_infoes WHERE user_info_id="' . $row[3] . '"';
                             $result_address = $database->query($sql_address);
                             $row_address = mysqli_fetch_array($result_address);
@@ -1013,4 +995,16 @@ function getOrderFilterSQL($data)
         if ($filter != "") $filter = " WHERE " . $filter;
     }
     return $filter;
+}
+
+function money_format($money)
+{
+  if($money==0)  return  "0&#8363;";
+  $formated = "";
+  while ($money > 0) {
+    $formated = substr("$money", -3, 3) . '.' . $formated;
+    $money = substr("$money", 0, -3);
+  }
+
+  return  trim($formated, '. ')."&#8363;";
 }
