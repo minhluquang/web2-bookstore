@@ -77,14 +77,15 @@ function getTotalAccounts()
 
 function money_format($money)
 {
-  if($money==0)  return  "0&#8363;";
+  return  "$money&#8363;";
+  if ($money == 0)  return  "0&#8363;";
   $formated = "";
   while ($money > 0) {
     $formated = substr("$money", -3, 3) . '.' . $formated;
     $money = substr("$money", 0, -3);
   }
 
-  return  trim($formated, '. ')."&#8363;";
+  return  trim($formated, '. ') . "&#8363;";
 }
 function getStats($date_start, $date_end)
 {
@@ -102,14 +103,14 @@ function getStats($date_start, $date_end)
     od.quantity,
     p.price AS original_price,
     CASE 
-        WHEN d.type = 'PR' THEN p.price - (p.price * d.discount_value / 100)
-        WHEN d.type = 'AR' THEN p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id))
-        ELSE p.price
+        WHEN d.type = 'PR' THEN ROUND(p.price - (p.price * d.discount_value / 100),0)
+        WHEN d.type = 'AR' THEN ROUND(p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id)),0)
+        ELSE ROUND(p.price,0)
     END AS discounted_price,
     SUM(od.quantity) OVER (PARTITION BY od.order_id) as sum
     FROM 
         products p
-    INNER JOIN 
+    LEFT JOIN 
         category_details cd ON p.id = cd.product_id
     INNER JOIN 
         order_details od ON p.id = od.product_id
@@ -128,11 +129,51 @@ function getStats($date_start, $date_end)
       $quantity += $detail["quantity"];
     }
     $total += $sum;
-    echo '<div class="money"> ' . money_format($sum). '</div>
+    echo '<div class="money"> ' . money_format($sum) . '</div>
           <div class="soluong">Số lượng bán được: ' . $quantity . '</div>
           <button type="button" class="chitietbtn" data-id="' . $row['id'] . '">Chi tiết</button>
           </div>';
   }
+  // cho sản phẩm không có thể loại
+  echo '<div class="thongke">';
+  echo '<h3 class="sanpham" >Không thể loại</h3>';
+  $sql = "SELECT 
+  p.id AS product_id,
+  p.name,
+  o.id,
+  od.quantity,
+  p.price AS original_price,
+  CASE 
+      WHEN d.type = 'PR' THEN ROUND(p.price - (p.price * d.discount_value / 100),0)
+      WHEN d.type = 'AR' THEN ROUND(p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id)),0)
+      ELSE ROUND(p.price,0)
+  END AS discounted_price,
+  SUM(od.quantity) OVER (PARTITION BY od.order_id) as sum
+  FROM 
+      products p
+  LEFT JOIN 
+      category_details cd ON p.id = cd.product_id
+  INNER JOIN 
+      order_details od ON p.id = od.product_id
+  INNER JOIN 
+      orders o ON od.order_id = o.id
+  LEFT JOIN 
+      discounts d ON o.discount_code = d.discount_code
+  WHERE 
+  cd.category_id IS NULL and o.status_id = 5 and o.date_create between '$date_start' and DATE_ADD('$date_end',INTERVAL 0 DAY)
+  ORDER BY p.id ASC";
+  $detail_result = $database->query($sql);
+  $sum = 0;
+  $quantity = 0;
+  while ($detail = mysqli_fetch_array($detail_result)) {
+    $sum += $detail["discounted_price"] * $detail["quantity"];
+    $quantity += $detail["quantity"];
+  }
+  $total += $sum;
+  echo '<div class="money"> ' . money_format($sum) . '</div>
+        <div class="soluong">Số lượng bán được: ' . $quantity . '</div>
+        <button type="button" class="chitietbtn" data-id="NULL">Chi tiết</button>
+        </div>';
 
   $database->close();
 }
@@ -148,6 +189,8 @@ function searchForValue($id, $array, $str)
 function getStatDetails($id, $date_start, $date_end, $order, $type)
 {
   $database = new connectDB();
+  $condition ="cd.category_id = ' $id '";
+  if($id="NULL") $condition ="cd.category_id IS NULL";
   $sql = "SELECT 
         p.id AS product_id,
         p.name,
@@ -156,14 +199,14 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
         od.quantity,
         p.price AS original_price,
         CASE 
-            WHEN d.type = 'PR' THEN p.price - (p.price * d.discount_value / 100)
-            WHEN d.type = 'AR' THEN p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id))
-            ELSE p.price
-        END AS discounted_price,
+        WHEN d.type = 'PR' THEN ROUND(p.price - (p.price * d.discount_value / 100),0)
+        WHEN d.type = 'AR' THEN ROUND(p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id)),0)
+        ELSE ROUND(p.price,0)
+    END AS discounted_price,
         SUM(od.quantity) OVER (PARTITION BY od.order_id) as sum
         FROM 
             products p
-        INNER JOIN 
+        LEFT JOIN 
             category_details cd ON p.id = cd.product_id
         INNER JOIN 
             order_details od ON p.id = od.product_id
@@ -172,7 +215,7 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
         LEFT JOIN 
             discounts d ON o.discount_code = d.discount_code
         WHERE 
-        cd.category_id = ' $id ' and o.status_id = 5 and o.date_create between '$date_start' and DATE_ADD('$date_end',INTERVAL 0 DAY)
+        $condition and o.status_id = 5 and o.date_create between '$date_start' and DATE_ADD('$date_end',INTERVAL 0 DAY)
         ORDER BY p.id ASC";
   $detail_result = $database->query($sql);
   $sum = 0;
@@ -226,7 +269,7 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
     <td class="amount">' . $value["quantity"] . '</td>
 </tr>';
   }
-  echo '<tr><td></td><td></td><td></td><td></td><td>' . money_format($sum ). '</td><td>' . $quantity . '</td></tr>;';
+  echo '<tr><td></td><td></td><td></td><td></td><td>' . money_format($sum) . '</td><td>' . $quantity . '</td></tr>;';
   echo '</tbody></table>';
   $database->close();
 }
@@ -241,14 +284,14 @@ function getBestSellers($date_start, $date_end)
         od.quantity,
         p.price AS original_price,
         CASE 
-            WHEN d.type = 'PR' THEN p.price - (p.price * d.discount_value / 100)
-            WHEN d.type = 'AR' THEN p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id))
-            ELSE p.price
-        END AS discounted_price,
+        WHEN d.type = 'PR' THEN ROUND(p.price - (p.price * d.discount_value / 100),0)
+        WHEN d.type = 'AR' THEN ROUND(p.price - (d.discount_value / SUM(od.quantity) OVER (PARTITION BY od.order_id)),0)
+        ELSE ROUND(p.price,0)
+    END AS discounted_price,
         SUM(od.quantity) OVER (PARTITION BY od.order_id) as sum
         FROM 
             products p
-        INNER JOIN 
+        LEFT JOIN 
             category_details cd ON p.id = cd.product_id
         INNER JOIN 
             order_details od ON p.id = od.product_id
