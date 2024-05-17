@@ -1,5 +1,6 @@
 <?
     session_start();
+    
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +19,9 @@
     <div class="form-container">
         <form id="checkout-form" action="" method="post">
             <div class="container">
+                <?php
+                
+                ?>
                 <h3>Địa Chỉ Nhận Hàng</h3>
                 <!-- <hr> -->
                 <div class="form-group" style="flex-direction: column;">

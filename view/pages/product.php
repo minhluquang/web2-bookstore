@@ -46,15 +46,6 @@
                     <input type="checkbox" id="theloai_'.$category['id'].'" data="'.$category['id'].'" name="theloai"/><label for="theloai_'.$category['id'].'">'.$category['name'].'</label>
                   </li>';
               }
-
-              // Nếu tồn tại sản phẩm chưa có thuộc tính thì thêm ckb khác
-              // $isExistUnknowCategoryProduct = getProductsByUnknownCategory();
-              // if ($isExistUnknowCategoryProduct > 0) {
-              //   echo '
-              //     <li>
-              //       <input type="checkbox" id="theloai_0" data="0" name="theloai"/><label for="theloai_0">Khác</label>
-              //     </li>';
-              // }
             ?>
             
         </div>

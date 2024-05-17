@@ -1,3 +1,14 @@
+<?php
+  if (isset($_GET['page']) && $_GET['page']) {
+    $page = $_GET['page'];
+    if ($page == 'checkout') {
+      if (!isset($_SESSION['cart-selected'])) {
+        header('Location: index.php');
+      }
+    }
+  } 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

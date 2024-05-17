@@ -122,6 +122,7 @@
     </div>
     <div class="verify_code_background hidden">
         <div class="verify_code_confirm_container">
+            <i class="fa-solid fa-xmark closeModal"></i>
             <h1 class="title">Xác Nhận tài khoản</h1>
             <h4 class="verify_code_msg"></h4>
             <input type="text" id="verify_code" maxlength="6">
