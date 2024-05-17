@@ -190,7 +190,7 @@ function getStatDetails($id, $date_start, $date_end, $order, $type)
 {
   $database = new connectDB();
   $condition ="cd.category_id = ' $id '";
-  if($id="NULL") $condition ="cd.category_id IS NULL";
+  if($id=="NULL") $condition ="cd.category_id IS NULL";
   $sql = "SELECT 
         p.id AS product_id,
         p.name,

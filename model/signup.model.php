@@ -61,7 +61,7 @@ function send_code($email)
   $result = $database->query($sql);
   if (mysqli_num_rows($result) > 0) {
     $sql = "UPDATE verify_code SET code = '$code',time_send=NOW() WHERE email = '$email'";
-  } else $sql = "INSERT INTO verify_code (email, code, time_send) VALUES ('$email', '$code', 'NOW()')";
+  } else $sql = "INSERT INTO verify_code (email, code, time_send) VALUES ('$email', '$code', NOW())";
   $database->execute($sql);
 
   // use wordwrap() if lines are longer than 70 characters
