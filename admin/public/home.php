@@ -84,7 +84,7 @@
 
         </div>
     </div>
-    <div class="result" style="width: 90%;margin:0 4%;"></div>
+    <div class="result" style="width: 95%;"></div>
     <div class="popup">
         <div class="popupwrapper" id="chitiet">
             <div class="popupbg">

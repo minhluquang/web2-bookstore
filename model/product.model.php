@@ -95,10 +95,10 @@
                       p.price, 
                       p.image_path,
                       p.quantity
-              FROM category_details cd
-              INNER JOIN products p ON p.id = cd.product_id
-              INNER JOIN categories c ON c.id = cd.category_id
-              WHERE p.status = 1 ";
+              FROM products p
+              LEFT JOIN category_details cd ON cd.product_id = p.id
+              LEFT JOIN categories c ON c.id = cd.category_id
+              WHERE p.status = 1   ";
       // Câu lệnh query theo tên sản phẩm
       if ($keyword) {
         $sql .= " AND p.name LIKE '%$keyword%'";

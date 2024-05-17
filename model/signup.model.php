@@ -45,6 +45,7 @@ function checkLogin($username, $password)
     $database->close();
     $reponse = (object) array(
       "success" => false,
+      "message" => "Hệ thống không tồn tại tài khoản này!"
     );
     return $reponse;
   }

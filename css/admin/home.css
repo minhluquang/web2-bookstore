@@ -378,6 +378,7 @@ thead th:nth-child(1) {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 #content-product thead th:nth-child(1) {
   width: 4% !important;
@@ -393,7 +394,7 @@ thead th:nth-child(1) {
   width: 6% !important;
 }
 .table-content .image img {
-  width:90% !important;
+  width: 90% !important;
 }
 #close {
   float: right;
