@@ -164,13 +164,13 @@ function product_edit($field)
   $database->execute($sql);
   $sql = 'DELETE FROM author_details WHERE product_id="' . $field['id'] . '"';
   $database->execute($sql);
-  if(count($field['category'])>0){
+  if(isset($field['category'])&&count($field['category'])>0){
     foreach ($field['category'] as $category_id) {
       $sql = "INSERT INTO `category_details` (`product_id`, `category_id`) VALUES ('" . $field['id'] . "', '" . $category_id . "'); ";
       $database->execute($sql);
     }
   }
-  if(count($field['author'])>0){
+  if(isset($field['author'])&&count($field['author'])>0){
     foreach ($field['author'] as $author_id) {
       $sql = "INSERT INTO `author_details` (`product_id`, `author_id`) VALUES ('" . $field['id'] . "', '" . $author_id . "'); ";
       $database->execute($sql);

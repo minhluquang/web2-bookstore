@@ -1,6 +1,11 @@
 var orderby = "id";
 var order_type = "ASC";
 var title = "";
+
+var search = location.search.substring(1);
+var atHome= (search==""||search=="page=home")
+
+
 $(document).ready(function () {
   $(".btnLogoutAdmin").click(function () {
     $.ajax({
@@ -19,7 +24,7 @@ $(document).ready(function () {
       }
     });
   });
-  checkFunction();
+  if(atHome)checkFunction();
   $("#close").click(function () {
     document.querySelector("#chitiet").classList.toggle("show");
   })
@@ -73,7 +78,7 @@ $(document).ready(function () {
     },
   }).done(function (result) {
     const data = JSON.parse(result);
-    if (data) {
+    if (data && atHome) {
       updateData4Boxes(data);
     }
   });
@@ -222,7 +227,6 @@ function notAllowedEntry(data) {
     .querySelector(`.sidebar__items .sidebar__item[page="${pageParam}"]`)
     .getAttribute("fncid");
 
-  console.log(fncid);
 
   var isIncludeRole = false;
   data.forEach((role) => {
