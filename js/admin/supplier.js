@@ -19,9 +19,9 @@ function pushFilterToURL() {
   var url = "";
   Object.keys(filter).forEach((key) => {
     url +=
-      filter[key] != null && filter[key] != "" ?
-      `&${url_key[key]}=${filter[key]}` :
-      "";
+      filter[key] != null && filter[key] != ""
+        ? `&${url_key[key]}=${filter[key]}`
+        : "";
   });
   return url;
 }
@@ -47,19 +47,19 @@ urlParams = JSON.parse(
 );
 var number_of_item = urlParams["item"];
 var current_page = urlParams["pag"];
-var orderby = urlParams['orderby'];
-var order_type = urlParams['order_type'];
+var orderby = urlParams["orderby"];
+var order_type = urlParams["order_type"];
 if (current_page == null) {
-current_page = 1;
+  current_page = 1;
 }
 if (number_of_item == null) {
-number_of_item = 5;
+  number_of_item = 5;
 }
 if (orderby == null) {
-orderby = "";
+  orderby = "";
 }
 if (order_type != "ASC" && order_type != "DESC") {
-order_type = "ASC";
+  order_type = "ASC";
 }
 
 function checkReady() {
@@ -139,9 +139,13 @@ function loadItem() {
         "&current_page=" +
         current_page;
       newurl += pushFilterToURL();
-      window.history.pushState({
-        path: newurl
-      }, "", newurl);
+      window.history.pushState(
+        {
+          path: newurl,
+        },
+        "",
+        newurl
+      );
       $(".result").html(result);
       pagnationBtn();
       filterBtn();
@@ -201,9 +205,13 @@ function filterBtn() {
         number_of_item +
         "&current_page=" +
         current_page;
-      window.history.pushState({
-        path: newurl
-      }, "", newurl);
+      window.history.pushState(
+        {
+          path: newurl,
+        },
+        "",
+        newurl
+      );
       $(".result").html(result);
       pagnationBtn();
       js();
@@ -212,21 +220,35 @@ function filterBtn() {
 }
 
 var js = function () {
-  if (orderby != "" && order_type != "") document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML+=(order_type=="ASC")?' <i class="fas fa-sort-up">':' <i class="fas fa-sort-down">';
-  else document.querySelector("[data-order]").innerHTML+=(order_type=="ASC")?' <i class="fas fa-sort-up">':' <i class="fas fa-sort-down">';
-  document.querySelector(".result").querySelectorAll("th").forEach((th) => {
-      if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
-          if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
+  if (orderby != "" && order_type != "")
+    document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML +=
+      order_type == "ASC"
+        ? ' <i class="fas fa-sort-up">'
+        : ' <i class="fas fa-sort-down">';
+  else
+    document.querySelector("[data-order]").innerHTML +=
+      order_type == "ASC"
+        ? ' <i class="fas fa-sort-up">'
+        : ' <i class="fas fa-sort-down">';
+  document
+    .querySelector(".result")
+    .querySelectorAll("th")
+    .forEach((th) => {
+      if (th.hasAttribute("data-order"))
+        th.addEventListener("click", () => {
+          if (orderby == "")
+            orderby = document
+              .querySelector("[data-order]")
+              .getAttribute("data-order");
           if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
-              order_type = "DESC";
-          }
-          else {
-              order_type = "ASC"
+            order_type = "DESC";
+          } else {
+            order_type = "ASC";
           }
           orderby = th.getAttribute("data-order");
           loadItem();
-      })
-  });
+        });
+    });
   const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
@@ -251,13 +273,9 @@ var js = function () {
 
                 <div class="flex">
                     <label for="sdt">Số điện thoại nhà cung cấp</label>
-                    <input id="sdtsupplier" type="text" add-index="2" placeholder="Email nhà cung cấp">    
+                    <input id="sdtsupplier" type="text" add-index="2" placeholder="Số điện thoại nhà cung cấp">    
                     <p id ="message_sdt" class ="message"></p>               
                 </div>
-
-                
-                
-                
             </div>
             <div>
             </div>
@@ -280,12 +298,21 @@ var js = function () {
         .querySelector(".button-confirm")
         .addEventListener("click", function (e) {
           e.preventDefault();
-          const message_name = modal_create_container.querySelector("#message_name");
-          const message_email = modal_create_container.querySelector("#message_email");
-          const message_sdt = modal_create_container.querySelector("#message_sdt");
-          const name = modal_create_container.querySelector("#namesupplier").value.trim();
-          const email = modal_create_container.querySelector("#emailsupplier").value.trim();
-          const sdt = modal_create_container.querySelector("#sdtsupplier").value.trim();
+          const message_name =
+            modal_create_container.querySelector("#message_name");
+          const message_email =
+            modal_create_container.querySelector("#message_email");
+          const message_sdt =
+            modal_create_container.querySelector("#message_sdt");
+          const name = modal_create_container
+            .querySelector("#namesupplier")
+            .value.trim();
+          const email = modal_create_container
+            .querySelector("#emailsupplier")
+            .value.trim();
+          const sdt = modal_create_container
+            .querySelector("#sdtsupplier")
+            .value.trim();
           const regexPhoneNumber = /^0\d{9}$/;
           const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/;
           var check = true;
@@ -297,7 +324,7 @@ var js = function () {
             message_name.innerHTML = "";
           }
           if (email == "") {
-            message_email.innerHTML = "*Vui lòng điền email";       
+            message_email.innerHTML = "*Vui lòng điền email";
             modal_create_container.querySelector("#emailsupplier").focus();
             check = false;
           } else {
@@ -314,13 +341,13 @@ var js = function () {
           if (!sdt.match(regexPhoneNumber) && sdt != "") {
             message_sdt.innerHTML =
               "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (0331256391)";
-              modal_create_container.querySelector("#sdtsupplier").focus();
+            modal_create_container.querySelector("#sdtsupplier").focus();
             check = false;
           }
           if (!email.match(regexEmail) && email != "") {
             message_email.innerHTML =
               "* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)";
-              modal_create_container.querySelector("#emailsupplier").focus();
+            modal_create_container.querySelector("#emailsupplier").focus();
             check = false;
           }
           if (check == true) {
@@ -417,11 +444,16 @@ var js = function () {
         .querySelector(".button-confirm")
         .addEventListener("click", function (e) {
           e.preventDefault();
-          const message_name = modal_edit_container.querySelector("#message_name");
-          const message_email = modal_edit_container.querySelector("#message_email");
-          const message_sdt = modal_edit_container.querySelector("#message_sdt");
+          const message_name =
+            modal_edit_container.querySelector("#message_name");
+          const message_email =
+            modal_edit_container.querySelector("#message_email");
+          const message_sdt =
+            modal_edit_container.querySelector("#message_sdt");
           const name = modal_edit_container.querySelector("#name").value.trim();
-          const email = modal_edit_container.querySelector("#email").value.trim();
+          const email = modal_edit_container
+            .querySelector("#email")
+            .value.trim();
           const sdt = modal_edit_container.querySelector("#sdt").value.trim();
           const regexPhoneNumber = /^0\d{9}$/;
           const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/;
@@ -430,40 +462,40 @@ var js = function () {
             message_name.innerHTML = "*Vui lòng điền tên nhà cung cấp";
             modal_edit_container.querySelector("#name").focus();
             check = false;
-          }else {
-            message_name.innerHTML= "";
+          } else {
+            message_name.innerHTML = "";
           }
 
           if (email == "") {
             message_email.innerHTML = "*Vui lòng điền email nhà cung cấp";
             modal_edit_container.querySelector("#email").focus();
             check = false;
-          }else {
-            message_email.innerHTML= "";
+          } else {
+            message_email.innerHTML = "";
           }
 
           if (sdt == "") {
             message_sdt.innerHTML = "*Vui lòng điền số điện thoại nhà cung cấp";
             modal_edit_container.querySelector("#sdt").focus();
             check = false;
-          }else {
-            message_sdt.innerHTML= "";
+          } else {
+            message_sdt.innerHTML = "";
           }
           if (!sdt.match(regexPhoneNumber) && sdt != "") {
             message_sdt.innerHTML =
               "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (033125639)";
-              modal_edit_container.querySelector("#sdt").focus();
+            modal_edit_container.querySelector("#sdt").focus();
             check = false;
           }
           if (!email.match(regexEmail) && email != "") {
             message_email.innerHTML =
               "* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)";
-              modal_edit_container.querySelector("#email").focus();
+            modal_edit_container.querySelector("#email").focus();
             check = false;
           }
           if (check == true) {
             message_name.innerHTML = "";
-            message_email.innerHTML = ""; 
+            message_email.innerHTML = "";
             message_sdt.innerHTML = "";
             $.ajax({
               url: "../controller/admin/supplier.controller.php",
