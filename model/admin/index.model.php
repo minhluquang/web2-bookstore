@@ -77,7 +77,7 @@ function getTotalAccounts()
 
 function money_format($money)
 {
-  return  "$money&#8363;";
+  // return  "$money&#8363;";
   if ($money == 0)  return  "0&#8363;";
   $formated = "";
   while ($money > 0) {

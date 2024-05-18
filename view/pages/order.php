@@ -1,3 +1,9 @@
+<?php
+  if (!isset($_SESSION['username'])) {
+    echo "<script>alert('Vui lòng đăng nhập!')</script>";
+    echo "<script>window.location.href = 'index.php?page=signup'</script>";
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
