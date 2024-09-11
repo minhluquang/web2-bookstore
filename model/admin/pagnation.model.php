@@ -276,20 +276,28 @@ class pagnation
                             <tbody class="table-content" id="content">
                     ';
                         while ($row = mysqli_fetch_array($result)) {
+                            $sql_customer = "SELECT di.user_id
+                                                FROM orders o
+                                                INNER JOIN delivery_infoes di ON o.delivery_info_id = di.user_info_id
+                                                WHERE o.id = '$row[0]'";
+                            $result_customer = $database->query($sql_customer);
+                            $row_customer = mysqli_fetch_array($result_customer);
+
                             echo '<tr>';
                             echo '<td class="order_id">' . $row[0] . '</td>';
-                            echo '<td class="customer_id">' . $row[1] . '</td>';
-                            echo '<td class="staff_id">' . $row[2] . '</td>';
-                            echo '<td class="date-update">' . $row[4] . '</td>';
+                            echo '<td class="customer_id">' . $row_customer[0] . '</td>';
+                            echo '<td class="staff_id">' . $row[1] . '</td>';
+                            echo '<td class="date-update">' . $row[3] . '</td>';
 
-                            echo '<td class="total_price">' .money_format($row['5'])  . '</td>';
-                            $sql_address = 'SELECT * from delivery_infoes WHERE user_info_id="' . $row[3] . '"';
+                            echo '<td class="total_price">' .money_format($row['4'])  . '</td>';
+
+                            $sql_address = 'SELECT * from delivery_infoes WHERE user_info_id="' . $row[2] . '"';
                             $result_address = $database->query($sql_address);
                             $row_address = mysqli_fetch_array($result_address);
 
                             echo '<td class="address">' . $row_address['address'] . ', ' . $row_address['ward'] . ', ' . $row_address['district'] . ', ' . $row_address['city'] . '</td>';
 
-                            $sql_status = 'SELECT * from order_statuses WHERE id="' . $row[6] . '"';
+                            $sql_status = 'SELECT * from order_statuses WHERE id="' . $row[5] . '"';
                             $result_status  = $database->query($sql_status);
                             $row_status = mysqli_fetch_array($result_status);
 

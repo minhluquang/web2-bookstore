@@ -46,7 +46,7 @@
         $discountCode = 'null';
       }
 
-      if ($orderId = addNewOrder($customerId, $deliveryInfoId, $totalPrice, $discountCode)) {
+      if ($orderId = addNewOrder($deliveryInfoId, $totalPrice, $discountCode)) {
         foreach ($cartSelected as $product) {
           $productDetail = getProductDetailByIdModel($product['productId']);
           if ($productDetail) {
