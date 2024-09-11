@@ -112,7 +112,7 @@
           </div>
           <div class="rightFooter">
             <div class="thongtin">
-              <h3>DỊCH VỤ</h3>
+              <!-- <h3>DỊCH VỤ</h3>
               <li id="gt" onclick="show1(this);">
                 <a style="text-decoration: none" href="#">Điều khoản sử dụng</a>
               </li>
@@ -133,22 +133,22 @@
                 <a style="text-decoration: none" href="#"
                   >Hệ thống trung tâm nhà sách</a
                 >
-              </li>
+              </li> -->
             </div>
             <div class="thongtin">
-              <h3>Hỗ trợ</h3>
+              <!-- <h3>Hỗ trợ</h3>
               <li>Chính sách đổi trả- hoàn tiền</li>
               <li>Chính sách bảo hành - bồi hoàn</li>
               <li>Chính sách vận chuyển</li>
               <li>Chính sách khách sĩ</li>
-              <li>Phương thức thanh toán và xuất HD</li>
+              <li>Phương thức thanh toán và xuất HD</li> -->
             </div>
             <div class="thongtin">
-              <h3>Tài khoản của tôi</h3>
+              <!-- <h3>Tài khoản của tôi</h3>
               <li>Đăng nhập/Tạo tài khoản mới</li>
               <li>Thay đổi địa chỉ khách hàng</li>
               <li>Chi tiết tài khoản</li>
-              <li>lịch sử mua hàng</li>
+              <li>lịch sử mua hàng</li> -->
             </div>
           </div>
         </div>

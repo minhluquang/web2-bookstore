@@ -17,19 +17,19 @@
     <div class="container" style="margin: 40px auto 0;">
         <div class="silder-01">
             <div class="left-sider">
-                <a href="#"><img src="assets/images/thumbnail/TanViet_Silver_0424_Ver1_Slide_840x320_1.jpg" alt=""></a>
+                <div class="thumb-img" href="#"><img src="assets/images/thumbnail/TanViet_Silver_0424_Ver1_Slide_840x320_1.jpg" alt=""></div>
             </div>
             <div class="right-slider">
-                <a href="#"><img src="assets/images/thumbnail/392x156_zalopay_t4.jpg" alt=""></a>
-                <a href="#"><img src="assets/images/thumbnail/392x156_vnpay_t4.jpg" alt=""></a>
+                <div class="thumb-img" href="#"><img src="assets/images/thumbnail/392x156_zalopay_t4.jpg" alt=""></div>
+                <div class="thumb-img" href="#"><img src="assets/images/thumbnail/392x156_vnpay_t4.jpg" alt=""></div>
             </div>
         </div>
 
         <div class="silder-02">
-            <a href="#"><img src="assets/images/thumbnail/Week2_Coupon_T424_SmallBanner_310x210.png" alt=""></a>
-            <a href="#"><img src="assets/images/thumbnail/BannerNgoaiVanT0424_Smallbanner_310x210.jpg" alt=""></a>
-            <a href="#"><img src="assets/images/thumbnail/MayTinh_SmallBanner_T4_310x210.png" alt=""></a>
-            <a href="#"><img src="assets/images/thumbnail/MinhLongT04_SmallBanner_310x210.png" alt=""></a>
+            <div class="thumb-img" href="#"><img src="assets/images/thumbnail/Week2_Coupon_T424_SmallBanner_310x210.png" alt=""></div>
+            <div class="thumb-img" href="#"><img src="assets/images/thumbnail/BannerNgoaiVanT0424_Smallbanner_310x210.jpg" alt=""></div>
+            <div class="thumb-img" href="#"><img src="assets/images/thumbnail/MayTinh_SmallBanner_T4_310x210.png" alt=""></div>
+            <div class="thumb-img" href="#"><img src="assets/images/thumbnail/MinhLongT04_SmallBanner_310x210.png" alt=""></div>
         </div>
 
         <!-- NỘI DUNG BÁN HÀNG -->
