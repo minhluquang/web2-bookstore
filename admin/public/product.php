@@ -70,6 +70,7 @@ $_SESSION["render"] ->setTable("products");
                 <p>Trạng thái:</p>
                 <select name="status" id="status">
                     <option value="1" selected>Đang kinh doanh</option>
+                    <option value="2">Chưa kinh doanh</option>
                     <option value="0">Ngừng kinh doanh</option>
                     <option value="-1">Tất cả</option>
                 </select>

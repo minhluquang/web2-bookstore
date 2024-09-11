@@ -326,12 +326,12 @@ var js = function () {
                     <div class="modal-body-2">
                         <div class="flex">
                             <label for="name">Tên sản phẩm</label>
-                            <input id="name" type="text" add-index="2" placeholder="Tên sản phẩm">
+                            <input id="name" type="text" add-index="2" placeholder="Tên sản phẩm" disabled>
                             <span class="error-message name hidden"></span>
                         </div>
                         <div class="flex">
                             <label for="price">Giá sản phẩm</label>
-                            <input id="price" type="text" add-index="3" placeholder="Giá sản phẩm">
+                            <input id="price" class = "priceClass" type="text" add-index="3" placeholder="Giá sản phẩm" >
                             <span class="error-message price hidden"></span>
                         </div>
                         <div class="flex">
@@ -367,6 +367,7 @@ var js = function () {
                             <label for="status">Trạng thái</label>
                             <select id="status">
                                 <option value="1" selected>Đang kinh doanh</option>
+                                <option value="2" disabled>Chưa kinh doanh</option>
                                 <option value="0">Ngừng kinh doanh</option>
                             </select>
                         </div>
@@ -377,7 +378,54 @@ var js = function () {
             </div>
         </div>
     </div>`;
+    // document.querySelector(".actions--edit").addEventListener("click", (e) => {
+
+    //     modal.innerHTML = modal_html;
+    //     const selectStatus = document.querySelector("#status");
+    //     const priceInput = document.getElementById('price');
+    //     console.log(priceInput)
+    //     if(selectStatus.value == 1 || selectStatus.value == 0) {
+    //          priceInput.disabled = true;
+    //     }
+    //  });
+
+    document.querySelector(".actions--edit").addEventListener("click", (e) => {
+        // Thay thế nội dung của modal
+        modal.innerHTML = modal_html;
+    
+        // Chờ một chút để đảm bảo nội dung HTML mới đã được thêm vào DOM
+        setTimeout(() => {
+            const selectStatus = document.querySelector("#status");
+            const priceInput = document.getElementById('price');
+            
+            console.log("Price Input:", priceInput);
+    
+            if (selectStatus && priceInput) {
+                console.log("Status Value:", selectStatus.value);
+                
+                // Áp dụng thuộc tính disabled
+                if (selectStatus.value == 1 || selectStatus.value == 0) {
+                    priceInput.disabled = true;
+                } else {
+                    priceInput.disabled = false;
+                }
+            } else {
+                console.error("Select or Price Input not found");
+            }
+        }, 0); // Thực hiện sau khi HTML được thêm vào DOM
+    });
+    
+
+
     const modal = document.querySelector("#modal");
+
+    
+    
+
+    
+    
+    
+    
     $.ajax({
         url: '../controller/admin/product.controller.php',
         type: "post",
@@ -399,8 +447,92 @@ var js = function () {
     }).done(function (result) {
         author_content = result.replace("<option value=''>Chọn tác giả</option>", "").replace(/option/gi, "span").replace(/<span value/gi, '<span class="multiselect-content" data-value').replace(/<\/span>/gi, '<i class="fa-solid fa-xmark cancel-multiselect"></i></span>');
     })
+
+
+    const modal_html_add = `<div class="modal-edit-product-container show" id="modal-edit-container">
+        <div class="modal-edit-product">
+            <div class="modal-header">
+                <h3 id="modal-header"></h3>
+                <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="edit-image">
+                        <div id="choose-img-select">
+                            <input type="radio" id="retain" value="retain" name="image" checked>
+                            <label for="retain">Giữ Hình</label>
+                            <input type="radio" id="edit" value="edit" name="image">
+                            <label for="edit">Sửa Hình</label>
+                        </div>
+                        <div class="choose-img hidden">
+                            <label for="fileInput">Chọn hình ảnh:</label>
+                            <div class="img">
+                                <img id="imagePreview" src="#" alt="Ảnh xem trước" style="display: none;">
+                            </div>
+                            <input type="file" name="choose-img" id="fileInput" accept="image/*">
+                        </div>
+                        <span class="error-message fileInput hidden"></span>
+
+                    </div>
+                    <div class="modal-body-2">
+                        <div class="flex">
+                            <label for="name">Tên sản phẩm</label>
+                            <input id="name" type="text" add-index="2" placeholder="Tên sản phẩm" >
+                            <span class="error-message name hidden"></span>
+                        </div>
+                        <div class="flex">
+                            <label for="price">Giá sản phẩm</label>
+                            <input id="price" class = "priceClass" type="text" add-index="3" placeholder="Giá sản phẩm" >
+                            <span class="error-message price hidden"></span>
+                        </div>
+                        <div class="flex">
+                            <label for="publisher_id">Nhà xuất bản</label>
+                            <select id="publisher_id">
+                            </select>
+                            <span class="error-message publisher_id hidden"></span>
+                        </div>
+                        <div class="flex">
+                            <label for="supplier_id">Nhà cung cấp</label>
+                            <select id="supplier_id">
+                            </select>
+                            <span class="error-message supplier_id hidden"></span>
+                        </div>
+                        <div class="flex">
+                            <span style="display:flex;">
+                                <label for="categorySelect" style="flex: 50%">Thể loại</label>
+                                <button type="button" class="open-multiselect" id="category-multiselect">Thêm</button>
+                            </span>
+                            <span id="category-amount" style="padding:5px 0px 0px 5px;">Đã chọn 0 thể loại</span>
+                        </div>
+                        <div class="flex">
+                        <span style="display:flex;">
+                                <label for="categorySelect" style="flex: 50%">Tác giả</label>
+                                <button type="button" class="open-multiselect" id="author-multiselect">Thêm</button>
+                            </span>
+                            <span id="author-amount" style="padding:5px 0px 0px 5px;">Đã chọn 0 tác giả</span>
+                            <!-- <label for="author">Tác giả</label>
+                            <select id="author">
+                            </select> -->
+                        </div>
+                        <div class="flex">
+                            <label for="status">Trạng thái</label>
+                            <select id="status">
+                                <option value="1" selected>Đang kinh doanh</option>
+                                <option value="2" disabled>Chưa kinh doanh</option>
+                                <option value="0">Ngừng kinh doanh</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="reset" value="Hủy" class="button-cancel">
+                    <input type="submit" value="Xác nhận" class="button-confirm" >
+                </form>
+            </div>
+        </div>
+    </div>`;
+    
     document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
-        modal.innerHTML = modal_html;
+        modal.innerHTML = modal_html_add;
+         
         multiselect_array["category"] = []
         multiselect_array["author"] = []
         const modal_edit_container = modal.querySelector("#modal-edit-container");
@@ -848,4 +980,8 @@ var js = function () {
         };
         return success;
     }
+
+   
+
+    
 }
