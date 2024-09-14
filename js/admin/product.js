@@ -397,6 +397,8 @@ var js = function () {
         setTimeout(() => {
             const selectStatus = document.querySelector("#status");
             const priceInput = document.getElementById('price');
+            const supplier = document.getElementById('supplier_id');
+            const publisher = document.getElementById('publisher_id');
             
             console.log("Price Input:", priceInput);
     
@@ -406,6 +408,8 @@ var js = function () {
                 // Áp dụng thuộc tính disabled
                 if (selectStatus.value == 1 || selectStatus.value == 0) {
                     priceInput.disabled = true;
+                    supplier.disabled = true;
+                    publisher.disabled = true;
                 } else {
                     priceInput.disabled = false;
                 }
