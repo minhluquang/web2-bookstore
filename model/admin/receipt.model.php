@@ -22,15 +22,15 @@ function receipt_create($field)
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $date = date('Y-m-d', time());
 
-    $supplierId = $field['supplierId'];
+    // $supplierId = $field['supplierId'];
     $totalPrice = $field['totalPrice'];
     $staffId = $field['staffId'];
     $receiptId = getNewReceiptId($database);
 
     
 
-    $sqlInsertReceipt = "INSERT INTO goodsreceipts (id,supplier_id, staff_id, total_price, date_create) 
-                         VALUES ('".$receiptId."','".$supplierId."', '".$staffId."', '".$totalPrice."', '".$date."')";
+    $sqlInsertReceipt = "INSERT INTO goodsreceipts (id, staff_id, total_price, date_create) 
+                         VALUES ('".$receiptId."', '".$staffId."', '".$totalPrice."', '".$date."')";
     $resultReceipt = $database->query($sqlInsertReceipt);
 
     if ($resultReceipt) {
