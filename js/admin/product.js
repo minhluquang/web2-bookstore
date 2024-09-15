@@ -399,6 +399,8 @@ var js = function () {
             const priceInput = document.getElementById('price');
             const supplier = document.getElementById('supplier_id');
             const publisher = document.getElementById('publisher_id');
+            const category = document.getElementById('category-multiselect');
+            const author = document.getElementById('author-multiselect');
             
             console.log("Price Input:", priceInput);
     
@@ -410,6 +412,8 @@ var js = function () {
                     priceInput.disabled = true;
                     supplier.disabled = true;
                     publisher.disabled = true;
+                    category.disabled = true;
+                    author.disabled = true;
                 } else {
                     priceInput.disabled = false;
                 }
