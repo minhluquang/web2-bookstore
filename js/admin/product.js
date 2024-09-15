@@ -389,7 +389,12 @@ var js = function () {
     //     }
     //  });
 
-    document.querySelector(".actions--edit").addEventListener("click", (e) => {
+   // Lấy tất cả các nút sửa
+const editButtons = document.querySelectorAll(".actions--edit");
+
+// Duyệt qua từng nút và gán sự kiện
+editButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
         // Thay thế nội dung của modal
         modal.innerHTML = modal_html;
     
@@ -401,7 +406,7 @@ var js = function () {
             const publisher = document.getElementById('publisher_id');
             const category = document.getElementById('category-multiselect');
             const author = document.getElementById('author-multiselect');
-            
+    
             console.log("Price Input:", priceInput);
     
             if (selectStatus && priceInput) {
@@ -414,6 +419,8 @@ var js = function () {
                     publisher.disabled = true;
                     category.disabled = true;
                     author.disabled = true;
+                    category.style.cursor = "default";
+                    author.style.cursor = "default";
                 } else {
                     priceInput.disabled = false;
                 }
@@ -422,6 +429,8 @@ var js = function () {
             }
         }, 0); // Thực hiện sau khi HTML được thêm vào DOM
     });
+});
+
     
 
 
