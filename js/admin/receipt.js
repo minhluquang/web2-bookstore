@@ -237,35 +237,29 @@ function addProduct() {
     
     if (!selectedProductId) return; 
 
-    // $.ajax({
-    //   url: '../controller/admin/receipt.controller.php',
-    //   type: "post",
-    //   dataType: 'html',
-    //   data: {
-    //     function: "getPrice",
-    //     field: { id: selectedProductId }
-    //   }
-    // }).done(function (result) {
-    //   inputPrice = 0.8 * parseFloat(result);
-    //   document.getElementById('inputPrice').value = inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    // }).fail(function() {
-    //   alert('Đã xảy ra lỗi khi lấy giá.');
-    // });
+    $.ajax({
+      url: '../controller/admin/receipt.controller.php',
+      type: "post",
+      dataType: 'html',
+      data: {
+        function: "getPrice",
+        field: { id: selectedProductId }
+      }
+    }).done(function (result) {
+      inputPrice = 0.8 * parseFloat(result);
+      document.getElementById('inputPrice').value = inputPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }).fail(function() {
+      alert('Đã xảy ra lỗi khi lấy giá.');
+    });
   });
 
   document.getElementById("addProduct").addEventListener("click", function() {
     quantity = document.getElementById('quantity').value;
-    inputPrice = document.getElementById('inputPrice').value;
-    if (productId.trim() === '' || quantity.trim() === '' || inputPrice.trim()=== '') {
+    if (productId.trim() === '' || quantity.trim() === '') {
       alert('Vui lòng nhập đầy đủ thông tin.');
       return;
     }
-    inputPrice = +inputPrice;
-    if(isNaN(inputPrice) || inputPrice <=0) {
-      alert('Vui lòng nhập giá hợp lệ !');
-      return;
-    }
-
+   
     const tableBody = document.getElementById('productTableBody');
     let productExists = false;
 
@@ -370,7 +364,7 @@ var js = function () {
       </div>
       <div class="input-field">
         <label for="inputPrice">Giá nhập:</label>
-        <input type="text" id="inputPrice">
+        <input type="text" id="inputPrice" readonly>
       </div>
       <div class="form-actions">
         <button type="button"  class="btn" id="addProduct">Thêm sản phẩm</button>
