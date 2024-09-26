@@ -94,21 +94,21 @@ function pagnationBtn() {
     btn.addEventListener("click", function () {
       current_page = btn.innerHTML;
       loadItem();
-    })
+    },{once:true})
   );
   if (document.getElementsByClassName("pag-pre").length > 0)
     document.querySelector(".pag-pre").addEventListener("click", function () {
       current_page =
         Number(document.querySelector("span.active").innerHTML) - 1;
       loadItem(number_of_item, current_page);
-    });
+    },{once:true});
   if (document.getElementsByClassName("pag-con").length > 0)
     document.querySelector(".pag-con").addEventListener("click", function () {
       current_page =
         Number(document.querySelector("span.active").innerHTML) + 1;
 
       loadItem();
-    });
+    },{once:true});
 }
 function loadItem() {
   var filter = getGRFilterFromForm();
@@ -376,7 +376,7 @@ const openModal = (addHtml) => {
 
   openModalBtn.addEventListener("click", function () {
     addModalContent.innerHTML = addHtml;
-    addModalContent.addEventListener("click", addProduct());
+    addModalContent.addEventListener("click", addProduct(),{once:true});
     addModal.style.display = "block";
 
     $.ajax({
@@ -390,7 +390,7 @@ const openModal = (addHtml) => {
       const supplierSelect = document.getElementById("supplier");
       supplierSelect.innerHTML = htmlResult;
     });
-  });
+  },{once:true});
 
   closeAddIcon.addEventListener("click", function () {
     addModal.style.display = "none";
@@ -439,7 +439,7 @@ const openModal = (addHtml) => {
       $("#sqlresult").html(result);
       addModal.style.display = "none";
     });
-  });
+  },{once:true});
 
   const editModal = document.getElementById("editModal");
   const editModalContent = document.querySelector(".editModal-content .form");
@@ -535,38 +535,6 @@ const openModal = (addHtml) => {
 };
 
 var js = function () {
-  if (orderby != "" && order_type != "")
-    document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML +=
-      order_type == "ASC"
-        ? ' <i class="fas fa-sort-up">'
-        : ' <i class="fas fa-sort-down">';
-  else if (!document.querySelector("[data-order]")) {
-    openModal(addHtml);
-  } else
-    document.querySelector("[data-order]").innerHTML +=
-      order_type == "ASC"
-        ? ' <i class="fas fa-sort-up">'
-        : ' <i class="fas fa-sort-down">';
-  document
-    .querySelector(".result")
-    .querySelectorAll("th")
-    .forEach((th) => {
-      if (th.hasAttribute("data-order"))
-        th.addEventListener("click", () => {
-          if (orderby == "")
-            orderby = document
-              .querySelector("[data-order]")
-              .getAttribute("data-order");
-          if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
-            order_type = "DESC";
-          } else {
-            order_type = "ASC";
-          }
-          orderby = th.getAttribute("data-order");
-          loadItem();
-        });
-    });
-
   var addHtml = `
   <div class="form">
     <h2>Thêm thông tin đơn nhập hàng</h2>
@@ -614,6 +582,38 @@ var js = function () {
       </table>
     </div>
   </div>`;
-
-  openModal(addHtml);
+  let flag = false;
+  if (orderby != "" && order_type != "")
+    document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML +=
+      order_type == "ASC"
+        ? ' <i class="fas fa-sort-up">'
+        : ' <i class="fas fa-sort-down">';
+  else if (!document.querySelector("[data-order]")) {
+    openModal(addHtml);
+    flag = true;
+  } else
+    document.querySelector("[data-order]").innerHTML +=
+      order_type == "ASC"
+        ? ' <i class="fas fa-sort-up">'
+        : ' <i class="fas fa-sort-down">';
+  document
+    .querySelector(".result")
+    .querySelectorAll("th")
+    .forEach((th) => {
+      if (th.hasAttribute("data-order"))
+        th.addEventListener("click", () => {
+          if (orderby == "")
+            orderby = document
+              .querySelector("[data-order]")
+              .getAttribute("data-order");
+          if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
+            order_type = "DESC";
+          } else {
+            order_type = "ASC";
+          }
+          orderby = th.getAttribute("data-order");
+          loadItem();
+        });
+    });
+    !flag ? openModal(addHtml) :"";
 };
