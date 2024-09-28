@@ -148,6 +148,22 @@ const validationFormDangNhap = () => {
   return isNotEmptyUsername && isNotEmptyPassword;
 };
 
+// Sự kiện nhấn enter khi nhập xong password (đăng nhập)
+loginPassword.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    btnDangNhap.click();
+  }
+});
+
+// Sự kiện nhấn enter khi nhập xong nhập lại password
+registerConfirmPassword.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    btnDangKy.click();
+  }
+});
+
 $(document).ready(function () {
   $(".btnDangNhap").click(function (e) {
     e.preventDefault();
@@ -462,6 +478,16 @@ $(document).ready(function () {
         const data = JSON.parse(result);
         document.querySelector(".reload").classList.add("hidden");
         if (data.success) {
+          document
+            .querySelector("#verify_code")
+            .addEventListener("keydown", (event) => {
+              if (event.key === "Enter") {
+                console.log(123);
+                event.preventDefault();
+                document.querySelector(".btnSendCode").click();
+              }
+            });
+
           document
             .querySelector(".verify_code_background")
             .classList.remove("hidden");
