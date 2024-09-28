@@ -7,7 +7,7 @@ function checkLogin($username, $password)
   global $database;
   $sql = "SELECT *
               FROM accounts
-              WHERE username = '$username'";
+              WHERE username = '$username' AND role_id = '3'";
   $result = $database->query($sql);
 
   // Kiểm tra xem có tồn tại không?
