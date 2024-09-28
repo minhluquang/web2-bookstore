@@ -3,8 +3,7 @@ var order_type = "ASC";
 var title = "";
 
 var search = location.search.substring(1);
-var atHome= (search==""||search=="page=home")
-
+var atHome = search == "" || search == "page=home";
 
 $(document).ready(function () {
   $(".btnLogoutAdmin").click(function () {
@@ -24,24 +23,24 @@ $(document).ready(function () {
       }
     });
   });
-  if(atHome)checkFunction();
+  if (atHome) checkFunction();
   $("#close").click(function () {
     document.querySelector("#chitiet").classList.toggle("show");
-  })
+  });
   $("#filter").click(function () {
     $.ajax({
-      url: '../controller/admin/index.controller.php',
+      url: "../controller/admin/index.controller.php",
       type: "post",
-      dataType: 'html',
+      dataType: "html",
       data: {
-        getBestSellers : true,
+        getBestSellers: true,
         date_start: document.querySelector("#startdate").value,
         date_end: document.querySelector("#enddate").value,
-      }
+      },
     }).done(function (result) {
-      $('.result').html(result);
+      $(".result").html(result);
       console.log(result);
-    })
+    });
     $.ajax({
       type: "post",
       url: "../controller/admin/index.controller.php",
@@ -53,16 +52,18 @@ $(document).ready(function () {
       },
     }).done(function (result) {
       if (result) {
-        $("#thongke-container").html(result)
-        document.querySelectorAll(".chitietbtn").forEach((btn) => btn.addEventListener('click', function () {
-          document.querySelector("#chitiet").classList.toggle("show");
-          document.querySelector("#title").querySelector("span").innerHTML = btn.parentNode.querySelector(".sanpham").innerHTML;
-          title = btn.getAttribute("data-id");
-          orderby = "id";
-          order_type = "ASC";
-          StatDetail();
-        }))
-
+        $("#thongke-container").html(result);
+        document.querySelectorAll(".chitietbtn").forEach((btn) =>
+          btn.addEventListener("click", function () {
+            document.querySelector("#chitiet").classList.toggle("show");
+            document.querySelector("#title").querySelector("span").innerHTML =
+              btn.parentNode.querySelector(".sanpham").innerHTML;
+            title = btn.getAttribute("data-id");
+            orderby = "id";
+            order_type = "ASC";
+            StatDetail();
+          })
+        );
       } else {
         alert("Hệ thống gặp sự cố!");
       }
@@ -227,7 +228,6 @@ function notAllowedEntry(data) {
     .querySelector(`.sidebar__items .sidebar__item[page="${pageParam}"]`)
     .getAttribute("fncid");
 
-
   var isIncludeRole = false;
   data.forEach((role) => {
     if (fncid == role.function_id) {
@@ -256,7 +256,6 @@ function updateData4Boxes(data) {
 }
 
 function StatDetail() {
-
   $.ajax({
     type: "post",
     url: "../controller/admin/index.controller.php",
@@ -270,26 +269,36 @@ function StatDetail() {
       order_type: order_type,
     },
   }).done(function (result) {
-    $(".table-container").html(result)
-    var chitiet_table = document.querySelector("#chitiet-table")
-    chitiet_table.querySelector("[data-order=" + "'" + orderby + "']").querySelector("." + order_type).classList.remove("hidden");
+    $(".table-container").html(result);
+    var chitiet_table = document.querySelector("#chitiet-table");
+    chitiet_table
+      .querySelector("[data-order=" + "'" + orderby + "']")
+      .querySelector("." + order_type)
+      .classList.remove("hidden");
 
-    chitiet_table.querySelector(".table-container").querySelectorAll("th").forEach((th) => {
-      if (th.hasAttribute("data-order")) th.addEventListener("click", () => {
-        if (orderby == "") orderby = chitiet_table.querySelector("[data-order]").getAttribute("data-order");
-        if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
-          order_type = "DESC";
-        }
-        else {
-          order_type = "ASC"
-        }
-        orderby = th.getAttribute("data-order");
-        StatDetail();
-        
-      })
-    });
-  })
-
+    chitiet_table
+      .querySelector(".table-container")
+      .querySelectorAll("th")
+      .forEach((th) => {
+        if (th.hasAttribute("data-order"))
+          th.addEventListener("click", () => {
+            if (orderby == "")
+              orderby = chitiet_table
+                .querySelector("[data-order]")
+                .getAttribute("data-order");
+            if (
+              orderby == th.getAttribute("data-order") &&
+              order_type == "ASC"
+            ) {
+              order_type = "DESC";
+            } else {
+              order_type = "ASC";
+            }
+            orderby = th.getAttribute("data-order");
+            StatDetail();
+          });
+      });
+  });
 }
 function checkFunction() {
   $.ajax({
@@ -302,10 +311,9 @@ function checkFunction() {
     },
   }).done(function (result) {
     if (result == "1") {
-      document.querySelector(".thongkechitiet__container").classList.remove("hidden");
-     
-
-    }
-    else document.querySelector(".thongkechitiet__container").remove();
-  })
+      document
+        .querySelector(".thongkechitiet__container")
+        .classList.remove("hidden");
+    } else document.querySelector(".thongkechitiet__container").remove();
+  });
 }

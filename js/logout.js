@@ -8,6 +8,7 @@ $(document).ready(function () {
         logoutRequest: true,
       },
     }).done(function (result) {
+      localStorage.removeItem("keyword");
       window.location.href = "index.php?page=signup";
       alert("Bạn đã đăng xuất thành công!");
     });
