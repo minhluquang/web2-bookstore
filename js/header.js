@@ -124,3 +124,11 @@ headerRightCloseBar.addEventListener("click", (e) => {
   headerRightMenuBar.classList.toggle("hide");
   headerRightCloseBar.classList.toggle("hide");
 });
+
+// Sự kiện tự động focus btnSearch khi nhập kí tự
+searchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.querySelector("#searchButton").click();
+  }
+});
