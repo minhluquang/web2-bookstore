@@ -2,7 +2,7 @@
   class connectDB {
     private $servername = "localhost";
     private $username = "root";
-    private $databasename = "backend_web2";
+    private $databasename = "backend_web2_config";
     private $password = "";
     public $conn; // Đây là thuộc tính chứa kết nối
   
