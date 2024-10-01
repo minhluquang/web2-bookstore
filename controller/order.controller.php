@@ -11,8 +11,8 @@
     include_once('model/product.model.php');
   }
 
-  function getAllOrdersByUsername($username) {
-    $orders = getAllOrdersByUsernameModel($username);
+  function getAllOrdersByUsername($userID) {
+    $orders = getAllOrdersByUsernameModel($userID);
     if ($orders) {
       $orders = $orders->fetch_all(MYSQLI_ASSOC);
       return $orders; 

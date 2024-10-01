@@ -7,14 +7,33 @@ if (isset($_POST['usernameLogin']) && isset($_POST['passwordLogin'])) {
   $user = $_POST['usernameLogin'];
   $pass = $_POST['passwordLogin'];
 
-  // Kiểm tra thông tin đăng nhập
-  $loginResult = checkLogin($user, $pass);
-  if ($loginResult->success && $loginResult->status == 1) {
-    $_SESSION['username'] = $user;
-  }
-  echo json_encode($loginResult);
-}
+  // Khởi tạo đối tượng kết nối cơ sở dữ liệu (đảm bảo rằng kết nối đã tồn tại trong model)
+  global $database;
+  
+  // Kiểm tra nếu kết nối cơ sở dữ liệu tồn tại
+  if ($database) {
+    // Truy vấn để lấy ID người dùng từ username
+    $result = $database->query("SELECT id FROM accounts WHERE username = '$user'");
+    
+    // Kiểm tra nếu truy vấn thành công và có kết quả
+    if ($result && $result->num_rows > 0) {
+      // Lấy id từ kết quả truy vấn
+      $idUser = mysqli_fetch_assoc($result)['id'];
 
+      // Kiểm tra thông tin đăng nhập
+      $loginResult = checkLogin($user, $pass);
+
+      // Nếu đăng nhập thành công
+      if ($loginResult->success && $loginResult->status == 1) {
+        // Gán thông tin vào session
+        $_SESSION['username'] = $user;
+        $_SESSION['id'] = $idUser;
+      }
+
+      // Trả về kết quả đăng nhập dưới dạng JSON
+      echo json_encode($loginResult);
+    } 
+  }}
 // Kiểm tra nếu có dữ liệu gửi từ Ajax (REGISTER)
 if (isset($_POST['function'])) {
   $function = $_POST['function'];
@@ -108,6 +127,7 @@ function registerAccount()
 
   }
 }
+
 function resetPassword()
 {
   if (

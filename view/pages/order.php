@@ -25,8 +25,8 @@
           include_once('controller/product_detail.controller.php');
           include_once('controller/order_detail.controller.php');
           
-          $username = $_SESSION['username'];
-          $orders = getAllOrdersByUsername($username);
+          $userID = $_SESSION['id'];
+          $orders = getAllOrdersByUsername($userID);
           
           // Nếu có order thì render, không thì báo không
           if (count($orders) > 0) {

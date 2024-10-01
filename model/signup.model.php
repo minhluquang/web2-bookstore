@@ -117,11 +117,16 @@ function registerNewAccount($username, $email, $fullname, $phoneNumber, $address
 
   $sqlInsertAccount = "INSERT INTO accounts (username, password, role_id, status,email) 
                       VALUES ('$username', '$hashedPassword', 3, 1,'$email')";
-  $sqlInsertUserInfo = "INSERT INTO delivery_infoes (user_id, fullname, phone_number, address, city, district, ward)
-                            VALUES ('$username', '$fullname', '$phoneNumber', '$address', '$city', '$district', '$ward')";
+  
 
   $resultInsertAccount = $database->execute($sqlInsertAccount);
-  $resultInsertUserInfo = $database->execute($sqlInsertUserInfo);
+  if ( $resultInsertAccount){
+    $result = $database->query("SELECT id FROM accounts WHERE username='$username'");
+    $userId = mysqli_fetch_assoc($result)['id'];
+    $sqlInsertUserInfo = "INSERT INTO delivery_infoes (user_id, fullname, phone_number, address, city, district, ward)
+                            VALUES ($userId, '$fullname', '$phoneNumber', '$address', '$city', '$district', '$ward')";
+    $resultInsertUserInfo = $database->execute($sqlInsertUserInfo);
+  } 
 
   // Nếu như insert thành công vào database
   if ($resultInsertAccount && $resultInsertUserInfo) {

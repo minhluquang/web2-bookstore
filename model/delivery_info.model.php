@@ -8,6 +8,11 @@
 
       $result = $database->query($sql);
       $database->close();
+
+    //   $allUserInfo = $result->fetch_all(MYSQLI_ASSOC);
+    
+    // // // In ra thông tin
+    // print_r($allUserInfo);
       return $result;
     } else {
       $database->close();
@@ -47,7 +52,7 @@
       return false;
     }
   }
-  function createUserInfoByIdModel($username, $fullname, $phone_number, $address, $city, $district, $ward) {
+  function createUserInfoByIdModel($userID, $fullname, $phone_number, $address, $city, $district, $ward) {
     $database = new connectDB();
     if ($database->conn) {
       $sql = "SELECT user_info_id FROM `delivery_infoes` ORDER BY user_info_id DESC LIMIT 1";
@@ -55,7 +60,7 @@
       $id=mysqli_fetch_array($result);
       $id=$id['user_info_id']+1;
       $sql = "INSERT INTO delivery_infoes (user_info_id,user_id,fullname,phone_number,address,city,district,ward)  
-              VALUE('$id','$username','$fullname','$phone_number','$address','$city','$district','$ward')";
+              VALUE('$id','$userID','$fullname','$phone_number','$address','$city','$district','$ward')";
 
       $result = $database->execute($sql);
       $database->close();
