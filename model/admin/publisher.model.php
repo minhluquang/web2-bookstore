@@ -54,15 +54,12 @@ function publisher_delete($id)
   } else {
      return $result = "<span class='failed'>Nhà xuất bản '. $id .' không tồn tại</span>";
   }
-  
-
 
 }
 function publisher_create($field)
 {
   global $database;
   $sql = "SELECT * from publishers WHERE name = '" . $field['name'] . "'";
-
   $result = null;
   $result = $database->query($sql);
   $row = mysqli_fetch_array($result);
@@ -71,11 +68,12 @@ function publisher_create($field)
           VALUES ('" . $field['name'] . "', '" . $field['email']  . "',1) ";
     $result = $database->execute($sql);
     if ($result) {
-      $result = "<span class='success'>Tạo thể loại thành công</span>";
-    } else $result = "<span class='failed'>Tạo thể loại không thành công</span>";
+      $result = "<span class='success'>Tạo nhà xuất bản thành công</span>";
+    } else $result = "<span class='failed'>Tạo nhà xuất bản không thành công</span>";
 
     return ($result);
-  } else return "<span class='failed'>Thể loại" . $row['name'] . " đã tồn tại</span>";
+  } 
+  // else return "<span class='failed'>Thể loại" . $row['name'] . " đã tồn tại</span>";
 }
 function publisher_edit($field)
 {
