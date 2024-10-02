@@ -28,7 +28,7 @@ $_SESSION["render"]->setTable("publishers");
       </div>
       <div class="body__filter--field body__filter--idClient">
         <p>Mã nhà xuất bản</p>
-        <input id="publisherId" type="text" placeholder="Nhập mã nhà xuất bản" />
+        <input id="publisherId" type="number" placeholder="Nhập mã nhà xuất bản" />
       </div>
       <div class="body__filter--field body__filter--idClient">
         <p>Email nhà xuất bản</p>
