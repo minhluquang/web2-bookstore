@@ -48,9 +48,23 @@
   if (isset($_POST['huyDonHang']) && $_POST['huyDonHang']) {
     $orderId = $_POST['orderId'];
 
+    // Kiểm tra xem đơn hàng có ở trạng thái huỷ hay không?
+    $order = getDetailOrderByOrderIdModel($orderId);
+    $order = $order->fetch_all(MYSQLI_ASSOC);
+    $orderStatus = $order[0]['order_status_id'];
+
+    if ($orderStatus != 1 && $orderStatus != 2) {
+      $reponse = (object) array (
+        "success" => false,
+        "message" => "Đơn hàng này hiện tại không được huỷ nữa"
+      );
+      echo json_encode($reponse);
+      return;
+    } 
+
     $orderDetails = getAllOrderDetailByOrderIdModel($orderId);
     $orderDetails = $orderDetails->fetch_all(MYSQLI_ASSOC);
-
+    
     foreach ($orderDetails as $orderDetail) {
       // Thay đổi đơn hàng thành status_id = 3 (đã huỷ)
       if (deleteOrderByOrderId($orderId) && updateQuantityProductByIdModel($orderDetail['product_id'], $orderDetail['quantity'])) {

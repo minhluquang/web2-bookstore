@@ -38,12 +38,8 @@ $(document).ready(function () {
         },
       }).done(function (result) {
         const data = JSON.parse(result);
-        if (data.success) {
-          alert(data.message);
-          location.reload();
-        } else {
-          alert(data.message);
-        }
+        alert(data.message);
+        location.reload();
       });
     }
   });
