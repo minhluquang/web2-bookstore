@@ -107,6 +107,7 @@ function create_account($field) {
   global $database;
   $username = $field['username'];
   $password = $field['password'];
+  $email = $field['email'];
   $pass_hash = password_hash($password,PASSWORD_DEFAULT);
   $role = $field['role'];
   $success_1 = false;
@@ -117,9 +118,10 @@ function create_account($field) {
   if(mysqli_num_rows($result) > 0) {
     return "<span class='failed'>Tên đăng nhập đã tồn tại</span>"; 
   }
-  $sql_insert = "INSERT INTO accounts (username, password, role_id,status) VALUES ('$username', '$pass_hash', '$role',1)";
+  $sql_insert = "INSERT INTO accounts (username, password, role_id, status, email) 
+                  VALUES ('$username', '$pass_hash', '$role', 1, '$email')";
   if ($database->query($sql_insert)) {
-    $success_1 = true;
+    $success_1 = true; 
   } else {
     return "<span class='failed'>Tạo tài khoản thất bại</span>";
   }
