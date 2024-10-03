@@ -1,127 +1,116 @@
-var filter_form = document.querySelector(".admin__content--body__filter");
+var filter_form = document.querySelector('.admin__content--body__filter')
 
 function getFilterFromURL() {
-  filter_form.querySelector("#supplierName").value =
-    urlParams["name"] != null ? urlParams["name"] : "";
-  filter_form.querySelector("#supplierId").value =
-    urlParams["id"] != null ? urlParams["id"] : "";
-  filter_form.querySelector("#statusSelect").value =
-    urlParams["status"] != null ? urlParams["status"] : "active";
+  filter_form.querySelector('#supplierName').value = urlParams['name'] != null ? urlParams['name'] : ''
+  filter_form.querySelector('#supplierId').value = urlParams['id'] != null ? urlParams['id'] : ''
+  filter_form.querySelector('#statusSelect').value = urlParams['status'] != null ? urlParams['status'] : 'active'
 }
 
 function pushFilterToURL() {
-  var filter = getFilterFromForm();
+  var filter = getFilterFromForm()
   var url_key = {
-    supplier_name: "name",
-    supplier_id: "id",
-    supplier_status: "status",
-  };
-  var url = "";
+    supplier_name: 'name',
+    supplier_id: 'id',
+    supplier_status: 'status',
+  }
+  var url = ''
   Object.keys(filter).forEach((key) => {
-    url +=
-      filter[key] != null && filter[key] != ""
-        ? `&${url_key[key]}=${filter[key]}`
-        : "";
-  });
-  return url;
+    url += filter[key] != null && filter[key] != '' ? `&${url_key[key]}=${filter[key]}` : ''
+  })
+  return url
 }
 
 function getFilterFromForm() {
   return {
-    supplier_name: filter_form.querySelector("#supplierName").value,
-    supplier_id: filter_form.querySelector("#supplierId").value,
-    supplier_status: filter_form.querySelector("#statusSelect").value,
-  };
+    supplier_name: filter_form.querySelector('#supplierName').value,
+    supplier_id: filter_form.querySelector('#supplierId').value,
+    supplier_status: filter_form.querySelector('#statusSelect').value,
+  }
 }
 // Load the jquery
-var script = document.createElement("SCRIPT");
-script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
-script.type = "text/javascript";
-document.getElementsByTagName("head")[0].appendChild(script);
-var search = location.search.substring(1);
-urlParams = JSON.parse(
-  '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-  function (key, value) {
-    return key === "" ? value : decodeURIComponent(value);
-  }
-);
-var number_of_item = urlParams["item"];
-var current_page = urlParams["pag"];
-var orderby = urlParams["orderby"];
-var order_type = urlParams["order_type"];
+var script = document.createElement('SCRIPT')
+script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'
+script.type = 'text/javascript'
+document.getElementsByTagName('head')[0].appendChild(script)
+var search = location.search.substring(1)
+urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
+  return key === '' ? value : decodeURIComponent(value)
+})
+var number_of_item = urlParams['item']
+var current_page = urlParams['pag']
+var orderby = urlParams['orderby']
+var order_type = urlParams['order_type']
 if (current_page == null) {
-  current_page = 1;
+  current_page = 1
 }
 if (number_of_item == null) {
-  number_of_item = 5;
+  number_of_item = 5
 }
 if (orderby == null) {
-  orderby = "";
+  orderby = ''
 }
-if (order_type != "ASC" && order_type != "DESC") {
-  order_type = "ASC";
+if (order_type != 'ASC' && order_type != 'DESC') {
+  order_type = 'ASC'
 }
 
 function checkReady() {
   return new Promise(async function (resolve) {
     while (!window.jQuery) {
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 20))
     }
-    resolve();
-  });
+    resolve()
+  })
 }
 async function loadForFirstTime() {
-  await checkReady();
-  getFilterFromURL();
-  loadItem();
+  await checkReady()
+  getFilterFromURL()
+  loadItem()
   // the ajax below are for create product
 }
 
 function pagnationBtn() {
   // pagnation
-  document.querySelectorAll(".pag").forEach((btn) =>
-    btn.addEventListener("click", function () {
-      current_page = btn.innerHTML;
-      loadItem();
+  document.querySelectorAll('.pag').forEach((btn) =>
+    btn.addEventListener('click', function () {
+      current_page = btn.innerHTML
+      loadItem()
     })
-  );
-  if (document.getElementsByClassName("pag-pre").length > 0)
-    document.querySelector(".pag-pre").addEventListener("click", function () {
-      current_page =
-        Number(document.querySelector("span.active").innerHTML) - 1;
-      loadItem(number_of_item, current_page);
-    });
-  if (document.getElementsByClassName("pag-con").length > 0)
-    document.querySelector(".pag-con").addEventListener("click", function () {
-      current_page =
-        Number(document.querySelector("span.active").innerHTML) + 1;
-      loadItem();
-    });
+  )
+  if (document.getElementsByClassName('pag-pre').length > 0)
+    document.querySelector('.pag-pre').addEventListener('click', function () {
+      current_page = Number(document.querySelector('span.active').innerHTML) - 1
+      loadItem(number_of_item, current_page)
+    })
+  if (document.getElementsByClassName('pag-con').length > 0)
+    document.querySelector('.pag-con').addEventListener('click', function () {
+      current_page = Number(document.querySelector('span.active').innerHTML) + 1
+      loadItem()
+    })
 }
 
 function loadItem() {
-  var filter = getFilterFromForm();
+  var filter = getFilterFromForm()
   $.ajax({
-    url: "../controller/admin/pagnation.controller.php",
-    type: "post",
-    dataType: "html",
+    url: '../controller/admin/pagnation.controller.php',
+    type: 'post',
+    dataType: 'html',
     data: {
       number_of_item: number_of_item,
       current_page: current_page,
-      function: "getRecords",
+      function: 'getRecords',
       filter: filter,
     },
   }).done(function (result) {
-    if (current_page > parseInt(result)) current_page = parseInt(result);
-    if (current_page < 1) current_page = 1;
+    if (current_page > parseInt(result)) current_page = parseInt(result)
+    if (current_page < 1) current_page = 1
     $.ajax({
-      url: "../controller/admin/pagnation.controller.php",
-      type: "post",
-      dataType: "html",
+      url: '../controller/admin/pagnation.controller.php',
+      type: 'post',
+      dataType: 'html',
       data: {
         number_of_item: number_of_item,
         current_page: current_page,
-        function: "render",
+        function: 'render',
         orderby: orderby,
         order_type: order_type,
         filter: filter,
@@ -129,66 +118,66 @@ function loadItem() {
     }).done(function (result) {
       var newurl =
         window.location.protocol +
-        "//" +
+        '//' +
         window.location.host +
         window.location.pathname +
-        "?page=" +
-        urlParams["page"] +
-        "&item=" +
+        '?page=' +
+        urlParams['page'] +
+        '&item=' +
         number_of_item +
-        "&current_page=" +
-        current_page;
-      newurl += pushFilterToURL();
+        '&current_page=' +
+        current_page
+      newurl += pushFilterToURL()
       window.history.pushState(
         {
           path: newurl,
         },
-        "",
+        '',
         newurl
-      );
-      $(".result").html(result);
-      pagnationBtn();
-      filterBtn();
-      js();
-    });
-  });
+      )
+      $('.result').html(result)
+      pagnationBtn()
+      filterBtn()
+      js()
+    })
+  })
 }
-document.addEventListener("DOMContentLoaded", () => {
-  loadForFirstTime();
-});
+document.addEventListener('DOMContentLoaded', () => {
+  loadForFirstTime()
+})
 
 function filterBtn() {
-  $(".body__filter--action__filter").click((e) => {
-    e.preventDefault();
-    var supplierId = filter_form.querySelector("#supplierId").value.trim();
-    var message = filter_form.querySelector("#message");
-    var check = true;
-    var regex = /^\d+$/;
-    if (supplierId !== "" && !supplierId.match(regex)) {
-      message.innerHTML = "*Mã nhà cung cấp phải là kí tự số";
-      filter_form.querySelector("#supplierId").focus();
-      check = false;
+  $('.body__filter--action__filter').click((e) => {
+    e.preventDefault()
+    var supplierId = filter_form.querySelector('#supplierId').value.trim()
+    var message = filter_form.querySelector('#message')
+    var check = true
+    var regex = /^\d+$/
+    if (supplierId !== '' && !supplierId.match(regex)) {
+      message.innerHTML = '*Mã nhà cung cấp phải là kí tự số'
+      filter_form.querySelector('#supplierId').focus()
+      check = false
     }
 
     if (check === true) {
-      message.innerHTML = "";
-      current_page = 1;
-      loadItem();
+      message.innerHTML = ''
+      current_page = 1
+      loadItem()
     }
-  });
-  $(".body__filter--action__reset").click((e) => {
-    check = true;
-    message.innerHTML = "";
-    current_page = 1;
-    status_value = "active";
+  })
+  $('.body__filter--action__reset').click((e) => {
+    check = true
+    message.innerHTML = ''
+    current_page = 1
+    status_value = 'active'
     $.ajax({
-      url: "../controller/admin/pagnation.controller.php",
-      type: "post",
-      dataType: "html",
+      url: '../controller/admin/pagnation.controller.php',
+      type: 'post',
+      dataType: 'html',
       data: {
         number_of_item: number_of_item,
         current_page: current_page,
-        function: "render",
+        function: 'render',
         filter: {
           supplier_status: status_value,
         },
@@ -196,59 +185,52 @@ function filterBtn() {
     }).done(function (result) {
       var newurl =
         window.location.protocol +
-        "//" +
+        '//' +
         window.location.host +
         window.location.pathname +
-        "?page=" +
-        urlParams["page"] +
-        "&item=" +
+        '?page=' +
+        urlParams['page'] +
+        '&item=' +
         number_of_item +
-        "&current_page=" +
-        current_page;
+        '&current_page=' +
+        current_page
       window.history.pushState(
         {
           path: newurl,
         },
-        "",
+        '',
         newurl
-      );
-      $(".result").html(result);
-      pagnationBtn();
-      js();
-    });
-  });
+      )
+      $('.result').html(result)
+      pagnationBtn()
+      js()
+    })
+  })
 }
 
 var js = function () {
-  if (orderby != "" && order_type != "")
-    document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML +=
-      order_type == "ASC"
-        ? ' <i class="fas fa-sort-up">'
-        : ' <i class="fas fa-sort-down">';
+  if (orderby != '' && order_type != '')
+    document.querySelector('[data-order=' + "'" + orderby + "']").innerHTML +=
+      order_type == 'ASC' ? ' <i class="fas fa-sort-up">' : ' <i class="fas fa-sort-down">'
   else
-    document.querySelector("[data-order]").innerHTML +=
-      order_type == "ASC"
-        ? ' <i class="fas fa-sort-up">'
-        : ' <i class="fas fa-sort-down">';
+    document.querySelector('[data-order]').innerHTML +=
+      order_type == 'ASC' ? ' <i class="fas fa-sort-up">' : ' <i class="fas fa-sort-down">'
   document
-    .querySelector(".result")
-    .querySelectorAll("th")
+    .querySelector('.result')
+    .querySelectorAll('th')
     .forEach((th) => {
-      if (th.hasAttribute("data-order"))
-        th.addEventListener("click", () => {
-          if (orderby == "")
-            orderby = document
-              .querySelector("[data-order]")
-              .getAttribute("data-order");
-          if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
-            order_type = "DESC";
+      if (th.hasAttribute('data-order'))
+        th.addEventListener('click', () => {
+          if (orderby == '') orderby = document.querySelector('[data-order]').getAttribute('data-order')
+          if (orderby == th.getAttribute('data-order') && order_type == 'ASC') {
+            order_type = 'DESC'
           } else {
-            order_type = "ASC";
+            order_type = 'ASC'
           }
-          orderby = th.getAttribute("data-order");
-          loadItem();
-        });
-    });
+          orderby = th.getAttribute('data-order')
+          loadItem()
+        })
+    })
   const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
     <div class="modal-header">
@@ -284,103 +266,112 @@ var js = function () {
         </form>
     </div>
 </div>
-</div>`;
+</div>`
 
-  document
-    .querySelector(".body__filter--action__add")
-    .addEventListener("click", (e) => {
-      e.preventDefault();
-      modal.innerHTML = create_html;
-      const modal_create_container = document.querySelector(
-        "#modal-edit-container"
-      );
-      modal_create_container
-        .querySelector(".button-confirm")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          const message_name =
-            modal_create_container.querySelector("#message_name");
-          const message_email =
-            modal_create_container.querySelector("#message_email");
-          const message_sdt =
-            modal_create_container.querySelector("#message_sdt");
-          const name = modal_create_container
-            .querySelector("#namesupplier")
-            .value.trim();
-          const email = modal_create_container
-            .querySelector("#emailsupplier")
-            .value.trim();
-          const sdt = modal_create_container
-            .querySelector("#sdtsupplier")
-            .value.trim();
-          const regexPhoneNumber = /^0\d{9}$/;
-          const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/;
-          var check = true;
-          if (name == "") {
-            message_name.innerHTML = "*Vui lòng điền tên nhà cung cấp";
-            modal_create_container.querySelector("#namesupplier").focus();
-            check = false;
-          } else {
-            message_name.innerHTML = "";
-          }
-          if (email == "") {
-            message_email.innerHTML = "*Vui lòng điền email";
-            modal_create_container.querySelector("#emailsupplier").focus();
-            check = false;
-          } else {
-            message_email.innerHTML = "";
-          }
-          if (sdt == "") {
-            message_sdt.innerHTML = "*Vui lòng điền số điện thoại";
-            modal_create_container.querySelector("#sdtsupplier").focus();
-            check = false;
-          } else {
-            message_sdt.innerHTML = "";
-          }
+  document.querySelector('.body__filter--action__add').addEventListener('click', (e) => {
+    e.preventDefault()
+    modal.innerHTML = create_html
+    const modal_create_container = document.querySelector('#modal-edit-container')
 
-          if (!sdt.match(regexPhoneNumber) && sdt != "") {
-            message_sdt.innerHTML =
-              "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (0331256391)";
-            modal_create_container.querySelector("#sdtsupplier").focus();
-            check = false;
-          }
-          if (!email.match(regexEmail) && email != "") {
-            message_email.innerHTML =
-              "* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)";
-            modal_create_container.querySelector("#emailsupplier").focus();
-            check = false;
-          }
-          if (check == true) {
-            message_email.innerHTML = "";
-            message_name.innerHTML = "";
-            message_sdt.innerHTML = "";
+    modal_create_container.querySelector('.button-confirm').addEventListener('click', function (e) {
+      e.preventDefault()
+      const message_name = modal_create_container.querySelector('#message_name')
+      const message_email = modal_create_container.querySelector('#message_email')
+      const message_sdt = modal_create_container.querySelector('#message_sdt')
+      const name = modal_create_container.querySelector('#namesupplier').value.trim()
+      const email = modal_create_container.querySelector('#emailsupplier').value.trim()
+      const sdt = modal_create_container.querySelector('#sdtsupplier').value.trim()
+      const regexPhoneNumber = /^0\d{9}$/
+      const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/
+      let check = true
+
+      // Kiểm tra tên nhà cung cấp
+      if (name === '') {
+        message_name.innerHTML = '*Vui lòng điền tên nhà cung cấp'
+        modal_create_container.querySelector('#namesupplier').focus()
+        check = false
+      } else {
+        message_name.innerHTML = ''
+      }
+
+      // Kiểm tra email
+      if (email === '') {
+        message_email.innerHTML = '*Vui lòng điền email'
+        modal_create_container.querySelector('#emailsupplier').focus()
+        check = false
+      } else if (!email.match(regexEmail)) {
+        message_email.innerHTML = '* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)'
+        modal_create_container.querySelector('#emailsupplier').focus()
+        check = false
+      } else {
+        message_email.innerHTML = ''
+      }
+
+      // Kiểm tra số điện thoại
+      if (sdt === '') {
+        message_sdt.innerHTML = '*Vui lòng điền số điện thoại'
+        modal_create_container.querySelector('#sdtsupplier').focus()
+        check = false
+      } else if (!sdt.match(regexPhoneNumber)) {
+        message_sdt.innerHTML =
+          "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (0331256391)"
+        modal_create_container.querySelector('#sdtsupplier').focus()
+        check = false
+      } else {
+        message_sdt.innerHTML = ''
+      }
+
+      // Nếu tất cả các kiểm tra qua
+      if (check) {
+        // Kiểm tra tính duy nhất của email và số điện thoại cùng lúc
+        $.ajax({
+          url: '../controller/admin/supplier.controller.php',
+          type: 'post',
+          dataType: 'json',
+          data: {
+            function: 'checkEmailAndPhoneExists',
+            email: email,
+            sdt: sdt,
+          },
+        }).done(function (result) {
+          if (result.emailExists) {
+            message_email.innerHTML = '*Email đã tồn tại !'
+            modal_create_container.querySelector('#emailsupplier').focus()
+          } else if (result.phoneExists) {
+            message_sdt.innerHTML = '*Số điện thoại đã tồn tại !'
+            modal_create_container.querySelector('#sdtsupplier').focus()
+          } else {
+            // Gửi yêu cầu tạo nhà cung cấp mới nếu cả email và số điện thoại không tồn tại
             $.ajax({
-              url: "../controller/admin/supplier.controller.php",
-              type: "post",
-              dataType: "html",
+              url: '../controller/admin/supplier.controller.php',
+              type: 'post',
+              dataType: 'html',
               data: {
-                function: "create",
+                function: 'create',
                 field: {
-                  name: modal.querySelector("#namesupplier").value.trim(),
-                  email: modal.querySelector("#emailsupplier").value.trim(),
-                  sdt: modal.querySelector("#sdtsupplier").value.trim(),
+                  name: name,
+                  email: email,
+                  sdt: sdt,
                 },
               },
             }).done(function (result) {
-              loadItem();
-              $("#sqlresult").html(result);
-            });
-            modal_create_container.classList.add("hidden");
+              loadItem()
+              $('#sqlresult').html(result)
+            })
+            modal_create_container.classList.add('hidden')
           }
-        });
+        })
+      }
+    })
 
-      document.querySelector("#btnClose").addEventListener("click", () => {
-        modal_create_container.classList.add("hidden");
-      });
-      document.querySelector(".button-cancel").addEventListener("click", () => {
-        modal_create_container.classList.add("hidden");
-      });
-    });
+    document.querySelector('#btnClose').addEventListener('click', () => {
+      modal_create_container.classList.add('hidden')
+    })
+
+    document.querySelector('.button-cancel').addEventListener('click', () => {
+      modal_create_container.classList.add('hidden')
+    })
+  })
 
   const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
@@ -420,115 +411,133 @@ var js = function () {
         </form>
     </div>
 </div>
-</div>`;
+</div>`
 
-  var edit_btns = document.getElementsByClassName("actions--edit");
+  var edit_btns = document.getElementsByClassName('actions--edit')
   for (var i = 0; i < edit_btns.length; i++) {
-    edit_btns[i].addEventListener("click", function (e) {
-      modal.innerHTML = edit_html;
-      const modal_edit_container = document.querySelector(
-        "#modal-edit-container"
-      );
-      modal.querySelector("#btnClose").addEventListener("click", () => {
-        modal_edit_container.classList.remove("show");
-      });
-      var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
-      modal.querySelector("#name").value =
-        this.parentNode.parentNode.querySelector(".name").innerHTML;
-      modal.querySelector("#email").value =
-        this.parentNode.parentNode.querySelector(".email").innerHTML;
-      modal.querySelector("#sdt").value =
-        this.parentNode.parentNode.querySelector(".number_phone").innerHTML;
+    edit_btns[i].addEventListener('click', function (e) {
+      modal.innerHTML = edit_html
+      const modal_edit_container = document.querySelector('#modal-edit-container')
+      modal.querySelector('#btnClose').addEventListener('click', () => {
+        modal_edit_container.classList.remove('show')
+      })
+      var id = this.parentNode.parentNode.querySelector('.id').innerHTML
+      var currentEmail = this.parentNode.parentNode.querySelector('.email').innerHTML
+      var currentSdt = this.parentNode.parentNode.querySelector('.number_phone').innerHTML
 
-      modal
-        .querySelector(".button-confirm")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          const message_name =
-            modal_edit_container.querySelector("#message_name");
-          const message_email =
-            modal_edit_container.querySelector("#message_email");
-          const message_sdt =
-            modal_edit_container.querySelector("#message_sdt");
-          const name = modal_edit_container.querySelector("#name").value.trim();
-          const email = modal_edit_container
-            .querySelector("#email")
-            .value.trim();
-          const sdt = modal_edit_container.querySelector("#sdt").value.trim();
-          const regexPhoneNumber = /^0\d{9}$/;
-          const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/;
-          var check = true;
-          if (name == "") {
-            message_name.innerHTML = "*Vui lòng điền tên nhà cung cấp";
-            modal_edit_container.querySelector("#name").focus();
-            check = false;
-          } else {
-            message_name.innerHTML = "";
-          }
+      modal.querySelector('#name').value = this.parentNode.parentNode.querySelector('.name').innerHTML
+      modal.querySelector('#email').value = currentEmail
+      modal.querySelector('#sdt').value = currentSdt
 
-          if (email == "") {
-            message_email.innerHTML = "*Vui lòng điền email nhà cung cấp";
-            modal_edit_container.querySelector("#email").focus();
-            check = false;
-          } else {
-            message_email.innerHTML = "";
-          }
+      modal.querySelector('.button-confirm').addEventListener('click', function (e) {
+        e.preventDefault()
+        const message_name = modal_edit_container.querySelector('#message_name')
+        const message_email = modal_edit_container.querySelector('#message_email')
+        const message_sdt = modal_edit_container.querySelector('#message_sdt')
+        const name = modal_edit_container.querySelector('#name').value.trim()
+        const email = modal_edit_container.querySelector('#email').value.trim()
+        const sdt = modal_edit_container.querySelector('#sdt').value.trim()
+        const regexPhoneNumber = /^0\d{9}$/
+        const regexEmail = /^[a-zA-Z0-9.-_]+@[a-zA-Z0-9.-_]+\.[a-zA-Z]{2,}$/
+        var check = true
 
-          if (sdt == "") {
-            message_sdt.innerHTML = "*Vui lòng điền số điện thoại nhà cung cấp";
-            modal_edit_container.querySelector("#sdt").focus();
-            check = false;
-          } else {
-            message_sdt.innerHTML = "";
-          }
-          if (!sdt.match(regexPhoneNumber) && sdt != "") {
-            message_sdt.innerHTML =
-              "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (033125639)";
-            modal_edit_container.querySelector("#sdt").focus();
-            check = false;
-          }
-          if (!email.match(regexEmail) && email != "") {
-            message_email.innerHTML =
-              "* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)";
-            modal_edit_container.querySelector("#email").focus();
-            check = false;
-          }
-          if (check == true) {
-            message_name.innerHTML = "";
-            message_email.innerHTML = "";
-            message_sdt.innerHTML = "";
-            $.ajax({
-              url: "../controller/admin/supplier.controller.php",
-              type: "post",
-              dataType: "html",
-              data: {
-                function: "edit",
-                field: {
-                  id: id,
-                  name: modal.querySelector("#name").value.trim(),
-                  email: modal.querySelector("#email").value.trim(),
-                  sdt: modal.querySelector("#sdt").value.trim(),
+        // Kiểm tra tên nhà cung cấp
+        if (name === '') {
+          message_name.innerHTML = '*Vui lòng điền tên nhà cung cấp'
+          modal_edit_container.querySelector('#name').focus()
+          check = false
+        } else {
+          message_name.innerHTML = ''
+        }
+
+        // Kiểm tra email
+        if (email === '') {
+          message_email.innerHTML = '*Vui lòng điền email nhà cung cấp'
+          modal_edit_container.querySelector('#email').focus()
+          check = false
+        } else if (!email.match(regexEmail)) {
+          message_email.innerHTML = '* - email không hợp lệ <br> - Ví dụ :(example@gmail.com)'
+          modal_edit_container.querySelector('#email').focus()
+          check = false
+        } else {
+          message_email.innerHTML = ''
+        }
+
+        // Kiểm tra số điện thoại
+        if (sdt === '') {
+          message_sdt.innerHTML = '*Vui lòng điền số điện thoại nhà cung cấp'
+          modal_edit_container.querySelector('#sdt').focus()
+          check = false
+        } else if (!sdt.match(regexPhoneNumber)) {
+          message_sdt.innerHTML =
+            "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (033125639)"
+          modal_edit_container.querySelector('#sdt').focus()
+          check = false
+        } else {
+          message_sdt.innerHTML = ''
+        }
+
+        // Nếu tất cả các kiểm tra qua
+        if (check) {
+          message_name.innerHTML = ''
+          message_email.innerHTML = ''
+          message_sdt.innerHTML = ''
+
+          // Kiểm tra tính duy nhất của email và số điện thoại trước khi cập nhật
+          $.ajax({
+            url: '../controller/admin/supplier.controller.php',
+            type: 'post',
+            dataType: 'json',
+            data: {
+              function: 'checkEditEmailAndPhoneExists',
+              email: email,
+              sdt: sdt,
+              currentEmail: currentEmail,
+              currentSdt: currentSdt,
+            },
+          }).done(function (result) {
+            if (result.emailExists) {
+              message_email.innerHTML = '*Email đã tồn tại trong hệ thống'
+              modal_edit_container.querySelector('#email').focus()
+            } else if (result.phoneExists) {
+              message_sdt.innerHTML = '*Số điện thoại đã tồn tại trong hệ thống'
+              modal_edit_container.querySelector('#sdt').focus()
+            } else {
+              // Gửi yêu cầu chỉnh sửa thông tin nhà cung cấp
+              $.ajax({
+                url: '../controller/admin/supplier.controller.php',
+                type: 'post',
+                dataType: 'html',
+                data: {
+                  function: 'edit',
+                  field: {
+                    id: id,
+                    name: name,
+                    email: email,
+                    sdt: sdt,
+                  },
                 },
-              },
-            }).done(function (result) {
-              loadItem();
-              $("#sqlresult").html(result);
-            });
-            modal_edit_container.classList.remove("show");
-          }
-        });
-    });
+              }).done(function (result) {
+                loadItem()
+                $('#sqlresult').html(result)
+              })
+              modal_edit_container.classList.remove('show')
+            }
+          })
+        }
+      })
+    })
   }
 
   // delete
 
-  const del_btns = document.getElementsByClassName("actions--delete");
+  const del_btns = document.getElementsByClassName('actions--delete')
 
   for (var i = 0; i < del_btns.length; i++) {
-    del_btns[i].addEventListener("click", function () {
-      let selected_content = this.parentNode.parentNode;
-      let supplier_id = selected_content.querySelector(".id").innerHTML;
-      let supplier_name = selected_content.querySelector(".name").innerHTML;
+    del_btns[i].addEventListener('click', function () {
+      let selected_content = this.parentNode.parentNode
+      let supplier_id = selected_content.querySelector('.id').innerHTML
+      let supplier_name = selected_content.querySelector('.name').innerHTML
 
       var del_html = `
         <div class="modal-edit-product-container show" id="modal-edit-container">
@@ -552,45 +561,43 @@ var js = function () {
             </div>
         </div>
     </div>
-        `;
+        `
 
-      modal.innerHTML = del_html;
-      $(".del-confirm").click(function (e) {
-        e.preventDefault();
-        var $id = $("#supplier-delete-id").html();
+      modal.innerHTML = del_html
+      $('.del-confirm').click(function (e) {
+        e.preventDefault()
+        var $id = $('#supplier-delete-id').html()
         $.ajax({
-          url: "../controller/admin/supplier.controller.php",
-          type: "post",
-          dataType: "html",
+          url: '../controller/admin/supplier.controller.php',
+          type: 'post',
+          dataType: 'html',
           data: {
-            function: "delete",
+            function: 'delete',
             id: $id,
           },
         }).done(function (result) {
-          loadItem();
-          $("#sqlresult").html(result);
-          modal_edit_container.classList.remove("show");
-        });
-      });
+          loadItem()
+          $('#sqlresult').html(result)
+          modal_edit_container.classList.remove('show')
+        })
+      })
 
       // Button close
-      const modal_edit_container = document.querySelector(
-        "#modal-edit-container"
-      );
+      const modal_edit_container = document.querySelector('#modal-edit-container')
 
-      const btnClose = document.querySelector("#btnClose");
+      const btnClose = document.querySelector('#btnClose')
       // console.log(btnClose)
-      btnClose.addEventListener("click", () => {
+      btnClose.addEventListener('click', () => {
         // console.log(modal_edit_container)
-        modal_edit_container.classList.remove("show");
-      });
+        modal_edit_container.classList.remove('show')
+      })
       // Button cancel
-      const btnCancel = document.querySelector(".del-cancel");
+      const btnCancel = document.querySelector('.del-cancel')
       // console.log(btnClose)
-      btnCancel.addEventListener("click", () => {
+      btnCancel.addEventListener('click', () => {
         // console.log(modal_edit_container)
-        modal_edit_container.classList.remove("show");
-      });
-    });
+        modal_edit_container.classList.remove('show')
+      })
+    })
   }
-};
+}
