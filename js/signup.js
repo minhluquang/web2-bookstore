@@ -482,7 +482,6 @@ $(document).ready(function () {
             .querySelector("#verify_code")
             .addEventListener("keydown", (event) => {
               if (event.key === "Enter") {
-                console.log(123);
                 event.preventDefault();
                 document.querySelector(".btnSendCode").click();
               }

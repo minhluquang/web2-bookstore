@@ -118,9 +118,14 @@ function create_account($field) {
   if(mysqli_num_rows($result) > 0) {
     return "<span class='failed'>Tên đăng nhập đã tồn tại</span>"; 
   }
+
+  $sql_insert_verify_code = "INSERT INTO verify_code (email) 
+                  VALUES ('$email')";
+  
   $sql_insert = "INSERT INTO accounts (username, password, role_id, status, email) 
                   VALUES ('$username', '$pass_hash', '$role', 1, '$email')";
-  if ($database->query($sql_insert)) {
+  
+  if ($database->query($sql_insert_verify_code) && $database->query($sql_insert)) {
     $success_1 = true; 
   } else {
     return "<span class='failed'>Tạo tài khoản thất bại</span>";

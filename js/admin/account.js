@@ -13291,19 +13291,33 @@ var js = function () {
             "changeConfirmNewPassword"
           );
           if (currentPass.value === "") {
-            alert("Vui lòng nhập mật khẩu hiện tại !");
+            alert("Vui lòng nhập mật khẩu hiện tại.");
+            currentPass.focus();
+            return;
+          } else if (currentPass.value.length < 8) {
+            alert("Vui lòng nhập mật khẩu hiện tại tối thiểu 8 ký tự.");
             currentPass.focus();
             return;
           } else if (newPass.value === "") {
-            alert("Vui lòng nhập mật khẩu mới !");
+            alert("Vui lòng nhập mật khẩu mới.");
+            newPass.focus();
+            return;
+          } else if (newPass.value.length < 8) {
+            alert("Vui lòng nhập mật khẩu mới phải tối thiểu 8 ký tự.");
             newPass.focus();
             return;
           } else if (confirmNewPass.value === "") {
-            alert("Vui lòng nhập lại mật khẩu mới !");
+            alert("Vui lòng nhập lại mật khẩu mới.");
+            confirmNewPass.focus();
+            return;
+          } else if (confirmNewPass.value.length < 8) {
+            alert(
+              "Vui lòng nhập nhập lại mật khẩu mới phải tối thiểu 8 ký tự."
+            );
             confirmNewPass.focus();
             return;
           } else if (newPass.value !== confirmNewPass.value) {
-            alert("nhập lại mật khẩu không chính xác !");
+            alert("nhập lại mật khẩu không chính xác.");
             confirmNewPass.focus();
             return;
           }
@@ -13322,9 +13336,16 @@ var js = function () {
             dataType: "html",
             data: data,
           }).done(function (result) {
-            loadItem();
+            var className = $(result).attr("class");
+
+            if (className == "failed") {
+              alert("Nhập sai mật khẩu hiện tại.");
+            } else {
+              alert("Thay đổi mật khẩu thành công.");
+              modal.style.display = "none";
+            }
             $("#sqlresult").html(result);
-            modal.style.display = "none";
+            loadItem();
           });
         });
 
