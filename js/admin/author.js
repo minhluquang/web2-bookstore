@@ -265,7 +265,6 @@ const js = function () {
   if (name === "") {
    alert("Vui lòng điền tên. !");
    document.getElementById("addAuthorName").focus();
-
    return;
   }
   if (!regexName.test(name)) {
@@ -381,8 +380,31 @@ const js = function () {
    document.getElementById("editAuthorName").value = authorName;
    document.getElementById("editAuthorEmail").value = authorEmail;
 
+   // Hàm kiểm tra email hợp lệ
+   function isValidEmail(email) {
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+   }
+
    saveButton.addEventListener("click", function (e) {
     e.preventDefault();
+
+    // Lấy giá trị email sau khi chỉnh sửa
+    var editedEmail = editModal.querySelector("#editAuthorEmail");
+    // Kiểm tra xem email có hợp lệ không
+    if (editedEmail.value === "") {
+     alert("Hãy nhập email.");
+     editedEmail.focus();
+     return;
+    }
+
+    if (!isValidEmail(editedEmail.value)) {
+     alert("Email không hợp lệ! Vui lòng nhập lại.");
+     editedEmail.focus();
+     return;
+    }
+
+    // Nếu email hợp lệ, tiếp tục gửi AJAX
     $.ajax({
      url: "../controller/admin/author.controller.php",
      type: "post",
@@ -392,7 +414,7 @@ const js = function () {
       field: {
        id: authorId,
        name: editModal.querySelector("#editAuthorName").value,
-       email: editModal.querySelector("#editAuthorEmail").value,
+       email: editedEmail,
       },
      },
     }).done(function (result) {
