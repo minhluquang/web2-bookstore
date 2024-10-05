@@ -315,18 +315,19 @@ const validationFormDangKy = () => {
     isNotEmptyCity = true;
   }
 
-  if (
-    !isNotEmptyUsername ||
-    !isNotEmptyEmail ||
-    !isNotEmptyFullname ||
-    !isNotEmptyPhoneNumber ||
-    !isNotEmptyAddress ||
-    !isNotEmptyPassword ||
-    !isNotEmptyConfirmPassword ||
-    !isNotEmptyCity
-  ) {
-    alert("Vui lòng điền đầy đủ các trường dữ liệu!");
-  }
+  // if (
+  //   !isNotEmptyUsername ||
+  //   !isNotEmptyEmail ||
+  //   !isNotEmptyFullname ||
+  //   !isNotEmptyPhoneNumber ||
+  //   !isNotEmptyAddress ||
+  //   !isNotEmptyPassword ||
+  //   !isNotEmptyConfirmPassword ||
+  //   !isNotEmptyCity
+  // ) {
+  //   // alert("Vui lòng điền đầy đủ các trường dữ liệu!");
+  //   return false;
+  // }
 
   return (
     isNotEmptyUsername &&
