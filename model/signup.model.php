@@ -152,7 +152,7 @@ function getVerifyCode($email, $time)
 function checkVerifyCode($email, $code, $time)
 {
   $result = getVerifyCode($email, $time);
-  if ($result['time'] > 3) {
+  if ($result['time'] > 300) {
     send_code($email);
       return (object) array(
       'success' => false,
@@ -173,7 +173,7 @@ function checkVerifyCode($email, $code, $time)
 function sendNewVerifyCode($email, $time)
 {
   $result = getVerifyCode($email, $time);
-  if ($result['time'] <= 12) echo "Bạn phải đợi ít nhất 2 phút trước khi lấy mã mới";
+  if ($result['time'] <= 120) echo "Bạn phải đợi ít nhất 2 phút trước khi lấy mã mới";
   else {
     send_code($email);
     echo "Đã gửi mã xác nhận mới";
