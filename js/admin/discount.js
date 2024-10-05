@@ -296,7 +296,7 @@ var js = function () {
           const start_date = new Date(start_date_str);
           const end_date = new Date(end_date_str);
 
-          const regexNumber = /\d+/;
+          const regexNumber = /\d+$/;
 
           var check = true;
 
@@ -307,7 +307,6 @@ var js = function () {
           } else {
             message_name.innerHTML = "";
           }
-
           if (type == "") {
             message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
             modal.querySelector("#type_discount").focus();
@@ -315,7 +314,6 @@ var js = function () {
           } else {
             message_type.innerHTML = "";
           }
-
           if (discount_value == "") {
             message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
             modal.querySelector("#value_discount").focus();
@@ -515,6 +513,8 @@ var js = function () {
           const start_date = new Date(start_date_str);
           const end_date = new Date(end_date_str);
 
+          const regexNumber = /\d+$/;
+
           var check = true;
 
           if (type == "") {
@@ -527,7 +527,17 @@ var js = function () {
 
           if (discount_value == "") {
             message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
-            modal_edit_container.querySelector("#value_discount").focus();
+            modal.querySelector("#value_discount").focus();
+            check = false;
+          } else if (!regexNumber.test(discount_value)) {
+            message_value.innerHTML =
+              "*Vui lòng nhập giá trị mã khuyến mãi là chữ số";
+            modal.querySelector("#value_discount").focus();
+            check = false;
+          } else if (discount_value <= 0) {
+            message_value.innerHTML =
+              "*Vui lòng nhập giá trị mã khuyến mãi lớn hơn 0";
+            modal.querySelector("#value_discount").focus();
             check = false;
           } else if (type == "PR") {
             if (discount_value > 100) {
