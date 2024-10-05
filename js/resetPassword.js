@@ -115,7 +115,7 @@ const validationFormPassword = () => {
     isNotEmptyPassword = false;
   } else if (registerPassword.value.trim().length < 8) {
     errMessagePasswordRegister.innerText =
-      "Vui lòng điền mật khẩu tối thiệu 8 kí tự";
+      "Vui lòng điền mật khẩu tối thiểu 8 kí tự";
     isNotEmptyPassword = false;
   } else {
     errMessagePasswordRegister.innerText = "";
