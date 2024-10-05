@@ -197,6 +197,10 @@ function filterBtn() {
     var productId = filter_form.querySelector("#productId").value.trim();
     var message_end = filter_form.querySelector("#message_end");
     var message_start = filter_form.querySelector("#message_begin");
+    var message_price_start = filter_form.querySelector("#message_price_start");
+    var message_price_end = filter_form.querySelector("#message_price_end");
+    const start_price = filter_form.querySelector("#price_start");
+    const end_price = filter_form.querySelector("#price_end");
     const start_date_str = filter_form.querySelector("#date_start").value;
     const end_date_str = filter_form.querySelector("#date_end").value;
     const start_date = new Date(start_date_str);
@@ -230,6 +234,21 @@ function filterBtn() {
     } else {
       message_end.innerHTML = "";
     }
+
+    if(start_price.value !== "" && (isNaN(start_price.value)  || start_price.value <= 0)) {
+      message_price_start.innerHTML = "*Giá bắt đầu phải là số dương";
+      check = false;
+    } else {
+      message_price_start.innerHTML = "";
+    }
+
+    if(end_price.value !== "" && (isNaN(end_price.value)  || end_price.value <= 0)) {
+      message_price_end.innerHTML = "*Giá kết thúc phải là số dương";
+      check = false;
+    } else {
+      message_price_end.innerHTML = "";
+    }
+    
     if (check == true) {
       message_productId.innerHTML = "";
       message_start.innerHTML = "";
@@ -1342,16 +1361,17 @@ var js = function () {
       name_err.innerHTML = "Không được để trống";
       success = false;
     }
+    console.log(typeof price.value)
     if (price.value.trim().length == 0) {
       price.classList.add("error-field");
       price_err.classList.remove("hidden");
       price_err.innerHTML = "Không được để trống";
       success = false;
-    } else if (!price_regex.test(price.value)) {
+    } else if (!price_regex.test(price.value) || parseFloat(price.value) <= 0) {
       price_err.classList.remove("hidden");
-      price_err.innerHTML = "Giá chỉ đuọc chứa số";
+      price_err.innerHTML = "Giá phải là số dương";
       success = false;
-    }
+    } 
     if (publisher.value == "") {
       publisher.classList.add("error-field");
       publisher_err.classList.remove("hidden");
