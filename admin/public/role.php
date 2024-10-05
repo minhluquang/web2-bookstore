@@ -41,7 +41,7 @@ $_SESSION["render"] ->setTable("functions");
             </div> -->
            
         </div>
-
+        <p id="message"></p>
 
         <div class="body__filter--actions">
         <button type="button" class="body__filter--action__add">Sửa quyền nhân viên</button>

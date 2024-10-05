@@ -561,7 +561,6 @@ class pagnation
                             <tr>
                             <th data-order="id">Mã quyền</th>                 
                             <th data-order="name">Tên quyền</th>      
-                            <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody class="table-content" id="content">
@@ -576,10 +575,10 @@ class pagnation
                             // echo '<td class="date-create">'.$row['create_date'].'</td>';
                             // echo '<td class="date-delete">'.$row['delete_date'].'</td>';
                             // echo '<td class="date-update">'.$row['update_date'].'</td>';
-                            echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                        </td>
-                        </tr>';
+                        //     echo '<td class="actions">
+                        //     <button class="actions--edit">Sửa</button>
+                        // </td>
+                        echo '</tr>';
                         }
                         echo ' 
                     </tbody>

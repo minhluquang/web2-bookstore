@@ -61,10 +61,12 @@ $_SESSION["render"] ->setTable("products");
             <div class="body__filter--field body__filter--idClient" id="">
                 <p>Lọc theo giá</p>
                 <input id="price_start" type="text" placeholder="Nhập giá bắt đầu" />
+                <p id="message_price_start" class = "message"></p>
             </div>
             <div class="body__filter--field body__filter--idClient" id="">
                 <p>&#8203;</p>
                 <input id="price_end" type="text" placeholder="Nhập giá kết thúc" />
+                <p id="message_price_end" class = "message"></p>
             </div>
             <div class="body__filter--field body__filter--status" id="">
                 <p>Trạng thái:</p>

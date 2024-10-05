@@ -55,6 +55,15 @@ function category_edit($field)
   global $database;
   date_default_timezone_set('Asia/Ho_Chi_Minh');
   $date = date('Y-m-d', time());
+  // check valid
+  $sql_check = "SELECT * FROM categories WHERE name = '" . $field['name'] . "' AND id != " . $field['id'];
+
+  $valid = $database->query($sql_check);
+  if ($valid->num_rows > 0) {
+    return "<span class='failed'>Tên thể loại đã tồn tại</span>";
+}
+
+  //  edit
   $sql = "SELECT * from categories WHERE id = " . $field['id'] . "";
   $result = null;
   $result = $database->query($sql);

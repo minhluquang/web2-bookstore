@@ -301,6 +301,10 @@ function addProduct() {
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
+    if(quantity <= 0) {
+      alert("Số lượng phải là số nguyên dương lớn hơn 0");
+      return;
+    }
 
     const tableBody = document.getElementById("productTableBody");
     let productExists = false;

@@ -127,11 +127,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function filterBtn() {
     $(".body__filter--action__filter").click((e) => {
-        current_page = 1;
         e.preventDefault();
-        loadItem();
+        const id = filter_form.querySelector("#roleId").value.trim();
+        var message = document.getElementById("message");
+        var check = true;
+        if(isNaN(id) && id !== "") {
+            message.innerHTML = "Mã quyền không hợp lệ";
+            filter_form.querySelector("#roleId").focus();
+            check = false;
+        } else if(id <= 0 && id !== "") {
+            message.innerHTML = "Mã quyền không thể là số âm";
+            filter_form.querySelector("#roleId").focus();
+            check = false;
+        } else {
+            message.innerHTML = "";
+        }
+        if(check) {
+         current_page = 1;
+         loadItem();
+        }
     })
     $(".body__filter--action__reset").click((e) => {
+        message.innerHTML = "";
         current_page = 1;
         status_value = "active";
         $.ajax({
@@ -344,6 +361,11 @@ var edit_btns = document.getElementsByClassName("actions--edit");
         
             modal.querySelector('.button-confirm').addEventListener('click', function (e) {
                 e.preventDefault();
+                const name = modal.querySelector('#name').value.trim();
+                if(name === "") {
+                    alert("Không được để trống tên quyền");
+                    return;
+                }
                 $.ajax({
                     url: '../controller/admin/role.controller.php',
                     type: "post",

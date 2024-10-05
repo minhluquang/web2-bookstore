@@ -150,9 +150,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function filterBtn() {
  $(".body__filter--action__filter").click((e) => {
-  current_page = 1;
   e.preventDefault();
-  loadItem();
+  const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const name_regex = /^[A-Za-zÀ-ÿ\s]+$/;
+  const name = filter_form.querySelector("#authorName").value.trim();
+  const id = filter_form.querySelector("#authorId").value.trim();
+  const email = filter_form.querySelector("#authorEmail").value.trim();
+  var message = filter_form.querySelector("#message");
+  var check = true;
+
+   if((isNaN(id) || id <= 0) && id !== "") {
+    message.innerHTML = "*Mã tác giả không hợp lệ";
+    filter_form.querySelector("#authorId").focus();
+    check = false;
+  } else if(!email.match(regexEmail) && email !== "") {
+    message.innerHTML = "*Email không hợp lệ";
+    filter_form.querySelector("#authorEmail").focus();
+    check = false;
+  }
+  
+  if (check == true) {
+    message.innerHTML = "";
+    current_page = 1;
+    loadItem();
+  }
  });
  $(".body__filter--action__reset").click((e) => {
   current_page = 1;

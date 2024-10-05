@@ -121,6 +121,12 @@ function create_account($field) {
 
   $sql_insert_verify_code = "INSERT INTO verify_code (email) 
                   VALUES ('$email')";
+  $sql_check = "SELECT * FROM verify_code WHERE email = '$email'";
+  $result_check = $database->query($sql_check);
+  if(mysqli_num_rows($result_check) > 0) {
+    return "<span class='failed'>Email đã tồn tại</span>"; 
+  }
+
   
   $sql_insert = "INSERT INTO accounts (username, password, role_id, status, email) 
                   VALUES ('$username', '$pass_hash', '$role', 1, '$email')";

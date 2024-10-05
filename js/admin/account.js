@@ -13025,6 +13025,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 function filterBtn() {
   $(".body__filter--action__filter").click((e) => {
+    
     current_page = 1;
     e.preventDefault();
     loadItem();
@@ -13462,6 +13463,7 @@ var js = function () {
         const regexSpecialCharForFullName = /^[a-zA-ZÀ-ỹ\s]+$/;
         const regexSpecialCharForUsername = /^[a-zA-ZÀ-ỹ0-9\s]+$/;
         const regexPhoneNumber = /^0[0-9]{9}$/;
+        const regexAddress = /^\d+[A-Za-z]?(\/\d+)?\s[a-zA-ZÀ-ỹ\s]+$/
         const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if (username.value === "") {
@@ -13520,6 +13522,10 @@ var js = function () {
           alert("Vui lòng nhập địa chỉ.");
           diachi.focus();
           return;
+        } else if (!regexAddress.test(diachi.value)) {
+          alert("Nhập địa chỉ không đúng định dạng (ví dụ: 173A/32 Dương quảng hàm).");
+          diachi.focus();
+          return;
         } else if (role.value === "") {
           alert("Vui lòng chọn loại tài khoản.");
           role.focus();
@@ -13568,11 +13574,11 @@ var js = function () {
         });
     });
 
-  window.addEventListener("click", function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  });
+  // window.addEventListener("click", function (event) {
+  //   if (event.target == modal) {
+  //     modal.style.display = "none";
+  //   }
+  // });
 };
 
 function changeQuanHuyen() {

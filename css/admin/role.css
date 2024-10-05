@@ -1,7 +1,7 @@
 
-  #content-product thead th:nth-child(3) {
+  /* #content-product thead th:nth-child(3) {
     width: 10%;
-  }
+  } */
   .modal-body-2 {
     grid-template-columns: none;
   }
@@ -9,3 +9,7 @@
   .modal-body-2 input {
     width: 100% !important; 
   }
+
+  tbody, td {
+    height: 50px !important;
+}

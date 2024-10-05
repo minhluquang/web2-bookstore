@@ -44,7 +44,7 @@ $_SESSION["render"] ->setTable("authors");
             </div>
 
         </div>
-
+        <p id="message"></p>
 
         <div class="body__filter--actions">
         <button type="button" class="body__filter--action__add">Thêm tác giả</button>

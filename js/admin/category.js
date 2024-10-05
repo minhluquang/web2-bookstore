@@ -349,6 +349,10 @@ var js = function () {
             message.innerHTML = "*Vui lòng điền tên thể loại";
             modal_edit_container.querySelector("#name").focus();
             check = false;
+          } else if(name.length < 3) {
+            message.innerHTML = "*Tên thể loại quá ngắn";
+            modal_edit_container.querySelector("#name").focus();
+            check = false;
           }
           if (check == true) {
             message.innerHTML = "";
