@@ -648,7 +648,6 @@ class pagnation
 
 function getFilterSQL($table, $data)
 {
-
     switch ($table) {
         case 'products':
             return getProductFilterSQL($data);
@@ -972,42 +971,98 @@ function getUserFilterSQL($data)
 }
 
 
-function getOrderFilterSQL($data)
-{
-    $filter = "";
-    if (!empty($data)) {
-        if (!empty($data['id_customer'])) {
-            if ($filter != "") $filter .= " AND ";
-            $filter = $filter . "`customer_id` LIKE '%" . $data['id_customer'] . "%'";
-        }
-        if (!empty($data['id_staff'])) {     
-            if ($filter != "") $filter .= " AND ";
-            $filter = $filter . "`staff_id` LIKE '%" . $data['id_staff'] . "%'";
-        }
-        if (!empty($data['id_Order'])) {     
-            if ($filter != "") $filter .= " AND ";
-            $filter .= "id = " . $data['id_Order'];
-        }
+// function getOrderFilterSQL($data)
+// {
+//     $filter = "";
+//     $join = ""; 
 
-        if (!empty($data['Order_status']) && $data['Order_status']!="all") {
-            if ($filter != "") $filter = $filter . " AND ";
-            $filter = $filter . "status_id = ".$data['Order_status'] ;
+//     if (!empty($data)) {
+//         if (!empty($data['id_customer'])) {
+//             $join = " INNER JOIN delivery_infoes di ON di.user_info_id = o.delivery_info_id";
+//             if ($filter != "") $filter .= " AND ";
+//             $filter = $filter . "di.user_id LIKE '%" . $data['id_customer'] . "%'";
+//         }
+//         if (!empty($data['id_staff'])) {     
+//             if ($filter != "") $filter .= " AND ";
+//             $filter = $filter . "`staff_id` LIKE '%" . $data['id_staff'] . "%'";
+//         }
+//         if (!empty($data['id_Order'])) {     
+//             if ($filter != "") $filter .= " AND ";
+//             $filter .= "id = " . $data['id_Order'];
+//         }
+
+//         if (!empty($data['Order_status']) && $data['Order_status']!="all") {
+//             if ($filter != "") $filter = $filter . " AND ";
+//             $filter = $filter . "status_id = ".$data['Order_status'] ;
 
             
+//         }
+//         if (!empty($data['date_begin'])) {
+//             if ($filter != "") $filter .= " AND ";
+//             $filter .= "date_create >= '" . $data['date_begin'] . "'";
+//         }
+//         if (!empty($data['date_end'])) {
+//             if ($filter != "") $filter .= " AND ";
+//             $filter .= "date_create <= '" . $data['date_end'] . "'";
+//         }
+        
+//         if ($filter != "") $filter = " WHERE " . $filter;
+//     }
+//     return $filter;
+// }
+
+function getOrderFilterSQL($data) {
+    $filter = "";  // Biến lưu trữ câu lệnh WHERE
+    $join = "";    // Biến lưu trữ câu lệnh JOIN
+    
+    if (!empty($data)) {
+        // Điều kiện kiểm tra và thiết lập JOIN nếu có id_customer
+        if (!empty($data['id_customer'])) {
+            // Thêm JOIN để kết nối với bảng delivery_infoes
+            $join = " INNER JOIN delivery_infoes di ON di.user_info_id = orders.delivery_info_id";
+            
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "di.user_id LIKE '%" . $data['id_customer'] . "%'";
         }
+
+        // Điều kiện lọc cho staff_id
+        if (!empty($data['id_staff'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "orders.staff_id LIKE '%" . $data['id_staff'] . "%'";
+        }
+
+        // Điều kiện lọc theo id_Order
+        if (!empty($data['id_Order'])) {     
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "orders.id = " . $data['id_Order'];
+        }
+
+        // Điều kiện lọc theo Order_status
+        if (!empty($data['Order_status']) && $data['Order_status'] != "all") {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "orders.status_id = " . $data['Order_status'];
+        }
+
+        // Điều kiện lọc theo date_begin
         if (!empty($data['date_begin'])) {
             if ($filter != "") $filter .= " AND ";
-            $filter .= "date_create >= '" . $data['date_begin'] . "'";
+            $filter .= "orders.date_create >= '" . $data['date_begin'] . "'";
         }
+
+        // Điều kiện lọc theo date_end
         if (!empty($data['date_end'])) {
             if ($filter != "") $filter .= " AND ";
-            $filter .= "date_create <= '" . $data['date_end'] . "'";
+            $filter .= "orders.date_create <= '" . $data['date_end'] . "'";
         }
-        
-        if ($filter != "") $filter = " WHERE " . $filter;
     }
-    return $filter;
+
+    // Kết hợp JOIN và WHERE nếu cần
+    if ($filter != "") $filter = " WHERE " . $filter;
+
+    // Trả về chuỗi JOIN và WHERE kết hợp để hàm render() sử dụng
+    return $join . $filter;
 }
+
 
 function money_format($money)
 {
