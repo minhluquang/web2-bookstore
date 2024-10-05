@@ -381,6 +381,7 @@ $(document).ready(function () {
     },
    }).done(function (result) {
     const data = JSON.parse(result);
+    console.log(validationFormDangKy(), data);
     if (validationFormDangKy()) {
      if (data.success) {
       var username = $("#registerUsername").val();
@@ -415,9 +416,11 @@ $(document).ready(function () {
        window.location.href = "index.php?page=signup";
        alert("Bạn đã đăng ký thành công!");
       });
+     } else {
+       $(".verify_code_msg").html(data.message);
      }
     } else {
-     $(".verify_code_msg").html(data.message);
+      console.log(data);
     }
    });
   }
