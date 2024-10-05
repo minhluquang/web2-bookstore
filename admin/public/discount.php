@@ -42,10 +42,12 @@ $_SESSION["render"] ->setTable("discounts");
       
 
         <div class="body__filter--actions">
-            <button class="body__filter--action__add">Thêm mã giảm giá</button>
+        <button type="button" class="body__filter--action__add">Thêm mã giảm giá</button>
+
             <div>
                 <button type="reset" class="body__filter--action__reset">Reset</button>
-                <button class="body__filter--action__filter">Lọc</button>
+                <button type="submit" class="body__filter--action__filter">Lọc</button>
+
             </div>
         </div>
     </form>
