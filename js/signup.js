@@ -13579,5 +13579,6 @@ setInputFilter(
 document
  .querySelector(".verify_code_confirm_container .closeModal")
  .addEventListener("click", (e) => {
+  document.getElementById("verify_code").value = "";
   document.querySelector(".verify_code_background").classList.add("hidden");
  });
