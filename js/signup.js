@@ -367,8 +367,10 @@ $(document).ready(function () {
    ":" +
    date.getSeconds();
   var code = $("#verify_code").val();
-  if (code.length < 6) $("#verify_code").focus();
-  else {
+  if (code.length < 6) {
+    alert("Vui lòng nhập mã xác thực gồm 6 chữ số");
+    $("#verify_code").focus();
+  } else {
    $.ajax({
     url: "controller/signup.controller.php",
     type: "post",
@@ -381,7 +383,6 @@ $(document).ready(function () {
     },
    }).done(function (result) {
     const data = JSON.parse(result);
-    console.log(validationFormDangKy(), data);
     if (validationFormDangKy()) {
      if (data.success) {
       var username = $("#registerUsername").val();
