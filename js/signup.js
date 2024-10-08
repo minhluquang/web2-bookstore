@@ -367,8 +367,10 @@ $(document).ready(function () {
    ":" +
    date.getSeconds();
   var code = $("#verify_code").val();
-  if (code.length < 6) $("#verify_code").focus();
-  else {
+  if (code.length < 6) {
+    alert("Vui lòng nhập mã xác thực gồm 6 chữ số");
+    $("#verify_code").focus();
+  } else {
    $.ajax({
     url: "controller/signup.controller.php",
     type: "post",
@@ -415,9 +417,11 @@ $(document).ready(function () {
        window.location.href = "index.php?page=signup";
        alert("Bạn đã đăng ký thành công!");
       });
+     } else {
+       $(".verify_code_msg").html(data.message);
      }
     } else {
-     $(".verify_code_msg").html(data.message);
+      console.log(data);
     }
    });
   }
@@ -13576,5 +13580,6 @@ setInputFilter(
 document
  .querySelector(".verify_code_confirm_container .closeModal")
  .addEventListener("click", (e) => {
+  document.getElementById("verify_code").value = "";
   document.querySelector(".verify_code_background").classList.add("hidden");
  });

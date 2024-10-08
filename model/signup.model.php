@@ -1,6 +1,8 @@
 <?php
+require "../vendor/Mailer.php";
 include_once('connect.php');
 $database = new connectDB();
+
 
 function checkLogin($username, $password)
 {
@@ -53,10 +55,11 @@ function checkLogin($username, $password)
 
 function send_code($email)
 {
+  $mailer = new Mailer();
   $database = new connectDB();
   $code = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
-  $msg = "Mã xác nhận của bạn là $code";
-  $title = "Fahasa";
+  $msg = "Your mail verification code is: $code";
+  $title = "Fahasa Verification Code";
   $sql = "SELECT * FROM verify_code where email='$email'";
   $result = $database->query($sql);
   if (mysqli_num_rows($result) > 0) {
@@ -68,9 +71,10 @@ function send_code($email)
   $msg = wordwrap($msg, 70);
 
   // send email
-  $mail  = mail($email, $title, $msg);
+  $mailrs = $mailer->sendMail($email, $title, $msg); 
+  // $mail  = mail($email, $title, $msg);
   $database->close();
-  if ($mail) {
+  if ($mailrs) {
     return true;
   } else return false;
 }
@@ -150,7 +154,7 @@ function checkVerifyCode($email, $code, $time)
   $result = getVerifyCode($email, $time);
   if ($result['time'] > 300) {
     send_code($email);
-    return (object) array(
+      return (object) array(
       'success' => false,
       'message' => "Mã đã hết hạn! Xin nhập mã mới"
     );
@@ -171,7 +175,7 @@ function sendNewVerifyCode($email, $time)
   $result = getVerifyCode($email, $time);
   if ($result['time'] <= 120) echo "Bạn phải đợi ít nhất 2 phút trước khi lấy mã mới";
   else {
-    // send_code($email);
+    send_code($email);
     echo "Đã gửi mã xác nhận mới";
   }
 }

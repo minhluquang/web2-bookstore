@@ -1,9 +1,7 @@
 var filter_form = document.querySelector(".admin__content--body__filter");
 function getFilterFromURL() {
- filter_form.querySelector("#discountName").value =
-  urlParams["name"] != null ? urlParams["name"] : "";
- filter_form.querySelector("#statusSelect").value =
-  urlParams["status"] != null ? urlParams["status"] : "active";
+ filter_form.querySelector("#discountName").value = urlParams["name"] != null ? urlParams["name"] : "";
+ filter_form.querySelector("#statusSelect").value = urlParams["status"] != null ? urlParams["status"] : "active";
 }
 function pushFilterToURL() {
  var filter = getFilterFromForm();
@@ -13,10 +11,7 @@ function pushFilterToURL() {
  };
  var url = "";
  Object.keys(filter).forEach((key) => {
-  url +=
-   filter[key] != null && filter[key] != ""
-    ? `&${url_key[key]}=${filter[key]}`
-    : "";
+  url += filter[key] != null && filter[key] != "" ? `&${url_key[key]}=${filter[key]}` : "";
  });
  return url;
 }
@@ -32,12 +27,9 @@ script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
 script.type = "text/javascript";
 document.getElementsByTagName("head")[0].appendChild(script);
 var search = location.search.substring(1);
-urlParams = JSON.parse(
- '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
- function (key, value) {
-  return key === "" ? value : decodeURIComponent(value);
- }
-);
+urlParams = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}', function (key, value) {
+ return key === "" ? value : decodeURIComponent(value);
+});
 var number_of_item = urlParams["item"];
 var current_page = urlParams["pag"];
 var orderby = urlParams["orderby"];
@@ -184,24 +176,17 @@ function filterBtn() {
 var js = function () {
  if (orderby != "" && order_type != "")
   document.querySelector("[data-order=" + "'" + orderby + "']").innerHTML +=
-   order_type == "ASC"
-    ? ' <i class="fas fa-sort-up">'
-    : ' <i class="fas fa-sort-down">';
+   order_type == "ASC" ? ' <i class="fas fa-sort-up">' : ' <i class="fas fa-sort-down">';
  else
   document.querySelector("[data-order]").innerHTML +=
-   order_type == "ASC"
-    ? ' <i class="fas fa-sort-up">'
-    : ' <i class="fas fa-sort-down">';
+   order_type == "ASC" ? ' <i class="fas fa-sort-up">' : ' <i class="fas fa-sort-down">';
  document
   .querySelector(".result")
   .querySelectorAll("th")
   .forEach((th) => {
    if (th.hasAttribute("data-order"))
     th.addEventListener("click", () => {
-     if (orderby == "")
-      orderby = document
-       .querySelector("[data-order]")
-       .getAttribute("data-order");
+     if (orderby == "") orderby = document.querySelector("[data-order]").getAttribute("data-order");
      if (orderby == th.getAttribute("data-order") && order_type == "ASC") {
       order_type = "DESC";
      } else {
@@ -261,136 +246,128 @@ var js = function () {
 </div>
 </div>`;
 
- document
-  .querySelector(".body__filter--action__add")
-  .addEventListener("click", (e) => {
+ document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
+  e.preventDefault();
+  modal.innerHTML = create_html;
+  const modal_create_container = document.querySelector("#modal-edit-container");
+  modal.querySelector(".button-confirm").addEventListener("click", function (e) {
    e.preventDefault();
-   modal.innerHTML = create_html;
-   const modal_create_container = document.querySelector(
-    "#modal-edit-container"
-   );
-   modal
-    .querySelector(".button-confirm")
-    .addEventListener("click", function (e) {
-     e.preventDefault();
-     const message_name = modal_create_container.querySelector("#message_name");
-     const message_type = modal_create_container.querySelector("#message_type");
-     const message_value =
-      modal_create_container.querySelector("#message_value");
-     const message_start =
-      modal_create_container.querySelector("#message_start");
-     const message_end = modal_create_container.querySelector("#message_end");
-     const start_date_str =
-      modal_create_container.querySelector("#start_date").value;
-     const end_date_str =
-      modal_create_container.querySelector("#end_date").value;
-     const discount_code = modal.querySelector("#nameDiscount").value;
-     const type = modal.querySelector("#type_discount").value;
-     const discount_value = modal.querySelector("#value_discount").value;
+   const message_name = modal_create_container.querySelector("#message_name");
+   const message_type = modal_create_container.querySelector("#message_type");
+   const message_value = modal_create_container.querySelector("#message_value");
+   const message_start = modal_create_container.querySelector("#message_start");
+   const message_end = modal_create_container.querySelector("#message_end");
+   const start_date_str = modal_create_container.querySelector("#start_date").value;
+   const end_date_str = modal_create_container.querySelector("#end_date").value;
+   const discount_code = modal.querySelector("#nameDiscount").value;
+   const type = modal.querySelector("#type_discount").value;
+   const discount_value = modal.querySelector("#value_discount").value;
 
-     const start_date = new Date(start_date_str);
-     const end_date = new Date(end_date_str);
-     var check = true;
+   const start_date = new Date(start_date_str);
+   const end_date = new Date(end_date_str);
+   var check = true;
 
-     if (discount_code == "") {
-      message_name.innerHTML = "*Vui lòng nhập tên mã khuyến mãi";
-      modal.querySelector("#nameDiscount").focus();
-      check = false;
-     } else {
-      message_name.innerHTML = "";
-     }
+   if (discount_code == "") {
+    message_name.innerHTML = "*Vui lòng nhập tên mã khuyến mãi";
+    modal.querySelector("#nameDiscount").focus();
+    check = false;
+   } else {
+    message_name.innerHTML = "";
+   }
 
-     if (type == "") {
-      message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
-      modal.querySelector("#type_discount").focus();
-      check = false;
-     } else {
-      message_type.innerHTML = "";
-     }
+   if (type == "") {
+    message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
+    modal.querySelector("#type_discount").focus();
+    check = false;
+   } else {
+    message_type.innerHTML = "";
+   }
 
-     if (discount_value == "") {
-      message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
-      modal.querySelector("#value_discount").focus();
-      check = false;
-     } else if (type == "PR") {
-      if (discount_value > 100) {
-       message_value.innerHTML = "*Giá trị không được lớn hơn 100";
-       check = false;
-      } else if (discount_value <= 0) {
-       message_value.innerHTML = "*Giá trị phải lớn hơn 0";
-       check = false;
-      } else {
-       message_value.innerHTML = "";
-      }
-     } else if (type == "AR") {
-      if (discount_value <= 0) {
-       message_value.innerHTML = "*Giá trị phải lớn hơn 0";
-       check = false;
-      } else {
-       message_value.innerHTML = "";
-      }
-     } else {
-      message_value.innerHTML = "";
-     }
+   if (discount_value == "") {
+    message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
+    modal.querySelector("#value_discount").focus();
+    check = false;
+   } else if (isNaN(discount_value)) {
+    // Kiểm tra xem giá trị có phải là số không
+    message_value.innerHTML = "*Giá trị phải là số";
+    check = false;
+   } else if (type == "PR") {
+    if (discount_value > 100) {
+     message_value.innerHTML = "*Giá trị không được lớn hơn 100";
+     check = false;
+    } else if (discount_value <= 0) {
+     message_value.innerHTML = "*Giá trị phải lớn hơn 0";
+     check = false;
+    } else {
+     message_value.innerHTML = "";
+    }
+   } else if (type == "AR") {
+    if (discount_value <= 0) {
+     message_value.innerHTML = "*Giá trị phải lớn hơn 0";
+     check = false;
+    } else {
+     message_value.innerHTML = "";
+    }
+   } else {
+    message_value.innerHTML = "";
+   }
 
-     if (!start_date_str) {
-      message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
-      modal_create_container.querySelector("#start_date").focus();
-      check = false;
-     } else if (start_date > end_date) {
-      message_start.innerHTML =
-       "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
-     } else {
-      message_start.innerHTML = "";
-     }
+   if (!start_date_str) {
+    message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+    modal_create_container.querySelector("#start_date").focus();
+    check = false;
+   } else if (start_date > end_date) {
+    message_start.innerHTML = "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
+   } else {
+    message_start.innerHTML = "";
+   }
 
-     if (!end_date_str) {
-      message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
-      modal_create_container.querySelector("#end_date").focus();
-      check = false;
-     } else if (start_date > end_date) {
-      message_end.innerHTML =
-       "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
-      check = false;
-     } else {
-      message_end.innerHTML = "";
-     }
+   if (!end_date_str) {
+    message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+    modal_create_container.querySelector("#end_date").focus();
+    check = false;
+   } else if (start_date > end_date) {
+    message_end.innerHTML = "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+    check = false;
+   } else {
+    message_end.innerHTML = "";
+   }
 
-     if (check == true) {
-      message_end.innerHTML = "";
-      message_name.innerHTML = "";
-      message_start.innerHTML = "";
-      message_type.innerHTML = "";
-      message_value.innerHTML = "";
-      $.ajax({
-       url: "../controller/admin/discount.controller.php",
-       type: "post",
-       dataType: "html",
-       data: {
-        function: "create",
-        field: {
-         discount_code: discount_code,
-         type: type,
-         discount_value: discount_value,
-         start_date: start_date_str,
-         end_date: end_date_str,
-        },
-       },
-      }).done(function (result) {
-       loadItem();
-       $("#sqlresult").html(result);
-      });
-      modal_create_container.classList.add("hidden");
-     }
+   if (check == true) {
+    message_end.innerHTML = "";
+    message_name.innerHTML = "";
+    message_start.innerHTML = "";
+    message_type.innerHTML = "";
+    message_value.innerHTML = "";
+    $.ajax({
+     url: "../controller/admin/discount.controller.php",
+     type: "post",
+     dataType: "html",
+     data: {
+      function: "create",
+      field: {
+       discount_code: discount_code,
+       type: type,
+       discount_value: discount_value,
+       start_date: start_date_str,
+       end_date: end_date_str,
+      },
+     },
+    }).done(function (result) {
+     loadItem();
+     $("#sqlresult").html(result);
     });
-
-   document.querySelector("#btnClose").addEventListener("click", () => {
     modal_create_container.classList.add("hidden");
-   });
-   document.querySelector(".button-cancel").addEventListener("click", () => {
-    modal_create_container.classList.add("hidden");
-   });
+   }
   });
+
+  document.querySelector("#btnClose").addEventListener("click", () => {
+   modal_create_container.classList.add("hidden");
+  });
+  document.querySelector(".button-cancel").addEventListener("click", () => {
+   modal_create_container.classList.add("hidden");
+  });
+ });
 
  const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
@@ -451,10 +428,8 @@ var js = function () {
    modal.querySelector(".button-cancel").addEventListener("click", () => {
     modal_edit_container.classList.remove("show");
    });
-   modal.querySelector("#name").value =
-    this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
-   const type_discount_value =
-    this.parentNode.parentNode.querySelector(".type").innerText;
+   modal.querySelector("#name").value = this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+   const type_discount_value = this.parentNode.parentNode.querySelector(".type").innerText;
    const type_discount = modal.querySelector("#type_discount");
    for (let i = 0; i < type_discount.options.length; i++) {
     if (type_discount.options[i].value === type_discount_value) {
@@ -462,115 +437,105 @@ var js = function () {
      break;
     }
    }
-   modal.querySelector("#value_discount").value =
-    this.parentNode.parentNode.querySelector(".discount_value").innerHTML;
-   modal.querySelector("#start_date").value =
-    this.parentNode.parentNode.querySelector(".start_date").innerHTML;
-   modal.querySelector("#end_date").value =
-    this.parentNode.parentNode.querySelector(".end_date").innerHTML;
+   modal.querySelector("#value_discount").value = this.parentNode.parentNode.querySelector(".discount_value").innerHTML;
+   modal.querySelector("#start_date").value = this.parentNode.parentNode.querySelector(".start_date").innerHTML;
+   modal.querySelector("#end_date").value = this.parentNode.parentNode.querySelector(".end_date").innerHTML;
 
-   var discount_code =
-    this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
+   var discount_code = this.parentNode.parentNode.querySelector(".discount_code").innerHTML;
 
-   modal
-    .querySelector(".button-confirm")
-    .addEventListener("click", function (e) {
-     e.preventDefault();
-     const message_type = modal_edit_container.querySelector("#message_type");
-     const message_value = modal_edit_container.querySelector("#message_value");
-     const message_start = modal_edit_container.querySelector("#message_start");
-     const message_end = modal_edit_container.querySelector("#message_end");
-     const start_date_str =
-      modal_edit_container.querySelector("#start_date").value;
-     const end_date_str = modal_edit_container.querySelector("#end_date").value;
-     const type = modal_edit_container.querySelector("#type_discount ").value;
-     const discount_value =
-      modal_edit_container.querySelector("#value_discount").value;
-     const start_date = new Date(start_date_str);
-     const end_date = new Date(end_date_str);
+   modal.querySelector(".button-confirm").addEventListener("click", function (e) {
+    e.preventDefault();
+    const message_type = modal_edit_container.querySelector("#message_type");
+    const message_value = modal_edit_container.querySelector("#message_value");
+    const message_start = modal_edit_container.querySelector("#message_start");
+    const message_end = modal_edit_container.querySelector("#message_end");
+    const start_date_str = modal_edit_container.querySelector("#start_date").value;
+    const end_date_str = modal_edit_container.querySelector("#end_date").value;
+    const type = modal_edit_container.querySelector("#type_discount ").value;
+    const discount_value = modal_edit_container.querySelector("#value_discount").value;
+    const start_date = new Date(start_date_str);
+    const end_date = new Date(end_date_str);
 
-     var check = true;
+    var check = true;
 
-     if (type == "") {
-      message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
-      modal.querySelector("#type_discount").focus();
+    if (type == "") {
+     message_type.innerHTML = "*Vui lòng chọn loại mã khuyến mãi";
+     modal.querySelector("#type_discount").focus();
+     check = false;
+    } else {
+     message_type.innerHTML = "";
+    }
+
+    if (discount_value == "") {
+     message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
+     modal_edit_container.querySelector("#value_discount").focus();
+     check = false;
+    } else if (type == "PR") {
+     if (discount_value > 100) {
+      message_value.innerHTML = "*Giá trị không được lớn hơn 100";
       check = false;
-     } else {
-      message_type.innerHTML = "";
-     }
-
-     if (discount_value == "") {
-      message_value.innerHTML = "*Vui lòng nhập giá trị mã khuyến mãi";
-      modal_edit_container.querySelector("#value_discount").focus();
+     } else if (discount_value <= 0) {
+      message_value.innerHTML = "*Giá trị phải lớn hơn 0";
       check = false;
-     } else if (type == "PR") {
-      if (discount_value > 100) {
-       message_value.innerHTML = "*Giá trị không được lớn hơn 100";
-       check = false;
-      } else if (discount_value <= 0) {
-       message_value.innerHTML = "*Giá trị phải lớn hơn 0";
-       check = false;
-      } else {
-       message_value.innerHTML = "";
-      }
-     } else if (type == "AR") {
-      if (discount_value <= 0) {
-       message_value.innerHTML = "*Giá trị phải lớn hơn 0";
-       check = false;
-      } else {
-       message_value.innerHTML = "";
-      }
      } else {
       message_value.innerHTML = "";
      }
-
-     if (!start_date_str) {
-      message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
-      check = false;
-     } else if (start_date > end_date) {
-      message_start.innerHTML =
-       "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
-     } else {
-      message_start.innerHTML = "";
-     }
-
-     if (!end_date_str) {
-      message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
-      modal_create_container.querySelector("#end_date").focus();
-      check = false;
-     } else if (start_date > end_date) {
-      message_end.innerHTML =
-       "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+    } else if (type == "AR") {
+     if (discount_value <= 0) {
+      message_value.innerHTML = "*Giá trị phải lớn hơn 0";
       check = false;
      } else {
-      message_end.innerHTML = "";
-     }
-     if (check === true) {
-      message_end.innerHTML = "";
-      message_start.innerHTML = "";
-      message_type.innerHTML = "";
       message_value.innerHTML = "";
-      $.ajax({
-       url: "../controller/admin/discount.controller.php",
-       type: "post",
-       dataType: "html",
-       data: {
-        function: "edit",
-        field: {
-         discount_code: discount_code,
-         type: type,
-         value_discount: discount_value,
-         start_date: start_date_str,
-         end_date: end_date_str,
-        },
+     }
+    } else {
+     message_value.innerHTML = "";
+    }
+
+    if (!start_date_str) {
+     message_start.innerHTML = "*Vui lòng chọn ngày bắt đầu";
+     check = false;
+    } else if (start_date > end_date) {
+     message_start.innerHTML = "*Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.";
+    } else {
+     message_start.innerHTML = "";
+    }
+
+    if (!end_date_str) {
+     message_end.innerHTML = "*Vui lòng chọn ngày kết thúc";
+     modal_create_container.querySelector("#end_date").focus();
+     check = false;
+    } else if (start_date > end_date) {
+     message_end.innerHTML = "*Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.";
+     check = false;
+    } else {
+     message_end.innerHTML = "";
+    }
+    if (check === true) {
+     message_end.innerHTML = "";
+     message_start.innerHTML = "";
+     message_type.innerHTML = "";
+     message_value.innerHTML = "";
+     $.ajax({
+      url: "../controller/admin/discount.controller.php",
+      type: "post",
+      dataType: "html",
+      data: {
+       function: "edit",
+       field: {
+        discount_code: discount_code,
+        type: type,
+        value_discount: discount_value,
+        start_date: start_date_str,
+        end_date: end_date_str,
        },
-      }).done(function (result) {
-       loadItem();
-       $("#sqlresult").html(result);
-      });
-      modal_edit_container.classList.remove("show");
-     }
-    });
+      },
+     }).done(function (result) {
+      loadItem();
+      $("#sqlresult").html(result);
+     });
+     modal_edit_container.classList.remove("show");
+    }
+   });
   });
  }
 
@@ -581,8 +546,7 @@ var js = function () {
  for (var i = 0; i < del_btns.length; i++) {
   del_btns[i].addEventListener("click", function () {
    let selected_content = this.parentNode.parentNode;
-   let discount_code =
-    selected_content.querySelector(".discount_code").innerHTML;
+   let discount_code = selected_content.querySelector(".discount_code").innerHTML;
 
    var del_html = `
         <div class="modal-edit-product-container show" id="modal-edit-container">
