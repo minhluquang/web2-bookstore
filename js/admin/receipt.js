@@ -296,12 +296,14 @@ function addProduct() {
   });
 
   document.getElementById("addProduct").addEventListener("click", function () {
+    var regex = /^[1-9]\d*$/;
+
     quantity = document.getElementById("quantity").value;
     if (productId.trim() === "" || quantity.trim() === "") {
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
-    if(quantity <= 0) {
+    if(!regex.test(quantity)) {
       alert("Số lượng phải là số nguyên dương lớn hơn 0");
       return;
     }
@@ -558,7 +560,7 @@ var js = function () {
       </div>
       <div class="input-field">
         <label for="quantity">Số lượng:</label>
-        <input type="number" id="quantity">
+        <input type="text" id="quantity">
       </div>
       <div class="input-field">
         <label for="inputPrice">Giá nhập:</label>
