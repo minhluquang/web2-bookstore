@@ -17,6 +17,9 @@ if (isset($_POST['function'])) {
     case 'checkEmailExists':  // Thêm chức năng kiểm tra email tồn tại
       checkEmailExists();
       break;
+    case 'checkEmailAndNameExists':  // Thêm chức năng kiểm tra email tồn tại
+      checkEmailAndNameExists();
+      break;
   }
 }
 
@@ -62,16 +65,46 @@ function checkEmailExists()
   }
 }
 
+function checkEmailAndNameExists()
+{
+    if (isset($_POST['email']) && isset($_POST['name'])) {
+        $email = $_POST['email'];
+        $name = $_POST['name'];
+        $emailExists = checkEmailInDatabase($email);
+        $nameExists = checkNameInDatabase($name);
+
+        echo json_encode([
+            'emailExists' => $emailExists,
+            'nameExists' => $nameExists,
+        ]);
+    }
+}
+
 // Hàm hỗ trợ kiểm tra email trong cơ sở dữ liệu
 function checkEmailInDatabase($email)
 {
   global $database;  // Sử dụng đối tượng $database từ connect.php
 
   // Truy vấn kiểm tra email trong bảng publishers
-  $sql = "SELECT COUNT(*) AS count FROM publishers WHERE email = '$email'";
+  $sql = "SELECT COUNT(*) AS count FROM publishers WHERE email = '$email' and status =1 ";
   $result = $database->query($sql);
   $row = $result->fetch_assoc();
 
   // Trả về true nếu email đã tồn tại, ngược lại false
   return $row['count'] > 0;
+}
+
+function checkNameInDatabase($name)  
+{  
+    global $database;  // Sử dụng đối tượng $database từ connect.php  
+
+    // Chuyển đổi tên thành chữ hoa để so sánh không phân biệt hoa thường  
+    $nameUpper = strtoupper($name);  
+
+    $sql = "SELECT COUNT(*) AS count FROM publishers WHERE UPPER(name) COLLATE utf8mb4_bin = '$nameUpper' AND status = 1";  
+    $result = $database->query($sql);  
+    $row = $result->fetch_assoc();  
+
+    // Trả về true nếu tên đã tồn tại, ngược lại false  
+    return $row['count'] > 0;  
 }

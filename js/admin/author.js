@@ -35,6 +35,14 @@ function getAUFilterFromForm() {
  };
 }
 
+function hideNotifications() {  
+  const notifications = document.querySelectorAll('.success, .failed');  
+  notifications.forEach(notification => {  
+      setTimeout(() => {  
+          notification.style.display = 'none';  
+      }, 3000);  
+  });  
+} 
 // Load the jquery
 var script = document.createElement("SCRIPT");
 script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
@@ -242,7 +250,7 @@ const js = function () {
      loadItem();
     });
   });
- const addHtml = `
+  const addHtml = `
   <div class="form">
     <h2>Thêm Tác Giả</h2>
     <div class="input-field">
@@ -256,74 +264,111 @@ const js = function () {
   </div>
 `;
 
- // Lấy các phần tử cần thiết từ DOM
- const addAuthorModal = document.getElementById("addAuthorModal");
- const addModalContent = document.querySelector(".addModal-content .form");
- const openModalBtn = document.querySelector(".body__filter--action__add");
- const addButton = document.getElementById("addButton");
- const closeAddIcon = document.querySelector(".addModal-content .close i");
+// Lấy các phần tử cần thiết từ DOM
+const addAuthorModal = document.getElementById("addAuthorModal");
+const addModalContent = document.querySelector(".addModal-content .form");
+const openModalBtn = document.querySelector(".body__filter--action__add");
+const addButton = document.getElementById("addButton");
+const closeAddIcon = document.querySelector(".addModal-content .close i");
 
- openModalBtn.addEventListener("click", function () {
+openModalBtn.addEventListener("click", function () {
   addModalContent.innerHTML = addHtml;
   addAuthorModal.style.display = "block";
- });
 
- closeAddIcon.addEventListener("click", function () {
-  addAuthorModal.style.display = "none";
- });
+  // Đảm bảo xóa sự kiện click cũ trước khi gắn sự kiện mới
+  $("#addButton").off('click').on('click', function (e) {
+    e.preventDefault();
 
- addButton.addEventListener("click", function (e) {
-  e.preventDefault();
+    const name = document.getElementById("addAuthorName").value.trim();
+    const email = document.getElementById("addAuthorEmail").value.trim();
+    const regexName = /^[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚ\s]+$/;
+    const regexEmail =
+      /^(([A-Za-z0-9]+((\.|\-|\_|\+)?[A-Za-z0-9]?)*[A-Za-z0-9]+)|[A-Za-z0-9]+)@(([A-Za-z0-9]+)+((\.|\-|\_)?([A-Za-z0-9]+)+)*)+\.([A-Za-z]{2,})+$/;
 
-  const name = document.getElementById("addAuthorName").value.trim();
-  const email = document.getElementById("addAuthorEmail").value.trim();
-  const regexName = /^[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÀÁÂÃÈÉÊÌÍÒÓÔÕ\s]+$/;
-  const regexEmail =
-   /^(([A-Za-z0-9]+((\.|\-|\_|\+)?[A-Za-z0-9]?)*[A-Za-z0-9]+)|[A-Za-z0-9]+)@(([A-Za-z0-9]+)+((\.|\-|\_)?([A-Za-z0-9]+)+)*)+\.([A-Za-z]{2,})+$/;
-  console.log(name);
+    // Kiểm tra tên và email không rỗng và tên không chứa ký tự đặc biệt
+    if (name === "") {
+      alert("Vui lòng điền tên!");
+      document.getElementById("addAuthorName").focus();
+      return;
+    }
+    if (!regexName.test(name)) {
+      alert("Tên không được chứa ký tự đặc biệt.");
+      document.getElementById("addAuthorName").focus();
+      return;
+    }
 
-  // Kiểm tra tên và email không rỗng và tên không chứa ký tự đặc biệt
-  if (name === "") {
-   alert("Vui lòng điền tên. !");
-   document.getElementById("addAuthorName").focus();
-   return;
-  }
-  if (!regexName.test(name)) {
-   alert("Tên không được chứa ký tự đặc biệt.");
-   document.getElementById("addAuthorName").focus();
-   return;
-  }
+    if (email === "") {
+      alert("Vui lòng điền email!");
+      document.getElementById("addAuthorEmail").focus();
+      return;
+    }
 
-  if (email === "") {
-   alert("Vui lòng điền email. !");
-   document.getElementById("addAuthorEmail").focus();
-   return;
-  }
+    if (!regexEmail.test(email)) {
+      alert("Email không đúng định dạng.");
+      document.getElementById("addAuthorEmail").focus();
+      return;
+    }
 
-  if (!regexEmail.test(email)) {
-   alert("Email không đúng định dạng.");
-   document.getElementById("addAuthorEmail").focus();
-   return;
-  }
+    // Khóa nút sau khi gửi yêu cầu
+    addButton.disabled = true;
 
-  $.ajax({
-   url: "../controller/admin/author.controller.php",
-   type: "post",
-   dataType: "html",
-   data: {
-    function: "create",
-    field: {
-     name: name,
-     email: email,
-    },
-   },
-  }).done(function (result) {
-   loadItem();
-   $("#sqlresult").html(result);
+    // AJAX kiểm tra email đã tồn tại
+    $.ajax({
+      url: '../controller/admin/author.controller.php',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        function: 'checkEmailExists', // Gọi đến hàm kiểm tra email tồn tại
+        email: email,
+      },
+      success: function (response) {
+        if (response.exists) {
+          alert('Email tác giả đã tồn tại!');
+          document.getElementById("addAuthorEmail").focus();
+          addButton.disabled = false; // Mở khóa nút nếu email tồn tại
+        } else {
+          // Nếu email chưa tồn tại, thực hiện thêm nhà xuất bản mới
+          $.ajax({
+            url: '../controller/admin/author.controller.php',
+            type: 'post',
+            dataType: 'html',
+            data: {
+              function: 'create',
+              field: {
+                name: name,
+                email: email,
+              },
+            },
+          }).done(function (result) {
+            if (result.includes('success')) {
+              loadItem(); // Chỉ load lại danh sách khi thành công
+              $("#sqlresult").html(result); // Hiển thị thông báo thành công
+              hideNotifications();
+              addAuthorModal.style.display = "none"; // Ẩn modal sau khi thành công
+            } else {
+              $("#sqlresult").html(result); // Hiển thị thông báo thất bại
+            }
+          }).fail(function () {
+            alert('Có lỗi xảy ra trong quá trình thêm tác giả.');
+          }).always(function () {
+            // Mở khóa nút sau khi xử lý xong
+            addButton.disabled = false;
+          });
+        }
+      },
+      error: function () {
+        alert('Đã có lỗi xảy ra khi kiểm tra email!');
+        addButton.disabled = false;
+      },
+    });
   });
+});
 
+closeAddIcon.addEventListener("click", function () {
   addAuthorModal.style.display = "none";
- });
+});
+
+
 
  const editModal = document.getElementById("editModal");
  const editModalContent = document.querySelector(".editModal-content .form");
@@ -340,7 +385,115 @@ const js = function () {
   ".deleteModal-content .close i"
  );
 
- const editHtml = `
+//  const editHtml = `
+//     <div class="form">
+//       <h2>Chỉnh sửa thông tin tác giả</h2>
+//       <form id="form">
+//         <div class="input-field">
+//           <label for="editAuthorId">Mã tác giả</label>
+//           <input type="text" id="editAuthorId" readonly>
+//         </div>
+//         <div class="input-field">
+//           <label for="editAuthorName">Tên tác giả</label>
+//           <input type="text" id="editAuthorName" readonly>
+//         </div>
+//         <div class="input-field">
+//           <label for="editAuthorEmail">Email</label>
+//           <input type="email" id="editAuthorEmail">
+//         </div>
+//       </form>
+//     </div>`;
+
+//  const deleteHtml = `
+//     <h2>Xác nhận xóa thông tin tác giả</h2>
+//     <form id="form">
+//       <label for="editAuthorId">Mã tác giả</label>
+//       <div id="author-delete-id"></div>
+//       <label for="editAuthorName">Tên tác giả</label>
+//       <div id="author-delete-name"></div>
+//       <label for="editAuthorEmail">Email</label>
+//       <div id="author-delete-email"></div>
+      
+//     </form>`;
+
+//  editAuthorButton.addEventListener("click", () => {
+//   editModalContent.innerHTML = editHtml;
+//   editModal.style.display = "block";
+//   editFunctionButton.classList.remove("d-none");
+//   editAuthorButton.classList.add("d-none");
+//  });
+
+//  closeEditIcon.addEventListener("click", () => {
+//   editModal.style.display = "none";
+//  });
+
+//  window.addEventListener("click", (event) => {
+//   if (event.target === editModal) {
+//    editModal.style.display = "none";
+//   }
+//  });
+
+//  var edit_btns = document.getElementsByClassName("actions--edit");
+//  for (var i = 0; i < edit_btns.length; i++) {
+//   edit_btns[i].addEventListener("click", function () {
+//    editModalContent.innerHTML = editHtml;
+//    editModal.style.display = "block";
+//    var authorId = this.parentNode.parentNode.querySelector(".id").innerHTML;
+//    var authorName = this.parentNode.parentNode.querySelector(".name").innerHTML;
+//    var authorEmail =
+//     this.parentNode.parentNode.querySelector(".email").innerHTML;
+//    document.getElementById("editAuthorId").value = authorId;
+//    document.getElementById("editAuthorName").value = authorName;
+//    document.getElementById("editAuthorEmail").value = authorEmail;
+
+//    // Hàm kiểm tra email hợp lệ
+//    function isValidEmail(email) {
+//     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     return emailPattern.test(email);
+//    }
+
+//    saveButton.addEventListener("click", function (e) {
+//     e.preventDefault();
+
+//     // Lấy giá trị email sau khi chỉnh sửa
+//     var editedEmail = editModal.querySelector("#editAuthorEmail");
+//     // Kiểm tra xem email có hợp lệ không
+//     if (editedEmail.value === "") {
+//      alert("Hãy nhập email.");
+//      editedEmail.focus();
+//      return;
+//     }
+
+//     if (!isValidEmail(editedEmail.value)) {
+//      alert("Email không hợp lệ! Vui lòng nhập lại.");
+//      editedEmail.focus();
+//      return;
+//     }
+
+//     // Nếu email hợp lệ, tiếp tục gửi AJAX
+//     $.ajax({
+//      url: "../controller/admin/author.controller.php",
+//      type: "post",
+//      dataType: "html",
+//      data: {
+//       function: "edit",
+//       field: {
+//        id: authorId,
+//        name: editModal.querySelector("#editAuthorName").value,
+//        email: editedEmail,
+//       },
+//      },
+//     }).done(function (result) {
+//      loadItem();
+//      $("#sqlresult").html(result);
+//      hideNotifications()
+//     });
+//     editModal.style.display = "none";
+//    });
+//   });
+//  }
+
+const editHtml = `
     <div class="form">
       <h2>Chỉnh sửa thông tin tác giả</h2>
       <form id="form">
@@ -359,7 +512,7 @@ const js = function () {
       </form>
     </div>`;
 
- const deleteHtml = `
+const deleteHtml = `
     <h2>Xác nhận xóa thông tin tác giả</h2>
     <form id="form">
       <label for="editAuthorId">Mã tác giả</label>
@@ -368,84 +521,88 @@ const js = function () {
       <div id="author-delete-name"></div>
       <label for="editAuthorEmail">Email</label>
       <div id="author-delete-email"></div>
-      
     </form>`;
 
- editAuthorButton.addEventListener("click", () => {
-  editModalContent.innerHTML = editHtml;
-  editModal.style.display = "block";
-  editFunctionButton.classList.remove("d-none");
-  editAuthorButton.classList.add("d-none");
- });
+editAuthorButton.addEventListener("click", () => {
+    editModalContent.innerHTML = editHtml;
+    editModal.style.display = "block";
+    editFunctionButton.classList.remove("d-none");
+    editAuthorButton.classList.add("d-none");
+});
 
- closeEditIcon.addEventListener("click", () => {
-  editModal.style.display = "none";
- });
-
- window.addEventListener("click", (event) => {
-  if (event.target === editModal) {
-   editModal.style.display = "none";
-  }
- });
-
- var edit_btns = document.getElementsByClassName("actions--edit");
- for (var i = 0; i < edit_btns.length; i++) {
-  edit_btns[i].addEventListener("click", function () {
-   editModalContent.innerHTML = editHtml;
-   editModal.style.display = "block";
-   var authorId = this.parentNode.parentNode.querySelector(".id").innerHTML;
-   var authorName = this.parentNode.parentNode.querySelector(".name").innerHTML;
-   var authorEmail =
-    this.parentNode.parentNode.querySelector(".email").innerHTML;
-   document.getElementById("editAuthorId").value = authorId;
-   document.getElementById("editAuthorName").value = authorName;
-   document.getElementById("editAuthorEmail").value = authorEmail;
-
-   // Hàm kiểm tra email hợp lệ
-   function isValidEmail(email) {
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-   }
-
-   saveButton.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    // Lấy giá trị email sau khi chỉnh sửa
-    var editedEmail = editModal.querySelector("#editAuthorEmail");
-    // Kiểm tra xem email có hợp lệ không
-    if (editedEmail.value === "") {
-     alert("Hãy nhập email.");
-     editedEmail.focus();
-     return;
-    }
-
-    if (!isValidEmail(editedEmail.value)) {
-     alert("Email không hợp lệ! Vui lòng nhập lại.");
-     editedEmail.focus();
-     return;
-    }
-
-    // Nếu email hợp lệ, tiếp tục gửi AJAX
-    $.ajax({
-     url: "../controller/admin/author.controller.php",
-     type: "post",
-     dataType: "html",
-     data: {
-      function: "edit",
-      field: {
-       id: authorId,
-       name: editModal.querySelector("#editAuthorName").value,
-       email: editedEmail,
-      },
-     },
-    }).done(function (result) {
-     loadItem();
-     $("#sqlresult").html(result);
-    });
+closeEditIcon.addEventListener("click", () => {
     editModal.style.display = "none";
-   });
-  });
- }
+});
+
+window.addEventListener("click", (event) => {
+    if (event.target === editModal) {
+        editModal.style.display = "none";
+    }
+});
+
+var edit_btns = document.getElementsByClassName("actions--edit");
+for (var i = 0; i < edit_btns.length; i++) {
+    edit_btns[i].addEventListener("click", function () {
+        editModalContent.innerHTML = editHtml;
+        editModal.style.display = "block";
+        var authorId = this.parentNode.parentNode.querySelector(".id").innerHTML;
+        var authorName = this.parentNode.parentNode.querySelector(".name").innerHTML;
+        var authorEmail = this.parentNode.parentNode.querySelector(".email").innerHTML;
+        document.getElementById("editAuthorId").value = authorId;
+        document.getElementById("editAuthorName").value = authorName;
+        document.getElementById("editAuthorEmail").value = authorEmail;
+
+        // Hàm kiểm tra email hợp lệ
+        function isValidEmail(email) {
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        // Xóa các sự kiện cũ (nếu có)
+        saveButton.onclick = null;
+
+        // Thêm sự kiện click mới cho saveButton
+        saveButton.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Lấy giá trị email sau khi chỉnh sửa
+            var editedEmail = editModal.querySelector("#editAuthorEmail");
+            // Kiểm tra xem email có hợp lệ không
+            if (editedEmail.value === "") {
+                alert("Hãy nhập email.");
+                editedEmail.focus();
+                return;
+            }
+
+            if (!isValidEmail(editedEmail.value)) {
+                alert("Email không hợp lệ! Vui lòng nhập lại.");
+                editedEmail.focus();
+                return;
+            }
+
+            // Nếu email hợp lệ, tiếp tục gửi AJAX
+            $.ajax({
+                url: "../controller/admin/author.controller.php",
+                type: "post",
+                dataType: "html",
+                data: {
+                    function: "edit",
+                    field: {
+                        id: authorId,
+                        name: editModal.querySelector("#editAuthorName").value,
+                        email: editedEmail.value, // Đảm bảo lấy giá trị
+                    },
+                },
+            }).done(function (result) {
+                loadItem();
+                $("#sqlresult").html(result);
+                hideNotifications();
+                editModal.style.display = "none"; // Di chuyển vào đây
+            });
+        });
+    });
+}
+
 
  const del_btns = document.getElementsByClassName("actions--delete");
  for (let i = 0; i < del_btns.length; i++) {
@@ -475,6 +632,7 @@ const js = function () {
     }).done(function (result) {
      loadItem();
      $("#sqlresult").html(result);
+     hideNotifications()
      deleteModal.style.display = "none";
      deleteModal.classList.remove("show");
     });

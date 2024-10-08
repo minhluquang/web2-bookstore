@@ -35,7 +35,8 @@ function supplier_create($field)
   global $database;
   date_default_timezone_set('Asia/Ho_Chi_Minh');
   $date = date('Y-m-d', time());
-  $sql = "SELECT * from suppliers WHERE name = '" . $field['name'] . "'";
+  $nameUpper = strtoupper($field['name']); 
+  $sql = "SELECT * from suppliers WHERE UPPER(name) COLLATE utf8mb4_bin = '$nameUpper'";
 
   $result = null;
   $result = $database->query($sql);

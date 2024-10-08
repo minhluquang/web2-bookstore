@@ -63,18 +63,28 @@ function checkPhoneExists()
     }
 }
 
+function checkNameExists()
+{
+    if (isset($_POST['name'])) {
+        $name = $_POST['name'];
+        echo json_encode(['exists' => checkNameInDatabase($name)]);
+    }
+}
+
 function checkEmailAndPhoneExists()
 {
-    if (isset($_POST['email']) && isset($_POST['sdt'])) {
+    if (isset($_POST['email']) && isset($_POST['sdt']) && isset($_POST['name'])) {
         $email = $_POST['email'];
         $sdt = $_POST['sdt'];
-
+        $name = $_POST['name'];
         $emailExists = checkEmailInDatabase($email);
         $phoneExists = checkPhoneInDatabase($sdt);
+        $nameExists = checkNameSupInDatabase($name);
 
         echo json_encode([
             'emailExists' => $emailExists,
-            'phoneExists' => $phoneExists
+            'phoneExists' => $phoneExists,
+            'nameExists' => $nameExists,
         ]);
     }
 }
@@ -85,7 +95,7 @@ function checkEmailInDatabase($email)
     global $database;  // Sử dụng đối tượng $database từ connect.php
 
     // Truy vấn kiểm tra email trong bảng suppliers
-    $sql = "SELECT COUNT(*) AS count FROM suppliers WHERE email = '$email'";
+    $sql = "SELECT COUNT(*) AS count FROM suppliers WHERE email = '$email' and status = 1";
     $result = $database->query($sql);
     $row = $result->fetch_assoc();
 
@@ -99,28 +109,43 @@ function checkPhoneInDatabase($sdt)
     global $database;  // Sử dụng đối tượng $database từ connect.php
 
     // Truy vấn kiểm tra số điện thoại trong bảng suppliers
-    $sql = "SELECT COUNT(*) AS count FROM suppliers WHERE number_phone = '$sdt'";
+    $sql = "SELECT COUNT(*) AS count FROM suppliers WHERE number_phone = '$sdt' and status = 1 ";
     $result = $database->query($sql);
     $row = $result->fetch_assoc();
 
     // Trả về true nếu số điện thoại đã tồn tại, ngược lại false
     return $row['count'] > 0;
 }
+function checkNameSupInDatabase($name)  
+{  
+    global $database;  // Sử dụng đối tượng $database từ connect.php  
+
+    // Chuyển đổi tên thành chữ hoa để so sánh không phân biệt hoa thường  
+    $sql = "SELECT COUNT(*) AS count FROM suppliers WHERE UPPER(name) COLLATE utf8mb4_bin = '$name' AND status = 1";  
+    $result = $database->query($sql);  
+    $row = $result->fetch_assoc();  
+
+    // Trả về true nếu tên đã tồn tại, ngược lại false  
+    return $row['count'] > 0;  
+}
 
 function checkEditEmailAndPhoneExists()
 {
-    if (isset($_POST['email']) && isset($_POST['sdt']) && isset($_POST['currentEmail']) && isset($_POST['currentSdt'])) {
+    if (isset($_POST['email']) && isset($_POST['sdt']) && isset($_POST['name']) && isset($_POST['currentEmail']) && isset($_POST['currentSdt']) && isset($_POST['currentName'])) {
         $email = $_POST['email'];
         $sdt = $_POST['sdt'];
+        $name = $_POST['name'];
         $currentEmail = $_POST['currentEmail'];
         $currentSdt = $_POST['currentSdt'];
-
+        $currentName = $_POST['currentName'];
         $emailExists = checkEmailInDatabase($email) && $email !== $currentEmail;
         $phoneExists = checkPhoneInDatabase($sdt) && $sdt !== $currentSdt;
+        $nameExists = checkNameSupInDatabase($name) && $name !== $currentName;
 
         echo json_encode([
             'emailExists' => $emailExists,
             'phoneExists' => $phoneExists,
+            'nameExists' => $nameExists,
         ]);
     }
 }

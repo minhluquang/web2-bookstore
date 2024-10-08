@@ -47,38 +47,61 @@ function getMaximumAuthorId() {
     return 0; 
 }
 
+// function author_create($field)
+// {
+//     global $database;
+
+//     // Lấy giá trị từ mảng $field
+//     $name = $field['name'];
+//     $email = $field['email'];
+
+//     $sql_check = "SELECT * FROM authors WHERE email = '$email'";
+//     $result_check = $database->query($sql_check);
+
+//     if ($result_check->num_rows === 0) {
+  
+//         // Lấy ID tác giả lớn nhất
+//         $maxId = getMaximumAuthorId();
+
+//         $newId = $maxId + 1;
+
+//         $sql_insert = "INSERT INTO authors (id, name, email, status) VALUES ('$newId', '$name', '$email', '" . 1 . "')";
+//         $result_insert = $database->query($sql_insert);
+
+//         if ($result_insert) {
+//             return "<span class='success'>Tạo tác giả thành công</span>";
+//         } else {
+//             return "<span class='failed'>Tạo tác giả không thành công</span>";
+//         }
+//     }
+//        return ;
+
+// }
+
 function author_create($field)
 {
-    global $database;
+  global $database;
+  $name = $field['name'];
+  $email = $field['email'];
 
-    // Lấy giá trị từ mảng $field
-    $name = $field['name'];
-    $email = $field['email'];
-
-    $sql_check = "SELECT * FROM authors WHERE email = '$email'";
-    $result_check = $database->query($sql_check);
-
-    if ($result_check->num_rows === 0) {
-  
-        // Lấy ID tác giả lớn nhất
-        $maxId = getMaximumAuthorId();
-
-        $newId = $maxId + 1;
-
-        $sql_insert = "INSERT INTO authors (id, name, email, status) VALUES ('$newId', '$name', '$email', '" . 1 . "')";
-        $result_insert = $database->query($sql_insert);
-
-        if ($result_insert) {
-            return "<span class='success'>Tạo tác giả thành công</span>";
-        } else {
-            return "<span class='failed'>Tạo tác giả không thành công</span>";
-        }
-    }
-       return ;
-
+  $sql = "SELECT * FROM authors WHERE email = '$email' and status = 1";
+  $result = null;
+  $result = $database->query($sql);
+  $row = mysqli_fetch_array($result);
+  if ($row == null) {
+    $sql = "INSERT INTO authors ( name, email,status) 
+           VALUES ('$name', '$email', '" . 1 . "') ";
+    $result = $database->execute($sql);
+    if ($result) {
+        $result = "<span class='success'>Tạo tác giả thành công</span>";
+      } else {
+        $result = "<span class='failed'>Tạo tác giả không thành công</span>";
+      }
+      
+      return $result;
+  } 
+  // else return "<span class='failed'>Thể loại" . $row['name'] . " đã tồn tại</span>";
 }
-
-
 
 
 function author_edit($field) {

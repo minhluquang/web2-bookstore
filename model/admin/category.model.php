@@ -33,9 +33,10 @@ function category_delete($id)
 function category_create($field)
 {
   global $database;
+  $nameUpper = strtoupper($field['name']); 
   date_default_timezone_set('Asia/Ho_Chi_Minh');
   $date = date('Y-m-d', time());
-  $sql = "SELECT * from categories WHERE name = '" . $field['name'] . "'";
+  $sql = "SELECT * from categories WHERE UPPER(name) COLLATE utf8mb4_bin = '$nameUpper'";
 
   $result = null;
   $result = $database->query($sql);

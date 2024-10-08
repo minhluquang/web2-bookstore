@@ -1,5 +1,14 @@
 var filter_form = document.querySelector('.admin__content--body__filter')
 
+function hideNotifications() {  
+  const notifications = document.querySelectorAll('.success, .failed');  
+  notifications.forEach(notification => {  
+      setTimeout(() => {  
+          notification.style.display = 'none';  
+      }, 3000);  
+  });  
+} 
+
 function getFilterFromURL() {
   filter_form.querySelector('#supplierName').value = urlParams['name'] != null ? urlParams['name'] : ''
   filter_form.querySelector('#supplierId').value = urlParams['id'] != null ? urlParams['id'] : ''
@@ -278,7 +287,7 @@ var js = function () {
       const message_name = modal_create_container.querySelector('#message_name')
       const message_email = modal_create_container.querySelector('#message_email')
       const message_sdt = modal_create_container.querySelector('#message_sdt')
-      const name = modal_create_container.querySelector('#namesupplier').value.trim()
+      let name = modal_create_container.querySelector('#namesupplier').value.trim()
       const email = modal_create_container.querySelector('#emailsupplier').value.trim()
       const sdt = modal_create_container.querySelector('#sdtsupplier').value.trim()
       const regexPhoneNumber = /^0\d{9}$/
@@ -315,7 +324,7 @@ var js = function () {
       } else if (!sdt.match(regexPhoneNumber)) {
         message_sdt.innerHTML =
           "* - Số điện thoại không đúng định dạng <br> - Số điện thoại bao gồm 10 số và bắt đầu bằng '0'<br> - Ví dụ : (0331256391)"
-        modal_create_container.querySelector('#sdtsupplier').focus()
+        modal_create_container.querySelector('#namesupplier').focus()
         check = false
       } else {
         message_sdt.innerHTML = ''
@@ -323,6 +332,8 @@ var js = function () {
 
       // Nếu tất cả các kiểm tra qua
       if (check) {
+        name = name.toUpperCase();
+        console.log(name);
         // Kiểm tra tính duy nhất của email và số điện thoại cùng lúc
         $.ajax({
           url: '../controller/admin/supplier.controller.php',
@@ -332,6 +343,7 @@ var js = function () {
             function: 'checkEmailAndPhoneExists',
             email: email,
             sdt: sdt,
+            name: name,
           },
         }).done(function (result) {
           if (result.emailExists) {
@@ -340,7 +352,11 @@ var js = function () {
           } else if (result.phoneExists) {
             message_sdt.innerHTML = '*Số điện thoại đã tồn tại !'
             modal_create_container.querySelector('#sdtsupplier').focus()
-          } else {
+          }else if (result.nameExists) {
+            message_name.innerHTML = '*Tên đã tồn tại !'
+            modal_create_container.querySelector('#sdtsupplier').focus()
+          }
+           else {
             // Gửi yêu cầu tạo nhà cung cấp mới nếu cả email và số điện thoại không tồn tại
             $.ajax({
               url: '../controller/admin/supplier.controller.php',
@@ -371,6 +387,7 @@ var js = function () {
     document.querySelector('.button-cancel').addEventListener('click', () => {
       modal_create_container.classList.add('hidden')
     })
+ hideNotifications();  
   })
 
   const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
@@ -385,7 +402,7 @@ var js = function () {
             <div class="modal-body-2">
                 <div class="flex">
                     <label for="name">Tên nhà cung cấp</label>
-                    <input id="name" type="text" add-index="2" placeholder="Tên nhà cung cấp">
+                    <input id="name" type="text" add-index="2" placeholder="Tên nhà cung cấp" >
                     <p id ="message_name" class = "message"></p>
                 </div>
 
@@ -406,7 +423,7 @@ var js = function () {
             </div>
             <div>
             </div>
-            <input type="reset" value="Hủy" class="button-cancel">
+            <input type="button" value="Hủy" class="button-cancel" id="btn-cancel">
             <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
         </form>
     </div>
@@ -421,11 +438,17 @@ var js = function () {
       modal.querySelector('#btnClose').addEventListener('click', () => {
         modal_edit_container.classList.remove('show')
       })
+      console.log(modal.querySelector('#btn-cancel'))
+      modal.querySelector('#btn-cancel').addEventListener('click', () => {
+        modal_edit_container.classList.remove('show')
+        
+      })
       var id = this.parentNode.parentNode.querySelector('.id').innerHTML
       var currentEmail = this.parentNode.parentNode.querySelector('.email').innerHTML
       var currentSdt = this.parentNode.parentNode.querySelector('.number_phone').innerHTML
+      let currentName = this.parentNode.parentNode.querySelector('.name').innerHTML
 
-      modal.querySelector('#name').value = this.parentNode.parentNode.querySelector('.name').innerHTML
+      modal.querySelector('#name').value = currentName
       modal.querySelector('#email').value = currentEmail
       modal.querySelector('#sdt').value = currentSdt
 
@@ -434,7 +457,7 @@ var js = function () {
         const message_name = modal_edit_container.querySelector('#message_name')
         const message_email = modal_edit_container.querySelector('#message_email')
         const message_sdt = modal_edit_container.querySelector('#message_sdt')
-        const name = modal_edit_container.querySelector('#name').value.trim()
+        let name = modal_edit_container.querySelector('#name').value.trim()
         const email = modal_edit_container.querySelector('#email').value.trim()
         const sdt = modal_edit_container.querySelector('#sdt').value.trim()
         const regexPhoneNumber = /^0\d{9}$/
@@ -482,6 +505,8 @@ var js = function () {
           message_name.innerHTML = ''
           message_email.innerHTML = ''
           message_sdt.innerHTML = ''
+          name = name.toUpperCase();
+          currentName = currentName.toUpperCase();
 
           // Kiểm tra tính duy nhất của email và số điện thoại trước khi cập nhật
           $.ajax({
@@ -492,17 +517,24 @@ var js = function () {
               function: 'checkEditEmailAndPhoneExists',
               email: email,
               sdt: sdt,
+              name: name,
               currentEmail: currentEmail,
               currentSdt: currentSdt,
+              currentName: currentName,
             },
           }).done(function (result) {
+            
             if (result.emailExists) {
               message_email.innerHTML = '*Email đã tồn tại trong hệ thống'
               modal_edit_container.querySelector('#email').focus()
             } else if (result.phoneExists) {
               message_sdt.innerHTML = '*Số điện thoại đã tồn tại trong hệ thống'
               modal_edit_container.querySelector('#sdt').focus()
-            } else {
+            } else if (result.nameExists) {
+              message_name.innerHTML = '*Tên đã tồn tại trong hệ thống'
+              modal_edit_container.querySelector('#name').focus()
+            }
+            else {
               // Gửi yêu cầu chỉnh sửa thông tin nhà cung cấp
               $.ajax({
                 url: '../controller/admin/supplier.controller.php',
@@ -520,6 +552,7 @@ var js = function () {
               }).done(function (result) {
                 loadItem()
                 $('#sqlresult').html(result)
+                hideNotifications();  
               })
               modal_edit_container.classList.remove('show')
             }
@@ -527,6 +560,7 @@ var js = function () {
         }
       })
     })
+ 
   }
 
   // delete
@@ -598,6 +632,7 @@ var js = function () {
         // console.log(modal_edit_container)
         modal_edit_container.classList.remove('show')
       })
+      hideNotifications()
     })
   }
 }

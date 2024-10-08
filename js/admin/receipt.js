@@ -91,24 +91,36 @@ async function loadForFirstTime() {
 function pagnationBtn() {
   // pagnation
   document.querySelectorAll(".pag").forEach((btn) =>
-    btn.addEventListener("click", function () {
-      current_page = btn.innerHTML;
-      loadItem();
-    },{once:true})
+    btn.addEventListener(
+      "click",
+      function () {
+        current_page = btn.innerHTML;
+        loadItem();
+      },
+      { once: true }
+    )
   );
   if (document.getElementsByClassName("pag-pre").length > 0)
-    document.querySelector(".pag-pre").addEventListener("click", function () {
-      current_page =
-        Number(document.querySelector("span.active").innerHTML) - 1;
-      loadItem(number_of_item, current_page);
-    },{once:true});
+    document.querySelector(".pag-pre").addEventListener(
+      "click",
+      function () {
+        current_page =
+          Number(document.querySelector("span.active").innerHTML) - 1;
+        loadItem(number_of_item, current_page);
+      },
+      { once: true }
+    );
   if (document.getElementsByClassName("pag-con").length > 0)
-    document.querySelector(".pag-con").addEventListener("click", function () {
-      current_page =
-        Number(document.querySelector("span.active").innerHTML) + 1;
+    document.querySelector(".pag-con").addEventListener(
+      "click",
+      function () {
+        current_page =
+          Number(document.querySelector("span.active").innerHTML) + 1;
 
-      loadItem();
-    },{once:true});
+        loadItem();
+      },
+      { once: true }
+    );
 }
 function loadItem() {
   var filter = getGRFilterFromForm();
@@ -165,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function filterBtn() {
   $(".body__filter--action__filter").click((e) => {
     e.preventDefault();
-
+    var regex2 = /^[0-9]\d*$/;
     var message_date_end = filter_form.querySelector("#message_date_end");
     var message_date_start = filter_form.querySelector("#message_date_begin");
     var message_price_end = filter_form.querySelector("#message_price_end");
@@ -195,24 +207,36 @@ function filterBtn() {
       message_date_end.innerHTML = "";
     }
 
-    if (
-      (start_price_str || end_price_str) &&
-      (isNaN(start_price) || isNaN(end_price))
-    ) {
-      if (!start_price_str) {
-        message_price_start.innerHTML = "*Nhập giá bắt đầu";
-      } else {
-        message_price_start.innerHTML = "*Nhập giá kết thúc";
-      }
-      check = false;
-    } else if (start_price >= end_price) {
-      message_price_start.innerHTML =
-        "*Giá bắt đầu phải nhỏ hơn giá kết thúc và là số nguyên.";
-      check = false;
-    } else {
-      message_price_start.innerHTML = "";
-      message_price_end.innerHTML = "";
-    }
+if (start_price_str || end_price_str ) {
+  if(!start_price_str) {
+    message_price_start.innerHTML = "*Nhập giá bắt đầu";
+    check = false;
+  } else if (!regex2.test(start_price_str)) {
+    message_price_start.innerHTML = "*Giá tiền phải là 1 số không âm";
+    console.log("sda")
+    check = false;
+  } else if (end_price_str && regex2.test(end_price_str) && (start_price > end_price)) {
+    message_price_start.innerHTML = "*Giá tiền bắt đầu phải nhỏ hơn giá tiền kết thúc";
+    check = false;
+  } else {
+    message_price_start.innerHTML = "";
+  }
+
+  if(!end_price_str) {
+    message_price_end.innerHTML = "*Nhập giá kết thúc";
+    check = false;
+  } else if (!regex2.test(end_price_str)) {
+    message_price_end.innerHTML = "*Giá tiền phải là 1 số không âm";
+    check = false;
+  } else if (start_price_str && regex2.test(start_price_str) && (start_price > end_price)) {
+    message_price_end.innerHTML = "*Giá tiền bắt đầu phải nhỏ hơn giá tiền kết thúc";
+    check = false;
+  } else {
+    message_price_end.innerHTML = "";
+  }
+}
+
+
 
     if (check) {
       current_page = 1;
@@ -303,7 +327,7 @@ function addProduct() {
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
-    if(!regex.test(quantity)) {
+    if (!regex.test(quantity)) {
       alert("Số lượng phải là số nguyên dương lớn hơn 0");
       return;
     }
@@ -380,72 +404,80 @@ const openModal = (addHtml) => {
   const addButton = document.getElementById("addButton");
   const closeAddIcon = document.querySelector(".addModal-content .close i");
 
-  openModalBtn.addEventListener("click", function () {
-    addModalContent.innerHTML = addHtml;
-    addModalContent.addEventListener("click", addProduct(),{once:true});
-    addModal.style.display = "block";
+  openModalBtn.addEventListener(
+    "click",
+    function () {
+      addModalContent.innerHTML = addHtml;
+      addModalContent.addEventListener("click", addProduct(), { once: true });
+      addModal.style.display = "block";
 
-    $.ajax({
-      url: "../controller/admin/receipt.controller.php",
-      type: "post",
-      dataType: "html",
-      data: {
-        function: "getSuppliers",
-      },
-    }).done(function (htmlResult) {
-      const supplierSelect = document.getElementById("supplier");
-      supplierSelect.innerHTML = htmlResult;
-    });
-  },{once:true});
+      $.ajax({
+        url: "../controller/admin/receipt.controller.php",
+        type: "post",
+        dataType: "html",
+        data: {
+          function: "getSuppliers",
+        },
+      }).done(function (htmlResult) {
+        const supplierSelect = document.getElementById("supplier");
+        supplierSelect.innerHTML = htmlResult;
+      });
+    },
+    { once: true }
+  );
 
   closeAddIcon.addEventListener("click", function () {
     addModal.style.display = "none";
   });
 
-  addButton.addEventListener("click", function (e) {
-    e.preventDefault();
+  addButton.addEventListener(
+    "click",
+    function (e) {
+      e.preventDefault();
 
-    const supplierId = document.getElementById("supplier").value;
+      const supplierId = document.getElementById("supplier").value;
 
-    const products = document.querySelectorAll("#productTableBody tr");
-    let totalPrice = 0;
+      const products = document.querySelectorAll("#productTableBody tr");
+      let totalPrice = 0;
 
-    let detailData = [];
-    products.forEach((product) => {
-      const productId = product.cells[0].textContent;
-      const quantity = product.cells[2].textContent;
-      const inputPriceText = product.cells[3].textContent;
-      const inputPrice =
-        parseFloat(inputPriceText.replace(/[^\d.-]/g, "")) * 1000;
-      totalPrice += parseFloat(quantity) * inputPrice;
-      detailData.push({ productId, quantity, inputPrice });
-    });
-    if (totalPrice === 0) {
-      alert("Vui lòng nhập đầy đủ thông tin.");
-      return;
-    }
-    const staffName = document
-      .querySelector(".topbar__admin-info h2")
-      .innerHTML.trim();
-    $.ajax({
-      url: "../controller/admin/receipt.controller.php",
-      type: "post",
-      dataType: "html",
-      data: {
-        function: "create",
-        field: {
-          supplierId: supplierId,
-          totalPrice: totalPrice,
-          details: detailData,
-          staffId: staffName,
+      let detailData = [];
+      products.forEach((product) => {
+        const productId = product.cells[0].textContent;
+        const quantity = product.cells[2].textContent;
+        const inputPriceText = product.cells[3].textContent;
+        const inputPrice =
+          parseFloat(inputPriceText.replace(/[^\d.-]/g, "")) * 1000;
+        totalPrice += parseFloat(quantity) * inputPrice;
+        detailData.push({ productId, quantity, inputPrice });
+      });
+      if (totalPrice === 0) {
+        alert("Vui lòng nhập đầy đủ thông tin.");
+        return;
+      }
+      const staffName = document
+        .querySelector(".topbar__admin-info h2")
+        .innerHTML.trim();
+      $.ajax({
+        url: "../controller/admin/receipt.controller.php",
+        type: "post",
+        dataType: "html",
+        data: {
+          function: "create",
+          field: {
+            supplierId: supplierId,
+            totalPrice: totalPrice,
+            details: detailData,
+            staffId: staffName,
+          },
         },
-      },
-    }).done(function (result) {
-      loadItem();
-      $("#sqlresult").html(result);
-      addModal.style.display = "none";
-    });
-  },{once:true});
+      }).done(function (result) {
+        loadItem();
+        $("#sqlresult").html(result);
+        addModal.style.display = "none";
+      });
+    },
+    { once: true }
+  );
 
   const editModal = document.getElementById("editModal");
   const editModalContent = document.querySelector(".editModal-content .form");
@@ -621,5 +653,5 @@ var js = function () {
           loadItem();
         });
     });
-    !flag ? openModal(addHtml) :"";
+  !flag ? openModal(addHtml) : "";
 };

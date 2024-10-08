@@ -23,6 +23,7 @@ function pushFilterToURL() {
   return url
 }
 
+
 function getFilterFromForm() {
   return {
     publisher_name: filter_form.querySelector('#publisherName').value,
@@ -178,6 +179,16 @@ function filterBtn() {
   })
 }
 
+function hideNotifications() {  
+  const notifications = document.querySelectorAll('.success, .failed');  
+  notifications.forEach(notification => {  
+      setTimeout(() => {  
+          notification.style.display = 'none';  
+      }, 3000);  
+  });  
+} 
+
+
 var js = function () {
   if (orderby != '' && order_type != '')
     document.querySelector('[data-order=' + "'" + orderby + "']").innerHTML +=
@@ -266,14 +277,19 @@ var js = function () {
         type: 'post',
         dataType: 'json',
         data: {
-          function: 'checkEmailExists', // Gọi đến hàm kiểm tra email tồn tại
+          function: 'checkEmailAndNameExists', // Gọi đến hàm kiểm tra email tồn tại
           email: email.value.trim(),
+          name: name.value.trim(),
         },
         success: function (response) {
-          if (response.exists) {
-            alert('Email nhà cung cấp đã tồn tại!')
+          if (response.emailExists) {
+            alert('Email nhà xuất bản đã tồn tại!')
             email.focus()
-          } else {
+          } else  if (response.nameExists) {
+            alert('Tên nhà xuất bản đã tồn tại!')
+            name.focus()
+          }
+           else {
             // Nếu email chưa tồn tại, thực hiện thêm nhà xuất bản mới
             $.ajax({
               url: '../controller/admin/publisher.controller.php',
@@ -289,6 +305,7 @@ var js = function () {
             }).done(function (result) {
               loadItem()
               $('#sqlresult').html(result)
+              hideNotifications();
             })
             modal_create_container.classList.remove('show')
           }
@@ -320,7 +337,7 @@ var js = function () {
             <div class="modal-body-2">
                 <div class="flex">
                     <label for="name">Tên nhà xuất bản</label>
-                    <input id="name" type="text" add-index="1" placeholder="Tên nhà xuất bản">
+                    <input id="name" type="text" add-index="1" placeholder="Tên nhà xuất bản"  disabled>
                     
                 </div>
                 <div class="flex">
@@ -414,6 +431,7 @@ var js = function () {
               }).done(function (result) {
                 loadItem()
                 $('#sqlresult').html(result)
+                hideNotifications();
               })
               modal_edit_container.classList.remove('show')
             }
@@ -423,6 +441,7 @@ var js = function () {
           },
         })
       })
+      hideNotifications()
     })
   }
 
@@ -477,6 +496,7 @@ var js = function () {
         }).done(function (result) {
           loadItem()
           $('#sqlresult').html(result)
+          hideNotifications();
           modal_edit_container.classList.remove('show')
         })
       })

@@ -59,6 +59,7 @@ class pagnation
         $database = new connectDB();
         $offset = ($this->current_page - 1) * $this->number_of_item;
         $sql = "SELECT DISTINCT $this->table.* FROM $this->table $this->filter $this->orderby LIMIT $this->number_of_item OFFSET $offset ";
+        // echo $sql;
         $result = $database->query($sql);
         $database->close();
         if ($result->num_rows > 0) {
@@ -124,14 +125,14 @@ class pagnation
                             $deleted_str = "";
                             $name = "";
                             while ($select = mysqli_fetch_array($select_result)) {
-                                if($select['status']==1)$str = $str . $select['id'] .',';
-                                else $deleted_str = $deleted_str . $select['id'] .',';
-                                if($select['status']==1)$name = $name . $select['name'] .', ';
+                                if ($select['status'] == 1) $str = $str . $select['id'] . ',';
+                                else $deleted_str = $deleted_str . $select['id'] . ',';
+                                if ($select['status'] == 1) $name = $name . $select['name'] . ', ';
                             }
-                            $str =  rtrim($str,", ")  ;
-                            $deleted_str =  rtrim($deleted_str,", ")  ;
-                            $name =  rtrim($name,", ")  ;
-                            echo '<td class="type" value="['. $str.']"'.'value_hidden="['. $deleted_str.']".>'. $name.'</td>';
+                            $str =  rtrim($str, ", ");
+                            $deleted_str =  rtrim($deleted_str, ", ");
+                            $name =  rtrim($name, ", ");
+                            echo '<td class="type" value="[' . $str . ']"' . 'value_hidden="[' . $deleted_str . ']".>' . $name . '</td>';
                             // date
                             echo '<td class="date">' . date("d/m/Y", strtotime($row['update_date'])) . ' ' . date("d/m/Y", strtotime($row['create_date'])) . '</td>';
                             //author
@@ -142,14 +143,14 @@ class pagnation
                             $deleted_str = "";
                             $name = "";
                             while ($select = mysqli_fetch_array($select_result)) {
-                                if($select['status']==1)$str = $str . $select['id'] .',';
-                                else $deleted_str = $deleted_str . $select['id'] .',';
-                                if($select['status']==1)$name = $name . $select['name'] .', ';
+                                if ($select['status'] == 1) $str = $str . $select['id'] . ',';
+                                else $deleted_str = $deleted_str . $select['id'] . ',';
+                                if ($select['status'] == 1) $name = $name . $select['name'] . ', ';
                             }
-                            $str =  rtrim($str,", ")  ;
-                            $deleted_str =  rtrim($deleted_str,", ")  ;
-                            $name =  rtrim($name,", ")  ;
-                            echo '<td class="author" value="['. $str.']"'.'value_hidden="['. $deleted_str.']".>'. $name.'</td>';
+                            $str =  rtrim($str, ", ");
+                            $deleted_str =  rtrim($deleted_str, ", ");
+                            $name =  rtrim($name, ", ");
+                            echo '<td class="author" value="[' . $str . ']"' . 'value_hidden="[' . $deleted_str . ']".>' . $name . '</td>';
                             //price and amount
                             echo '<td class="price">';
 
@@ -185,24 +186,50 @@ class pagnation
 
                     ';
 
-                        while ($row = mysqli_fetch_array($result)) {
-                            echo '<tr>';
-                            echo '<td class="id">'  . $row['id'] . '</td>';
-                            echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="email">' . $row['email'] . '</td>';
-                            echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
-                            if ($row['status'] == 1) {
-                                echo '<td class="status" >Đang hoạt động</td>';
-                            } else {
-                                echo '<td class="status" >Không hoạt động</td>';
-                            }
-                            // echo '<td class="status">' . $row['status'] . '</td>';                          
-                            echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
-                        </td>
-                        </tr>';
-                        }
+                        // while ($row = mysqli_fetch_array($result)) {
+                        //     echo '<tr>';
+                        //     echo '<td class="id">'  . $row['id'] . '</td>';
+                        //     echo '<td class="name">' . $row['name'] . '</td>';
+                        //     echo '<td class="email">' . $row['email'] . '</td>';
+                        //     echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
+                        //     if ($row['status'] == 1) {
+                        //         echo '<td class="status" >Đang hoạt động</td>';
+                        //     } else {
+                        //         echo '<td class="status" >Không hoạt động</td>';
+                        //     }
+                        //     $disabled = ($row['status'] == 0) ? 'disabled' : '';
+                        //     // echo '<td class="status">' . $row['status'] . '</td>';                          
+                        //     echo '<td class="actions">
+                        //      <button class="actions--edit" id="edit-status" ' . $disabled . '>Sửa</button>  
+                        //      <button class="actions--delete" id="delete-status" ' . $disabled . '>Xoá</button> 
+                        // </td>
+                        // </tr>';
+                        // }
+                        while ($row = mysqli_fetch_array($result)) {  
+                            echo '<tr>';  
+                            echo '<td class="id">'  . $row['id'] . '</td>';  
+                            echo '<td class="name">' . $row['name'] . '</td>';  
+                            echo '<td class="email">' . $row['email'] . '</td>';  
+                            echo '<td class="number_phone">' . $row['number_phone'] . '</td>';  
+                            if ($row['status'] == 1) {  
+                                echo '<td class="status">Đang hoạt động</td>';  
+                            } else {  
+                                echo '<td class="status">Không hoạt động</td>';  
+                            }  
+                            
+                            // Kiểm tra status để quyết định ẩn nút  
+                            if ($row['status'] == 0) {  
+                                echo '<td class="actions">  
+                                        <span>Không thể sửa/Xoá</span>  
+                                      </td>';  
+                            } else {  
+                                echo '<td class="actions">  
+                                        <button class="actions--edit" id="edit-status">Sửa</button>  
+                                        <button class="actions--delete" id="delete-status">Xoá</button>  
+                                      </td>';  
+                            }  
+                            echo '</tr>';  
+                        }  
                         echo ' 
                     </tbody>
                     </table>
@@ -295,7 +322,7 @@ class pagnation
                             echo '<td class="staff_id">' . $row[1] . '</td>';
                             echo '<td class="date-update">' . $row[3] . '</td>';
 
-                            echo '<td class="total_price">' .money_format($row['4'])  . '</td>';
+                            echo '<td class="total_price">' . money_format($row['4'])  . '</td>';
 
                             $sql_address = 'SELECT * from delivery_infoes WHERE user_info_id="' . $row[2] . '"';
                             $result_address = $database->query($sql_address);
@@ -429,21 +456,43 @@ class pagnation
 
                     ';
 
-                        while ($row = mysqli_fetch_array($result)) {
-                            echo '<tr>';
-                            echo '<td class="id">'  . $row['id'] . '</td>';
-                            echo '<td class="name">' . $row['name'] . '</td>';
-                            echo '<td class="email">' . $row['email'] . '</td>';
-                            if ($row['status'] == 1) {
-                                echo '<td class="status" >Đang hoạt động</td>';
-                            } else {
-                                echo '<td class="status" >Không hoạt động</td>';
-                            }
-                            echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
-                        </td>
-                        </tr>';
+                        // while ($row = mysqli_fetch_array($result)) {
+                        //     echo '<tr>';
+                        //     echo '<td class="id">'  . $row['id'] . '</td>';
+                        //     echo '<td class="name">' . $row['name'] . '</td>';
+                        //     echo '<td class="email">' . $row['email'] . '</td>';
+                        //     if ($row['status'] == 1) {
+                        //         echo '<td class="status" >Đang hoạt động</td>';
+                        //     } else {
+                        //         echo '<td class="status" >Không hoạt động</td>';
+                        //     }
+                        //     echo '<td class="actions">
+                        //     <button class="actions--edit">Sửa</button>
+                        //     <button class="actions--delete">Xoá</button>
+                        // </td>
+                        // </tr>';
+                        // }
+
+                        while ($row = mysqli_fetch_array($result)) {  
+                            echo '<tr>';  
+                            echo '<td class="id">'  . $row['id'] . '</td>';  
+                            echo '<td class="name">' . $row['name'] . '</td>';  
+                            echo '<td class="email">' . $row['email'] . '</td>';  
+                            
+                            if ($row['status'] == 1) {  
+                                echo '<td class="status">Đang hoạt động</td>';  
+                                echo '<td class="actions">  
+                                        <button class="actions--edit">Sửa</button>  
+                                        <button class="actions--delete">Xoá</button>  
+                                      </td>';  
+                            } else {  
+                                echo '<td class="status">Không hoạt động</td>';  
+                                echo '<td class="actions">  
+                                        <span>Không thể sửa/Xoá</span>  
+                                      </td>';  
+                            }  
+                            
+                            echo '</tr>';  
                         }
                         echo ' 
                     </tbody>
@@ -486,18 +535,23 @@ class pagnation
                             } else {
                                 echo '<td class="amount">' . 0 . '</td>';
                             }
-                            if ($row['status'] == 1) {
-                                echo '<td class="status" >Đang hoạt động</td>';
-                            } else {
-                                echo '<td class="status" >Không hoạt động</td>';
-                            }
+                           
 
 
-                            echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
-                        </td>
-                        </tr>';
+                            if ($row['status'] == 1) {  
+                                echo '<td class="status">Đang hoạt động</td>';  
+                                echo '<td class="actions">  
+                                        <button class="actions--edit">Sửa</button>  
+                                        <button class="actions--delete">Xoá</button>  
+                                      </td>';  
+                            } else {  
+                                echo '<td class="status">Không hoạt động</td>';  
+                                echo '<td class="actions">  
+                                        <span>Không thể sửa/Xoá</span>  
+                                      </td>';  
+                            }  
+                            
+                            echo '</tr>';  
                         }
                         echo ' 
                     </tbody>
@@ -527,12 +581,12 @@ class pagnation
                             echo '<tr>';
                             echo '<td class="discount_code">'  . $row['discount_code'] . '</td>';
                             echo '<td class="type">' . $row['type'] . '</td>';
-                            if($row['type'] == "PR") {
+                            if ($row['type'] == "PR") {
                                 echo '<td class="discount_value">' . $row['discount_value'] . '%</td>';
                             } else {
                                 echo '<td class="discount_value">' . $row['discount_value'] . 'đ</td>';
                             }
-                          
+
                             echo '<td class="start_date">' . $row['start_date'] . '</td>';
                             echo '<td class="end_date">' . $row['end_date'] . '</td>';
                             if ($row['status'] == 1) {
@@ -575,10 +629,10 @@ class pagnation
                             // echo '<td class="date-create">'.$row['create_date'].'</td>';
                             // echo '<td class="date-delete">'.$row['delete_date'].'</td>';
                             // echo '<td class="date-update">'.$row['update_date'].'</td>';
-                        //     echo '<td class="actions">
-                        //     <button class="actions--edit">Sửa</button>
-                        // </td>
-                        echo '</tr>';
+                            //     echo '<td class="actions">
+                            //     <button class="actions--edit">Sửa</button>
+                            // </td>
+                            echo '</tr>';
                         }
                         echo ' 
                     </tbody>
@@ -634,9 +688,9 @@ class pagnation
                 case "categories":
                     echo "<div id='zero-item'><h2>Không có thể loại nào</h2></div>";
                     break;
-                    case "goodsreceipts":
-                        echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
-                        break;
+                case "goodsreceipts":
+                    echo "<div id='zero-item'><h2>Không có đơn nhập hàng nào</h2></div>";
+                    break;
                 case "functions":
                     echo "<div id='zero-item'><h2>Không có quyền nào</h2></div>";
                     break;
@@ -756,46 +810,47 @@ function getAuthorFilterSQL($data)
     }
     return  $filter;
 }
-    function getReceiptFilterSQL($data)
-    {
-        $filter = "";
-        $innerjoin="";
-        if (!empty($data)) {
-            if (!empty($data['supplierName'])) {
-                // Lấy tên nhà cung cấp từ dữ liệu
-                $supplierName = $data['supplierName'];
-                $filter = $filter." s.name LIKE '%" . $supplierName . "%'";
-                $innerjoin = $innerjoin." INNER JOIN suppliers s ON goodsreceipts.supplier_id = s.id ";
-
-            }  
-            if (!empty($data['id'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " goodsreceipts.id = " . $data['id'];
-            }
-            if (!empty($data['staff_id'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
-            }
-            if (!empty($data['price_start'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " total_price >= " . $data['price_start'];
-            }
-            if (!empty($data['price_end'])) {
-                if ($filter != "") $filter = $filter . " AND ";
-                $filter = $filter . " total_price <= " . $data['price_end'];
-            }
-            if (!empty($data['date_start'])) {
-                if ($filter != "") $filter .= " AND ";
-                $filter .= "date_create >= '" . $data['date_start'] . "'";
-            }
-            if (!empty($data['date_end'])) {
-                if ($filter != "") $filter .= " AND ";
-                $filter .= "date_create <= '" . $data['date_end'] . "'";
-            }
-            if ($filter != "") $filter = "WHERE " . $filter;
+function getReceiptFilterSQL($data)
+{
+    $filter = "";
+    $innerjoin = "";
+    if (!empty($data)) {
+        if (!empty($data['supplierName'])) {
+            // Lấy tên nhà cung cấp từ dữ liệu
+            $supplierName = $data['supplierName'];
+            $filter = $filter . " s.name LIKE '%" . $supplierName . "%'";
+            $innerjoin = $innerjoin . " inner join goodsreceipt_details gd on gd.goodsreceipt_id = goodsreceipts.id
+                                        inner join products p on p.id = gd. product_id
+                                        inner join suppliers s on s.id = p.supplier_id ";
         }
-        return  $innerjoin . $filter;
+        if (!empty($data['id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " goodsreceipts.id = " . $data['id'];
+        }
+        if (!empty($data['staff_id'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . "`staff_id` LIKE '%" . $data['staff_id'] . "%'";
+        }
+        if (!empty($data['price_start'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " total_price >= " . $data['price_start'];
+        }
+        if (!empty($data['price_end'])) {
+            if ($filter != "") $filter = $filter . " AND ";
+            $filter = $filter . " total_price <= " . $data['price_end'];
+        }
+        if (!empty($data['date_start'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create >= '" . $data['date_start'] . "'";
+        }
+        if (!empty($data['date_end'])) {
+            if ($filter != "") $filter .= " AND ";
+            $filter .= "date_create <= '" . $data['date_end'] . "'";
+        }
+        if ($filter != "") $filter = "WHERE " . $filter;
     }
+    return  $innerjoin . $filter;
+}
 
 function getCategoryFilterSQL($data)
 {
@@ -995,7 +1050,7 @@ function getUserFilterSQL($data)
 //             if ($filter != "") $filter = $filter . " AND ";
 //             $filter = $filter . "status_id = ".$data['Order_status'] ;
 
-            
+
 //         }
 //         if (!empty($data['date_begin'])) {
 //             if ($filter != "") $filter .= " AND ";
@@ -1005,34 +1060,35 @@ function getUserFilterSQL($data)
 //             if ($filter != "") $filter .= " AND ";
 //             $filter .= "date_create <= '" . $data['date_end'] . "'";
 //         }
-        
+
 //         if ($filter != "") $filter = " WHERE " . $filter;
 //     }
 //     return $filter;
 // }
 
-function getOrderFilterSQL($data) {
+function getOrderFilterSQL($data)
+{
     $filter = "";  // Biến lưu trữ câu lệnh WHERE
     $join = "";    // Biến lưu trữ câu lệnh JOIN
-    
+
     if (!empty($data)) {
         // Điều kiện kiểm tra và thiết lập JOIN nếu có id_customer
         if (!empty($data['id_customer'])) {
             // Thêm JOIN để kết nối với bảng delivery_infoes
             $join = " INNER JOIN delivery_infoes di ON di.user_info_id = orders.delivery_info_id";
-            
+
             if ($filter != "") $filter .= " AND ";
             $filter .= "di.user_id LIKE '%" . $data['id_customer'] . "%'";
         }
 
         // Điều kiện lọc cho staff_id
-        if (!empty($data['id_staff'])) {     
+        if (!empty($data['id_staff'])) {
             if ($filter != "") $filter .= " AND ";
             $filter .= "orders.staff_id LIKE '%" . $data['id_staff'] . "%'";
         }
 
         // Điều kiện lọc theo id_Order
-        if (!empty($data['id_Order'])) {     
+        if (!empty($data['id_Order'])) {
             if ($filter != "") $filter .= " AND ";
             $filter .= "orders.id = " . $data['id_Order'];
         }
@@ -1066,12 +1122,12 @@ function getOrderFilterSQL($data) {
 
 function money_format($money)
 {
-  if($money==0)  return  "0&#8363;";
-  $formated = "";
-  while ($money > 0) {
-    $formated = substr("$money", -3, 3) . '.' . $formated;
-    $money = substr("$money", 0, -3);
-  }
+    if ($money == 0)  return  "0&#8363;";
+    $formated = "";
+    while ($money > 0) {
+        $formated = substr("$money", -3, 3) . '.' . $formated;
+        $money = substr("$money", 0, -3);
+    }
 
-  return  trim($formated, '. ')."&#8363;";
+    return  trim($formated, '. ') . "&#8363;";
 }

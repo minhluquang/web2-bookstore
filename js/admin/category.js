@@ -219,80 +219,178 @@ var js = function () {
           loadItem();
       })
   });
-  const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
-<div class="modal-edit-product">
+//   const create_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
+// <div class="modal-edit-product">
+//     <div class="modal-header">
+//         <h3>Thêm thể loại</h3>
+//         <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+//     </div>
+//     <div class="modal-body">
+//         <form action="">
+
+//             <div class="modal-body-2">
+//                 <div class="flex">
+//                     <label for="nameCategory">Tên thể loại</label>
+//                     <input id="nameCategory" type="text" add-index="2" placeholder="Tên thể loại">                   
+//                 </div>
+//                 <p id ="message"></p>
+                
+//             </div>
+//             <div>
+//             </div>
+//             <input type="reset" value="Hủy" class="button-cancel">
+//             <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
+//         </form>
+//     </div>
+// </div>
+// </div>`;
+
+//   document
+//     .querySelector(".body__filter--action__add")
+//     .addEventListener("click", (e) => {
+//       e.preventDefault();
+//       modal.innerHTML = create_html;
+//       const modal_create_container = document.querySelector(
+//         "#modal-edit-container"
+//       );
+//       modal
+//         .querySelector(".button-confirm")
+//         .addEventListener("click", function (e) {
+//           e.preventDefault();
+//           const message = modal_create_container.querySelector("#message");
+//           const name =
+//             modal_create_container.querySelector("#nameCategory").value;
+//           var check = true;
+//           if (name == "") {
+//             message.innerHTML = "*Vui lòng điền tên thể loại";
+//             modal_create_container.querySelector("#nameCategory").focus();
+//             check = false;
+//           }
+//           if (check == true) {
+//             message.innerHTML = "";
+//             $.ajax({
+//               url: "../controller/admin/category.controller.php",
+//               type: "post",
+//               dataType: "html",
+//               data: {
+//                 function: "create",
+//                 field: {
+//                   name: modal.querySelector("#nameCategory").value,
+//                 },
+//               },
+//             }).done(function (result) {
+//               loadItem();
+//               $("#sqlresult").html(result);
+//             });
+//             modal_create_container.classList.add("hidden");
+//           }
+//         });
+
+//       document.querySelector("#btnClose").addEventListener("click", () => {
+//         modal_create_container.classList.add("hidden");
+//       });
+//       document.querySelector(".button-cancel").addEventListener("click", () => {
+//         modal_create_container.classList.add("hidden");
+//       });
+//     });
+
+
+const create_html = `
+<div class="modal-edit-product-container show" id="modal-edit-container">
+  <div class="modal-edit-product">
     <div class="modal-header">
-        <h3>Thêm thể loại</h3>
-        <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
+      <h3>Thêm thể loại</h3>
+      <button class="btn-close" id="btnClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-        <form action="">
-
-            <div class="modal-body-2">
-                <div class="flex">
-                    <label for="nameCategory">Tên thể loại</label>
-                    <input id="nameCategory" type="text" add-index="2" placeholder="Tên thể loại">                   
-                </div>
-                <p id ="message"></p>
-                
-            </div>
-            <div>
-            </div>
-            <input type="reset" value="Hủy" class="button-cancel">
-            <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
-        </form>
+      <form action="">
+        <div class="modal-body-2">
+          <div class="flex">
+            <label for="nameCategory">Tên thể loại</label>
+            <input id="nameCategory" type="text" add-index="2" placeholder="Tên thể loại">
+          </div>
+          <p id="message"></p>
+        </div>
+        <input type="reset" value="Hủy" class="button-cancel">
+        <input type="submit" value="Xác nhận" class="button-confirm" add-index="9">
+      </form>
     </div>
-</div>
+  </div>
 </div>`;
 
-  document
-    .querySelector(".body__filter--action__add")
-    .addEventListener("click", (e) => {
-      e.preventDefault();
-      modal.innerHTML = create_html;
-      const modal_create_container = document.querySelector(
-        "#modal-edit-container"
-      );
-      modal
-        .querySelector(".button-confirm")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          const message = modal_create_container.querySelector("#message");
-          const name =
-            modal_create_container.querySelector("#nameCategory").value;
-          var check = true;
-          if (name == "") {
-            message.innerHTML = "*Vui lòng điền tên thể loại";
-            modal_create_container.querySelector("#nameCategory").focus();
-            check = false;
-          }
-          if (check == true) {
-            message.innerHTML = "";
-            $.ajax({
-              url: "../controller/admin/category.controller.php",
-              type: "post",
-              dataType: "html",
-              data: {
-                function: "create",
-                field: {
-                  name: modal.querySelector("#nameCategory").value,
-                },
-              },
-            }).done(function (result) {
-              loadItem();
-              $("#sqlresult").html(result);
-            });
-            modal_create_container.classList.add("hidden");
-          }
-        });
+document.querySelector(".body__filter--action__add").addEventListener("click", (e) => {
+  e.preventDefault();
+  modal.innerHTML = create_html;
+  const modal_create_container = document.querySelector("#modal-edit-container");
 
-      document.querySelector("#btnClose").addEventListener("click", () => {
-        modal_create_container.classList.add("hidden");
+  modal_create_container.querySelector(".button-confirm").addEventListener("click", function (e) {
+    e.preventDefault();
+    const message = modal_create_container.querySelector("#message");
+    let name = modal_create_container.querySelector("#nameCategory").value;
+    let check = true;
+
+    if (name === "") {
+      message.innerHTML = "*Vui lòng điền tên thể loại";
+      modal_create_container.querySelector("#nameCategory").focus();
+      check = false;
+    }
+
+    if (check) {
+      message.innerHTML = "";
+      name = name.toUpperCase();
+    }
+      // Kiểm tra xem tên thể loại đã tồn tại hay chưa
+      $.ajax({
+        url: '../controller/admin/category.controller.php',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          function: 'checkNameExists', // Gọi đến hàm kiểm tra thể loại tồn tại
+          name: name,
+        },
+        
+      }).done(function (result) {
+        console.log("Checking name:", name);
+
+        if (result.exists) {
+          message.innerHTML = "*Tên thể loại đã tồn tại!";
+          modal_create_container.querySelector("#nameCategory").focus();
+        } else {
+          // Nếu thể loại chưa tồn tại, thực hiện thêm thể loại mới
+          $.ajax({
+            url: '../controller/admin/category.controller.php',
+            type: 'post',
+            dataType: 'html',
+            data: {
+              function: 'create',
+              field: {
+                name: name,
+              },
+            },
+          }).done(function (result) {
+            loadItem(); // Tải lại danh sách sau khi thêm thành công
+            $("#sqlresult").html(result); // Hiển thị thông báo thành công
+          });
+          modal_create_container.classList.add("hidden");
+        }
+      }).fail(function () {
+        message.innerHTML = "Đã xảy ra lỗi khi kiểm tra tên thể loại!";
       });
-      document.querySelector(".button-cancel").addEventListener("click", () => {
-        modal_create_container.classList.add("hidden");
-      });
-    });
+    
+  });
+
+  document.querySelector("#btnClose").addEventListener("click", () => {
+    modal_create_container.classList.add("hidden");
+  });
+
+  document.querySelector(".button-cancel").addEventListener("click", () => {
+    modal_create_container.classList.add("hidden");
+  });
+});
+
+
+      
+
 
   const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
 <div class="modal-edit-product">
@@ -320,62 +418,135 @@ var js = function () {
 </div>
 </div>`;
 
-  var edit_btns = document.getElementsByClassName("actions--edit");
-  for (var i = 0; i < edit_btns.length; i++) {
-    edit_btns[i].addEventListener("click", function (e) {
-      modal.innerHTML = edit_html;
-      const modal_edit_container = document.querySelector(
-        "#modal-edit-container"
-      );
-      modal.querySelector("#btnClose").addEventListener("click", () => {
-        modal_edit_container.classList.remove("show");
-      });
-      modal.querySelector(".button-cancel").addEventListener("click", () => {
-        modal_edit_container.classList.remove("show");
-      });
-      var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
-      modal.querySelector("#name").value =
-        this.parentNode.parentNode.querySelector(".name").innerHTML;
-      // modal.querySelector('#status').value = this.parentNode.parentNode.querySelector(".status").innerHTML;
-      modal
-        .querySelector(".button-confirm")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          const message = modal_edit_container.querySelector("#message");
-          const name = modal_edit_container.querySelector("#name").value;
-          var check = true;
+  // var edit_btns = document.getElementsByClassName("actions--edit");
+  // for (var i = 0; i < edit_btns.length; i++) {
+  //   edit_btns[i].addEventListener("click", function (e) {
+  //     modal.innerHTML = edit_html;
+  //     const modal_edit_container = document.querySelector(
+  //       "#modal-edit-container"
+  //     );
+  //     modal.querySelector("#btnClose").addEventListener("click", () => {
+  //       modal_edit_container.classList.remove("show");
+  //     });
+  //     modal.querySelector(".button-cancel").addEventListener("click", () => {
+  //       modal_edit_container.classList.remove("show");
+  //     });
+  //     var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
+  //     modal.querySelector("#name").value =
+  //       this.parentNode.parentNode.querySelector(".name").innerHTML;
+  //     // modal.querySelector('#status').value = this.parentNode.parentNode.querySelector(".status").innerHTML;
+  //     modal
+  //       .querySelector(".button-confirm")
+  //       .addEventListener("click", function (e) {
+  //         e.preventDefault();
+  //         const message = modal_edit_container.querySelector("#message");
+  //         const name = modal_edit_container.querySelector("#name").value;
+  //         var check = true;
 
-          if (name == "") {
-            message.innerHTML = "*Vui lòng điền tên thể loại";
-            modal_edit_container.querySelector("#name").focus();
-            check = false;
-          } else if(name.length < 3) {
-            message.innerHTML = "*Tên thể loại quá ngắn";
-            modal_edit_container.querySelector("#name").focus();
-            check = false;
-          }
-          if (check == true) {
-            message.innerHTML = "";
-            $.ajax({
-              url: "../controller/admin/category.controller.php",
-              type: "post",
-              dataType: "html",
-              data: {
-                function: "edit",
-                field: {
-                  id: id,
-                  name: modal.querySelector("#name").value,
-                },
-              },
-            }).done(function (result) {
-              loadItem();
-              $("#sqlresult").html(result);
-            });
+  //         if (name == "") {
+  //           message.innerHTML = "*Vui lòng điền tên thể loại";
+  //           modal_edit_container.querySelector("#name").focus();
+  //           check = false;
+  //         } else if(name.length < 3) {
+  //           message.innerHTML = "*Tên thể loại quá ngắn";
+  //           modal_edit_container.querySelector("#name").focus();
+  //           check = false;
+  //         }
+  //         if (check == true) {
+  //           message.innerHTML = "";
+  //           $.ajax({
+  //             url: "../controller/admin/category.controller.php",
+  //             type: "post",
+  //             dataType: "html",
+  //             data: {
+  //               function: "edit",
+  //               field: {
+  //                 id: id,
+  //                 name: modal.querySelector("#name").value,
+  //               },
+  //             },
+  //           }).done(function (result) {
+  //             loadItem();
+  //             $("#sqlresult").html(result);
+  //           });
+  //           modal_edit_container.classList.remove("show");
+  //         }
+  //       });
+  //   });
+  // }
+
+  var edit_btns = document.getElementsByClassName("actions--edit");
+for (var i = 0; i < edit_btns.length; i++) {
+    edit_btns[i].addEventListener("click", function (e) {
+        modal.innerHTML = edit_html;
+        const modal_edit_container = document.querySelector("#modal-edit-container");
+        modal.querySelector("#btnClose").addEventListener("click", () => {
             modal_edit_container.classList.remove("show");
-          }
+        });
+        modal.querySelector(".button-cancel").addEventListener("click", () => {
+            modal_edit_container.classList.remove("show");
+        });
+        var id = this.parentNode.parentNode.querySelector(".id").innerHTML;
+        modal.querySelector("#name").value = this.parentNode.parentNode.querySelector(".name").innerHTML;
+
+        modal.querySelector(".button-confirm").addEventListener("click", function (e) {
+            e.preventDefault();
+            const message = modal_edit_container.querySelector("#message");
+            let name = modal_edit_container.querySelector("#name").value;
+            var check = true;
+
+            // Kiểm tra tên thể loại
+            if (name === "") {
+                message.innerHTML = "*Vui lòng điền tên thể loại";
+                modal_edit_container.querySelector("#name").focus();
+                check = false;
+            } else if (name.length < 3) {
+                message.innerHTML = "*Tên thể loại quá ngắn";
+                modal_edit_container.querySelector("#name").focus();
+                check = false;
+            }
+
+            // Nếu các kiểm tra trước đã qua, thực hiện kiểm tra tên
+            if (check) {
+              name = name.toUpperCase();
+                $.ajax({
+                    url: "../controller/admin/category.controller.php",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        function: "checkCategoryExists",
+                        name: name,
+                        id: id // Gửi id để kiểm tra nếu tên đã tồn tại
+                    },
+                }).done(function (result) {
+                    if (result.exists) {
+                        message.innerHTML = "*Tên thể loại đã tồn tại trong hệ thống";
+                        modal_edit_container.querySelector("#name").focus();
+                    } else {
+                        // Nếu tên không tồn tại, thực hiện yêu cầu sửa
+                        message.innerHTML = "";
+                        $.ajax({
+                            url: "../controller/admin/category.controller.php",
+                            type: "post",
+                            dataType: "html",
+                            data: {
+                                function: "edit",
+                                field: {
+                                    id: id,
+                                    name: name,
+                                },
+                            },
+                        }).done(function (result) {
+                            loadItem();
+                            $("#sqlresult").html(result);
+                        });
+                        modal_edit_container.classList.remove("show");
+                    }
+                });
+            }
         });
     });
-  }
+}
 
   // delete
 

@@ -59,7 +59,8 @@ function publisher_delete($id)
 function publisher_create($field)
 {
   global $database;
-  $sql = "SELECT * from publishers WHERE name = '" . $field['name'] . "'";
+  $nameUpper = strtoupper($field['name']);
+  $sql = "SELECT * from publishers WHERE UPPER(name) COLLATE utf8mb4_bin = '$nameUpper' AND status = 1";
   $result = null;
   $result = $database->query($sql);
   $row = mysqli_fetch_array($result);
