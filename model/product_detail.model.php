@@ -12,8 +12,10 @@ function getProductDetailByIdModel($product_id, $closeDatabase = false)
             p.price, 
             p.status,
             CASE WHEN pub.status = 1 THEN pub.name ELSE NULL END AS publisher_name,
-            GROUP_CONCAT(CASE WHEN c.status = 1 THEN CONCAT(' ', c.name) ELSE NULL END) AS category_names,
-            GROUP_CONCAT(CASE WHEN a.status = 1 THEN CONCAT(' ', a.name) ELSE NULL END) AS author_names
+            -- GROUP_CONCAT(CASE WHEN c.status = 1 THEN CONCAT(' ', c.name) ELSE NULL END) AS category_names,
+            -- GROUP_CONCAT(CASE WHEN a.status = 1 THEN CONCAT(' ', a.name) ELSE NULL END) AS author_names
+            GROUP_CONCAT(DISTINCT CASE WHEN c.status = 1 THEN CONCAT(' ', c.name) ELSE NULL END) AS category_names,  
+            GROUP_CONCAT(DISTINCT CASE WHEN a.status = 1 THEN CONCAT(' ', a.name) ELSE NULL END) AS author_names
         FROM 
             products p  
             INNER JOIN publishers pub ON p.publisher_id = pub.id

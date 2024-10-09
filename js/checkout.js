@@ -13107,91 +13107,152 @@ $(document).ready(function () {
 // Cập nhật địa chỉ
 let indexAddressRadioChecked = 0;
 
+// $(document).ready(function () {
+//  $(".confirm.create_address").click(function () {
+//   if (validFormUpdateUserInfoAddress()) {
+//    const updateFullnameValue = updateFullname.value;
+//    const updatePhoneNumberValue = updatePhoneNumber.value;
+//    const updateAddressFormValue = updateAddressForm.value;
+//    const citySelectValue = citySelect.value;
+//    const districtSelectValue = districtSelect.value;
+//    const wardSelectValue = wardSelect.value;
+//    //  console.log(document.querySelector("#tinhthanh").value);
+
+//    $.ajax({
+//     type: "post",
+//     url: "controller/delivery_info.controller.php",
+//     dataType: "html",
+//     data: {
+//      function: "createNewUserInfo",
+//      fullname: updateFullnameValue,
+//      phoneNumber: updatePhoneNumberValue,
+//      addressForm: updateAddressFormValue,
+//      citySelect: citySelectValue,
+//      districtSelect: districtSelectValue,
+//      wardSelect: wardSelectValue,
+//      modelPath: "../model",
+//     },
+//    }).done(function (result) {
+//     const data = JSON.parse(result);
+//     if (data.success) {
+//      alert("Hệ thống tạo thành công địa chỉ!");
+//      popupToggle(`changeAddressMenu`);
+//      popupToggle(`addressMenu`);
+
+//      // Tự động render lại dữ liệu sau khi cập nhật thành công
+//      renderAllUserInfoByUserId();
+//      renderCurrentDeliveryAddress();
+//      document.querySelector(".confirm.change_address").classList.remove("hidden");
+//      document.querySelector(".confirm.create_address").classList.add("hidden");
+//     } else {
+//      alert("Hệ thống thất bại trong việc tạo địa chỉ!");
+//     }
+//    });
+//   }
+//  });
+//  $(".confirm.change_address").click(function () {
+//   if (validFormUpdateUserInfoAddress()) {
+//    const updateUserInfoIdValue = updateUserInfoId.value;
+//    const updateFullnameValue = updateFullname.value;
+//    const updatePhoneNumberValue = updatePhoneNumber.value;
+//    const updateAddressFormValue = updateAddressForm.value;
+//    const citySelectValue = citySelect.value;
+//    const districtSelectValue = districtSelect.value;
+//    const wardSelectValue = wardSelect.value;
+
+//    $.ajax({
+//     type: "post",
+//     url: "controller/delivery_info.controller.php",
+//     dataType: "html",
+//     data: {
+//      function: "updateUserInfo",
+//      updateUserInfoId: updateUserInfoIdValue,
+//      updateFullname: updateFullnameValue,
+//      updatePhoneNumber: updatePhoneNumberValue,
+//      updateAddressForm: updateAddressFormValue,
+//      citySelect: citySelectValue,
+//      districtSelect: districtSelectValue,
+//      wardSelect: wardSelectValue,
+//      modelPath: "../model",
+//     },
+//    }).done(function (result) {
+//     const data = JSON.parse(result);
+//     if (data.success) {
+//      alert("Hệ thống cập nhật thành công địa chỉ!");
+//      popupToggle(`changeAddressMenu`);
+//      popupToggle(`addressMenu`);
+
+//      // Tự động render lại dữ liệu sau khi cập nhật thành công
+//      renderAllUserInfoByUserId();
+//      renderCurrentDeliveryAddress();
+//     } else {
+//      alert("Hệ thống cập nhật thất bại địa chỉ!");
+//     }
+//    });
+//   }
+//  });
+// });
+
+
+//
 $(document).ready(function () {
- $(".confirm.create_address").click(function () {
-  if (validFormUpdateUserInfoAddress()) {
-   const updateFullnameValue = updateFullname.value;
-   const updatePhoneNumberValue = updatePhoneNumber.value;
-   const updateAddressFormValue = updateAddressForm.value;
-   const citySelectValue = citySelect.value;
-   const districtSelectValue = districtSelect.value;
-   const wardSelectValue = wardSelect.value;
-   //  console.log(document.querySelector("#tinhthanh").value);
+    // Bắt sự kiện khi nhấn phím trên trang
+    $(document).keypress(function(event) {
+        // Kiểm tra nếu phím nhấn là phím Enter
+        if (event.which == 13) {
+            // Kiểm tra xem có đang focus vào input hoặc textarea hay không
+            if (!$("input, textarea").is(":focus")) {
+                // Thực thi hành động của nút xác nhận
+                $(".confirm.create_address").click();
+            }
+        }
+    });
 
-   $.ajax({
-    type: "post",
-    url: "controller/delivery_info.controller.php",
-    dataType: "html",
-    data: {
-     function: "createNewUserInfo",
-     fullname: updateFullnameValue,
-     phoneNumber: updatePhoneNumberValue,
-     addressForm: updateAddressFormValue,
-     citySelect: citySelectValue,
-     districtSelect: districtSelectValue,
-     wardSelect: wardSelectValue,
-     modelPath: "../model",
-    },
-   }).done(function (result) {
-    const data = JSON.parse(result);
-    if (data.success) {
-     alert("Hệ thống tạo thành công địa chỉ!");
-     popupToggle(`changeAddressMenu`);
-     popupToggle(`addressMenu`);
+    // Xử lý sự kiện click của nút xác nhận
+    $(".confirm.create_address").click(function () {
+        if (validFormUpdateUserInfoAddress()) {
+            const updateFullnameValue = updateFullname.value;
+            const updatePhoneNumberValue = updatePhoneNumber.value;
+            const updateAddressFormValue = updateAddressForm.value;
+            const citySelectValue = citySelect.value;
+            const districtSelectValue = districtSelect.value;
+            const wardSelectValue = wardSelect.value;
 
-     // Tự động render lại dữ liệu sau khi cập nhật thành công
-     renderAllUserInfoByUserId();
-     renderCurrentDeliveryAddress();
-     document.querySelector(".confirm.change_address").classList.remove("hidden");
-     document.querySelector(".confirm.create_address").classList.add("hidden");
-    } else {
-     alert("Hệ thống thất bại trong việc tạo địa chỉ!");
-    }
-   });
-  }
- });
- $(".confirm.change_address").click(function () {
-  if (validFormUpdateUserInfoAddress()) {
-   const updateUserInfoIdValue = updateUserInfoId.value;
-   const updateFullnameValue = updateFullname.value;
-   const updatePhoneNumberValue = updatePhoneNumber.value;
-   const updateAddressFormValue = updateAddressForm.value;
-   const citySelectValue = citySelect.value;
-   const districtSelectValue = districtSelect.value;
-   const wardSelectValue = wardSelect.value;
+            $.ajax({
+                type: "post",
+                url: "controller/delivery_info.controller.php",
+                dataType: "html",
+                data: {
+                    function: "createNewUserInfo",
+                    fullname: updateFullnameValue,
+                    phoneNumber: updatePhoneNumberValue,
+                    addressForm: updateAddressFormValue,
+                    citySelect: citySelectValue,
+                    districtSelect: districtSelectValue,
+                    wardSelect: wardSelectValue,
+                    modelPath: "../model",
+                },
+            }).done(function (result) {
+                const data = JSON.parse(result);
+                if (data.success) {
+                    alert("Hệ thống tạo thành công địa chỉ!");
+                    popupToggle(`changeAddressMenu`);
+                    popupToggle(`addressMenu`);
 
-   $.ajax({
-    type: "post",
-    url: "controller/delivery_info.controller.php",
-    dataType: "html",
-    data: {
-     function: "updateUserInfo",
-     updateUserInfoId: updateUserInfoIdValue,
-     updateFullname: updateFullnameValue,
-     updatePhoneNumber: updatePhoneNumberValue,
-     updateAddressForm: updateAddressFormValue,
-     citySelect: citySelectValue,
-     districtSelect: districtSelectValue,
-     wardSelect: wardSelectValue,
-     modelPath: "../model",
-    },
-   }).done(function (result) {
-    const data = JSON.parse(result);
-    if (data.success) {
-     alert("Hệ thống cập nhật thành công địa chỉ!");
-     popupToggle(`changeAddressMenu`);
-     popupToggle(`addressMenu`);
-
-     // Tự động render lại dữ liệu sau khi cập nhật thành công
-     renderAllUserInfoByUserId();
-     renderCurrentDeliveryAddress();
-    } else {
-     alert("Hệ thống cập nhật thất bại địa chỉ!");
-    }
-   });
-  }
- });
+                    // Tự động render lại dữ liệu sau khi cập nhật thành công
+                    renderAllUserInfoByUserId();
+                    renderCurrentDeliveryAddress();
+                    document.querySelector(".confirm.change_address").classList.remove("hidden");
+                    document.querySelector(".confirm.create_address").classList.add("hidden");
+                } else {
+                    alert("Hệ thống thất bại trong việc tạo địa chỉ!");
+                }
+            });
+        }
+    });
 });
+
+//
 
 // Hàm render all user info
 function renderAllUserInfoByUserId() {
