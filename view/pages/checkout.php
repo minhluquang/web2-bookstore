@@ -213,7 +213,7 @@
 
                     <span style="word-wrap: break-word;flex:0 0 85%;">
                         Bằng việc tiến hành Mua hàng, Bạn đã đồng ý với
-                        <a href="">Điều khoản & Điều kiện của Fahasa.com</a>
+                        <span>Điều khoản & Điều kiện của Fahasa.com</span>
                     </span>
                 </div>
             </div>
@@ -243,7 +243,7 @@
             <i class="fa-solid fa-square-check" style="color:#ca3f3f;font-size:20px;padding:7px"></i>
             <span>
                 <span>Bằng việc tiến hành Mua hàng, Bạn đã đồng ý với</span> <br>
-                <a href="">Điều khoản & Điều kiện của Fahasa.com</a>
+                <a href="#" style="cursor: unset;">Điều khoản & Điều kiện của Fahasa.com</a>
             </span>
         </div>
         <button type="submit" class="xacNhanThanhToan">Xác nhận thanh toán</button>

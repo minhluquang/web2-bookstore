@@ -36,6 +36,13 @@
     global $database;
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $date = date('Y-m-d', time());
+
+    $SQL_CHECK = "SELECT * FROM discounts WHERE discount_code = '".$field['discount_code']."'";
+    $CHECK_RES = $database->query($SQL_CHECK);
+    if ($CHECK_RES->num_rows > 0) {
+      return "<span class='failed'>Tên mã giảm giá đã tồn tại</span>";
+  }
+
     $sql = "SELECT * from discounts WHERE discount_code = '" . $field['discount_code'] . "'";
 
     $result = null;

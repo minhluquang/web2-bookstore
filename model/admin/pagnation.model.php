@@ -205,31 +205,31 @@ class pagnation
                         // </td>
                         // </tr>';
                         // }
-                        while ($row = mysqli_fetch_array($result)) {  
-                            echo '<tr>';  
-                            echo '<td class="id">'  . $row['id'] . '</td>';  
-                            echo '<td class="name">' . $row['name'] . '</td>';  
-                            echo '<td class="email">' . $row['email'] . '</td>';  
-                            echo '<td class="number_phone">' . $row['number_phone'] . '</td>';  
-                            if ($row['status'] == 1) {  
-                                echo '<td class="status">Đang hoạt động</td>';  
-                            } else {  
-                                echo '<td class="status">Không hoạt động</td>';  
-                            }  
-                            
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="email">' . $row['email'] . '</td>';
+                            echo '<td class="number_phone">' . $row['number_phone'] . '</td>';
+                            if ($row['status'] == 1) {
+                                echo '<td class="status">Đang hoạt động</td>';
+                            } else {
+                                echo '<td class="status">Không hoạt động</td>';
+                            }
+
                             // Kiểm tra status để quyết định ẩn nút  
-                            if ($row['status'] == 0) {  
+                            if ($row['status'] == 0) {
                                 echo '<td class="actions">  
                                         <span>Không thể sửa/Xoá</span>  
-                                      </td>';  
-                            } else {  
+                                      </td>';
+                            } else {
                                 echo '<td class="actions">  
                                         <button class="actions--edit" id="edit-status">Sửa</button>  
                                         <button class="actions--delete" id="delete-status">Xoá</button>  
-                                      </td>';  
-                            }  
-                            echo '</tr>';  
-                        }  
+                                      </td>';
+                            }
+                            echo '</tr>';
+                        }
                         echo ' 
                     </tbody>
                     </table>
@@ -473,26 +473,26 @@ class pagnation
                         // </tr>';
                         // }
 
-                        while ($row = mysqli_fetch_array($result)) {  
-                            echo '<tr>';  
-                            echo '<td class="id">'  . $row['id'] . '</td>';  
-                            echo '<td class="name">' . $row['name'] . '</td>';  
-                            echo '<td class="email">' . $row['email'] . '</td>';  
-                            
-                            if ($row['status'] == 1) {  
-                                echo '<td class="status">Đang hoạt động</td>';  
+                        while ($row = mysqli_fetch_array($result)) {
+                            echo '<tr>';
+                            echo '<td class="id">'  . $row['id'] . '</td>';
+                            echo '<td class="name">' . $row['name'] . '</td>';
+                            echo '<td class="email">' . $row['email'] . '</td>';
+
+                            if ($row['status'] == 1) {
+                                echo '<td class="status">Đang hoạt động</td>';
                                 echo '<td class="actions">  
                                         <button class="actions--edit">Sửa</button>  
                                         <button class="actions--delete">Xoá</button>  
-                                      </td>';  
-                            } else {  
-                                echo '<td class="status">Không hoạt động</td>';  
+                                      </td>';
+                            } else {
+                                echo '<td class="status">Không hoạt động</td>';
                                 echo '<td class="actions">  
                                         <span>Không thể sửa/Xoá</span>  
-                                      </td>';  
-                            }  
-                            
-                            echo '</tr>';  
+                                      </td>';
+                            }
+
+                            echo '</tr>';
                         }
                         echo ' 
                     </tbody>
@@ -535,23 +535,23 @@ class pagnation
                             } else {
                                 echo '<td class="amount">' . 0 . '</td>';
                             }
-                           
 
 
-                            if ($row['status'] == 1) {  
-                                echo '<td class="status">Đang hoạt động</td>';  
+
+                            if ($row['status'] == 1) {
+                                echo '<td class="status">Đang hoạt động</td>';
                                 echo '<td class="actions">  
                                         <button class="actions--edit">Sửa</button>  
                                         <button class="actions--delete">Xoá</button>  
-                                      </td>';  
-                            } else {  
-                                echo '<td class="status">Không hoạt động</td>';  
+                                      </td>';
+                            } else {
+                                echo '<td class="status">Không hoạt động</td>';
                                 echo '<td class="actions">  
                                         <span>Không thể sửa/Xoá</span>  
-                                      </td>';  
-                            }  
-                            
-                            echo '</tr>';  
+                                      </td>';
+                            }
+
+                            echo '</tr>';
                         }
                         echo ' 
                     </tbody>
@@ -595,10 +595,15 @@ class pagnation
                                 echo '<td class="status" >Không hoạt động</td>';
                             }
                             // echo '<td class="status">'.$row['status'].'</td>';
-                            echo '<td class="actions">
-                            <button class="actions--edit">Sửa</button>
-                            <button class="actions--delete">Xoá</button>
-                        </td>
+                            echo '<td class="actions">';
+                            if ($row['status'] == 1) {
+                                echo '<button class="actions--delete">Xoá</button>
+                                <button class="actions--edit">Sửa</button>';
+                            } else {
+                                echo '<button disabled style="cursor: none; pointer-events: none; user-select: text;">Xoá</button>
+                                <button disabled style="cursor: none; pointer-events: none; user-select: text;">Sửa</button>';
+                            }
+                            echo '</td>
                         </tr>';
                         }
                         echo ' 

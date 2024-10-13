@@ -132,45 +132,45 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function filterBtn() {
- $(".body__filter--action__filter").click((e) => {
-  current_page = 1;
-  e.preventDefault();
-  loadItem();
- });
- $(".body__filter--action__reset").click((e) => {
-  current_page = 1;
-  status_value = "active";
-  $.ajax({
-   url: "../controller/admin/pagnation.controller.php",
-   type: "post",
-   dataType: "html",
-   data: {
-    number_of_item: number_of_item,
-    current_page: current_page,
-    function: "getTotalRecords",
-    filter: {
-     category_status: status_value,
-    },
-   },
-  }).done(function (result) {
-   var newurl =
-    window.location.protocol +
-    "//" +
-    window.location.host +
-    window.location.pathname +
-    "?page=" +
-    urlParams["page"] +
-    "&item=" +
-    number_of_item +
-    "&current_page=" +
-    current_page;
-   window.history.pushState({ path: newurl }, "", newurl);
-   $(".result").html(result);
-   loadItem();
-   pagnationBtn();
-   js();
-  });
- });
+ $(".body__filter--action__filter").off('click').on('click',(e) => {
+    current_page = 1;
+    e.preventDefault();
+    loadItem();
+   })
+ $(".body__filter--action__reset").off('click').on('click',(e) => {
+    current_page = 1;
+    status_value = "active";
+    $.ajax({
+     url: "../controller/admin/pagnation.controller.php",
+     type: "post",
+     dataType: "html",
+     data: {
+      number_of_item: number_of_item,
+      current_page: current_page,
+      function: "getTotalRecords",
+      filter: {
+       category_status: status_value,
+      },
+     },
+    }).done(function (result) {
+     var newurl =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      window.location.pathname +
+      "?page=" +
+      urlParams["page"] +
+      "&item=" +
+      number_of_item +
+      "&current_page=" +
+      current_page;
+     window.history.pushState({ path: newurl }, "", newurl);
+     $(".result").html(result);
+     loadItem();
+     pagnationBtn();
+     js();
+    });
+   });
 }
 
 var js = function () {
