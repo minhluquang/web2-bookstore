@@ -402,7 +402,7 @@ var js = function () {
             <div class="modal-body-2">
                 <div class="flex">
                     <label for="name">Tên nhà cung cấp</label>
-                    <input id="name" type="text" add-index="2" placeholder="Tên nhà cung cấp" >
+                    <input id="name" type="text" add-index="2" placeholder="Tên nhà cung cấp" disabled>
                     <p id ="message_name" class = "message"></p>
                 </div>
 
