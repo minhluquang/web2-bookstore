@@ -9,12 +9,23 @@ function checkLogin($username, $password)
   global $database;
   $sql = "SELECT *
               FROM accounts
-              WHERE username = '$username' AND role_id = '3'";
+              WHERE username = '$username'";
   $result = $database->query($sql);
 
   // Kiểm tra xem có tồn tại không?
   if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
+
+    // Chặn không cho tài khoản admin, nhân viên đăng nhập mua hàng
+    $role_id = $row['role_id'];
+    if ($role_id != '3') {
+      $reponse = (object) array(
+        "success" => false,
+        "message" => "Tài khoản không đủ quyền truy cập!"
+      );
+      return $reponse;
+    }
+
     $db_password = $row['password'];
 
     // So sánh mật khẩu nhập vào với mật khẩu trong cơ sở dữ liệu
