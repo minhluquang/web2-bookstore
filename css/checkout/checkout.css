@@ -650,7 +650,7 @@ fieldset {
 #total-fixed {
   visibility: visible;
   height: auto;
-  padding: 0 0 10px 0;
+  padding: 10px 0 10px 0;
 }
 
 #dieukhoan-bottom {
@@ -658,7 +658,7 @@ fieldset {
 }
 
 #dieukhoan-fixed {
-  visibility: visible;
+  visibility: hidden;
   width: auto;
 }
 
