@@ -339,7 +339,7 @@ var js = function () {
         <form action="">
             <div class="modal-body-2">
                 <div class="flex">
-                    <label for="name">Tên nhà xuất bản</label>
+                    <label for="name">Tên nhà xuất bản </label>
                     <input id="name" type="text" add-index="1" placeholder="Tên nhà xuất bản"  disabled>
                     
                 </div>
