@@ -306,6 +306,9 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
            }).done(function (result) {
                loadItem();
                $("#sqlresult").html(result);
+               setTimeout(() => {
+                $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+            }, 3000);
               
            })
            modal_create_container.classList.add('hidden');

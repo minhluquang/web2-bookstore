@@ -694,6 +694,9 @@ var js = function () {
           }).done(function (result) {
             loadItem();
             $("#sqlresult").html(result);
+              setTimeout(() => {
+                $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+              }, 3000);
           });
           modal_edit_container.classList.add("hidden");
         });
@@ -1239,6 +1242,9 @@ var js = function () {
           }).done(function (result) {
             loadItem();
             $("#sqlresult").html(result);
+              setTimeout(() => {
+                $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+              }, 3000);
           });
           modal_edit_container.classList.add("hidden");
         });

@@ -369,7 +369,10 @@ document.querySelector(".body__filter--action__add").addEventListener("click", (
             },
           }).done(function (result) {
             loadItem(); // Tải lại danh sách sau khi thêm thành công
-            $("#sqlresult").html(result); // Hiển thị thông báo thành công
+            $("#sqlresult").html(result);
+              setTimeout(() => {
+                $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+              }, 3000); // Hiển thị thông báo thành công
           });
           modal_create_container.classList.add("hidden");
         }
@@ -539,6 +542,9 @@ for (var i = 0; i < edit_btns.length; i++) {
                         }).done(function (result) {
                             loadItem();
                             $("#sqlresult").html(result);
+                              setTimeout(() => {
+                              $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+                            }, 3000);
                         });
                         modal_edit_container.classList.remove("show");
                     }
@@ -597,6 +603,9 @@ for (var i = 0; i < edit_btns.length; i++) {
         }).done(function (result) {
           loadItem();
           $("#sqlresult").html(result);
+              setTimeout(() => {
+                $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+              }, 3000);
           modal_edit_container.classList.remove("show");
         });
       });

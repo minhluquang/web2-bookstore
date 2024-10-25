@@ -351,7 +351,10 @@ const js = function () {
                     hideNotifications();
                     addAuthorModal.style.display = "none"; // Ẩn modal sau khi thành công
                   } else {
-                    $("#sqlresult").html(result); // Hiển thị thông báo thất bại
+                    $("#sqlresult").html(result);
+                    setTimeout(() => {
+                      $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+                    }, 3000); // Hiển thị thông báo thất bại
                   }
                 })
                 .fail(function () {

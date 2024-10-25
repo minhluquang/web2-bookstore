@@ -473,6 +473,9 @@ const openModal = (addHtml) => {
       }).done(function (result) {
         loadItem();
         $("#sqlresult").html(result);
+        setTimeout(() => {
+          $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+        }, 3000);
         addModal.style.display = "none";
       });
     },

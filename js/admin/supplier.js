@@ -5,7 +5,7 @@ function hideNotifications() {
   notifications.forEach(notification => {  
       setTimeout(() => {  
           notification.style.display = 'none';  
-      }, 1000);  
+      }, 2000);  
   });  
 } 
 
@@ -551,7 +551,10 @@ var js = function () {
                 },
               }).done(function (result) {
                 loadItem()
-                $('#sqlresult').html(result)
+                $("#sqlresult").html(result);
+               setTimeout(() => {
+                $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+            }, 3000);
                 hideNotifications();  
               })
               modal_edit_container.classList.remove('show')
@@ -611,7 +614,10 @@ var js = function () {
           },
         }).done(function (result) {
           loadItem()
-          $('#sqlresult').html(result)
+          $("#sqlresult").html(result);
+          setTimeout(() => {
+           $("#sqlresult").html(""); // Xóa nội dung sau 3 giây
+       }, 3000);
           modal_edit_container.classList.remove('show')
         })
       })

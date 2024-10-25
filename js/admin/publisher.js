@@ -184,7 +184,7 @@ function hideNotifications() {
   notifications.forEach(notification => {  
       setTimeout(() => {  
           notification.style.display = 'none';  
-      }, 1000);  
+      }, 2000);  
   });  
 } 
 
