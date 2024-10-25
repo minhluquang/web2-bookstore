@@ -184,7 +184,7 @@ function hideNotifications() {
   notifications.forEach(notification => {  
       setTimeout(() => {  
           notification.style.display = 'none';  
-      }, 3000);  
+      }, 1000);  
   });  
 } 
 
@@ -247,7 +247,7 @@ var js = function () {
 
     modal.querySelector('.create-confirm').addEventListener('click', function (e) {
       e.preventDefault()
-      const name = modal.querySelector('#namePublisher')
+      let name = modal.querySelector('#namePublisher')
       const email = modal.querySelector('#emailPublisher')
 
       // Biểu thức chính quy để kiểm tra email phải có định dạng @gmai.com
@@ -271,6 +271,9 @@ var js = function () {
         return
       }
 
+      
+      name = name.value.toUpperCase();
+      console.log(name)
       // Kiểm tra email đã tồn tại trong hệ thống hay chưa
       $.ajax({
         url: '../controller/admin/publisher.controller.php',
@@ -279,7 +282,7 @@ var js = function () {
         data: {
           function: 'checkEmailAndNameExists', // Gọi đến hàm kiểm tra email tồn tại
           email: email.value.trim(),
-          name: name.value.trim(),
+          name: name.trim(),
         },
         success: function (response) {
           if (response.emailExists) {
@@ -298,7 +301,7 @@ var js = function () {
               data: {
                 function: 'create',
                 field: {
-                  name: name.value.trim(),
+                  name: name.trim(),
                   email: email.value.trim(),
                 },
               },

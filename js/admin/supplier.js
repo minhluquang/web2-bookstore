@@ -5,7 +5,7 @@ function hideNotifications() {
   notifications.forEach(notification => {  
       setTimeout(() => {  
           notification.style.display = 'none';  
-      }, 3000);  
+      }, 1000);  
   });  
 } 
 
@@ -373,6 +373,7 @@ var js = function () {
             }).done(function (result) {
               loadItem()
               $('#sqlresult').html(result)
+              hideNotifications();
             })
             modal_create_container.classList.add('hidden')
           }
@@ -386,8 +387,7 @@ var js = function () {
 
     document.querySelector('.button-cancel').addEventListener('click', () => {
       modal_create_container.classList.add('hidden')
-    })
- hideNotifications();  
+    }) 
   })
 
   const edit_html = `<div class="modal-edit-product-container show" id="modal-edit-container">
