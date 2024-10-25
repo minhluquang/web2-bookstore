@@ -207,36 +207,44 @@ function filterBtn() {
       message_date_end.innerHTML = "";
     }
 
-if (start_price_str || end_price_str ) {
-  if(!start_price_str) {
-    message_price_start.innerHTML = "*Nhập giá bắt đầu";
-    check = false;
-  } else if (!regex2.test(start_price_str)) {
-    message_price_start.innerHTML = "*Giá tiền phải là 1 số không âm";
-    console.log("sda")
-    check = false;
-  } else if (end_price_str && regex2.test(end_price_str) && (start_price > end_price)) {
-    message_price_start.innerHTML = "*Giá tiền bắt đầu phải nhỏ hơn giá tiền kết thúc";
-    check = false;
-  } else {
-    message_price_start.innerHTML = "";
-  }
+    if (start_price_str || end_price_str) {
+      if (!start_price_str) {
+        message_price_start.innerHTML = "*Nhập giá bắt đầu";
+        check = false;
+      } else if (!regex2.test(start_price_str)) {
+        message_price_start.innerHTML = "*Giá tiền phải là 1 số không âm";
+        console.log("sda");
+        check = false;
+      } else if (
+        end_price_str &&
+        regex2.test(end_price_str) &&
+        start_price > end_price
+      ) {
+        message_price_start.innerHTML =
+          "*Giá tiền bắt đầu phải nhỏ hơn giá tiền kết thúc";
+        check = false;
+      } else {
+        message_price_start.innerHTML = "";
+      }
 
-  if(!end_price_str) {
-    message_price_end.innerHTML = "*Nhập giá kết thúc";
-    check = false;
-  } else if (!regex2.test(end_price_str)) {
-    message_price_end.innerHTML = "*Giá tiền phải là 1 số không âm";
-    check = false;
-  } else if (start_price_str && regex2.test(start_price_str) && (start_price > end_price)) {
-    message_price_end.innerHTML = "*Giá tiền bắt đầu phải nhỏ hơn giá tiền kết thúc";
-    check = false;
-  } else {
-    message_price_end.innerHTML = "";
-  }
-}
-
-
+      if (!end_price_str) {
+        message_price_end.innerHTML = "*Nhập giá kết thúc";
+        check = false;
+      } else if (!regex2.test(end_price_str)) {
+        message_price_end.innerHTML = "*Giá tiền phải là 1 số không âm";
+        check = false;
+      } else if (
+        start_price_str &&
+        regex2.test(start_price_str) &&
+        start_price > end_price
+      ) {
+        message_price_end.innerHTML =
+          "*Giá tiền bắt đầu phải nhỏ hơn giá tiền kết thúc";
+        check = false;
+      } else {
+        message_price_end.innerHTML = "";
+      }
+    }
 
     if (check) {
       current_page = 1;
@@ -495,12 +503,12 @@ const openModal = (addHtml) => {
       <input type="text" id="idForm" readonly="">
       </div>
       <div class="input-field">
-      <label for="supplierName">Tên nhà cung cấp</label>
-      <input type="text" id="supplierNameForm">
+      <label for="supplierName" >Tên nhà cung cấp</label>
+      <input type="text" id="supplierNameForm" readonly="">
     </div>
     <div class="input-field">
       <label for="staff_id">Tên người nhập hàng</label>
-      <input type="email" id="staff_idForm">
+      <input type="email" id="staff_idForm" readonly="" >
       </div>
       <div class="input-field">
       <label for="total_price">Tổng giá</label>
