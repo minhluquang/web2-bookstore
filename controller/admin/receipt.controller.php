@@ -7,21 +7,23 @@ if (isset($_POST['function'])) {
     case 'create':
       create();
       break;
-  
-  case 'details':
-    receiptDetail();
-    break;
+
+    case 'details':
+      receiptDetail();
+      break;
     case 'getSuppliers':
       getSuppliers();
       break;
     case 'getIdProducts':
       getIdProducts();
       break;
-      case 'getPrice':
-        getPriceProducts();
-        break;
-
-}
+    case 'getPrice':
+      getPriceProducts();
+      break;
+    case 'getProductsNumber':
+      getProductNumber();
+      break;
+  }
 }
 
 function create()
@@ -43,14 +45,18 @@ function getSuppliers()
 function getIdProducts()
 {
   if (isset($_POST['field'])) {
-  echo receipt_getIdProducts($_POST['field']);
+    echo receipt_getIdProducts($_POST['field']);
   }
 }
 function getPriceProducts()
 {
   if (isset($_POST['field'])) {
-  echo receipt_getPriceProducts($_POST['field']);
+    echo receipt_getPriceProducts($_POST['field']);
   }
 }
-
-
+function getProductNumber()
+{
+  if (isset($_POST['field'])) {
+    echo receipt_getProductNumber($_POST['field']);
+  }
+}

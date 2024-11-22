@@ -27,7 +27,7 @@ function pushFilterToURL() {
     price_end: "price_end",
   };
   var url = "";
-  Object.keys(filter).forEach((key) => {
+  Object.keys(filter).forEach(key => {
     url +=
       filter[key] != null && filter[key] != ""
         ? `&${url_key[key]}=${filter[key]}`
@@ -78,7 +78,7 @@ if (order_type != "ASC" && order_type != "DESC") {
 function checkReady() {
   return new Promise(async function (resolve) {
     while (!window.jQuery) {
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
     }
     resolve();
   });
@@ -90,7 +90,7 @@ async function loadForFirstTime() {
 }
 function pagnationBtn() {
   // pagnation
-  document.querySelectorAll(".pag").forEach((btn) =>
+  document.querySelectorAll(".pag").forEach(btn =>
     btn.addEventListener(
       "click",
       function () {
@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function filterBtn() {
-  $(".body__filter--action__filter").click((e) => {
+  $(".body__filter--action__filter").click(e => {
     e.preventDefault();
     var regex2 = /^[0-9]\d*$/;
     var message_date_end = filter_form.querySelector("#message_date_end");
@@ -252,7 +252,7 @@ function filterBtn() {
     }
   });
 
-  $(".body__filter--action__reset").click((e) => {
+  $(".body__filter--action__reset").click(e => {
     var message_date_end = filter_form.querySelector("#message_date_end");
     var message_date_start = filter_form.querySelector("#message_date_begin");
     var message_price_end = filter_form.querySelector("#message_price_end");
@@ -297,13 +297,13 @@ function addProduct() {
   let productId = "";
   let quantity = "";
   let inputPrice = "";
-
+  let productNumber = 0;
   const productIdDropdown = document.getElementById("productId");
   productIdDropdown.addEventListener("change", function () {
     const selectedProductId = this.value;
     productName = document.getElementById("productId").selectedOptions[0].text;
     productId = document.getElementById("productId").value;
-
+    console.log(productId);
     if (!selectedProductId) return;
 
     $.ajax({
@@ -325,18 +325,47 @@ function addProduct() {
       .fail(function () {
         alert("Đã xảy ra lỗi khi lấy giá.");
       });
+
+    $.ajax({
+      url: "../controller/admin/receipt.controller.php",
+      type: "post",
+      dataType: "json",
+      data: {
+        function: "getProductsNumber",
+        field: { id: selectedProductId },
+      },
+      success: function (response) {
+        if (response.success) {
+          // Hiển thị số lượng sản phẩm
+          productNumber = response.product_count;
+          console.log("Số lượng sản phẩm: " + typeof response.product_count);
+        } else {
+          console.error("Lỗi: " + response.error);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Yêu cầu thất bại: " + error);
+      },
+    });
   });
 
   document.getElementById("addProduct").addEventListener("click", function () {
     var regex = /^[1-9]\d*$/;
 
     quantity = document.getElementById("quantity").value;
+
     if (productId.trim() === "" || quantity.trim() === "") {
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
+
     if (!regex.test(quantity)) {
       alert("Số lượng phải là số nguyên dương lớn hơn 0");
+      return;
+    }
+
+    if (Number(quantity) < 100001 - productNumber) {
+      alert("Số lượng không hợp lệ!");
       return;
     }
 
@@ -405,7 +434,7 @@ function getProductsBySupplier(selectElement) {
   });
 }
 
-const openModal = (addHtml) => {
+const openModal = addHtml => {
   const addModal = document.getElementById("addReiceptModal");
   const addModalContent = document.querySelector(".addModal-content .form");
   const openModalBtn = document.querySelector(".body__filter--action__add");
@@ -449,7 +478,7 @@ const openModal = (addHtml) => {
       let totalPrice = 0;
 
       let detailData = [];
-      products.forEach((product) => {
+      products.forEach(product => {
         const productId = product.cells[0].textContent;
         const quantity = product.cells[2].textContent;
         const inputPriceText = product.cells[3].textContent;
@@ -529,7 +558,7 @@ const openModal = (addHtml) => {
     editModal.style.display = "none";
   });
 
-  window.addEventListener("click", (event) => {
+  window.addEventListener("click", event => {
     if (event.target === editModal) {
       editModal.style.display = "none";
     }
@@ -576,7 +605,7 @@ const openModal = (addHtml) => {
     editModal.style.display = "none";
   });
 
-  window.addEventListener("click", (event) => {
+  window.addEventListener("click", event => {
     if (event.target === editModal) {
       editModal.style.display = "none";
     }
@@ -648,7 +677,7 @@ var js = function () {
   document
     .querySelector(".result")
     .querySelectorAll("th")
-    .forEach((th) => {
+    .forEach(th => {
       if (th.hasAttribute("data-order"))
         th.addEventListener("click", () => {
           if (orderby == "")

@@ -12,7 +12,7 @@ function pushFilterToURL() {
     discount_status: "status",
   };
   var url = "";
-  Object.keys(filter).forEach((key) => {
+  Object.keys(filter).forEach(key => {
     url +=
       filter[key] != null && filter[key] != ""
         ? `&${url_key[key]}=${filter[key]}`
@@ -57,7 +57,7 @@ if (order_type != "ASC" && order_type != "DESC") {
 function checkReady() {
   return new Promise(async function (resolve) {
     while (!window.jQuery) {
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
     }
     resolve();
   });
@@ -69,7 +69,7 @@ async function loadForFirstTime() {
 }
 function pagnationBtn() {
   // pagnation
-  document.querySelectorAll(".pag").forEach((btn) =>
+  document.querySelectorAll(".pag").forEach(btn =>
     btn.addEventListener("click", function () {
       current_page = btn.innerHTML;
       loadItem();
@@ -144,14 +144,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function filterBtn() {
   $(".body__filter--action__filter")
     .off("click")
-    .on("click", (e) => {
+    .on("click", e => {
       current_page = 1;
       e.preventDefault();
       loadItem();
     });
   $(".body__filter--action__reset")
     .off("click")
-    .on("click", (e) => {
+    .on("click", e => {
       current_page = 1;
       status_value = "active";
       $.ajax({
@@ -201,7 +201,7 @@ var js = function () {
   document
     .querySelector(".result")
     .querySelectorAll("th")
-    .forEach((th) => {
+    .forEach(th => {
       if (th.hasAttribute("data-order"))
         th.addEventListener("click", () => {
           if (orderby == "")
@@ -269,7 +269,7 @@ var js = function () {
 
   document
     .querySelector(".body__filter--action__add")
-    .addEventListener("click", (e) => {
+    .addEventListener("click", e => {
       e.preventDefault();
       modal.innerHTML = create_html;
       const modal_create_container = document.querySelector(
@@ -341,6 +341,10 @@ var js = function () {
           } else if (type == "AR") {
             if (discount_value <= 0) {
               message_value.innerHTML = "*Giá trị phải lớn hơn 0";
+              check = false;
+            } else if (discount_value > 1000001) {
+              message_value.innerHTML =
+                "*Giá trị phải nhỏ hơn hoặc bằng 1000000";
               check = false;
             } else {
               message_value.innerHTML = "";
@@ -554,6 +558,9 @@ var js = function () {
           } else if (type == "AR") {
             if (discount_value <= 0) {
               message_value.innerHTML = "*Giá trị phải lớn hơn 0";
+              check = false;
+            } else if (discount_value > 1000000) {
+              message_value.innerHTML = "*Giá trị phải nhỏ hơn 1000000";
               check = false;
             } else {
               message_value.innerHTML = "";
