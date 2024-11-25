@@ -13,7 +13,6 @@ function hanelSearchInputFocus(keyword) {
   }).done(function (result) {
     const data = JSON.parse(result);
     document.querySelector(".notification-title").classList.remove("hide");
-
     if (data.success) {
       renderHTMLSearchResult(data);
     } else {
@@ -72,7 +71,6 @@ function renderHTMLSearchResult(data) {
 document.querySelector("#searchButton").addEventListener("click", (e) => {
   const searchInput = document.querySelector("#searchInput");
   keyword = searchInput.value;
-
   if (keyword == "") {
     searchInput.focus();
     return;
@@ -85,6 +83,8 @@ document.querySelector("#searchButton").addEventListener("click", (e) => {
   localStorage.setItem("keyword", keyword);
   if (currentPage != "product") {
     window.location.href = "index.php?page=product";
+  } else {
+    location.reload();
   }
 });
 
