@@ -364,7 +364,7 @@ function addProduct() {
       return;
     }
 
-    if (Number(quantity) < 100001 - productNumber) {
+    if (Number(quantity) > 100001 - productNumber) {
       alert("Số lượng không hợp lệ!");
       return;
     }
